@@ -1,10 +1,10 @@
-package com.mm;
+package com.pawly;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MmApplicationTests {
+class PawlyApplicationTests {
 
 	@Test
 	void contextLoads() {
