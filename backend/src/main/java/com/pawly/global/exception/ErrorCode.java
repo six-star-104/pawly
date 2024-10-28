@@ -45,7 +45,8 @@ public enum ErrorCode {
     ALREADY_FRIEND("E001", HttpStatus.BAD_REQUEST, "이미 친구입니다."),
     NOT_FRIEND("E002", HttpStatus.BAD_REQUEST, "친구가 아닙니다."),
     FRIEND_REQUEST_ALREADY_SENT("E003", HttpStatus.BAD_REQUEST, "이미 친구 요청을 보냈습니다."),
-    FRIEND_REQUEST_ALREADY_RECEIVED("E004", HttpStatus.BAD_REQUEST, "이미 친구 요청을 받았습니다.");
+    FRIEND_REQUEST_ALREADY_RECEIVED("E004", HttpStatus.BAD_REQUEST, "이미 친구 요청을 받았습니다."),
+    FRIEND_NOT_REQUEST("E005", HttpStatus.BAD_REQUEST, "친구 요청이 없습니다.");
 
 
     private final String code;

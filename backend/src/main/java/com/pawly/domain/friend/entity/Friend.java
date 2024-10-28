@@ -36,6 +36,11 @@ public class Friend {
 
     private Boolean deleteFlag = false;
 
+    public Friend(Member sender, Member receiver) {
+        this.memberId1 = sender;
+        this.memberId2 = receiver;
+    }
+
     public void delete() {
         this.deleteFlag = true;
         this.updatedAt = LocalDateTime.now();  // 수동으로 updatedAt 업데이트

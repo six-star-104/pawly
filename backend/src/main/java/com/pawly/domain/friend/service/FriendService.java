@@ -37,7 +37,7 @@ public class FriendService {
         Member receiver = receiverOptional.get();
 
         friendRequestRepository.save(new FriendRequest(sender, receiver));
-        return ApiResponse.createSuccessWithNoContent();
+        return ApiResponse.createSuccessWithNoContent("친구 신청 성공");
     }
 
     @Transactional
@@ -59,7 +59,7 @@ public class FriendService {
         Friend friend = friendOptional.get();
         friend.delete();
 
-        return ApiResponse.createSuccessWithNoContent();
+        return ApiResponse.createSuccessWithNoContent("친구 삭제 성공");
     }
 
     private Optional<Member> checkMemberId(Long memberId) {

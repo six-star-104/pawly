@@ -2,8 +2,10 @@ package com.pawly.domain.friend.controller;
 
 import com.pawly.domain.friend.dto.FriendRequestDto;
 import com.pawly.domain.friend.dto.FriendResponse;
+import com.pawly.domain.friend.dto.FriendStatusDto;
 import com.pawly.domain.friend.service.FriendListService;
 import com.pawly.domain.friend.service.FriendService;
+import com.pawly.domain.friend.service.FriendStatusService;
 import com.pawly.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ public class FriendController {
 
     private final FriendListService friendListService;
     private final FriendService friendService;
+    private final FriendStatusService friendStatusService;
 
     @GetMapping("/request")
     public ResponseEntity<?> requestFriend() {
@@ -46,6 +49,12 @@ public class FriendController {
     @DeleteMapping
     public ResponseEntity<?> deleteFriend(@RequestBody FriendRequestDto friendRequestDto) {
         ApiResponse<?> response = friendService.friendDelete(friendRequestDto.getMemberId());
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping
+    public ResponseEntity<?> updateFriend(@RequestBody FriendStatusDto friendStatusDto) {
+        ApiResponse<?> response = friendStatusService.updateFriend(friendStatusDto.getFriendId(), friendStatusDto.getStatus());
         return ResponseEntity.ok(response);
     }
 }
