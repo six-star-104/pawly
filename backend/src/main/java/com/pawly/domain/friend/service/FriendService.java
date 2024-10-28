@@ -1,21 +1,17 @@
 package com.pawly.domain.friend.service;
 
-import com.pawly.domain.friend.dto.FriendResponse;
-import com.pawly.domain.friend.entity.Friend;
+import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.friend.entity.FriendRequest;
 import com.pawly.domain.friend.repository.FriendRepository;
 import com.pawly.domain.friend.repository.FriendRequestRepository;
-import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.repository.MemberRepository;
 import com.pawly.global.exception.ErrorCode;
+import com.pawly.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.pawly.global.response.ApiResponse;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,64 +22,36 @@ public class FriendService {
     private final MemberRepository memberRepository;
     private static final Long memberId = 1L;
 
-    public ApiResponse<List<FriendResponse>> requestFriend() {
-        Optional<Member> memberOptional = memberRepository.findById(memberId);
+    @Transactional
+    public ApiResponse<Object> friend(Long memberId2) {
+        Optional<Member> senderOptional = checkMemberId(memberId);
+        Optional<Member> receiverOptional = checkMemberId(memberId2);
 
-        if (memberOptional.isPresent()) {
-            Member member = memberOptional.get();
-            List<FriendRequest> friendRequests = friendRequestRepository.findBySenderId(member);
+        if (senderOptional.isEmpty() || receiverOptional.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+        if(!checkIfFriendExists(memberId2)) return ApiResponse.createError(ErrorCode.ALREADY_FRIEND);
+        if(!checkRequestFriendExists(memberId2)) return ApiResponse.createError(ErrorCode.FRIEND_REQUEST_ALREADY_SENT);
+        if(!checkResponseFriendExists(memberId2)) return ApiResponse.createError(ErrorCode.FRIEND_REQUEST_ALREADY_RECEIVED);
 
-            List<FriendResponse> friendResponseList = friendRequests.stream()
-                    .map(FriendResponse::requestList)
-                    .collect(Collectors.toList());
+        Member sender = senderOptional.get();
+        Member receiver = receiverOptional.get();
 
-            return ApiResponse.createSuccess(friendResponseList, "친구 신청한 목록 조회 성공"); // 성공 응답
-        } else {
-            return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
-        }
+        friendRequestRepository.save(new FriendRequest(sender, receiver));
+        return ApiResponse.createSuccessWithNoContent();
     }
 
-    public ApiResponse<List<FriendResponse>> responseFriend() {
-        Optional<Member> memberOptional = memberRepository.findById(memberId);
-
-        if (memberOptional.isPresent()) {
-            Member member = memberOptional.get();
-            List<FriendRequest> friendRequests = friendRequestRepository.findByReceiverId(member);
-
-            List<FriendResponse> friendResponseList = friendRequests.stream()
-                    .map(FriendResponse::responseList)
-                    .collect(Collectors.toList());
-
-            return ApiResponse.createSuccess(friendResponseList, "친구 신청받은 목록 조회 성공"); // 성공 응답
-        } else {
-            return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
-        }
+    private Optional<Member> checkMemberId(Long memberId) {
+        return memberRepository.findById(memberId);
     }
 
-        public ApiResponse<List<FriendResponse>> getFriendsByMemberId() {
-        List<Friend> friends = friendRepository.findFriendsByMemberId(memberId);
+    private boolean checkIfFriendExists(Long memberId2) {
+        return friendRepository.existsByMemberAndTargetMember(memberId, memberId2);
+    }
 
-        List<FriendResponse> friendResponseDtoList = friends.stream()
-                .map(friend -> {
-                    Member targetMemberId = friend.getMemberId1().getMemberId().equals(memberId) ? friend.getMemberId2() : friend.getMemberId1();
+    private boolean checkRequestFriendExists(Long memberId2) {
+        return friendRequestRepository.existsRequest(memberId, memberId2);
+    }
 
-                    Optional<Member> targetMemberOptional = memberRepository.findById(targetMemberId.getMemberId());
-                    if (targetMemberOptional.isPresent()) {
-                        Member targetMember = targetMemberOptional.get();
-                        return new FriendResponse(
-                                friend.getFriendId(),
-                                targetMemberId.getMemberId(),
-                                targetMember.getName(),
-                                targetMember.getNickname(),
-                                targetMember.getAssets()
-                        );
-                    } else {
-                        return null;
-                    }
-                })
-                .filter(Objects::nonNull)
-                .toList();
-
-        return ApiResponse.createSuccess(friendResponseDtoList, "친구 목록 조회 성공");
+    private boolean checkResponseFriendExists(Long memberId2) {
+        return friendRequestRepository.existsResponse(memberId, memberId2);
     }
 }

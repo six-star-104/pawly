@@ -2,10 +2,9 @@ package com.pawly.domain.friend.entity;
 
 import com.pawly.domain.member.entity.Member;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -25,4 +24,9 @@ public class FriendRequest {
     @ManyToOne
     @JoinColumn(name = "receiverId")
     private Member receiverId;
+
+    public FriendRequest(Member sender, Member receiver) {
+        this.senderId = sender;
+        this.receiverId = receiver;
+    }
 }
