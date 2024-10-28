@@ -1,5 +1,6 @@
 package com.pawly.domain.friend.service;
 
+import com.pawly.domain.friend.entity.Friend;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.friend.entity.FriendRequest;
 import com.pawly.domain.friend.repository.FriendRepository;
@@ -36,6 +37,28 @@ public class FriendService {
         Member receiver = receiverOptional.get();
 
         friendRequestRepository.save(new FriendRequest(sender, receiver));
+        return ApiResponse.createSuccessWithNoContent();
+    }
+
+    @Transactional
+    public ApiResponse<Object> friendDelete(Long memberId2) {
+        Optional<Member> senderOptional = checkMemberId(memberId);
+        Optional<Member> receiverOptional = checkMemberId(memberId2);
+
+        if (senderOptional.isEmpty() || receiverOptional.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+
+        Member sender = senderOptional.get();
+        Member receiver = receiverOptional.get();
+
+        Optional<Friend> friendOptional = friendRepository.findByMemberAndTargetMember(sender.getMemberId(), receiver.getMemberId());
+
+        if (friendOptional.isEmpty()) {
+            return ApiResponse.createError(ErrorCode.NOT_FRIEND);
+        }
+
+        Friend friend = friendOptional.get();
+        friend.delete();
+
         return ApiResponse.createSuccessWithNoContent();
     }
 

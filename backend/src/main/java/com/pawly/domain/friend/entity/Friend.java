@@ -7,10 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,5 +34,10 @@ public class Friend {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    private Boolean deleteFlag;
+    private Boolean deleteFlag = false;
+
+    public void delete() {
+        this.deleteFlag = true;
+        this.updatedAt = LocalDateTime.now();  // 수동으로 updatedAt 업데이트
+    }
 }
