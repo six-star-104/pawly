@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -25,6 +28,9 @@ public class Friend {
     @ManyToOne
     @JoinColumn(name="memberId2")
     private Member memberId2;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
     private Boolean deleteFlag;
 }
