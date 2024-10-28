@@ -10,10 +10,12 @@ import jakarta.persistence.Id;
 import java.time.LocalDate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @Entity
+@Setter
 @Getter
 @ToString(callSuper = true)
 @SuperBuilder
@@ -24,15 +26,20 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
     private String name;
+    private String email;
     private String nickname;
     private LocalDate birth;
     private String assets;
-    @Enumerated(EnumType.STRING)
-    private SocialType socialType;
+    private String assetsName;
+    private String provider;
+    private String providerId;
     @Enumerated(EnumType.STRING)
     private Role role;
     @Enumerated(EnumType.STRING)
     private Status status;
-    private String identifier;
 
+    public void updateOAuthInfo(String provider, String providerId) {
+        this.provider = provider;
+        this.providerId = providerId;
+    }
 }

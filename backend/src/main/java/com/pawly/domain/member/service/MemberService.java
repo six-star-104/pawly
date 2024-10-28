@@ -1,17 +1,17 @@
 package com.pawly.domain.member.service;
 
+import com.pawly.domain.member.dto.request.SignUpRequestDTO;
 import com.pawly.domain.member.entity.Member;
-import com.pawly.domain.member.repository.MemberRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
-@RequiredArgsConstructor
-public class MemberService {
-    private final MemberRepository memberRepository;
+public interface MemberService {
+    Member findByEmail(String email) throws Exception;
 
-    public Member findByIdentifier(String identifier) {
+    void signUp(SignUpRequestDTO signUpRequestDTO);
 
-        return memberRepository.findByIdentifier(identifier).orElse(null);
-    }
+    boolean checkNickname(String nickname);
+
+    void updateNickname(Member user, String nickname);
+
+    void deleteUser(Long userId);
+
 }
