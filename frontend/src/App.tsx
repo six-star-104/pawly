@@ -1,9 +1,13 @@
-import background from "./assets/background.png";
+import PixelContainer from "./components/PixelContainer";
+import Modal from "./components/Modal";
 
 function App() {
   return (
     <>
-      <img src={background} alt="" />
+      <PixelContainer />
+      <Modal title="모달" isOpen={true} onClose={() => {}}>
+        모달
+      </Modal>
     </>
   );
 }
