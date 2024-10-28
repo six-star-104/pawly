@@ -43,7 +43,7 @@ public class FriendController {
         return ResponseEntity.ok(response);
     }
 
-    @PatchMapping
+    @DeleteMapping
     public ResponseEntity<?> deleteFriend(@RequestBody FriendRequestDto friendRequestDto) {
         ApiResponse<?> response = friendService.friendDelete(friendRequestDto.getMemberId());
         return ResponseEntity.ok(response);
