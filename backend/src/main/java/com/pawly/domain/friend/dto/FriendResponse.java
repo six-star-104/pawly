@@ -1,8 +1,6 @@
 package com.pawly.domain.friend.dto;
 
-import com.pawly.domain.friend.entity.Friend;
 import com.pawly.domain.friend.entity.FriendRequest;
-import com.pawly.domain.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,14 +37,4 @@ public class FriendResponse {
                 .assets(friend.getSenderId().getAssets())
                 .build();
     }
-
-//    public static FriendResponse friendList(Friend friend) {
-//        return FriendResponse.builder()
-//                .friendId(friend.getFriendId())
-//                .memberId(friend.get())
-//                .name(friend.getSenderId().getName())
-//                .nickname(friend.getSenderId().getNickname())
-//                .assets(friend.getSenderId().getAssets())
-//                .build();
-//    }
 }

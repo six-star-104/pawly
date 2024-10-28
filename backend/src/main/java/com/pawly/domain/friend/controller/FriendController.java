@@ -29,4 +29,10 @@ public class FriendController {
         ApiResponse<List<FriendResponse>> response = friendService.responseFriend();
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping
+    public ResponseEntity<?> getFriends() {
+        ApiResponse<List<FriendResponse>> response = friendService.getFriendsByMemberId();
+        return ResponseEntity.ok(response);
+    }
 }
