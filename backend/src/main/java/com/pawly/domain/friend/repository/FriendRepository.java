@@ -14,4 +14,11 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
             "AND f.deleteFlag = false " +
             "ORDER BY f.friendId DESC")
     List<Friend> findFriendsByMemberId(@Param("memberId") Long memberId);
+
+    @Query("SELECT CASE WHEN COUNT(f) > 0 THEN false ELSE true END " +
+            "FROM Friend f " +
+            "WHERE (f.memberId1.id = :memberId AND f.memberId2.id = :memberId2 " +
+            "       OR f.memberId2.id = :memberId AND f.memberId1.id = :memberId2) " +
+            "AND f.deleteFlag = false")
+    boolean existsByMemberAndTargetMember(@Param("memberId") Long memberId, @Param("memberId2") Long memberId2);
 }
