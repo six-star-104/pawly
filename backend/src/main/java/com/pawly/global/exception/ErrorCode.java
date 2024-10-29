@@ -61,12 +61,6 @@ public enum ErrorCode {
 
 
     private final String code;
-    private final HttpStatus status;
+    private final HttpStatus httpStatus;
     private final String message;
-
-    ErrorCode(String code, HttpStatus status, String message) {
-        this.code = code;
-        this.status = status;
-        this.message = message;
-    }
 }
