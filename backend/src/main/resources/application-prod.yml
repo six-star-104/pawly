@@ -62,7 +62,7 @@ cors:
   allowed-methods: '*'
 
 jwt:
-  access-secret: ${JWT_SECRET:ZZIRrOGPAAtiMOXANWzDUrc90lurrc5dlg7O1hSJnYg=}
+  access-secret: ${JWT_SECRET}
   access-expiration: ${JWT_ACCESS_TOKEN_EXPIRATION:604800000} # 7일
   refresh-expiration: ${JWT_REFRESH_TOKEN_EXPIRATION:1209600000} # 1,209,600,000 ms = 14일
   oauth-expiration: ${JWT_REFRESH_TOKEN_EXPIRATION:600000} # 10분
