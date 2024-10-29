@@ -27,9 +27,9 @@ export const loginBtn = css`
     align-items: center;
     justify-content: flex-start;
     width: 12rem;
-    height: 3rem; /* 버튼의 높이 조정 */
+    height: 3rem; 
     border: none;
-    font-size: 1reM; /* 글씨 크기 확대 */
+    font-size: 1reM; 
     cursor: pointer;
   }
 
@@ -45,8 +45,8 @@ export const loginBtn = css`
   }
 
   img {
-    width: 1.5rem; /* 이미지 크기 확대 */
+    width: 1.5rem; 
     height: 1.5rem;
-    margin-right: 0.75rem; /* 텍스트와의 간격 확대 */
+    margin-right: 0.75rem; 
   }
 `;
