@@ -17,9 +17,9 @@ export default defineConfig({
       },
 
       manifest: {
-        name: "MessageMap",
-        short_name: "MessageMap",
-        description: "MessageMap",
+        name: "Pawly",
+        short_name: "Pawly",
+        description: "Pawly",
         theme_color: "#ffffff",
         icons: [
           {
@@ -54,7 +54,7 @@ export default defineConfig({
       },
 
       devOptions: {
-        enabled: false,
+        enabled: true,
         navigateFallback: "index.html",
         suppressWarnings: true,
         type: "module",
