@@ -1,5 +1,5 @@
 import { Global, css } from "@emotion/react";
-import background from "@/assets/background.png";
+import background from "@/assets/images/background.png";
 
 function GlobalStyles() {
   return (
