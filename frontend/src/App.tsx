@@ -1,5 +1,5 @@
 import Router from "@/Router";
-import MobileLayout from "@/MobileLayout";
+import MobileLayout from "@/styles/MobileLayout";
 function App() {
   return (
     <>
