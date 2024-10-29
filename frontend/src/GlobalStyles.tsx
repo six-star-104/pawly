@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { Global, css } from "@emotion/react";
 import background from "@/assets/background.png";
 
