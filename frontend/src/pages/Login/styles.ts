@@ -1,4 +1,4 @@
-import { css } from '@emotion/react';
+import { css } from "@emotion/react";
 
 export const container = css`
   width: 100%;
@@ -7,7 +7,7 @@ export const container = css`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #f5eefc; 
+  background-color: #f5eefc;
 `;
 
 export const imgCss = css`
@@ -26,27 +26,28 @@ export const loginBtn = css`
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    width: 12rem;
+    width: 14rem;
     height: 3rem; /* 버튼의 높이 조정 */
+    padding: 0 1rem;
     border: none;
-    font-size: 1reM; /* 글씨 크기 확대 */
+    font-size: 1rem; /* 글씨 크기 확대 */
+    font-family: inherit;
     cursor: pointer;
   }
 
   button:first-of-type {
-    background-color: #FEE500;
+    background-color: #fee500;
     color: #000;
   }
 
   button:last-of-type {
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     color: #000;
-    border: 0.0625rem solid #ddd;
   }
 
   img {
     width: 1.5rem; /* 이미지 크기 확대 */
     height: 1.5rem;
-    margin-right: 0.75rem; /* 텍스트와의 간격 확대 */
+    margin-right: 1rem; /* 텍스트와의 간격 확대 */
   }
 `;

@@ -1,9 +1,11 @@
 import Router from "@/Router";
-
+import MobileLayout from "@/MobileLayout";
 function App() {
   return (
     <>
-      <Router />
+      <MobileLayout>
+        <Router />
+      </MobileLayout>
     </>
   );
 }
