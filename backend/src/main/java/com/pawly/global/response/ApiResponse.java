@@ -22,12 +22,12 @@ public class ApiResponse<T> {
         return new ApiResponse<>(SUCCESS_STATUS, data, null, message);
     }
 
-    public static ApiResponse<?> createSuccessWithNoContent(String message) {
+    public static <T> ApiResponse<T> createSuccessWithNoContent(String message) {
         return new ApiResponse<>(SUCCESS_STATUS, null, null, message);
     }
 
     // 예외 발생으로 API 호출 실패시 반환
-    public static ApiResponse<?> createError(ErrorCode errorCode) {
+    public static <T> ApiResponse<T> createError(ErrorCode errorCode) {
         return new ApiResponse<>(ERROR_STATUS, null, errorCode.getCode(), errorCode.getMessage());
     }
 
