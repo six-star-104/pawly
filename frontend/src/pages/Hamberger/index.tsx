@@ -12,7 +12,10 @@ export const Hamberger: React.FC<IHamberger> = ({ closeMyPage }) => {
   const mypageMove = () => {
     navigate('/mypage')
   }
-  
+  const friendsMove = () => {
+    navigate('/friends')
+  }
+
   return (
     <>
     <div css={containerStyle}>
@@ -27,7 +30,7 @@ export const Hamberger: React.FC<IHamberger> = ({ closeMyPage }) => {
         <li css={menuItemStyle}><FaEnvelope /> 편지함</li>
         <li css={menuItemStyle}><FaTasks /> 도전과제</li>
         <li css={menuItemStyle}><FaGraduationCap /> 도감</li>
-        <li css={menuItemStyle}><FaPaw /> 친구</li>
+        <li onClick={friendsMove} css={menuItemStyle}><FaPaw /> 친구</li>
         <li onClick={mypageMove} css={menuItemStyle}><FaUser /> 마이페이지</li>
       </ul>
       <div css={footerStyle}>ⓒCOPYRIGHT. SSAFY D104</div>
