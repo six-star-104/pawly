@@ -1,11 +1,18 @@
 /** @jsxImportSource @emotion/react */
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { containerStyle, headerStyle, closeButtonStyle, menuListStyle, menuItemStyle, footerStyle } from './styles';
 import { FaStickyNote, FaEnvelope, FaTasks, FaGraduationCap, FaPaw, FaUser } from 'react-icons/fa';
 import CancelButton from '../../assets/icons/CancelButton.png';
 import { IHamberger } from '../../types/hambergerTypes'
 
 export const Hamberger: React.FC<IHamberger> = ({ closeMyPage }) => { 
+  const navigate = useNavigate();
+
+  const mypageMove = () => {
+    navigate('/mypage')
+  }
+  
   return (
     <>
     <div css={containerStyle}>
@@ -21,7 +28,7 @@ export const Hamberger: React.FC<IHamberger> = ({ closeMyPage }) => {
         <li css={menuItemStyle}><FaTasks /> 도전과제</li>
         <li css={menuItemStyle}><FaGraduationCap /> 도감</li>
         <li css={menuItemStyle}><FaPaw /> 친구</li>
-        <li css={menuItemStyle}><FaUser /> 마이페이지</li>
+        <li onClick={mypageMove} css={menuItemStyle}><FaUser /> 마이페이지</li>
       </ul>
       <div css={footerStyle}>ⓒCOPYRIGHT. SSAFY D104</div>
     </div>
