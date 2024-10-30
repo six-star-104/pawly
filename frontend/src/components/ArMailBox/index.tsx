@@ -8,6 +8,7 @@ const ArMailBox: React.FC<MailBoxProps> = ({ lat, lng }) => {
 
   return (
     <>
+      {/* 우체통 글자 */}
       <a-text
         value="우체통"
         font="./assets/neodgm-msdf.json"
@@ -20,7 +21,7 @@ const ArMailBox: React.FC<MailBoxProps> = ({ lat, lng }) => {
         // negate="false"
         // animation="property: rotation; to: 0 180 0; loop: true; dur: 3000"
       ></a-text>
-
+      {/* 우체통 모델 */}
       <a-entity
         // animation-mixer="loop: repeat"
         gltf-model="./assets/mailbox.glb"

@@ -7,5 +7,6 @@ export const container = css`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  
+  background-color: transparent;
+  background-image: none;
 `;

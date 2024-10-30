@@ -18,6 +18,7 @@
     "aframe": "^0.8.2",
     "axios": "^1.7.7",
     "galmuri": "^2.39.6",
+    "nes.css": "^2.3.0",
     "pixelarticons": "^1.8.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
