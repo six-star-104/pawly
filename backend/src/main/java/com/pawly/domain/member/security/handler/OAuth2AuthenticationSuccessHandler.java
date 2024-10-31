@@ -85,11 +85,15 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private String extractEmail(OAuth2User oAuth2User, String providerType) {
         Map<String, Object> attributes = oAuth2User.getAttributes();
-        if(providerType.equals("kakao")) {
+
+        if (providerType.equals("kakao")) {
             Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
             return (String) kakaoAccount.get("email");
+        } else if (providerType.equals("google")) {
+            return (String) attributes.get("email");
         } else {
             return null;
         }
     }
+
 }
