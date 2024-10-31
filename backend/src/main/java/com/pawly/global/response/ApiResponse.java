@@ -1,5 +1,6 @@
 package com.pawly.global.response;
 
+import com.pawly.global.exception.ErrorCode;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,18 +18,18 @@ public class ApiResponse<T> {
     private String code;
     private String message;
 
-    public static <T> ApiResponse<T> createSuccess(T data) {
-        return new ApiResponse<>(SUCCESS_STATUS, data, null, null);
+    public static <T> ApiResponse<T> createSuccess(T data, String message) {
+        return new ApiResponse<>(SUCCESS_STATUS, data, null, message);
     }
 
-    public static ApiResponse<?> createSuccessWithNoContent() {
-        return new ApiResponse<>(SUCCESS_STATUS, null, null, null);
+    public static <T> ApiResponse<T> createSuccessWithNoContent(String message) {
+        return new ApiResponse<>(SUCCESS_STATUS, null, null, message);
     }
 
-//    // 예외 발생으로 API 호출 실패시 반환
-//    public static ApiResponse<?> createError(ErrorCode errorCode) {
-//        return new ApiResponse<>(ERROR_STATUS, null, errorCode.getCode(), errorCode.getMessage());
-//    }
+    // 예외 발생으로 API 호출 실패시 반환
+    public static <T> ApiResponse<T> createError(ErrorCode errorCode) {
+        return new ApiResponse<>(ERROR_STATUS, null, errorCode.getCode(), errorCode.getMessage());
+    }
 
     private ApiResponse(String status, T data, String code, String message) {
         this.status = status;
