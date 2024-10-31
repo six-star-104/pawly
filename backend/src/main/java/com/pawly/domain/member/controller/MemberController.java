@@ -1,6 +1,9 @@
 package com.pawly.domain.member.controller;
 
 import com.pawly.domain.member.dto.request.SignUpRequestDTO;
+import com.pawly.domain.member.dto.request.UpdateBirthRequestDTO;
+import com.pawly.domain.member.dto.request.UpdateNicknameRequestDTO;
+import com.pawly.domain.member.dto.response.MemberProfileResponseDTO;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.security.dto.response.LoginResponseDTO;
 import com.pawly.domain.member.security.dto.response.RefreshTokenResponseDTO;
@@ -12,6 +15,7 @@ import com.pawly.global.response.ApiResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -20,9 +24,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -123,53 +127,87 @@ public class MemberController {
         }
     }
 
-//    @GetMapping("/profile")
-//    public ApiResponse<?> getProfile(Authentication authentication) {
-//        try {
-//            Member member = memberService.findByEmail(authentication.getName());
-//            System.out.println(member);
-//            if(member == null) {
-//                return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
-//            }
-//
-//            UserProfileResponseDTO dto = memberService.getProfile(member.getUserId());
-//            return ApiResponse.createSuccess(dto, "조회 성공 ");
-//
-//        } catch (Exception e) {
-//            return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
-//        }
-//    }
+    @GetMapping("/profile")
+    public ApiResponse<?> getProfile(Authentication authentication) {
+        try {
+            Member member = memberService.findByEmail(authentication.getName());
+            System.out.println(member);
+            if(member == null) {
+                return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+            }
 
-//    @GetMapping("/check/{nickname}")
-//    public ApiResponse<?> getNickname( @PathVariable(value = "nickname") String nickname) {
-//        try {
-//            boolean isDuplicate = memberService.checkNickname(nickname);
-//
-//            return ApiResponse.createSuccess(isDuplicate, "성공적으로 닉네임 중복 조회 성공");
-//        } catch (Exception e) {
-//            return ApiResponse.createError(ErrorCode.NICKNAME_NOT_FOUND);
-//        }
-//    }
+            MemberProfileResponseDTO dto = memberService.getProfile(member.getMemberId());
+            return ApiResponse.createSuccess(dto, "조회 성공 ");
 
-//    @PutMapping("/update-nickname")
-//    public ApiResponse<?> updateNickname(Authentication authentication, @RequestBody UpdateNicknameRequestDto updateNicknameRequestDto) {
-//        try {
-//            Member member = memberService.findByEmail(authentication.getName());
-//            if (member == null) {
-//                return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
-//            }
-//            String nickname = updateNicknameRequestDto.getNickname();
-//
-//            if(memberService.checkNickname(nickname)) {
-//                return ApiResponse.createError(ErrorCode.NICKNAME_ALREADY_USED);
-//            }
-//            memberService.updateNickname(member, nickname);
-//            return ApiResponse.createSuccess(null, "닉네임 업데이트 성공");
-//
-//        } catch (Exception e) {
-//            return ApiResponse.createError(ErrorCode.USER_UPDATE_FAILED);
-//        }
-//    }
+        } catch (Exception e) {
+            return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/{memberId}")
+    public ApiResponse<?> getProfile(@PathVariable Long memberId) {
+        try {
+            Member member = memberService.findByMemberId(memberId);
+            System.out.println(member);
+            if(member == null) {
+                return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+            }
+
+            MemberProfileResponseDTO dto = memberService.getProfile(member.getMemberId());
+            return ApiResponse.createSuccess(dto, "조회 성공 ");
+
+        } catch (Exception e) {
+            return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/check/exist-nickname")
+    public ApiResponse<?> getNickname(@RequestBody UpdateNicknameRequestDTO updateNicknameRequestDTO) {
+        try {
+            boolean isDuplicate = memberService.checkNickname(updateNicknameRequestDTO.getNickname());
+
+            return ApiResponse.createSuccess(isDuplicate, "성공적으로 닉네임 중복 조회 성공");
+        } catch (Exception e) {
+            return ApiResponse.createError(ErrorCode.NICKNAME_NOT_FOUND);
+        }
+    }
+
+    @PatchMapping("/update-nickname")
+    public ApiResponse<?> updateNickname(Authentication authentication, @RequestBody UpdateNicknameRequestDTO updateNicknameRequestDto) {
+        try {
+            Member member = memberService.findByEmail(authentication.getName());
+            if (member == null) {
+                return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+            }
+            String nickname = updateNicknameRequestDto.getNickname();
+
+            if(memberService.checkNickname(nickname)) {
+                return ApiResponse.createError(ErrorCode.NICKNAME_ALREADY_USED);
+            }
+            memberService.updateNickname(member, nickname);
+            return ApiResponse.createSuccess(null, "닉네임 업데이트 성공");
+
+        } catch (Exception e) {
+            return ApiResponse.createError(ErrorCode.USER_UPDATE_FAILED);
+        }
+    }
+
+    @PatchMapping("/update-birth")
+    public ApiResponse<?> updateBirth(Authentication authentication, @RequestBody UpdateBirthRequestDTO updateBirthRequestDTO) {
+        try {
+            Member member = memberService.findByEmail(authentication.getName());
+            if (member == null) {
+                return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+            }
+            String birth = updateBirthRequestDTO.getBirth();
+
+            memberService.updateBirth(member, birth);
+            return ApiResponse.createSuccess(null, "생일 업데이트 성공");
+
+        } catch (Exception e) {
+            return ApiResponse.createError(ErrorCode.USER_UPDATE_FAILED);
+        }
+    }
 
     @DeleteMapping("/delete")
     public ApiResponse<?> deleteUser(Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
