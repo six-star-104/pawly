@@ -61,10 +61,10 @@ logging:
     org.springframework.web.client.RestTemplate: DEBUG
 
 frontend:
-  url: ${DOMAIN}
+  url: ${FRONT_DOMAIN}
 
 oauth2:
-  baseUrl: ${DOMAIN}
+  baseUrl: ${OAUTH2_DOMAIN}
 
 cors:
   allowed-origin: http://localhost:8080, http://localhost:3000, http://127.0.0.1:3000, http://localhost:5173, https://k11d104.p.ssafy.io
