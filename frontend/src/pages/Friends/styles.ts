@@ -39,8 +39,8 @@ export const searchContainer = css`
   display: flex;
   align-items: center;
   width: 100%;
-  background-color: none;
-  padding: 0.9rem;
+  background-color: #fff;
+  padding: 0.5rem;
   border-radius: 8px;
   border: 2px solid black;
 

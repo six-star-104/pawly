@@ -44,18 +44,14 @@ export const Friends = () => {
 
       {/* 검색창 */}
       <div css={searchPixelContainerWrapper}>
-        <PixelContainer
-          width='90%'
-          height='5%'
-          children={
+        
             <div css={searchContainer}>
               <input type="text" placeholder="친구 검색" />
               <button>
                 <img src="https://unpkg.com/pixelarticons@1.8.1/svg/search.svg" alt="검색 아이콘" width={20} height={20} />
               </button>
             </div>
-          }
-        />
+          
       </div>
 
       {/* 탭 메뉴 */}

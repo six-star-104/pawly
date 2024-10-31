@@ -10,7 +10,7 @@ export const pixelContainerStyle = ({
   align-items: center;
   /* justify-content: center; */
   position: absolute;
-  /* top: 50%; */
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: ${width || "calc(100% - 40px)"};
