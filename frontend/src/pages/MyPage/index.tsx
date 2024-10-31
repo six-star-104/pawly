@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import React from 'react';
+
 import { useNavigate } from 'react-router-dom';
-import { Container, MyInfo, InfoSection, StatsSection, CollectionSection, FooterButton, closeButtonStyle, contents } from './styles';
+import { Container, MyInfo, InfoSection, StatsSection, CollectionSection, closeButtonStyle, contents } from './styles';
 import PixelContainer from '../../components/PixelContainer';
 import CancelButton from '../../assets/icons/CancelButton.png'
 import PixelPuppy from '../../assets/icons/pixelPuppy.png'
