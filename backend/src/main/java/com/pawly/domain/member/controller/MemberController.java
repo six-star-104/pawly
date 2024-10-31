@@ -60,7 +60,7 @@ public class MemberController {
                 Cookie cookie = new Cookie("refreshToken", null);
                 cookie.setMaxAge(0);
                 cookie.setPath("/"); // 생성 시와 동일한 경로 설정
-//                cookie.setDomain("j11d105.p.ssafy.io"); // 생성 시와 동일한 도메인 설정
+                cookie.setDomain("k11d104.p.ssafy.io"); // 생성 시와 동일한 도메인 설정
                 response.addCookie(cookie);
 
             }
@@ -107,7 +107,7 @@ public class MemberController {
                 .maxAge(60*60*24*14)
                 .path("/")
                 .sameSite("None")
-//                .domain("j11d105.p.ssafy.io")
+                .domain("k11d104.p.ssafy.io")
                 .build();
 
             response.setHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
@@ -186,7 +186,7 @@ public class MemberController {
                 Cookie cookie = new Cookie("refreshToken", null);
                 cookie.setMaxAge(0);
                 cookie.setPath("/"); // 생성 시와 동일한 경로 설정
-//                cookie.setDomain("j11d105.p.ssafy.io"); // 생성 시와 동일한 도메인 설정
+                cookie.setDomain("k11d104.p.ssafy.io"); // 생성 시와 동일한 도메인 설정
                 response.addCookie(cookie);
             } else {
                 return ApiResponse.createError(ErrorCode.INVALID_JWT_TOKEN);
