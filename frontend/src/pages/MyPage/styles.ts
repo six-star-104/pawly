@@ -3,19 +3,32 @@ import { css } from '@emotion/react';
 export const Container = css`
   width: 100%;
   height: 100vh;
-  background-color: #ffffff;
+  background-color: #E6E6FA;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
 `;
 
+export const BackBtnContainer = css`
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  margin: 0.25rem;
+`;
+
+export const HamBtnContainer = css`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+`;
+
 export const contents = css`
   display: flex;
   flex-direction: column;
-  align-items: center; /* 전체 내용을 중앙에 배치 */
+  align-items: center;
   width: 100%;
-  max-width: 500px; /* 컨테이너 최대 너비 설정 */
+  max-width: 500px;
   margin-bottom: 30%;
 `;
 
@@ -34,11 +47,11 @@ export const InfoSection = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 0; /* 좌우 패딩 제거 */
+  padding: 0.5rem 0;
   font-size: 1.5rem;
   border-bottom: 2px solid black;
   width: 90%;
-  text-align: left; /* 텍스트 왼쪽 정렬 */
+  text-align: left;
 
   div:first-of-type {
     display: flex;
@@ -55,11 +68,10 @@ export const InfoSection = css`
 export const StatsSection = css`
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* 왼쪽 정렬 */
+  align-items: flex-start;
   padding: 1rem 0;
   font-size: 1rem;
   line-height: 1.5;
-  /* border-bottom: 1px solid black; */
   width: 90%;
   gap: 0.5rem;
 
@@ -77,7 +89,7 @@ export const StatsSection = css`
 
 export const CollectionSection = css`
   padding: 1rem 0;
-  text-align: left; /* 텍스트 왼쪽 정렬 */
+  text-align: left;
   font-size: 1rem;
   line-height: 1.5;
   width: 90%;
@@ -109,23 +121,6 @@ export const CollectionSection = css`
   }
 `;
 
-export const FooterButton = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #ff6666;
-  color: white;
-  font-weight: bold;
-  padding: 0.75rem;
-  border-radius: 8px;
-  cursor: pointer;
-  width: 90%;
-  max-width: 250px;
-  margin: 1rem auto;
-  text-align: center;
-  box-sizing: border-box;
-`;
-
 export const closeButtonStyle = css`
   background: none;
   border: none;
@@ -135,5 +130,47 @@ export const closeButtonStyle = css`
 
   &:active {
     transform: scale(0.95);
+  }
+`;
+export const HamBtnCss = css`
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+`;
+
+export const BackBtnCss = css`
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+`;
+// 슬라이딩 패널 스타일
+export const slidePanelStyle = css`
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100vh;
+  background-color: #f9f4ff;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+`;
+
+// 패널 내부 콘텐츠 스타일
+export const panelContentStyle = css`
+  /* padding: 10px; */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 3px solid black;
+  button {
+    align-self: flex-end;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
   }
 `;
