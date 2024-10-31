@@ -1,9 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Hamberger } from '../Hamberger';
 import NavButton from '../../assets/icons/NavButton.png';
 import PixelPuppy from '../../assets/icons/PixelPuppy.png';
-import PixelContainer from '@/components/PixelContainer';
 
 import {
   Container,
