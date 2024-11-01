@@ -4,8 +4,9 @@ import { Main } from "@/pages/Main";
 import { MailBoxFind } from "./pages/MailBoxFind";
 import { MyPage } from "@/pages/MyPage";
 import { Friends } from "./pages/Friends";
-import { Pedia } from"@/pages/Pedia";
-
+import { Pedia } from "@/pages/Pedia";
+import { RollingPaper } from "@/pages/RollingPaper";
+import { RollingPaperList } from "./pages/RollingPaperList";
 
 function Router() {
   return (
@@ -16,6 +17,8 @@ function Router() {
       <Route path="/mypage" element={<MyPage />} />
       <Route path="/friends" element={<Friends />} />
       <Route path="/pedia" element={<Pedia />} />
+      <Route path="/rollingpaper/:rollingpaperid" element={<RollingPaper />} />
+      <Route path="/rollingpaper" element={<RollingPaperList />} />
     </Routes>
   );
 }
