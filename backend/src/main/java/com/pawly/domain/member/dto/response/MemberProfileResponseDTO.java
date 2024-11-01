@@ -17,7 +17,6 @@ public class MemberProfileResponseDTO {
     private String provider;
     private LocalDate birth;
     private String assets;
-    private String assetsName;
 
     public MemberProfileResponseDTO(Member member) {
         this.memberId = member.getMemberId();
@@ -27,6 +26,5 @@ public class MemberProfileResponseDTO {
         this.provider = member.getProvider();
         this.birth = member.getBirth();
         this.assets = member.getAssets();
-        this.assetsName = member.getAssetsName();
     }
 }

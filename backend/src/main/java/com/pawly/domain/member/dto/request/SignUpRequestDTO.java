@@ -25,7 +25,6 @@ public class SignUpRequestDTO {
             .provider(this.provider)
             .providerId(this.providerId)
             .assets(this.assets)
-            .assetsName(this.assetsName)
             .build();
     }
 
