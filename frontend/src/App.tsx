@@ -4,11 +4,13 @@ import MobileLayout from "@/styles/MobileLayout";
 
 function App() {
   return (
-    <MobileLayout>
-      {/* <TransitionContent> */}
-      <Router />
-      {/* </TransitionContent> */}
-    </MobileLayout>
+    <>
+      <MobileLayout>
+        {/* <TransitionContent> */}
+        <Router />
+        {/* </TransitionContent> */}
+      </MobileLayout>
+    </>
   );
 }
 

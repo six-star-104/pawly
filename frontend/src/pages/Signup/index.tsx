@@ -1,15 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getOAuthInformation, signUp } from "@/apis/userService";
 import { CreateNickname } from "@/components/CreateNickname";
 import { CreateAssets } from "@/components/CreateAssets";
-import { useSignUpStore } from "@/stores/signUpStore"; // Zustand store import
+import { useSignUpStore } from "@/stores/signUpStore";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import * as style from "./style";
 
 export const SignUp = () => {
+  const [pageNum, setPageNum] = useState(1);
   const [searchParams] = useSearchParams();
 
   const token = searchParams.get("token");
-
   const navigateTo = useNavigate();
   const { signUpState, setNickname, setAssets, setAssetsName, setOAuthInfo } =
     useSignUpStore();
@@ -31,12 +32,17 @@ export const SignUp = () => {
     if (token) {
       getOAuth(token);
     } else {
-      navigateTo("login");
+      navigateTo("/login");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
-  // 최종 회원가입 요청 함수
+  const handleNextButton = () => {
+    if (signUpState.nickname.trim()) {
+      setPageNum(2);
+    }
+  };
+
   const handleSignUp = async () => {
     try {
       await signUp(signUpState);
@@ -47,30 +53,37 @@ export const SignUp = () => {
   };
 
   return (
-    <>
-      {/* 닉네임 입력 컴포넌트 */}
-      <CreateNickname
-        nickname={signUpState.nickname}
-        setNickname={setNickname}
-      />
-
-      {/* 캐릭터 입력 컴포넌트 */}
-      <CreateAssets
-        assets={signUpState.assets}
-        setAssets={setAssets}
-        assetsName={signUpState.assetsName}
-        setAssetsName={setAssetsName}
-      />
-
-      {/* 가입하기 버튼 */}
-      <button
-        onClick={handleSignUp}
-        disabled={
-          !signUpState.nickname.trim() || !signUpState.assetsName.trim()
-        }
-      >
-        가입하기
-      </button>
-    </>
+    <style.Container pageNum={pageNum}>
+      <style.PageContainer>
+        <style.Page pageNum={pageNum}>
+          {/* Nickname Input Component */}
+          <CreateNickname
+            nickname={signUpState.nickname}
+            setNickname={setNickname}
+          />
+          <style.Button
+            onClick={handleNextButton}
+            disabled={!signUpState.nickname.trim()}
+          >
+            다음
+          </style.Button>
+        </style.Page>
+        <style.Page pageNum={pageNum}>
+          {/* Character Assets Input Component */}
+          <CreateAssets
+            assets={signUpState.assets}
+            setAssets={setAssets}
+            assetsName={signUpState.assetsName}
+            setAssetsName={setAssetsName}
+          />
+          <style.Button
+            onClick={handleSignUp}
+            disabled={!signUpState.assetsName.trim()}
+          >
+            가입하기
+          </style.Button>
+        </style.Page>
+      </style.PageContainer>
+    </style.Container>
   );
 };

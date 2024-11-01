@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
 export const Container = styled.div<{ pageNum: number }>`
@@ -45,3 +43,10 @@ export const Button = styled.button<{ disabled?: boolean }>`
   color: white;
   transition: background-color 0.3s ease;
 `;
+
+export default {
+  Container,
+  PageContainer,
+  Page,
+  Button,
+};
