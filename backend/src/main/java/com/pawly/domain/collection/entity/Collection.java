@@ -17,13 +17,14 @@ public class Collection extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="collection_id")
     private Long collectionId;
 
     @ManyToOne
-    @JoinColumn(name="memberId1")
+    @JoinColumn(name="member_id1")
     private Member memberId1;
 
     @ManyToOne
-    @JoinColumn(name="memberId2")
+    @JoinColumn(name="member_id2")
     private Member memberId2;
 }

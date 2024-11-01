@@ -15,14 +15,15 @@ public class FriendRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long FriendRequestId;
+    @Column(name = "friend_request_id")
+    private Long friendRequestId;
 
     @ManyToOne
-    @JoinColumn(name = "senderId")
+    @JoinColumn(name = "sender_id")
     private Member senderId;
 
     @ManyToOne
-    @JoinColumn(name = "receiverId")
+    @JoinColumn(name = "receiver_id")
     private Member receiverId;
 
     public FriendRequest(Member sender, Member receiver) {

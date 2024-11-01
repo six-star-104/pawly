@@ -32,11 +32,18 @@ public class Member extends BaseEntity {
     private String nickname;
     private LocalDate birth;
     private String assets;
+
+    @Column(name = "assets_name")
     private String assetsName;
+
     private String provider;
+
+    @Column(name = "provider_id")
     private String providerId;
+
     @Enumerated(EnumType.STRING)
     private Role role;
+
     @Enumerated(EnumType.STRING)
     private Status status;
 

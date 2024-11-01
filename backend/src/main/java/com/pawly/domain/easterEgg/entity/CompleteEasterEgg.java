@@ -1,9 +1,6 @@
 package com.pawly.domain.easterEgg.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,13 +17,17 @@ public class CompleteEasterEgg {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "complete_easter_egg_id")
     private Long completeEasterEggId;
 
+    @Column(name = "member_id")
     private Long memberId;
 
+    @Column(name = "easter_egg_id")
     private Long easterEggId;
 
-    private LocalDateTime createdAt;
+    @Column(name = "completed_at")
+    private LocalDateTime completedAt;
 
     private Enum<Status> status;
 }
