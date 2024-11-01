@@ -11,10 +11,9 @@ const MobileContainer = styled.div<{ hasBackground: boolean }>`
   max-width: 412px;
   min-height: 100vh;
   margin: 0 auto;
-  background-color: #ffffff;
   position: relative;
   overflow-x: hidden;
-
+  
   /* 배경 이미지 설정 */
   ${({ hasBackground }) =>
     hasBackground &&
@@ -22,7 +21,7 @@ const MobileContainer = styled.div<{ hasBackground: boolean }>`
     background-image: url(${backgroundImage});
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: contatin;
 
     /* 배경 이미지 위에 컨텐츠가 잘 보이도록 필요한 경우 오버레이 추가 */
     &::before {
