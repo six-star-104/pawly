@@ -9,7 +9,8 @@ function GlobalStyles() {
           margin: 0;
           padding: 0;
           box-sizing: border-box;
-          min-height: 100vh;
+          max-height: 100%;
+          overflow-y: scroll;
         }
       `}
     />
