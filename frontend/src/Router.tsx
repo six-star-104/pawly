@@ -5,10 +5,8 @@ import { MailBoxFind } from "./pages/MailBoxFind";
 import { SignUp } from "@/pages/Signup";
 import { MyPage } from "@/pages/MyPage";
 import { Friends } from "./pages/Friends";
-import { Pedia } from"@/pages/Pedia";
+import { Pedia } from "@/pages/Pedia";
 
-
->>>>>>> frontend/src/Router.tsx
 function Router() {
   return (
     <Routes>
