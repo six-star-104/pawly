@@ -4,6 +4,7 @@ import com.pawly.global.entity.BaseEntity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,9 +33,12 @@ public class Member extends BaseEntity {
     @Column(name = "provider_id")
     private String providerId;
     @Enumerated(EnumType.STRING)
-    private Role role;
+    @Builder.Default
+    private Role role = Role.USER;
     @Enumerated(EnumType.STRING)
-    private Status status;
+    @Builder.Default
+    private Status status = Status.ACTIVATED;
+
     public void updateOAuthInfo(String provider, String providerId) {
         this.provider = provider;
         this.providerId = providerId;
