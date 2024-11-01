@@ -102,3 +102,14 @@ export const ArrowButton = css`
     transform: scale(0.9);
   }
 `;
+
+export const headerStyle = css`
+position: absolute;
+top: 4rem;
+left: 30%;
+transform: translateX(-50%);
+font-size: 1.5rem;
+font-weight: bold;
+color: #333;
+text-align: center;
+`;
