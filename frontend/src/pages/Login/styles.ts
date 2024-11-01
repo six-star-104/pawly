@@ -13,7 +13,7 @@ export const container = css`
 export const imgCss = css`
   display: flex;
   justify-content: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 5rem;
 `;
 
 export const loginBtn = css`
