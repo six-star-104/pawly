@@ -3,6 +3,12 @@ import { Login } from "@/pages/Login";
 import { Main } from "@/pages/Main";
 import { MailBoxFind } from "./pages/MailBoxFind";
 import { SignUp } from "@/pages/Signup";
+import { MyPage } from "@/pages/MyPage";
+import { Friends } from "./pages/Friends";
+import { Pedia } from"@/pages/Pedia";
+
+
+>>>>>>> frontend/src/Router.tsx
 function Router() {
   return (
     <Routes>
@@ -10,6 +16,9 @@ function Router() {
       <Route path="/main" element={<Main />} />
       <Route path="/ar" element={<MailBoxFind />} />
       <Route path="/tmpsignup" element={<SignUp />} />
+      <Route path="/mypage" element={<MyPage />} />
+      <Route path="/friends" element={<Friends />} />
+      <Route path="/pedia" element={<Pedia />} />
     </Routes>
   );
 }
