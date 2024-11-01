@@ -5,11 +5,12 @@ import { CreateAssets } from "@/components/CreateAssets";
 import { useSignUpStore } from "@/stores/signUpStore";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import * as style from "./style";
+import Pawly from "@/assets/images/Pawly.png";
 
 export const SignUp = () => {
   const [pageNum, setPageNum] = useState(1);
+  const [isNicknameValid, setIsNicknameValid] = useState(false);
   const [searchParams] = useSearchParams();
-
   const token = searchParams.get("token");
   const navigateTo = useNavigate();
   const { signUpState, setNickname, setAssets, setAssetsName, setOAuthInfo } =
@@ -34,11 +35,10 @@ export const SignUp = () => {
     } else {
       navigateTo("/login");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
+  }, [token, navigateTo, setOAuthInfo]);
 
   const handleNextButton = () => {
-    if (signUpState.nickname.trim()) {
+    if (isNicknameValid) {
       setPageNum(2);
     }
   };
@@ -53,36 +53,36 @@ export const SignUp = () => {
   };
 
   return (
-    <style.Container pageNum={pageNum}>
+    <style.Container>
+      <img src={Pawly} alt="Pawly Logo" />
+
       <style.PageContainer>
-        <style.Page pageNum={pageNum}>
-          {/* Nickname Input Component */}
-          <CreateNickname
-            nickname={signUpState.nickname}
-            setNickname={setNickname}
-          />
-          <style.Button
-            onClick={handleNextButton}
-            disabled={!signUpState.nickname.trim()}
-          >
-            다음
-          </style.Button>
-        </style.Page>
-        <style.Page pageNum={pageNum}>
-          {/* Character Assets Input Component */}
-          <CreateAssets
-            assets={signUpState.assets}
-            setAssets={setAssets}
-            assetsName={signUpState.assetsName}
-            setAssetsName={setAssetsName}
-          />
-          <style.Button
-            onClick={handleSignUp}
-            disabled={!signUpState.assetsName.trim()}
-          >
-            가입하기
-          </style.Button>
-        </style.Page>
+        {pageNum === 1 && (
+          <style.Page>
+            <CreateNickname
+              nickname={signUpState.nickname}
+              setNickname={setNickname}
+              onValidationChange={setIsNicknameValid}
+            />
+            <style.Button
+              onClick={handleNextButton}
+              disabled={!isNicknameValid}
+            >
+              다음
+            </style.Button>
+          </style.Page>
+        )}
+        {pageNum === 2 && (
+          <style.Page>
+            <CreateAssets
+              assets={signUpState.assets}
+              setAssets={setAssets}
+              assetsName={signUpState.assetsName}
+              setAssetsName={setAssetsName}
+            />
+            <style.Button onClick={handleSignUp}>가입하기</style.Button>
+          </style.Page>
+        )}
       </style.PageContainer>
     </style.Container>
   );

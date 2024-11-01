@@ -3,39 +3,37 @@ import Pawly from "@/assets/images/Pawly.png";
 import kakao from "@/assets/images/kakao.png";
 import GooGle1 from "@/assets/images/GooGle1.png";
 import { container, imgCss, loginBtn } from "./styles";
-import { kakaoLogin, getOAuthInformation } from "@/apis/userService";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { useEffect } from "react";
-import useUserInfoStore from "@/stores/userInfoStore";
+import { kakaoLogin } from "@/apis/userService";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getRefreshToken } from "@/apis/axiosInstance";
 
 export const Login = () => {
-  const [searchParams] = useSearchParams();
+  const [isLogin, setIsLogin] = useState(sessionStorage.getItem("accessToken"));
   const navigateTo = useNavigate();
-  const token = searchParams.get("token");
-  console.log("token", token);
 
-  const userInfoValue = useUserInfoStore();
   useEffect(() => {
-    const getOAuth = async (token: string) => {
-      try {
-        const response = await getOAuthInformation(token);
-        userInfoValue.setUserInfo({
-          email: response.email,
-          name: response.name,
-          provider: response.provider,
-          providerId: response.providerId,
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    if (token) {
-      getOAuth(token);
+    if (isLogin) {
+      navigateTo("/");
     } else {
-      navigateTo("/login");
+      const requestAccessToken = async () => {
+        try {
+          const response = await getRefreshToken();
+          if (response) {
+            setIsLogin(response);
+            console.log("refreshToken 유효, 토큰 재발급");
+            navigateTo("/");
+          } else {
+            console.log("refreshToken 만료, 다시 로그인하세요.");
+          }
+        } catch {
+          console.log("refreshToken 만료, 다시 로그인하세요.");
+        }
+      };
+
+      requestAccessToken();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
+  }, [isLogin, navigateTo]);
 
   return (
     <div css={container}>

@@ -16,14 +16,17 @@ export const container = css`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1rem;
   width: 100%;
-  height: 100vh;
-  background-color: #f5eefc;
 `;
 
 export const title = css`
-  font-size: 1.25rem;
-  margin-bottom: 1rem;
+  font-size: 1.125rem;
+`;
+
+export const content = css`
+  font-size: 1rem;
+  color: gray;
 `;
 
 export const assetsInput = css`
@@ -37,5 +40,6 @@ export const assetsInput = css`
 export default {
   container,
   title,
+  content,
   assetsInput,
 };

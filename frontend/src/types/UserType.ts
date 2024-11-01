@@ -36,6 +36,7 @@ export type SignUpType = {
 export type SignupNicknameProps = {
   nickname: string;
   setNickname: (nickname: string) => void;
+  onValidationChange?: (isValid: boolean) => void;
 };
 
 export type SignupAssetsProps = {

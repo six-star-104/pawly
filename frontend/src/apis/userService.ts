@@ -88,8 +88,8 @@ export const signUp = async (signUpForm: SignUpType) => {
 
 export const isNicknameDup = async (nickname: string): Promise<boolean> => {
   try {
-    const response = await axios.post(`member/exist-nickname`, {
-      nickname,
+    const response = await axios.post(`member/check/exist-nickname`, {
+      nickname: nickname,
     });
     console.log(response.data);
     return response.data.data;
