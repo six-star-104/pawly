@@ -1,32 +1,47 @@
+/** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 
-export const container = css`
+export const Container = styled.div<{ pageNum: number }>`
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  border-radius: 8px;
+`;
+
+export const PageContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+`;
+
+export const Page = styled.div<{ pageNum: number }>`
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s;
+  transform: translateX(${(props) => -100 * (props.pageNum - 1)}%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  height: 100vh;
-  background-color: #f5eefc;
+  justify-content: center;
+  padding: 2rem;
+  box-sizing: border-box;
 `;
 
-export const logoImg = css`
-  margin-bottom: 2rem;
-`;
-
-export const title = css`
-  font-size: 1.25rem;
-`;
-
-export const nicknameInput = css`
+export const Button = styled.button<{ disabled?: boolean }>`
+  margin-top: 1.5rem;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
   border: none;
-  box-shadow: 4px 0 0 0 black, -4px 0 0 0 black, 0 4px 0 0 black,
-    0 -4px 0 0 black;
-  outline: none;
-  padding: 0.25rem;
+  border-radius: 4px;
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+  background-color: ${(props) => (props.disabled ? "#cccccc" : "#007aff")};
+  color: white;
+  transition: background-color 0.3s ease;
 `;
-export default {
-  container,
-  logoImg,
-  title,
-  nicknameInput,
-};

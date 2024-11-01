@@ -1,12 +1,14 @@
 import Router from "@/Router";
 import MobileLayout from "@/styles/MobileLayout";
+// import TransitionContent from "@/components/TransitionContent";
+
 function App() {
   return (
-    <>
-      <MobileLayout>
-        <Router />
-      </MobileLayout>
-    </>
+    <MobileLayout>
+      {/* <TransitionContent> */}
+      <Router />
+      {/* </TransitionContent> */}
+    </MobileLayout>
   );
 }
 
