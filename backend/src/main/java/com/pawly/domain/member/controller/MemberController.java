@@ -15,21 +15,13 @@ import com.pawly.global.response.ApiResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -43,11 +35,10 @@ public class MemberController {
 
     //회원가입
     @PostMapping("/sign-up")
-    public ApiResponse<?> signUp(@RequestBody SignUpRequestDTO signUpRequestDTO) {
+    public ApiResponse<?> signUp(@RequestPart(name = "asset", required = false) MultipartFile asset,
+                                 @RequestPart(name = "data") SignUpRequestDTO signUpRequestDTO) {
         try {
-            memberService.signUp(signUpRequestDTO);
-
-            return ApiResponse.createSuccess(null, "회원가입 성공");
+            return memberService.signUp(asset, signUpRequestDTO);
         } catch (Exception e) {
             return ApiResponse.createError(ErrorCode.USER_REGISTER_FAILED);
         }

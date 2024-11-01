@@ -14,8 +14,6 @@ public class SignUpRequestDTO {
     private String nickname;
     private String provider;
     private String providerId;
-    private String assets;
-    private String assetsName;
 
     public Member toMemberEntity() {
         return Member.builder()
@@ -24,7 +22,6 @@ public class SignUpRequestDTO {
             .nickname(this.nickname)
             .provider(this.provider)
             .providerId(this.providerId)
-            .assets(this.assets)
             .build();
     }
 
