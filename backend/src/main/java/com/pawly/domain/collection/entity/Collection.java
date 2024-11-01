@@ -13,6 +13,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Table(name = "collection")
 public class Collection extends BaseEntity {
 
     @Id

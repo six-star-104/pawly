@@ -11,6 +11,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Table(name = "easter_egg")
 public class EasterEgg {
 
     @Id

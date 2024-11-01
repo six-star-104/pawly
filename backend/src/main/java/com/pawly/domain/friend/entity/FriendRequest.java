@@ -11,6 +11,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Table(name = "friend_request")
 public class FriendRequest {
 
     @Id

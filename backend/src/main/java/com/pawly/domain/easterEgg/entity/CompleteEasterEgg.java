@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Table(name = "complete_easter_egg")
 public class CompleteEasterEgg {
 
     @Id

@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Table(name = "friend")
 public class Friend {
 
     @Id
