@@ -20,14 +20,9 @@ public class FriendStatusService {
 
     private final FriendRepository friendRepository;
     private final FriendRequestRepository friendRequestRepository;
-    private final MemberRepository memberRepository;
-    private static final Long memberId = 1L;
 
     @Transactional
     public ApiResponse<?> updateFriend(Long friendId, Boolean status) {
-        Optional<Member> senderOptional =  memberRepository.findById(FriendStatusService.memberId);
-        if (senderOptional.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
-
         Optional<FriendRequest> friendRequestOptional = friendRequestRepository.findById(friendId);
         if (friendRequestOptional.isEmpty()) return ApiResponse.createError(ErrorCode.FRIEND_NOT_REQUEST);
 
