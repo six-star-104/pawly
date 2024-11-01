@@ -11,4 +11,8 @@ public interface LetterRepository extends JpaRepository<Letter, Long> {
     List<Letter> findBySender(Member member);
 
     Page<Letter> findByRecipient(Member member, Pageable pageable);
+
+    Letter findBySenderAndLetterId(Member member, Long letterId);
+
+    Letter findByRecipientAndLetterId(Member member, Long letterId);
 }
