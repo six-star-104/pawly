@@ -75,3 +75,15 @@ jwt:
   access-expiration: ${JWT_ACCESS_TOKEN_EXPIRATION:604800000} # 7일
   refresh-expiration: ${JWT_REFRESH_TOKEN_EXPIRATION:1209600000} # 1,209,600,000 ms = 14일
   oauth-expiration: ${JWT_REFRESH_TOKEN_EXPIRATION:600000} # 10분
+
+cloud:
+  aws:
+    s3:
+      bucketName: ${S3_BUCKET_NAME}
+      path:
+        asset: asset/
+    credentials:
+      accessKey: ${S3_ACCESS_KEY}
+      secretKey: ${S3_SECRET_KEY}
+    region.static: ap-northeast-2
+    stack.auto: false

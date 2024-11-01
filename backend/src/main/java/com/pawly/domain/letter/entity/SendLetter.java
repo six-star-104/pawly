@@ -1,5 +1,6 @@
 package com.pawly.domain.letter.entity;
 
+
 import com.pawly.domain.member.entity.Member;
 import com.pawly.global.entity.BaseEntity;
 import jakarta.persistence.Column;
@@ -25,12 +26,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 @ToString(callSuper = true)
 @SuperBuilder
 @NoArgsConstructor
-public class ReceiveLetter extends BaseEntity {
+public class SendLetter extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "receive_letter_id")
-    private Long receiveLetterId;
+    @Column(name = "send_letter_id")
+    private Long sendLetterId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -44,7 +45,7 @@ public class ReceiveLetter extends BaseEntity {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    public void deleteLetter(ReceiveLetter receiveLetter) {
-        receiveLetter.setDeleteFlag(true);
+    public void deleteLetter(SendLetter sendLetter) {
+        sendLetter.setDeleteFlag(true);
     }
 }

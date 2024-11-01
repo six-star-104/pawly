@@ -24,5 +24,4 @@ public class SignUpRequestDTO {
             .providerId(this.providerId)
             .build();
     }
-
 }

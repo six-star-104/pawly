@@ -1,6 +1,9 @@
 package com.pawly.domain.letter.service;
 
+import com.pawly.domain.letter.dto.request.LetterReactionRequestDTO;
+import com.pawly.domain.letter.dto.response.LetterResponseDTO;
 import com.pawly.domain.letter.dto.response.ReceiveLetterResponseDTO;
+import com.pawly.domain.letter.entity.Letter;
 import com.pawly.domain.letter.entity.ReceiveLetter;
 import com.pawly.domain.letter.repository.LetterRepository;
 import com.pawly.domain.letter.repository.ReceiveLetterRepository;
@@ -13,9 +16,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ReceiveLetterService {
 
     private final LetterRepository letterRepository;
@@ -41,5 +46,31 @@ public class ReceiveLetterService {
             .totalElements(receiveLetters.getTotalElements())
             .totalPage((long) Math.ceil((double) receiveLetters.getTotalElements() / pageSize))
             .build();
+    }
+
+    public LetterResponseDTO getLetter(Member member, Long receiveLetterId) {
+
+        ReceiveLetter receiveLetter = receiveLetterRepository.findByMemberAndReceiveLetterIdAndDeleteFlagFalse(member, receiveLetterId);
+
+        Letter letter = letterRepository.findByRecipientAndLetterId(member, receiveLetter.getLetter().getLetterId());
+
+        return LetterResponseDTO.toDTO(letter);
+    }
+
+    @Transactional
+    public void deleteLetter(Member member, Long receiveLetterId) {
+
+        ReceiveLetter receiveLetter = receiveLetterRepository.findByMemberAndReceiveLetterIdAndDeleteFlagFalse(member, receiveLetterId);
+
+        receiveLetter.deleteLetter(receiveLetter);
+    }
+
+    @Transactional
+    public void addReaction(Member member, LetterReactionRequestDTO letterReactionRequestDTO, Long receiveLetterId) {
+        ReceiveLetter receiveLetter = receiveLetterRepository.findByMemberAndReceiveLetterIdAndDeleteFlagFalse(member, receiveLetterId);
+
+        Letter letter = letterRepository.findByRecipientAndLetterId(member, receiveLetter.getLetter().getLetterId());
+
+        letter.setReaction(letterReactionRequestDTO.getReaction());
     }
 }
