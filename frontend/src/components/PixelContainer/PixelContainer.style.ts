@@ -8,7 +8,7 @@ export const pixelContainerStyle = ({
 }: PixelContainerProps) => css`
   display: flex;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
   position: absolute;
   top: 50%;
   left: 50%;

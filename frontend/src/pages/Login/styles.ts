@@ -46,7 +46,7 @@ export const loginBtn = css`
   }
 
   img {
-    width: 1.5rem; /* 이미지 크기 확대 */
+    width: 1.5rem; 
     height: 1.5rem;
     margin-right: 1rem; /* 텍스트와의 간격 확대 */
   }
