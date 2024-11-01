@@ -2,7 +2,8 @@ import { css } from '@emotion/react';
 
 export const Container = css`
   width: 100%;
-  min-height: 100vh;
+  height: 214vh;
+  /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
