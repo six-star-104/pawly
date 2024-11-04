@@ -38,7 +38,7 @@ public class RollingPaperService {
     @Transactional
     public ApiResponse<?> createRollingPaper(RollingPaperCreateDto dto) {
         Optional<Member> member = memberRepository.findById(dto.getMemberId());
-        if (!member.isPresent()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+        if (member.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
         RollingPaper createRollinPaper = rollingPaperRepository.save(dto.toEntity(member.get(), 1));
 
@@ -73,7 +73,7 @@ public class RollingPaperService {
     @Transactional
     public ApiResponse<?> readAllRollingPaper(Long memberId, Pageable pageable) {
         Optional<Member> member = memberRepository.findById(memberId);
-        if (!member.isPresent()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+        if (member.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
         Slice<RollingPaper> rollingPapers = rollingPaperRepository.findByMember(member.get(), pageable);
 
@@ -87,7 +87,7 @@ public class RollingPaperService {
     @Transactional
     public ApiResponse<?> readRollingPaper(Long memberId, Long rollingPaperId, int pageNumber, int pageSize, String sortType, String sortBy) {
         Optional<RollingPaper> rollingPaper = rollingPaperRepository.findById(rollingPaperId);
-        if (!rollingPaper.isPresent()) return ApiResponse.createError(ErrorCode.ROLLING_PAPER_NOTFOUND);
+        if (rollingPaper.isEmpty()) return ApiResponse.createError(ErrorCode.ROLLING_PAPER_NOTFOUND);
 
         if (!rollingPaper.get().getMember().getMemberId().equals(memberId)) return  ApiResponse.createError(ErrorCode.ACCESS_DENIED);
 
@@ -100,7 +100,7 @@ public class RollingPaperService {
         List<PostItReadDto> postItReadDtos = new ArrayList<>();
         for (PostIt postIt : postIts) {
             Optional<Member> postItMember = memberRepository.findById(postIt.getMember().getMemberId());
-            if (!postItMember.isPresent()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+            if (postItMember.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
             postItReadDtos.add(PostItReadDto.of(postItMember.get(), postIt));
         }
         RollingPaperReadAllDto rollingPaperReadAllDto = RollingPaperReadAllDto.toDto(postItReadDtos, rollingPaper.get(), pageNumber, pageSize, (long) Math.ceil((double) postIts.getTotalElements() / pageSize),postIts.getTotalElements());
@@ -110,13 +110,13 @@ public class RollingPaperService {
     @Transactional
     public ApiResponse<?> deleteRollingPaper(Long memberId, Long rollingPaperId) {
         Optional<RollingPaper> rollingPaper = rollingPaperRepository.findById(rollingPaperId);
-        if (!rollingPaper.isPresent()) return ApiResponse.createError(ErrorCode.ROLLING_PAPER_NOTFOUND);
+        if (rollingPaper.isEmpty()) return ApiResponse.createError(ErrorCode.ROLLING_PAPER_NOTFOUND);
         if (rollingPaper.get().isDeleteFlag()) return ApiResponse.createError(ErrorCode.ROLLING_PAPER_NOTFOUND);
 
         Member member = rollingPaper.get().getMember();
 
         Optional<Member> requestMember = memberRepository.findById(memberId);
-        if (!requestMember.isPresent()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+        if (requestMember.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
         if (!member.equals(requestMember.get())) return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
         rollingPaper.get().delete();
