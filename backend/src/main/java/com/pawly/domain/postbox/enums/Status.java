@@ -1,5 +1,5 @@
 package com.pawly.domain.postbox.enums;
 
-public enum Statuse {
+public enum Status {
     USE, DELETE
 }

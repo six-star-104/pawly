@@ -1,26 +1,26 @@
 package com.pawly.domain.postbox.entity;
 
 import com.pawly.domain.member.entity.Member;
-import com.pawly.domain.postbox.enums.Statuse;
+import com.pawly.domain.postbox.enums.Status;
 import com.pawly.domain.rollingPaper.entity.RollingPaper;
+import com.pawly.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-//@EntityListeners(AuditingEntityListener.class) // 이게
-public class Postbox {
+@SuperBuilder
+@Table(name = "postbox")
+public class Postbox extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "postbox_id")
+    private Long postboxId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -30,10 +30,15 @@ public class Postbox {
     @JoinColumn(name = "rolling_paper_id")
     private RollingPaper rollingpaper;
 
+    @Column(nullable = false)
     private String title;
-    private double latitude;
-    private double longitude;
-    private Statuse statuse;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+
+    @Column(nullable = false)
+    private Double latitude;
+    
+    @Column(nullable = false)
+    private Double longitude;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 }

@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/postbox")
+@RequestMapping("/api/postbox")
 @RequiredArgsConstructor
 public class PostboxController {
     private final PostboxService postboxService;
 
-    @GetMapping("/ar")
-    public ResponseEntity<?> postboxArRead(@RequestBody PostboxReadRequest postboxReadRequest) {
-        // 토큰
-
-        postboxService.postboxArRead(postboxReadRequest);
-    }
+//    @GetMapping("/ar")
+//    public ResponseEntity<?> postboxArRead(@RequestBody PostboxReadRequest postboxReadRequest) {
+//        // 토큰
+//
+//        postboxService.postboxArRead(postboxReadRequest);
+//    }
 
 }
