@@ -89,4 +89,7 @@ cloud:
     stack.auto: false
 
 deepl:
-  api_key: ${DEEPL_API_KEY}
+  api-key: ${DEEPL_API_KEY}
+
+dall-e:
+  api-key: ${DALL_E_API_KEY}

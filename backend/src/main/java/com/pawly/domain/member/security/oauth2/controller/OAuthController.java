@@ -75,7 +75,7 @@ public class OAuthController {
         }
     }
 
-    @GetMapping("/get-user-token")
+    @GetMapping("/get-member-token")
     public ApiResponse<?> getUserToken(@RequestParam("code") String code, HttpServletResponse response) {
         try {
             OAuthCodeToken oAuthCodeToken = oAuthCodeTokenRepository.findById(code)
