@@ -7,6 +7,7 @@ import { MyPage } from "@/pages/MyPage";
 import { Friends } from "./pages/Friends";
 import { Pedia } from"@/pages/Pedia";
 import { Letter } from "@/pages/Letter";
+import { Quest } from "@/pages/Quest";
 
 
 function Router() {
@@ -20,6 +21,7 @@ function Router() {
       <Route path="/friends" element={<Friends />} />
       <Route path="/pedia" element={<Pedia />} />
       <Route path="/letter" element={<Letter />} />
+      <Route path="/quest" element={<Quest />} />
     </Routes>
   );
 }
