@@ -12,6 +12,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
 @Getter
@@ -40,6 +41,7 @@ public class PostIt extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @LastModifiedDate
     @Column(name = "update_at")
     private LocalDateTime updateAt;
 
