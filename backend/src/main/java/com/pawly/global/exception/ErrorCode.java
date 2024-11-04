@@ -62,8 +62,10 @@ public enum ErrorCode {
 
     // RollingPaper Error
     ROLLING_PAPER_NOTFOUND("R001", HttpStatus.NOT_FOUND, "롤링페이퍼를 찾을 수 없습니다."),
-    ROLLING_PAPER_CANNOT_CREATE("R002", HttpStatus.BAD_REQUEST,"롤링페이퍼(우체통) 생성 실패");
+    ROLLING_PAPER_CANNOT_CREATE("R002", HttpStatus.BAD_REQUEST,"롤링페이퍼(우체통) 생성 실패"),
 
+    // PostIt Error
+    POST_IT_NOTFOUND("P001", HttpStatus.NOT_FOUND, "포스트잇을 찾을 수 없습니다.");
 
     private final String code;
     private final HttpStatus httpStatus;

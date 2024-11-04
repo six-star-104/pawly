@@ -24,13 +24,4 @@ public class RollingPaperReadDto {
                 .createAt(rollingPaper.getCreatedAt())
                 .build();
     }
-
-//    public static RollingPaperReadDto of(Long rollingPaperId, String title, String category, LocalDateTime createAt) {
-//        return RollingPaperReadDto.builder()
-//                .rollingPaperId(rollingPaperId)
-//                .title(title)
-//                .category(category)
-//                .createAt(createAt)
-//                .build();
-//    }
 }

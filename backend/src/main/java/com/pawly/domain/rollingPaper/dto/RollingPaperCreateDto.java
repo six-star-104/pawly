@@ -17,11 +17,11 @@ public class RollingPaperCreateDto {
     private Double latitude;
     private Double longitude;
 
-    public RollingPaper toEntity(Member member){
+    public RollingPaper toEntity(Member member, int category){
         return  RollingPaper.builder()
                 .member(member)
                 .deleteFlag(false)
-                .category(1)
+                .category(category)
                 .title(title)
                 .createdAt(LocalDateTime.now())
                 .build();

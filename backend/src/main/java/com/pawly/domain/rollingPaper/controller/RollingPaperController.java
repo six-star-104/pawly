@@ -33,12 +33,24 @@ public class RollingPaperController {
     }
 
     @GetMapping("/{rollingPaperId}")
-    public ResponseEntity<?> readRollingPaper(@PathVariable Long rollingPaperId, @PageableDefault(size = 10) Pageable pageable) {
+    public ResponseEntity<?> readRollingPaper(@PathVariable Long rollingPaperId,
+                                              @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
+                                              @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+                                              @RequestParam(name = "sortType", defaultValue = "desc") String sortType,
+                                              @RequestParam(name = "sortBy", required = false, defaultValue = "createdAt") String sortBy) {
         // 토큰
         Long memberId = 1L;
-        ApiResponse<?> response = rollingPaperService.readRollingPaper(memberId, rollingPaperId, pageable);
+        ApiResponse<?> response = rollingPaperService.readRollingPaper(memberId, rollingPaperId, pageNumber, pageSize, sortType, sortBy);
         return ResponseEntity.ok(response);
     }
+
+//    @GetMapping("/{rollingPaperId}")
+//    public ResponseEntity<?> readRollingPaper(@PathVariable Long rollingPaperId, @PageableDefault(size = 10) Pageable pageable) {
+//        // 토큰
+//        Long memberId = 1L;
+//        ApiResponse<?> response = rollingPaperService.readRollingPaper(memberId, rollingPaperId, pageable);
+//        return ResponseEntity.ok(response);
+//    }
 
     @DeleteMapping("/{rollingPaperId}")
     public ResponseEntity<?> deleteRollingPaper(@PathVariable Long rollingPaperId) {

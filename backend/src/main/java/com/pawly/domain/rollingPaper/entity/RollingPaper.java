@@ -12,16 +12,19 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
+@Table(name = "rolling_paper")
 public class RollingPaper extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "rolling_paper_id")
     private Long rollingPaperId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberId")
+    @JoinColumn(name = "member_id")
     private Member member;
 
+    @Column(name = "delete_flag")
     private boolean deleteFlag;
     private int category;
 
