@@ -19,18 +19,20 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
+@Table(name = "post_it")
 public class PostIt extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "post_id")
     private Long postId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rollingPaperId")
+    @JoinColumn(name = "rolling_paperId")
     private RollingPaper rollingPaper;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberId")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     private String content;
@@ -38,6 +40,7 @@ public class PostIt extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @Column(name = "update_at")
     private LocalDateTime updateAt;
 
     public void updatePostIt(String content) {

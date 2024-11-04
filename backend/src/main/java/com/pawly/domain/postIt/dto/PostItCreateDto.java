@@ -4,7 +4,6 @@ import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.postIt.entity.PostIt;
 import com.pawly.domain.postIt.enums.Status;
 import com.pawly.domain.rollingPaper.entity.RollingPaper;
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;

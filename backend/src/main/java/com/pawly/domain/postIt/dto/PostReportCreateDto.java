@@ -4,8 +4,9 @@ import com.pawly.domain.Report.Entity.Report;
 import com.pawly.domain.Report.enums.Category;
 import com.pawly.domain.Report.enums.Status;
 import com.pawly.domain.member.entity.Member;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -24,6 +25,7 @@ public class PostReportCreateDto {
                 .detailId(postId)
                 .content(this.content)
                 .status(Status.STANDBY)
+                .createdAt(LocalDateTime.now())
                 .build();
     }
 }
