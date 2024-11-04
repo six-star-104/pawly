@@ -1,9 +1,11 @@
-import background from "./assets/background.png";
-
+import Router from "@/Router";
+import MobileLayout from "@/MobileLayout";
 function App() {
   return (
     <>
-      <img src={background} alt="" />
+      <MobileLayout>
+        <Router />
+      </MobileLayout>
     </>
   );
 }
