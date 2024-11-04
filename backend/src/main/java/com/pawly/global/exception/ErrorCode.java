@@ -1,4 +1,5 @@
-package com.pawly.global.exception;
+
+ package com.pawly.global.exception;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import lombok.RequiredArgsConstructor;
@@ -62,7 +63,6 @@ public enum ErrorCode {
     ROLLING_PAPER_CANNOT_CREATE("R002", HttpStatus.BAD_REQUEST,"롤링페이퍼(우체통) 생성 실패"),
     // PostIt Error
     POST_IT_NOTFOUND("P001", HttpStatus.NOT_FOUND, "포스트잇을 찾을 수 없습니다.");
-
     private final String code;
     private final HttpStatus httpStatus;
     private final String message;
