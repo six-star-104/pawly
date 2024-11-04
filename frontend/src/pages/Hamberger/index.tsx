@@ -18,6 +18,9 @@ export const Hamberger: React.FC<IHamberger> = ({ closeMyPage }) => {
   const pediaMove = () => {
     navigate('/pedia')
   }
+  const letterMove =() => {
+    navigate('/letter')
+  }
 
   return (
     <>
@@ -30,7 +33,7 @@ export const Hamberger: React.FC<IHamberger> = ({ closeMyPage }) => {
       </div>
       <ul css={menuListStyle}>
         <li css={menuItemStyle}><FaStickyNote /> 롤링페이퍼</li>
-        <li css={menuItemStyle}><FaEnvelope /> 편지함</li>
+        <li onClick={letterMove} css={menuItemStyle}><FaEnvelope /> 편지함</li>
         <li css={menuItemStyle}><FaTasks /> 도전과제</li>
         <li onClick={pediaMove} css={menuItemStyle}><FaGraduationCap /> 도감</li>
         <li onClick={friendsMove} css={menuItemStyle}><FaPaw /> 친구</li>
