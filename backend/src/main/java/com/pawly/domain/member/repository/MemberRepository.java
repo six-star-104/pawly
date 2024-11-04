@@ -19,6 +19,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     boolean existsByNickname(String nickname);
 
+    @Query(value = "SELECT * FROM Member m WHERE DATE_FORMAT(m.birth, '%m-%d') = DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 4 DAY), '%m-%d')", nativeQuery = true)
+    List<Member> findByBirthInThreeDays();
+
     @Query("SELECT m FROM Member m " +
             "WHERE m.nickname LIKE CONCAT(:nickname, '%') " +
             "OR m.nickname LIKE CONCAT('%', :nickname) " +
