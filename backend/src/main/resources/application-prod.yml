@@ -87,9 +87,3 @@ cloud:
       secretKey: ${S3_SECRET_KEY}
     region.static: ap-northeast-2
     stack.auto: false
-
-deepl:
-  api-key: ${DEEPL_API_KEY}
-
-dall-e:
-  api-key: ${DALL_E_API_KEY}

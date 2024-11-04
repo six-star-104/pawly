@@ -18,6 +18,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
 @Setter
@@ -40,7 +41,7 @@ public class ReceiveLetter extends BaseEntity {
     @Column(nullable = false)
     @Builder.Default
     private Boolean deleteFlag = false;
-    @UpdateTimestamp
+    @LastModifiedDate
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 

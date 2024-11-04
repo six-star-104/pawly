@@ -56,7 +56,7 @@ public enum ErrorCode {
     LETTER_DELETE_FAILED("L003", HttpStatus.BAD_REQUEST, "편지 삭제에 실패했습니다."),
     LETTER_REACTION_FAILED("L004", HttpStatus.BAD_REQUEST, "편지 반응 생성에 실패했습니다."),
     // Proxy Error
-    PROXY_TRANSLATE_FAILED("T001", HttpStatus.BAD_REQUEST, "번역 요청 중 오류가 발생했습니다.");
+    PROXY_TRANSLATE_FAILED("T001", HttpStatus.BAD_REQUEST, "번역 요청 중 오류가 발생했습니다."),
     // RollingPaper Error
     ROLLING_PAPER_NOTFOUND("R001", HttpStatus.NOT_FOUND, "롤링페이퍼를 찾을 수 없습니다."),
     ROLLING_PAPER_CANNOT_CREATE("R002", HttpStatus.BAD_REQUEST,"롤링페이퍼(우체통) 생성 실패"),
