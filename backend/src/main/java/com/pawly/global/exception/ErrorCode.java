@@ -1,6 +1,5 @@
 
-package com.pawly.global.exception;
-import jakarta.annotation.Generated;
+ package com.pawly.global.exception;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +51,13 @@ public enum ErrorCode {
     FRIEND_REQUEST_ALREADY_SENT("E003", HttpStatus.BAD_REQUEST, "이미 친구 요청을 보냈습니다."),
     FRIEND_REQUEST_ALREADY_RECEIVED("E004", HttpStatus.BAD_REQUEST, "이미 친구 요청을 받았습니다."),
     FRIEND_NOT_REQUEST("E005", HttpStatus.BAD_REQUEST, "친구 요청이 없습니다."),
+    // Letter Error
+    LETTER_NOT_FOUND("L001", HttpStatus.NOT_FOUND, "편지를 찾을 수 없습니다."),
+    LETTER_SEND_FAILED("L002", HttpStatus.BAD_REQUEST, "편지를 보내지 못했습니다."),
+    LETTER_DELETE_FAILED("L003", HttpStatus.BAD_REQUEST, "편지 삭제에 실패했습니다."),
+    LETTER_REACTION_FAILED("L004", HttpStatus.BAD_REQUEST, "편지 반응 생성에 실패했습니다."),
+    // Proxy Error
+    PROXY_TRANSLATE_FAILED("T001", HttpStatus.BAD_REQUEST, "번역 요청 중 오류가 발생했습니다.");
     // RollingPaper Error
     ROLLING_PAPER_NOTFOUND("R001", HttpStatus.NOT_FOUND, "롤링페이퍼를 찾을 수 없습니다."),
     ROLLING_PAPER_CANNOT_CREATE("R002", HttpStatus.BAD_REQUEST,"롤링페이퍼(우체통) 생성 실패"),

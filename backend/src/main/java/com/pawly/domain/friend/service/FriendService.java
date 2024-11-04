@@ -21,36 +21,32 @@ public class FriendService {
     private final FriendRepository friendRepository;
     private final FriendRequestRepository friendRequestRepository;
     private final MemberRepository memberRepository;
-    private static final Long memberId = 1L;
 
     @Transactional
-    public ApiResponse<Object> friend(Long memberId2) {
-        Optional<Member> senderOptional = checkMemberId(memberId);
+    public ApiResponse<Object> friend(Member member, Long memberId2) {
         Optional<Member> receiverOptional = checkMemberId(memberId2);
+        Long memberId = member.getMemberId();
 
-        if (senderOptional.isEmpty() || receiverOptional.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
-        if(!checkIfFriendExists(memberId2)) return ApiResponse.createError(ErrorCode.ALREADY_FRIEND);
-        if(!checkRequestFriendExists(memberId2)) return ApiResponse.createError(ErrorCode.FRIEND_REQUEST_ALREADY_SENT);
-        if(!checkResponseFriendExists(memberId2)) return ApiResponse.createError(ErrorCode.FRIEND_REQUEST_ALREADY_RECEIVED);
+        if (receiverOptional.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+        if(!checkIfFriendExists(memberId, memberId2)) return ApiResponse.createError(ErrorCode.ALREADY_FRIEND);
+        if(!checkRequestFriendExists(memberId, memberId2)) return ApiResponse.createError(ErrorCode.FRIEND_REQUEST_ALREADY_SENT);
+        if(!checkResponseFriendExists(memberId, memberId2)) return ApiResponse.createError(ErrorCode.FRIEND_REQUEST_ALREADY_RECEIVED);
 
-        Member sender = senderOptional.get();
         Member receiver = receiverOptional.get();
 
-        friendRequestRepository.save(new FriendRequest(sender, receiver));
+        friendRequestRepository.save(new FriendRequest(member, receiver));
         return ApiResponse.createSuccessWithNoContent("친구 신청 성공");
     }
 
     @Transactional
-    public ApiResponse<Object> friendDelete(Long memberId2) {
-        Optional<Member> senderOptional = checkMemberId(memberId);
+    public ApiResponse<Object> friendDelete(Member member, Long memberId2) {
         Optional<Member> receiverOptional = checkMemberId(memberId2);
 
-        if (senderOptional.isEmpty() || receiverOptional.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+        if (receiverOptional.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
-        Member sender = senderOptional.get();
         Member receiver = receiverOptional.get();
 
-        Optional<Friend> friendOptional = friendRepository.findByMemberAndTargetMember(sender.getMemberId(), receiver.getMemberId());
+        Optional<Friend> friendOptional = friendRepository.findByMemberAndTargetMember(member.getMemberId(), receiver.getMemberId());
 
         if (friendOptional.isEmpty()) {
             return ApiResponse.createError(ErrorCode.NOT_FRIEND);
@@ -66,15 +62,15 @@ public class FriendService {
         return memberRepository.findById(memberId);
     }
 
-    private boolean checkIfFriendExists(Long memberId2) {
+    private boolean checkIfFriendExists(Long memberId, Long memberId2) {
         return friendRepository.existsByMemberAndTargetMember(memberId, memberId2);
     }
 
-    private boolean checkRequestFriendExists(Long memberId2) {
+    private boolean checkRequestFriendExists(Long memberId, Long memberId2) {
         return friendRequestRepository.existsRequest(memberId, memberId2);
     }
 
-    private boolean checkResponseFriendExists(Long memberId2) {
+    private boolean checkResponseFriendExists(Long memberId, Long memberId2) {
         return friendRequestRepository.existsResponse(memberId, memberId2);
     }
 }
