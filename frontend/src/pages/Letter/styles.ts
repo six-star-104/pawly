@@ -179,7 +179,7 @@ export const deleteModalContentStyle = css`
   background: #fff;
   border: 2px solid black;
   padding: 20px;
-  width: 65%;
+  width: 85%;
   text-align: center;
   font-family: 'Galmuri9';
   color: #333;
@@ -256,22 +256,23 @@ export const modalBodyStyle = css`
 export const reactionIconsStyle = css`
   display: flex;
   gap: 0.5rem;
-  margin: 1rem 0;
-  bottom: 1rem;
-  /* justify-content: flex-start; */
-
+  padding: 1rem;
+  margin-right: auto; /* 아이콘을 왼쪽으로 정렬 */
   .nes-icon {
-    font-size: 1.2rem;
+    font-size: 1.5rem; /* 아이콘 크기 조절 */
     cursor: pointer;
   }
 `;
 
 export const modalActionsStyle = css`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between; /* 아이콘과 버튼 사이의 간격 조정 */
+  align-items: center;
   width: 100%;
-  margin-top: 1rem;
+  padding: 0 1rem;
+  /* margin-top: 1rem; */
 `;
+
 
 export const replyTextareaStyle = css`
   width: 100%;

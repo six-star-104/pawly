@@ -59,13 +59,14 @@ export const PixelContainerWrapper = css`
   justify-content: center;
   align-items: center;
   height: 100vh;
+  width: 100%;
 `;
 
 export const IconGrid = css`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  padding: 2rem 0;
+  gap: 1rem;
+  padding: 1rem 0;
   justify-items: center;
   margin-left: 0.8rem;
 `;
@@ -74,7 +75,7 @@ export const IconItem = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 1rem;
+  font-size: 0.9rem;
   text-align: center;
   padding: 1rem;
   img {

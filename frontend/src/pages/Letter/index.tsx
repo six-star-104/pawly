@@ -34,27 +34,52 @@ import BackButton from '../../assets/icons/BackButton.png';
 import Warning from '../../assets/icons/Warning.png';
 import Modal from '@/components/Modal';
 import { Button } from '@/components/Button';
-import { ILetter } from '@/types/letterTypes';
+import { ILetter, IReadLetter } from '@/types/letterTypes';
 
 export const Letter = () => {
   const [mypageVisible, setMyPageVisible] = useState(false);
   const [activeTab, setActiveTab] = useState<"received" | "sent">("received");
   const [letters, setLetters] = useState<ILetter[]>([]);
-  const [selectedLetter, setSelectedLetter] = useState<ILetter | null>(null);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedLetter, setSelectedLetter] = useState<IReadLetter | null>(null);
   const [isReplyModalOpen, setIsReplyModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [reactionIcon, setReactionIcon] = useState<JSX.Element | null>(null);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const mockReceivedLetters: ILetter[] = [
-      { id: 1, sender: "남은식다", content: "배고프지 않냐", date: "10.25" },
-      { id: 2, sender: "민준이다", content: "좋은 아침", date: "10.26" }
+      {
+        letterId: 1,
+        senderId: "123",
+        senderNickname: "민준",
+        createdAt: "2024-10-24 12:50:00",
+        updatedAt: "2024-10-24 12:55:00",
+      },
+      {
+        letterId: 2,
+        senderId: "124",
+        senderNickname: "혜민",
+        createdAt: "2024-10-24 12:45:00",
+        updatedAt: "2024-10-24 12:50:00",
+      },
     ];
 
     const mockSentLetters: ILetter[] = [
-      { id: 3, sender: "파피몬", content: "오늘 점심 뭐지 아니", date: "10.25" },
-      { id: 4, sender: "가루몬", content: "배고프지 않냐", date: "10.27" }
+      {
+        letterId: 3,
+        senderId: "125",
+        senderNickname: "파피몬",
+        createdAt: "2024-10-25 09:00:00",
+        updatedAt: "2024-10-25 09:30:00",
+      },
+      {
+        letterId: 4,
+        senderId: "126",
+        senderNickname: "가루몬",
+        createdAt: "2024-10-27 10:15:00",
+        updatedAt: "2024-10-27 10:45:00",
+      },
     ];
 
     setLetters(activeTab === "received" ? mockReceivedLetters : mockSentLetters);
@@ -66,19 +91,41 @@ export const Letter = () => {
 
   const closeMyPage = () => setMyPageVisible(false);
 
+  const fetchLetterDetails = (letterId: number) => {
+    const mockDetail: IReadLetter = {
+      letterId,
+      senderId: "123",
+      senderNickname: "민준",
+      content: "편지내용이야",
+      picture: "편지 S3 링크",
+      reaction: "좋아요",
+      createdAt: "2024-10-24 12:50:00",
+      updatedAt: "2024-10-24 12:55:00",
+    };
+
+    setSelectedLetter(mockDetail);
+    setReactionIcon(<i className="nes-icon is-small like"></i>); // 기본 아이콘
+    setIsReplyModalOpen(true);
+  };
+
+  const closeReplyModal = () => {
+    setIsReplyModalOpen(false);
+    setReactionIcon(null); // 모달 닫을 때 아이콘 초기화
+  };
+
   const openDeleteModal = (e: React.MouseEvent) => {
     e.stopPropagation(); // 클릭 이벤트 전파 방지
     setIsDeleteModalOpen(true);
   };
-  
+
   const closeDeleteModal = () => setIsDeleteModalOpen(false);
 
-  const openReplyModal = (letter: ILetter) => {
-    setSelectedLetter(letter);
-    setIsReplyModalOpen(true);
+  const handleReactionChange = (icon: JSX.Element) => {
+    setReactionIcon(icon);
+    if (selectedLetter) {
+      setSelectedLetter({ ...selectedLetter, reaction: "아이콘 업데이트됨" }); // 실제 데이터 변경은 필요 없음, 시각적 업데이트만
+    }
   };
-
-  const closeReplyModal = () => setIsReplyModalOpen(false);
 
   return (
     <div css={Container}>
@@ -108,7 +155,7 @@ export const Letter = () => {
           </button>
         </div>
       </div>
-
+      
       <div css={tabContainer(activeTab)}>
         <button onClick={() => setActiveTab("received")} className={activeTab === "received" ? "active" : ""}>받은 편지함</button>
         <button onClick={() => setActiveTab("sent")} className={activeTab === "sent" ? "active" : ""}>보낸 편지함</button>
@@ -116,12 +163,11 @@ export const Letter = () => {
 
       <div css={letterListContainer}>
         {letters.map((letter) => (
-          <div css={letterItem} key={letter.id} onClick={() => openReplyModal(letter)}>
+          <div css={letterItem} key={letter.letterId} onClick={() => fetchLetterDetails(letter.letterId)}>
             <div css={letterContent}>
-              <p>{letter.sender}</p>
-              <span>{letter.content}</span>
+              <p>{letter.senderNickname}</p>
             </div>
-            <div css={letterDate}>{letter.date}</div>
+            <div css={letterDate}>{new Date(letter.createdAt).toLocaleDateString('ko-KR')}</div>
             <button onClick={openDeleteModal} css={deleteIcon}>
               <img src="https://unpkg.com/pixelarticons@1.8.1/svg/trash.svg" alt="쓰레기 아이콘" width={20} height={20} />
             </button>
@@ -156,17 +202,30 @@ export const Letter = () => {
           <div css={modalOverlayStyle}>
             <div css={modalContentStyle}>
               <div css={modalHeaderStyle}>
-                <span>From. {selectedLetter.sender}</span>
+                <span>From. {selectedLetter.senderNickname}</span>
                 <button css={closeButtonStyle} onClick={closeReplyModal}>✖️</button>
               </div>
-              <div css={modalBodyStyle}>{selectedLetter.content}</div>
-              <div css={reactionIconsStyle}>
-                <i className="nes-icon is-small heart"></i>
-                <i className="nes-icon is-small star"></i>
-                <i className="nes-icon is-small like"></i>
+              <div css={modalBodyStyle}>
+                <p>{selectedLetter.content}</p>
+                {selectedLetter.picture && (
+                  <img src={selectedLetter.picture} alt="편지 이미지" style={{ width: '100%', marginTop: '10px' }} />
+                )}
+                <p>반응: {reactionIcon}</p>
               </div>
               <div css={modalActionsStyle}>
-                <Button backgroundColor='#fff' color='#000' variant="outlined" handler={() => console.log("답장하기")}>답장하기</Button>
+                <div css={reactionIconsStyle}>
+                  <i className="nes-icon is-small heart" onClick={() => handleReactionChange(<i className="nes-icon is-small heart"></i>)}></i>
+                  <i className="nes-icon is-small star" onClick={() => handleReactionChange(<i className="nes-icon is-small star"></i>)}></i>
+                  <i className="nes-icon is-small like" onClick={() => handleReactionChange(<i className="nes-icon is-small like"></i>)}></i>
+                </div>
+                <Button 
+                  backgroundColor='#fff' 
+                  color='#000' 
+                  variant="outlined" 
+                  width='40%'
+                  handler={closeDeleteModal}>
+                    답장하기
+                </Button>
               </div>
             </div>
           </div>

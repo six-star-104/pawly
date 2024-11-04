@@ -1,6 +1,18 @@
 export interface ILetter {
-  id: number;
-  sender: string;
+  letterId: number;
+  senderId: string;
+  senderNickname: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IReadLetter {
+  letterId: number;
+  senderId: string;
+  senderNickname: string;
+  createdAt: string;
+  updatedAt: string;
   content: string;
-  date: string;
+  picture: string;
+  reaction: string;
 }
