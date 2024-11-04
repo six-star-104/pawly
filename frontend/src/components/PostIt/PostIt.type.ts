@@ -8,9 +8,9 @@ export type PostItProps = {
     memberId: number;
     memberNickname: string;
     content: string;
-    status: string;
-    createdAt: string;
-    updatedAt: string;
+    // status: string;
+    // createdAt: string;
+    // updatedAt: string;
     // 둘중 하나는 null로 오니까
     backgroundColorer?: number|null;
     image?: string | null;

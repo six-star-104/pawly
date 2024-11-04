@@ -13,22 +13,17 @@ export const PostIt: React.FC<PostItProps> = ({ props }) => {
   const randomBgColor = ["white", "black", "blue", "red", "yellow"];
   const randomBorderColor = ["black", "white", "blue", "red", "yellow"];
 
-  //이런식으로 s3주소 넣어줘야됨
-  const backgroundImage =
-    "https://st2.depositphotos.com/46898394/50276/v/380/depositphotos_502768918-stock-illustration-pixel-art-halloween-seamless-pattern.jpg";
-
   return (
     <div
       css={bubbleStyle(
         randomTextColor[props.fontColorer],
         randomBorderColor[props.borderColorer],
         randomBgColor[props.backgroundColorer!],
-        backgroundImage
+        props.image!,
       )}
-      className={`bubble ${randomArrow} ${randomTextColor[props.fontColorer]} ${
+      className={`bubble ${randomArrow} ${
         speechBubbleSize[props.speechBubbleSize]
       } 
-      ${randomBorderColor[props.borderColorer]}
       `}
     >
       {props.content}

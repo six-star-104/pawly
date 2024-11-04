@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import smallghost from '@/assets/images/bubbleTheme/minighost.jpg'
+// import smallghost from '@/assets/images/bubbleTheme/minighost.jpg'
 
 const px = 4;
 const shadow = `rgba(0, 0, 0, 0.2)`;
@@ -31,12 +31,13 @@ export const bubbleStyle = (
   position: relative;
   display: inline-block;
   margin: ${5 * px}px;
-  text-align: center;
+  text-align: start;
   font-size: 16px;
   line-height: 1.3em;
+  white-space: pre-wrap;
 
   ${bgImg
-    ? ` background-image: url(${smallghost}); background-position: center; background-repeat: repeat; background-size: contatin; opacity: 0.5;`
+    ? ` background-image: url(${bgImg}); background-position: center; background-repeat: repeat; background-size: contatin; opacity: 0.7; `
     : `  background-color: ${bgColor}; `}
 
   color: ${textColor};
