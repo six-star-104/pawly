@@ -12,8 +12,10 @@ import com.pawly.domain.postIt.enums.Status;
 import com.pawly.domain.postIt.repository.PostItRepository;
 import com.pawly.domain.rollingPaper.entity.RollingPaper;
 import com.pawly.domain.rollingPaper.repository.RollingPaperRepository;
+import com.pawly.global.dto.FcmMessageRequestDto;
 import com.pawly.global.exception.ErrorCode;
 import com.pawly.global.response.ApiResponse;
+import com.pawly.global.service.FirebaseCloudMessageService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +29,7 @@ public class PostItService {
     private final MemberRepository memberRepository;
     private final RollingPaperRepository rollingPaperRepository;
     private final ReportRepository reportRepository;
+    private final FirebaseCloudMessageService firebaseCloudMessageService;
 
     @Transactional
     public ApiResponse<?> createPostIt(PostItCreateDto dto) {
@@ -37,6 +40,10 @@ public class PostItService {
         if (rollingPaper.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
         postItRepository.save(dto.toEntity(requestMember.get(), rollingPaper.get()));
+
+        FcmMessageRequestDto request = new FcmMessageRequestDto(rollingPaper.get().getMember().getMemberId(), "롤링페이퍼가 작성되었어요!", "마음을 담은 롤링페이퍼가 작성되었습니다. 지금 확인해보세요.");
+        firebaseCloudMessageService.sendMessage(request);
+
         return ApiResponse.createSuccess(null, "생성 성공");
     }
 

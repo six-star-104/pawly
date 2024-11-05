@@ -29,7 +29,7 @@ public class PostIt extends BaseEntity {
     private Long postId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rolling_paperId")
+    @JoinColumn(name = "rolling_paper_id")
     private RollingPaper rollingPaper;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -42,12 +42,12 @@ public class PostIt extends BaseEntity {
     private Status status;
 
     @LastModifiedDate
-    @Column(name = "update_at")
-    private LocalDateTime updateAt;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     public void updatePostIt(String content) {
         this.content = content;
-        this.updateAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public void deletePostIt() {

@@ -8,6 +8,8 @@ import com.pawly.domain.friend.repository.FriendRequestRepository;
 import com.pawly.domain.member.repository.MemberRepository;
 import com.pawly.global.exception.ErrorCode;
 import com.pawly.global.response.ApiResponse;
+import com.pawly.global.dto.FcmMessageRequestDto;
+import com.pawly.global.service.FirebaseCloudMessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,7 @@ public class FriendService {
     private final FriendRepository friendRepository;
     private final FriendRequestRepository friendRequestRepository;
     private final MemberRepository memberRepository;
+    private final FirebaseCloudMessageService firebaseCloudMessageService;
 
     @Transactional
     public ApiResponse<Object> friend(Member member, Long memberId2) {
@@ -35,6 +38,10 @@ public class FriendService {
         Member receiver = receiverOptional.get();
 
         friendRequestRepository.save(new FriendRequest(member, receiver));
+
+        FcmMessageRequestDto request = new FcmMessageRequestDto(receiver.getMemberId(), "새로운 친구 신청이 도착했습니다!", "새로운 친구가 당신에게 손을 내밀었어요. 친구가 되어 주세요!");
+        firebaseCloudMessageService.sendMessage(request);
+
         return ApiResponse.createSuccessWithNoContent("친구 신청 성공");
     }
 
