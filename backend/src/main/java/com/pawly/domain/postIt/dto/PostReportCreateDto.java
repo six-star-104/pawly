@@ -1,8 +1,8 @@
 package com.pawly.domain.postIt.dto;
 
-import com.pawly.domain.Report.Entity.Report;
-import com.pawly.domain.Report.enums.Category;
-import com.pawly.domain.Report.enums.Status;
+import com.pawly.domain.report.Entity.Report;
+import com.pawly.domain.report.enums.Category;
+import com.pawly.domain.report.enums.Status;
 import com.pawly.domain.member.entity.Member;
 import lombok.*;
 
