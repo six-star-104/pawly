@@ -11,6 +11,12 @@ function GlobalStyles() {
           box-sizing: border-box;
           max-height: 100%;
           overflow-y: scroll;
+
+          // 드래그 방지 기능
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-use-select: none;
+          user-select: none;
         }
       `}
     />

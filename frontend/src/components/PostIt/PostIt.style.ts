@@ -35,7 +35,6 @@ export const bubbleStyle = (
   font-size: 16px;
   line-height: 1.3em;
   white-space: pre-wrap;
-
   ${bgImg
     ? ` background-image: url(${bgImg}); background-position: center; background-repeat: repeat; background-size: contatin; opacity: 0.7; `
     : `  background-color: ${bgColor}; `}
@@ -147,4 +146,35 @@ export const fromWho = css`
   display: flex;
   justify-content: end;
   padding-right: 8%;
+`;
+
+export const menuStyle = css`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+`;
+export const modalStyle = css`
+  display: flex;
+  // justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  #yesOrNo {
+    display: flex;
+    justify-content: space-evenly;
+    margin:10px;
+    button {
+      width: 30%;
+    }
+  }
+  textarea {
+    width: 90%;
+    margin-left: 5%;
+     resize: none;
+  }
+  #reportButton {
+    margin: 10px;
+    left: 60%;
+    width: 30%;
+  }
 `;

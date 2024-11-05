@@ -4,15 +4,17 @@ export type PostItStyle = {
   memberId: number;
   memberNickname: string;
   content: string;
-  backgroundColorer: number;
+  backgroundColorer: number | null;
   image: string | null;
+
   fontColorer: number;
   borderColorer: number;
   speechBubbleSize: number;
+  preview?: boolean;
 };
 
 export type SelectOptionsProps = {
   selectOption: string;
   setPreview: React.Dispatch<React.SetStateAction<PostItStyle>>;
-  previewPostIt: PostItStyle
+  previewPostIt: PostItStyle;
 };

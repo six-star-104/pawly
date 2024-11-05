@@ -46,7 +46,7 @@ const SelectOptions: React.FC<SelectOptionsProps> = ({
   return (
     <div css={container}>
       {colorOptions.map((colorOption, index) => (
-        <PixelContainer width="30px" height="30px">
+        <PixelContainer width="24px" height="24px">
           <div
             key={index}
             css={optionColor(colorOption, selectOption)}

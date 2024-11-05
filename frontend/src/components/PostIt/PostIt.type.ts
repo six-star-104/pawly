@@ -12,11 +12,12 @@ export type PostItProps = {
     // createdAt: string;
     // updatedAt: string;
     // 둘중 하나는 null로 오니까
-    backgroundColorer?: number|null;
-    image?: string | null;
+    backgroundColorer: number|null;
+    image: string | null;
 
     fontColorer: number;
     borderColorer: number;
     speechBubbleSize: number;
+    preview?:boolean;
   };
 };
