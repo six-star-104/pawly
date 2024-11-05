@@ -1,9 +1,11 @@
-import { css } from '@emotion/react';
-import background from '../../assets/images/background.png';
+import { css } from "@emotion/react";
+import background from "../../assets/images/background.png";
 
 export const container = css`
   width: 100%;
-  height: 100vh;
+  // 2.14배 높이 쳐야됨
+  height: 214vw;
+  max-height: 881px;
   background-image: url(${background});
   background-size: cover;
   background-repeat: no-repeat;

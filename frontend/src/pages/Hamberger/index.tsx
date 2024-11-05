@@ -8,7 +8,11 @@ import { IHamberger } from '../../types/hambergerTypes'
 
 export const Hamberger: React.FC<IHamberger> = ({ closeMyPage }) => { 
   const navigate = useNavigate();
-
+  
+  const rollingPaperMove = () => {
+    // 햄버거 메뉴에서 들어가는 페이지는 내가 받은거만 다뜨는거니까
+    navigate('/rollingpaper')
+  }
   const mypageMove = () => {
     navigate('/mypage')
   }
@@ -32,7 +36,7 @@ export const Hamberger: React.FC<IHamberger> = ({ closeMyPage }) => {
         </button>
       </div>
       <ul css={menuListStyle}>
-        <li css={menuItemStyle}><FaStickyNote /> 롤링페이퍼</li>
+        <li onClick={rollingPaperMove}  css={menuItemStyle}><FaStickyNote /> 롤링페이퍼</li>
         <li onClick={letterMove} css={menuItemStyle}><FaEnvelope /> 편지함</li>
         <li css={menuItemStyle}><FaTasks /> 도전과제</li>
         <li onClick={pediaMove} css={menuItemStyle}><FaGraduationCap /> 도감</li>

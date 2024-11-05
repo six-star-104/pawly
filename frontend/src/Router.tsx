@@ -7,6 +7,8 @@ import { SignUp } from "@/pages/Signup";
 import { MyPage } from "@/pages/MyPage";
 import { Friends } from "./pages/Friends";
 import { Pedia } from "@/pages/Pedia";
+import { RollingPaper } from "@/pages/RollingPaper";
+import { RollingPaperList } from "./pages/RollingPaperList";
 import { Letter } from "@/pages/Letter";
 
 function Router() {
@@ -15,6 +17,11 @@ function Router() {
       <Route path="/login" element={<Login />} />
       <Route path="/tmpsignup" element={<SignUp />} />
       <Route path="/ar" element={<MailBoxFind />} />
+      <Route path="/mypage" element={<MyPage />} />
+      <Route path="/friends" element={<Friends />} />
+      <Route path="/pedia" element={<Pedia />} />
+      <Route path="/rollingpaper/:rollingpaperid" element={<RollingPaper />} />
+      <Route path="/rollingpaper" element={<RollingPaperList />} />
 
       <Route element={<PrivateRoute />}>
         <Route path="/" element={<Main />} />

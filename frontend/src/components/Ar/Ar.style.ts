@@ -7,14 +7,15 @@ export const container = css`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-    background-color: transparent;
+  
+  background-color: transparent;
   background-image: none;
   button {
     position: fixed;
     right: 10%;
     bottom: 3%;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
