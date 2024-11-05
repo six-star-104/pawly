@@ -1,5 +1,6 @@
 package com.pawly.domain.member.controller;
 
+import com.pawly.domain.member.dto.request.FcmRequestDto;
 import com.pawly.domain.member.dto.request.SignUpRequestDTO;
 import com.pawly.domain.member.dto.request.UpdateBirthRequestDTO;
 import com.pawly.domain.member.dto.request.UpdateNicknameRequestDTO;
@@ -9,6 +10,7 @@ import com.pawly.domain.member.security.dto.response.LoginResponseDTO;
 import com.pawly.domain.member.security.dto.response.RefreshTokenResponseDTO;
 import com.pawly.domain.member.security.jwt.JwtTokenProvider;
 import com.pawly.domain.member.security.service.TokenService;
+import com.pawly.domain.member.service.MemberSearchService;
 import com.pawly.domain.member.service.MemberService;
 import com.pawly.global.exception.ErrorCode;
 import com.pawly.global.response.ApiResponse;
@@ -32,6 +34,7 @@ public class MemberController {
     private final MemberService memberService;
     private final TokenService tokenService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final MemberSearchService memberSearchService;
 
     //회원가입
     @PostMapping("/sign-up")
@@ -226,6 +229,17 @@ public class MemberController {
             return ApiResponse.createSuccess(null, "회원 탈퇴가 완료되었습니다.");
         } catch (Exception e) {
             return ApiResponse.createError(ErrorCode.USER_DELETE_FAILED);
+        }
+    }
+
+    @PostMapping("/fcm")
+    public ApiResponse<?> fcmToken(Authentication authentication, @RequestBody FcmRequestDto fcmRequestDto) {
+        try {
+            Member member = memberService.findByEmail(authentication.getName());
+            return memberSearchService.fcmToken(member, fcmRequestDto.getFcmToken());
+        }
+        catch (Exception e) {
+            return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
         }
     }
 }
