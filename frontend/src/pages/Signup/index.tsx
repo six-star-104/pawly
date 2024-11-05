@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getOAuthInformation, signUp } from "@/apis/userService";
+import { getOAuthInformation, kakaoLogin, signUp } from "@/apis/userService";
 import { CreateNickname } from "@/components/CreateNickname";
 import { CreateAssets } from "@/components/CreateAssets";
 import { useSignUpStore } from "@/stores/signUpStore";
@@ -10,11 +10,12 @@ import Pawly from "@/assets/icons/Pawly.svg";
 export const SignUp = () => {
   const [pageNum, setPageNum] = useState(1);
   const [isNicknameValid, setIsNicknameValid] = useState(false);
+  const [isImageGenerated, setIsImageGenerated] = useState(false);
+
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
   const navigateTo = useNavigate();
-  const { signUpState, setNickname, setAssets, setAssetsName, setOAuthInfo } =
-    useSignUpStore();
+  const { signUpState, setOAuthInfo } = useSignUpStore();
 
   useEffect(() => {
     const getOAuth = async (token: string) => {
@@ -30,6 +31,7 @@ export const SignUp = () => {
         console.error(error);
       }
     };
+
     if (token) {
       getOAuth(token);
     } else {
@@ -37,52 +39,68 @@ export const SignUp = () => {
     }
   }, [token, navigateTo, setOAuthInfo]);
 
-  const handleNextButton = () => {
+  const handleNextPage = () => {
     if (isNicknameValid) {
       setPageNum(2);
     }
   };
 
+  const handlePrevPage = () => {
+    setPageNum(1);
+  };
+
   const handleSignUp = async () => {
     try {
-      await signUp(signUpState);
-      navigateTo("/main");
+      await signUp({
+        email: signUpState.email,
+        name: signUpState.name,
+        provider: signUpState.provider,
+        providerId: signUpState.providerId,
+        nickname: signUpState.nickname,
+        asset: signUpState.asset,
+      });
+
+      if (signUpState.provider === "kakao") {
+        await kakaoLogin();
+      }
+
+      navigateTo("/");
     } catch (error) {
-      console.error("Sign up failed: ", error);
+      console.error("Sign up failed:", error);
     }
   };
 
   return (
     <style.Container>
-      <img src={Pawly} css={style.logoContainer} alt="Pawly Logo" />
+      <style.Logo src={Pawly} alt="Pawly Logo" />
 
       <style.PageContainer>
-        {pageNum === 1 && (
-          <style.Page>
-            <CreateNickname
-              nickname={signUpState.nickname}
-              setNickname={setNickname}
-              onValidationChange={setIsNicknameValid}
-            />
-            <style.Button
-              onClick={handleNextButton}
+        <style.Page $pageNum={pageNum}>
+          <CreateNickname onValidationChange={setIsNicknameValid} />
+          <style.ButtonContainer>
+            <style.NextButton
+              onClick={handleNextPage}
               disabled={!isNicknameValid}
             >
               다음
-            </style.Button>
-          </style.Page>
-        )}
-        {pageNum === 2 && (
-          <style.Page>
-            <CreateAssets
-              assets={signUpState.assets}
-              setAssets={setAssets}
-              assetsName={signUpState.assetsName}
-              setAssetsName={setAssetsName}
-            />
-            <style.Button onClick={handleSignUp}>가입하기</style.Button>
-          </style.Page>
-        )}
+            </style.NextButton>
+          </style.ButtonContainer>
+        </style.Page>
+
+        <style.Page $pageNum={pageNum}>
+          <div className="content">
+            <CreateAssets onImageGenerated={setIsImageGenerated} />
+          </div>
+          <style.ButtonContainer>
+            <style.PrevButton onClick={handlePrevPage}>이전</style.PrevButton>
+            <style.SubmitButton
+              onClick={handleSignUp}
+              disabled={!isImageGenerated}
+            >
+              가입하기
+            </style.SubmitButton>
+          </style.ButtonContainer>
+        </style.Page>
       </style.PageContainer>
     </style.Container>
   );

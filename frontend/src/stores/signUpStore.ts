@@ -4,8 +4,7 @@ import { SignUpType } from "@/types/UserType";
 type SignUpStore = {
   signUpState: SignUpType;
   setNickname: (nickname: string) => void;
-  setAssets: (assets: string) => void;
-  setAssetsName: (assetsName: string) => void;
+  setAsset: (asset: File) => void;
   setOAuthInfo: (info: {
     email: string;
     name: string;
@@ -21,8 +20,7 @@ export const useSignUpStore = create<SignUpStore>((set, get) => ({
     provider: "",
     providerId: "",
     nickname: "",
-    assets: "",
-    assetsName: "",
+    asset: null,
   },
   // 상태 업데이트 함수들
   getOAuthInfo: () => {
@@ -33,13 +31,9 @@ export const useSignUpStore = create<SignUpStore>((set, get) => ({
     set((state) => ({
       signUpState: { ...state.signUpState, nickname },
     })),
-  setAssets: (assets) =>
+  setAsset: (asset: File) =>
     set((state) => ({
-      signUpState: { ...state.signUpState, assets },
-    })),
-  setAssetsName: (assetsName) =>
-    set((state) => ({
-      signUpState: { ...state.signUpState, assetsName },
+      signUpState: { ...state.signUpState, asset },
     })),
   setOAuthInfo: (info) =>
     set((state) => ({
