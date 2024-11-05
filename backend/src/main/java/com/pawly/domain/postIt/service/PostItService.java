@@ -1,6 +1,6 @@
 package com.pawly.domain.postIt.service;
 
-import com.pawly.domain.Report.repository.ReportRepository;
+import com.pawly.domain.report.repository.ReportRepository;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.repository.MemberRepository;
 import com.pawly.domain.postIt.dto.PostItCreateDto;
