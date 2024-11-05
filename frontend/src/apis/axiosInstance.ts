@@ -1,9 +1,13 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
 import { logout } from "@/apis/userService";
 
-const axiosInstance = axios.create({
+export const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL,
   withCredentials: true,
+});
+
+export const flaskAxiosInstance = axios.create({
+  baseURL: "http://k11d104.p.ssafy.io:5000/flask",
 });
 
 axiosInstance.interceptors.request.use(
@@ -47,7 +51,7 @@ axiosInstance.interceptors.response.use(
 
 export const getRefreshToken = async () => {
   try {
-    const response = await axios.post(`/user/refresh-token`, {});
+    const response = await axios.post(`/member/refresh-token`, {});
     console.log("getRefreshToken", response);
     if (response.data.data) {
       const accessToken = response.data.data.accessToken;
@@ -61,5 +65,3 @@ export const getRefreshToken = async () => {
     throw error;
   }
 };
-
-export default axiosInstance;

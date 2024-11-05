@@ -1,132 +1,117 @@
-import { css } from "@emotion/react";
+import styled from "@emotion/styled";
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 2rem;
+`;
 
-const styles = {
-  container: css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 2rem;
-  `,
+export const title = styled.div`
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-align: center;
+  color: #333;
+`;
 
-  title: css`
-    font-size: 1.5rem;
-    font-weight: 600;
-    text-align: center;
-    color: #333;
-  `,
+export const content = styled.div`
+  text-align: center;
+  margin-top: 0.65rem;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+  color: #666;
+`;
 
-  content: css`
-    font-size: 1rem;
-    color: #666;
-    text-align: center;
-  `,
+export const inputContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
 
-  inputContainer: css`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  `,
+export const assetsInput = styled.input`
+  width: 80%;
+  margin: 0 auto;
+  padding: 0.5rem;
+  border: none;
+  box-shadow: 4px 0 0 0 black, -4px 0 0 0 black, 0 4px 0 0 black,
+    0 -4px 0 0 black;
+  outline: none;
+  transition: border-color 0.3s ease;
+`;
 
-  assetsInput: css`
-    width: 100%;
-    padding: 0.75rem;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 1rem;
-    outline: none;
-    transition: border-color 0.3s;
+export const errorContainer = styled.div`
+  margin: 1rem 0;
+`;
+export const error = styled.div`
+  color: ${(props) => props.theme.colors.error};
+  font-size: 0.875rem;
+  text-align: center;
+`;
 
-    &:focus {
-      border-color: #007aff;
-    }
+export const resultContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+`;
 
-    &:disabled {
-      background-color: #f5f5f5;
-      cursor: not-allowed;
-    }
-  `,
+export const imageContainer = styled.div`
+  width: 270px;
+  height: 270px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
-  generateButton: css`
-    padding: 0.75rem;
-    background-color: #007aff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
+export const characterImage = styled.img`
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+`;
 
-    &:hover {
-      background-color: #0056b3;
-    }
+export const nameInputContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
 
-    &:disabled {
-      background-color: #cccccc;
-      cursor: not-allowed;
-    }
-  `,
+export const Button = styled.button`
+  padding: 0.375rem;
+  border: none;
+  box-shadow: 4px 0 0 0 black, -4px 0 0 0 black, 0 4px 0 0 black,
+    0 -4px 0 0 black;
+  cursor: pointer;
+  transition: background-color 0.3s;
+`;
 
-  error: css`
-    color: #ff3b30;
-    font-size: 0.875rem;
-    text-align: center;
-  `,
+export const generateButton = styled(Button)`
+  width: 30%;
+  margin: 0 auto;
+  color: black;
 
-  resultContainer: css`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-  `,
+  background-color: ${(props) =>
+    props.disabled ? props.theme.colors.disabled : props.theme.colors.primary};
 
-  characterImage: css`
-    width: 200px;
-    height: 200px;
-    object-fit: contain;
-    border-radius: 8px;
-  `,
+  &:hover:not(:disabled) {
+    background-color: ${(props) => props.theme.colors.primaryHover};
+  }
+`;
 
-  nameInputContainer: css`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  `,
+export const regenerateButton = styled(Button)`
+  background-color: ${(props) => props.theme.colors.primary};
+`;
 
-  nameInput: css`
-    width: 100%;
-    padding: 0.75rem;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 1rem;
-    outline: none;
-    transition: border-color 0.3s;
-
-    &:focus {
-      border-color: #007aff;
-    }
-  `,
-
-  regenerateButton: css`
-    padding: 0.75rem;
-    background-color: #ff9500;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-
-    &:hover {
-      background-color: #ff8000;
-    }
-  `,
-};
-
-export default styles;
+export const buttonContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  justify-content: center;
+`;

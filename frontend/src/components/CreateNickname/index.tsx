@@ -1,32 +1,38 @@
 import { useState, useCallback, useEffect } from "react";
-import { SignupNicknameProps } from "@/types/UserType";
+import { useSignUpStore } from "@/stores/signUpStore"; // useSignUpStore 가져오기
 import { isNicknameDup } from "@/apis/userService";
+import { SignupNicknameProps } from "@/types/UserType";
 import styles from "./CreateNickname.style";
 
 export const CreateNickname: React.FC<SignupNicknameProps> = ({
-  nickname,
-  setNickname,
   onValidationChange,
 }) => {
   const [isDuplicate, setIsDuplicate] = useState<boolean | null>(null);
   const [isChecking, setIsChecking] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
 
+  // useSignUpStore에서 nickname과 setNickname 가져오기
+  const { signUpState, setNickname } = useSignUpStore();
+  const nickname = signUpState.nickname;
+
   const nicknameRegex = /^[a-zA-Z0-9가-힣]+$/;
 
   const validateNickname = (value: string) => {
     if (value.length === 0) {
       setValidationError(null);
+      onValidationChange?.(false);
       return true;
     }
 
     if (value.length < 2 || value.length > 8) {
       setValidationError("2~8글자 닉네임을 입력해주세요.");
+      onValidationChange?.(false);
       return false;
     }
 
     if (!nicknameRegex.test(value)) {
       setValidationError("한글, 영어, 숫자만 입력 가능합니다.");
+      onValidationChange?.(false);
       return false;
     }
 
@@ -48,8 +54,7 @@ export const CreateNickname: React.FC<SignupNicknameProps> = ({
     try {
       const isDup = await isNicknameDup(nickname);
       setIsDuplicate(isDup);
-
-      // 유효성 검사 결과를 부모 컴포넌트로 전달
+      // 부모 컴포넌트로 유효성 전달
       onValidationChange?.(!isDup && !validationError && nickname.length >= 2);
     } catch (error) {
       console.error("닉네임 중복 체크 실패:", error);
@@ -60,16 +65,9 @@ export const CreateNickname: React.FC<SignupNicknameProps> = ({
   };
 
   useEffect(() => {
-    const debounceCheck = setTimeout(checkNickname, 500);
+    const debounceCheck = setTimeout(checkNickname, 300);
     return () => clearTimeout(debounceCheck);
   }, [nickname]);
-
-  // 닉네임이나 유효성 상태가 변경될 때마다 부모 컴포넌트에 알림
-  useEffect(() => {
-    onValidationChange?.(
-      !isDuplicate && !validationError && nickname.length >= 2 && !isChecking
-    );
-  }, [isDuplicate, validationError, nickname, isChecking, onValidationChange]);
 
   const handleInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {

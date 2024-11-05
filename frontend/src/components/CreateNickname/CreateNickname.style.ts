@@ -1,24 +1,13 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
-// const slideInRight = keyframes`
-//   from {
-//     transform: translateX(100%);
-//     opacity: 0;
-//   }
-//   to {
-//     transform: translateX(0);
-//     opacity: 1;
-//   }
-// `;
-// animation: ${slideInRight} 0.5s ease-in-out forwards;
-
 const container = css`
   display: flex;
   flex-direction: column;
   gap: 1rem;
   width: 100%;
-  max-width: 320px;
+  max-width: 100vw;
+  margin-top: 17rem;
 `;
 
 const title = css`
@@ -27,14 +16,14 @@ const title = css`
 `;
 
 const nicknameInput = css`
-  width: 70%;
+  width: 60%;
+  padding: 0.5rem;
   margin: 0 auto;
 
   border: none;
   box-shadow: 4px 0 0 0 black, -4px 0 0 0 black, 0 4px 0 0 black,
     0 -4px 0 0 black;
   outline: none;
-  padding: 0.5rem;
   transition: border-color 0.3s ease;
 `;
 
@@ -45,7 +34,7 @@ const inputWrapper = css`
 `;
 
 const messageContainer = css`
-  width: 70%;
+  width: 60%;
   margin: 0 auto;
   height: 1.25rem;
   margin-top: 0.25rem;

@@ -1,7 +1,8 @@
-import { getOAuthAccessToken } from "@/apis/userService";
 import { useEffect, useState } from "react";
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { useLoginStore } from "@/stores/loginStore";
+import { getOAuthAccessToken } from "@/apis/userService";
+import { getRefreshToken } from "@/apis/axiosInstance";
+import useLoginStore from "@/stores/loginStore";
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
@@ -10,51 +11,84 @@ const useQuery = () => {
 const PrivateRoute = () => {
   const query = useQuery();
   const [isLoading, setIsLoading] = useState(true);
-  const { isLogin, login, logout } = useLoginStore();
-  const navigate = useNavigate();
+  const { isLogin, setLogin, setLogout } = useLoginStore();
+  const navigateTo = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const checkAuthentication = async () => {
-      // session에 accessToken이 존재하면 로그인이 된 것으로 간주
-      const storedToken = sessionStorage.getItem("accessToken");
-      if (storedToken) {
-        login(storedToken); // 세션에 저장된 토큰으로 로그인 상태 유지
-        setIsLoading(false);
-        return;
-      }
+      try {
+        // 1. 먼저 URL에서 인증 코드 확인
+        const queryCode = query.get("code");
+        if (queryCode) {
+          try {
+            const response = await getOAuthAccessToken(queryCode);
+            if (response?.accessToken) {
+              sessionStorage.setItem("accessToken", response.accessToken);
+              setLogin();
+              navigateTo("/", { replace: true });
+              setIsLoading(false);
+              return;
+            } else {
+              // OAuth 토큰 발급은 성공했지만 accessToken이 없는 경우
+              console.error("OAuth token response missing accessToken");
+              setLogout();
+            }
+          } catch (error) {
+            console.error("OAuth token error:", error);
+            setLogout();
+          }
+        }
 
-      // 소셜 로그인 후 main 페이지로 이동할 때
-      // 발급 받은 code로 로그인 정보를 가져옴
-      const queryCode = query.get("code");
-      if (queryCode) {
+        // 2. sessionStorage에서 accessToken 확인
+        const storedToken = sessionStorage.getItem("accessToken");
+        if (storedToken) {
+          setLogin();
+          setIsLoading(false);
+          return;
+        }
+
+        // 3. refreshToken으로 accessToken 재발급 시도
         try {
-          const response = await getOAuthAccessToken(queryCode);
-          console.log(response);
-          if (response && response.accessToken) {
-            login(response.accessToken); // 로그인 시 accessToken 저장
-            navigate("/", { replace: true });
+          const newAccessToken = await getRefreshToken();
+          if (newAccessToken) {
+            sessionStorage.setItem("accessToken", newAccessToken);
+            setLogin();
+            setIsLoading(false);
+            return;
+          } else {
+            // refresh token으로 새 토큰 발급 실패
+            console.error("Failed to get new access token");
+            setLogout();
           }
         } catch (error) {
-          console.log(error);
-          logout(); // 오류 발생 시 로그아웃 처리
+          console.error("Refresh token error:", error);
+          setLogout();
         }
-      } else {
-        // 세션에 accessToken 정보가 없고 소셜 로그인 후가 아니라면 로그인 페이지로 리다이렉트
-        logout();
-        navigate("/login", { replace: true });
-      }
 
-      setIsLoading(false);
+        //  모든 인증 시도 실패
+        navigateTo("/login", { replace: true, state: { from: location } });
+      } catch (error) {
+        // 전체 인증 프로세스 실패
+        console.error("Authentication check failed:", error);
+        setLogout();
+        setIsLoading(false);
+        navigateTo("/login", { replace: true, state: { from: location } });
+      }
     };
 
     checkAuthentication();
-  }, [query, login, logout, navigate]);
+  }, []);
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  return isLogin ? <Outlet /> : <Navigate to="/login" />;
+  return isLogin ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/login" state={{ from: location }} />
+  );
 };
 
 export default PrivateRoute;

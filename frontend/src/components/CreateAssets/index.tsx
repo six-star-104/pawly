@@ -1,178 +1,131 @@
 import { useState } from "react";
-import styles from "./CreateAssets.style";
-import { SignupAssetsProps } from "@/types/UserType";
-import OpenAI from "openai";
-import { v4 as uuidv4 } from "uuid";
+import * as style from "./CreateAssets.style";
+import { useSignUpStore } from "@/stores/signUpStore";
+import { makeAsset } from "@/apis/userService";
 
-const openai = new OpenAI({
-  apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-  dangerouslyAllowBrowser: true,
-});
-
-export const CreateAssets: React.FC<SignupAssetsProps> = ({
-  assets,
-  setAssets,
-  assetsName,
-  setAssetsName,
-}) => {
-  console.log(assets);
+export const CreateAssets: React.FC<{
+  onImageGenerated?: (isGenerated: boolean) => void;
+}> = ({ onImageGenerated }) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [assetsDescription, setAssetsDescription] = useState("");
-  const [showNameInput, setShowNameInput] = useState(false);
+  const [showButtons, setShowButtons] = useState(false);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+  const [isRegeneration, setIsRegeneration] = useState(false);
 
-  const translateToEnglish = async (text: string) => {
-    try {
-      const response = await fetch("/api/papago/n2mt", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-        },
-        body: `source=ko&target=en&text=${encodeURIComponent(text)}`,
-      });
-
-      if (!response.ok) {
-        throw new Error(`Translation failed: ${response.status}`);
-      }
-
-      const data = await response.json();
-      if (!data.message?.result?.translatedText) {
-        throw new Error("Invalid translation response format");
-      }
-
-      return data.message.result.translatedText;
-    } catch (error) {
-      console.error("Translation error:", error);
-      throw error;
-    }
-  };
-
-  const generateAndSaveImage = async () => {
-    try {
-      setIsGenerating(true);
-      setError(null);
-
-      const translatedText = await translateToEnglish(assetsDescription);
-
-      const response = await openai.images.generate({
-        model: "dall-e-2",
-        prompt: `please create simple animation-styled pixel art image of a ${translatedText} without any fruits on this image and with no background`,
-        n: 1,
-        size: "1024x1024",
-        quality: "hd",
-      });
-
-      if (!response.data[0].url) {
-        throw new Error("이미지 생성에 실패했습니다.");
-      }
-
-      const imageUrl = response.data[0].url;
-      const imageResponse = await fetch(imageUrl);
-      const imageBlob = await imageResponse.blob();
-      const fileName = `character-${uuidv4()}.png`;
-      const imageFile = new File([imageBlob], fileName, { type: "image/png" });
-
-      setAssets(fileName);
-
-      const imageUrl_local = URL.createObjectURL(imageFile);
-      localStorage.setItem(fileName, imageUrl_local);
-      setGeneratedImage(imageUrl_local);
-      setShowNameInput(true);
-
-      return fileName;
-    } catch (error) {
-      console.error("Image generation error:", error);
-      setError("이미지 생성 중 오류가 발생했습니다.");
-      throw error;
-    } finally {
-      setIsGenerating(false);
-    }
-  };
+  const { setAsset } = useSignUpStore();
 
   const handleDescriptionChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setAssetsDescription(event.target.value);
+    setError(null); // 입력 시 에러 메시지 초기화
   };
 
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAssetsName(event.target.value);
+  const convertBase64ToFile = async (base64Data: string, fileName: string) => {
+    const base64WithoutHeader =
+      base64Data.split(";base64,").pop() || base64Data;
+
+    const byteCharacters = atob(base64WithoutHeader);
+    const byteNumbers = new Array(byteCharacters.length);
+
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: "image/png" });
+
+    return new File([blob], fileName, { type: "image/png" });
   };
 
-  const handleGenerateClick = async () => {
-    if (!assetsDescription.trim()) {
-      setError("캐릭터 설명을 입력해주세요.");
+  const generateAsset = async () => {
+    if (assetsDescription.trim().length < 5) {
+      setError("캐릭터 설명을 5자 이상 입력해주세요.");
       return;
     }
 
     try {
-      await generateAndSaveImage();
+      setIsGenerating(true);
+      setError(null);
+
+      const response = await makeAsset(assetsDescription);
+
+      if (response.image_data) {
+        const imageUrl = `data:image/png;base64,${response.image_data}`;
+        setGeneratedImage(imageUrl);
+
+        const imageFile = await convertBase64ToFile(
+          response.image_data,
+          response.image_name || "generated-asset.png"
+        );
+
+        setAsset(imageFile);
+        setShowButtons(true);
+        setIsRegeneration(false);
+        onImageGenerated?.(true); // 이미지 생성 성공 알림
+      } else {
+        throw new Error("이미지 생성에 실패했습니다.");
+      }
     } catch (error) {
-      console.error("Character generation failed:", error);
+      console.error("이미지 생성 실패:", error);
+      setError("이미지를 생성하는 중 오류가 발생했습니다.");
+      onImageGenerated?.(false); // 이미지 생성 실패 알림
+    } finally {
+      setIsGenerating(false);
     }
   };
 
   const handleRegenerateClick = () => {
+    setIsRegeneration(true);
+    setShowButtons(false);
     setGeneratedImage(null);
-    setShowNameInput(false);
-    setAssetsDescription("");
-    setAssetsName("");
-    setAssets("");
     setError(null);
+    onImageGenerated?.(false); // 다시 생성하기 클릭 시 false로 설정
   };
 
   return (
-    <div css={styles.container}>
-      <div css={styles.title}>나만의 동물 캐릭터를 만들어보세요!</div>
-      <div css={styles.content}>예) 귀여운 고양이, 화난 원숭이</div>
-      <div css={styles.inputContainer}>
-        <input
+    <style.Container>
+      <style.title>나만의 동물 캐릭터를 만들어보세요!</style.title>
+      <style.content>예) 귀여운 고양이, 화난 원숭이</style.content>
+      <style.inputContainer>
+        <style.assetsInput
           type="text"
-          css={styles.assetsInput}
           value={assetsDescription}
           onChange={handleDescriptionChange}
           placeholder="캐릭터를 설명해주세요"
-          disabled={showNameInput}
+          disabled={!!(isGenerating || (generatedImage && !isRegeneration))}
         />
-        {!showNameInput && (
-          <button
-            onClick={handleGenerateClick}
-            disabled={isGenerating}
-            css={styles.generateButton}
+        {(!showButtons || isRegeneration) && (
+          <style.generateButton
+            onClick={generateAsset}
+            disabled={!assetsDescription.trim() || isGenerating}
           >
-            {isGenerating ? "생성 중..." : "캐릭터 생성하기"}
-          </button>
+            {isGenerating ? "생성 중..." : "생성하기"}
+          </style.generateButton>
         )}
-      </div>
-      {error && <div css={styles.error}>{error}</div>}
+      </style.inputContainer>
+      <style.errorContainer>
+        {error && <style.error>{error}</style.error>}
+      </style.errorContainer>
 
-      {generatedImage && (
-        <div css={styles.resultContainer}>
-          <img
-            src={generatedImage}
-            alt="Generated character"
-            css={styles.characterImage}
-          />
-          {showNameInput && (
-            <div css={styles.nameInputContainer}>
-              <input
-                type="text"
-                value={assetsName}
-                onChange={handleNameChange}
-                placeholder="캐릭터의 이름을 입력해주세요"
-                css={styles.nameInput}
-              />
-              <button
-                onClick={handleRegenerateClick}
-                css={styles.regenerateButton}
-              >
-                다시 생성하기
-              </button>
-            </div>
+      <style.resultContainer>
+        <style.imageContainer>
+          {generatedImage && !isRegeneration && (
+            <style.characterImage
+              src={generatedImage}
+              alt="Generated character"
+            />
           )}
-        </div>
-      )}
-    </div>
+        </style.imageContainer>
+        {showButtons && !isRegeneration && (
+          <style.buttonContainer>
+            <style.regenerateButton onClick={handleRegenerateClick}>
+              다시 생성하기
+            </style.regenerateButton>
+          </style.buttonContainer>
+        )}
+      </style.resultContainer>
+    </style.Container>
   );
 };
