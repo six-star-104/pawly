@@ -13,18 +13,14 @@ import java.io.IOException;
 public class FirebaseInitialization {
 
     @PostConstruct
-    public void initialize() {
-        try {
-            FileInputStream serviceAccount =
-                    new FileInputStream("./src/main/resources/firebase-service-account.json");
-
-            FirebaseOptions options = new FirebaseOptions.Builder()
+    public void initialize() throws IOException {
+        if (FirebaseApp.getApps().isEmpty()) { // FirebaseApp이 존재하지 않을 때만 초기화
+            FileInputStream serviceAccount = new FileInputStream("./src/main/resources/firebase-service-account.json");
+            FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .build();
 
             FirebaseApp.initializeApp(options);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
