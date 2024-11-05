@@ -29,7 +29,7 @@ public class PostItReadDto {
                 .content(postIt.getContent())
                 .status(postIt.getStatus())
                 .createdAt(postIt.getCreatedAt())
-                .updatedAt(postIt.getUpdateAt())
+                .updatedAt(postIt.getUpdatedAt())
                 .build();
     }
 
