@@ -66,6 +66,7 @@ export const SignUp = () => {
 
       navigateTo("/");
     } catch (error) {
+      console.log("durl");
       console.error("Sign up failed:", error);
     }
   };
