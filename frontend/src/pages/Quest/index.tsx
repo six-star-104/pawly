@@ -40,7 +40,7 @@ export const Quest = () => {
   const [progress, setProgress] = useState<number>(71.2);
   const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false);
   const [selectedChallenge, setSelectedChallenge] = useState<IChallenges | null>(null);
-
+  console.log(setProgress)
   useEffect(() => {
     // Mock data for challenges
     const mockChallenges: IChallenges[] = [
