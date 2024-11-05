@@ -1,5 +1,5 @@
 import axios from "axios";
-import axiosInstance from "./axiosInstance";
+import { axiosInstance, flaskAxiosInstance } from "./axiosInstance";
 import { UserInfoType, LoginResponseType, SignUpType } from "@/types/UserType";
 
 export const kakaoLogin = async () => {
@@ -46,12 +46,11 @@ export const getOAuthAccessToken = async (
   code: string
 ): Promise<LoginResponseType> => {
   try {
-    const response = await axios.get(`oauth/get-user-token`, {
+    const response = await axios.get(`oauth/get-member-token`, {
       params: {
         code,
       },
     });
-    // console.log(response);
     const accessToken = response.data.data.accessToken;
     let userInfo: UserInfoType;
     if (accessToken) {
@@ -70,18 +69,38 @@ export const getOAuthAccessToken = async (
 
 export const signUp = async (signUpForm: SignUpType) => {
   try {
-    const response = await axios.post(`member/sign-up`, {
-      email: signUpForm.email,
-      name: signUpForm.name,
-      provider: signUpForm.provider,
-      providerId: signUpForm.providerId,
-      nickname: signUpForm.nickname,
-      assets: signUpForm.assets,
-      assetsName: signUpForm.assetsName,
+    const formData = new FormData();
+
+    // asset 파일 추가
+    if (signUpForm.asset) {
+      formData.append("asset", signUpForm.asset);
+    }
+
+    // JSON 데이터를 Blob으로 추가
+    const jsonBlob = new Blob(
+      [
+        JSON.stringify({
+          email: signUpForm.email,
+          name: signUpForm.name,
+          provider: signUpForm.provider,
+          providerId: signUpForm.providerId,
+          nickname: signUpForm.nickname,
+        }),
+      ],
+      { type: "application/json" }
+    );
+    formData.append("data", jsonBlob);
+
+    // axios 요청
+    const response = await axios.post(`member/sign-up`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     });
+
     console.log(response);
   } catch (error) {
-    console.log("signUp failed: ", error);
+    console.log(error);
     throw error;
   }
 };
@@ -115,6 +134,21 @@ export const logout = async () => {
     console.log(response);
   } catch (error) {
     console.error("logout failed: ", error);
+    throw error;
+  }
+};
+
+export const makeAsset = async (word: string) => {
+  try {
+    const response = await flaskAxiosInstance.get("make_image", {
+      params: {
+        word: word,
+      },
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("translate failed", error);
     throw error;
   }
 };

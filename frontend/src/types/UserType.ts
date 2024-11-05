@@ -20,7 +20,6 @@ export type UserInfoType = {
 
   nickname: string;
   assets: string;
-  assetsName: string;
 };
 
 export type SignUpType = {
@@ -29,19 +28,14 @@ export type SignUpType = {
   provider: string;
   providerId: string;
   nickname: string;
-  assets: string;
-  assetsName: string;
+  asset: File | null;
 };
 
 export type SignupNicknameProps = {
-  nickname: string;
-  setNickname: (nickname: string) => void;
   onValidationChange?: (isValid: boolean) => void;
 };
 
 export type SignupAssetsProps = {
   assets: string;
   setAssets: (assets: string) => void;
-  assetsName: string;
-  setAssetsName: (assetsName: string) => void;
 };
