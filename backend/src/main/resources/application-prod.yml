@@ -87,3 +87,7 @@ cloud:
       secretKey: ${S3_SECRET_KEY}
     region.static: ap-northeast-2
     stack.auto: false
+
+firebase:
+  config:
+    path: ${FIRE_BASE_PATH}
