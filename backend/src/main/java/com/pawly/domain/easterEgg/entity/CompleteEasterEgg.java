@@ -1,5 +1,6 @@
 package com.pawly.domain.easterEgg.entity;
 
+import com.pawly.domain.easterEgg.dto.CompleteEasterEggDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,5 +31,12 @@ public class CompleteEasterEgg {
     @Column(name = "completed_at")
     private LocalDateTime completedAt;
 
-    private Enum<Status> status;
+    @Convert(converter = StatusConverter.class)
+    private Status status;
+
+    public CompleteEasterEgg(CompleteEasterEggDto dto) {
+        this.memberId = dto.getMemberId();
+        this.easterEggId = dto.getEasterEggId();
+        this.status = dto.getStatus();
+    }
 }
