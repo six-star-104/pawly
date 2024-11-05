@@ -7,6 +7,7 @@ import { kakaoLogin } from "@/apis/userService";
 import { useNavigate, useLocation } from "react-router-dom";
 import useLoginStore from "@/stores/loginStore";
 import { getRefreshToken } from "@/apis/axiosInstance";
+import { useEffect } from "react";
 export const Login = () => {
   const { isLogin, setLogin } = useLoginStore();
   const navigateTo = useNavigate();
