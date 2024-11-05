@@ -41,10 +41,7 @@ spring:
             client-secret: ${GOOGLE_CLIENT_SECRET}
             redirect-uri: ${GOOGLE_REDIRECT_URI}
             client-name: Google
-            scope:
-              - profile
-              - email
-              - openid
+            scope: profile, email
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
