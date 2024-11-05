@@ -14,7 +14,8 @@ import {
   HamBtnCss,
   BackBtnCss,
   slidePanelStyle, 
-  panelContentStyle
+  panelContentStyle,
+  VerticalTextSection
 } from './styles';
 import PixelContainer from '../../components/PixelContainer';
 import CancelButton from '../../assets/icons/CancelButton.png';
@@ -66,15 +67,16 @@ export const MyPage = () => {
               <div css={MyInfo}>나의 정보</div>
 
               <div css={InfoSection}>
-                <div>
-                  <span>누구개 </span> 
-                  <span>남은식</span> 
+                <div css={VerticalTextSection}>
+                  <h3>누구개 </h3> 
+                  <h4>남은식</h4> 
                 </div>
                 <div>
                   <button css={closeButtonStyle}><img src="https://unpkg.com/pixelarticons@1.8.1/svg/edit.svg" alt="편집 버튼" width="30" height="30" /></button> 
                   <button onClick={close} css={closeButtonStyle}><img src={CancelButton} alt="닫기 버튼" width={25} /></button>
                 </div> 
               </div>
+              
               
               <div css={StatsSection}>
                 <div><img src="https://unpkg.com/pixelarticons@1.8.1/svg/reciept.svg" alt="롤링페이퍼 아이콘" width="20" height="20" /> 작성한 롤링페이퍼: n개</div>

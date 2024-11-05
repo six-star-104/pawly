@@ -2,8 +2,7 @@ import { css } from '@emotion/react';
 
 export const Container = css`
   width: 100%;
-  height: 214vh;
-  /* min-height: 100vh; */
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -55,7 +54,8 @@ export const searchPixelContainerWrapper = css`
 export const searchContainer = css`
   display: flex;
   align-items: center;
-  width: 100%;
+  width: 90%;
+  max-width: 500px;
   background-color: #fff;
   padding: 0.5rem;
   border-radius: 8px;
@@ -77,7 +77,25 @@ export const searchContainer = css`
   }
 `;
 
-export const tabContainer = (activeTab: "friends" | "requests") => css`
+export const slidePanelStyle = css`
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100vh;
+  background-color: #f9f4ff;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+`;
+
+export const panelContentStyle = css`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 3px solid black;
+`;
+
+export const tabContainer = (activeTab: "received" | "sent") => css`
   display: flex;
   width: 90%;
   max-width: 500px;
@@ -96,90 +114,85 @@ export const tabContainer = (activeTab: "friends" | "requests") => css`
 
     &:nth-of-type(1) {
       border-left: 2px solid black;
-      border-bottom: ${activeTab === "requests" ? "2px solid black" : "none"};
+      border-bottom: ${activeTab === "sent" ? "2px solid black" : "none"};
     }
 
     &:nth-of-type(2) {
       border-left: none;
-      border-bottom: ${activeTab === "friends" ? "2px solid black" : "none"};
+      border-bottom: ${activeTab === "received" ? "2px solid black" : "none"};
     }
   }
 
   .active {
-    background-color: #d3e6ff;
+    background-color: #d1b3ff;
   }
 `;
 
-export const friendListContainer = css`
+export const letterListContainer = css`
   display: flex;
   flex-direction: column;
   width: 90%;
   max-width: 500px;
-  gap: 0.5rem;
 `;
 
-export const friendItem = css`
+export const letterItem = css`
   display: flex;
   align-items: center;
   background-color: #fff;
-  padding: 1rem;
+  padding: 0.7rem;
   border-left: 2px solid black;
   border-right: 2px solid black;
   border-bottom: 2px solid black;
   gap: 1rem;
 `;
 
-export const friendName = css`
+export const letterContent = css`
   flex: 1;
   text-align: left;
-
-  p {
-    font-size: 1rem;
-    font-weight: bold;
-    margin: 0;
-  }
-
-  span {
-    font-size: 0.85rem;
-    color: #666;
-  }
 `;
 
-export const friendActionIcons = css`
+export const letterDate = css`
+  font-size: 0.9rem;
+  color: #666;
+`;
+
+export const deleteIcon = css`
+  background: none;
+  border: none;
+  cursor: pointer;
+`;
+
+export const deleteModalOverlayStyle = css`
   display: flex;
-  gap: 0.5rem;
-
-  button {
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-`;
-
-export const slidePanelStyle = css`
+  align-items: center;
+  justify-content: center;
   position: fixed;
   top: 0;
+  left: 0;
   right: 0;
-  width: 300px;
-  height: 100vh;
-  background-color: #f9f4ff;
-  transform: translateX(100%);
-  transition: transform 0.3s ease;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
 `;
 
-export const panelContentStyle = css`
+export const deleteModalContentStyle = css`
+  background: #fff;
+  border: 2px solid black;
+  padding: 20px;
+  width: 85%;
+  text-align: center;
+  font-family: 'Galmuri9';
+  color: #333;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  border: 3px solid black;
+  align-items: center;
+  gap: 0.5rem;
+`;
 
-  button {
-    align-self: flex-end;
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-  }
+export const warningIconStyle = css`
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: 0.5rem;
 `;
 
 export const modalOverlayStyle = css`
@@ -191,63 +204,34 @@ export const modalOverlayStyle = css`
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5); /* 단순 반투명 배경 */
+  background: rgba(0, 0, 0, 0.5);
   z-index: 1000;
 `;
 
 export const modalContentStyle = css`
-  background: #ecf5ff;
-  border-radius: 10px;
-  padding: 20px;
-  width: 70%;
-  max-width: 500px;
-  height: 50vh;
+  background: #fff;
   border: 2px solid black;
+  padding: 0px;
+  width: 80%;
+  height: 60vh;
+  /* max-width: 400px; */
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: 'Galmuri9';
+  font-size: 1.3rem;
 `;
 
 export const modalHeaderStyle = css`
-  width: 100%;
+  background-color: #ece7ff;
+  padding: 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
-  font-family: 'Galmuri9';
-  font-size: 1.2rem;
-`;
-
-export const modalInputStyle = css`
   width: 100%;
-  padding: 10px;
-  border: none;
-  border-bottom: 2px solid black;
-  margin: 8px 0;
-  font-family: 'Galmuri9';
-  font-size: 1rem;
-  background: transparent;
-  outline: none;
-
-  &:focus {
-    border-color: #333;
-  }
-`;
-
-export const sendButtonStyle = css`
-  padding: 10px 20px;
-  background-color: #4caf50;
-  color: white;
-  font-size: 1rem;
-  font-family: 'Galmuri9';
-  border: 2px solid black;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 20px;
-
-  &:hover {
-    background-color: #45a049;
-  }
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+  color: #333;
 `;
 
 export const closeButtonStyle = css`
@@ -255,9 +239,48 @@ export const closeButtonStyle = css`
   border: none;
   padding: 0;
   cursor: pointer;
-  transition: transform 0.1s ease;
+  font-size: 1.5rem;
+`;
 
-  &:active {
-    transform: scale(0.95);
+export const modalBodyStyle = css`
+  width: 100%;
+  height: 40vh;
+  padding: 10px;
+  font-family: 'Galmuri9';
+  text-align: center;
+  color: #333;
+  border-bottom: 1px solid #333;
+  margin-bottom: 1rem;
+`;
+
+export const reactionIconsStyle = css`
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem;
+  margin-right: auto; /* 아이콘을 왼쪽으로 정렬 */
+  .nes-icon {
+    font-size: 1.5rem; /* 아이콘 크기 조절 */
+    cursor: pointer;
   }
+`;
+
+export const modalActionsStyle = css`
+  display: flex;
+  justify-content: space-between; /* 아이콘과 버튼 사이의 간격 조정 */
+  align-items: center;
+  width: 100%;
+  padding: 0 1rem;
+  /* margin-top: 1rem; */
+`;
+
+
+export const replyTextareaStyle = css`
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 1rem;
+  border: 1px solid #000;
+  font-family: 'Galmuri9';
+  font-size: 1rem;
+  resize: none;
+  outline: none;
 `;

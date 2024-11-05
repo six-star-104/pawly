@@ -35,10 +35,10 @@ export const contents = css`
 export const MyInfo = css`
   display: inline-block;
   text-align: center;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
-  padding-bottom: 0.5rem;
-  margin-bottom: 1rem;
+  padding-bottom: 0.2rem;
+  margin-bottom: 0.2rem;
   border-bottom: 3px solid black;
   width: auto;
 `;
@@ -47,8 +47,8 @@ export const InfoSection = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 0;
-  font-size: 1.5rem;
+  padding: 0.2rem 0;
+  font-size: 1.2rem;
   border-bottom: 2px solid black;
   width: 90%;
   text-align: left;
@@ -64,6 +64,24 @@ export const InfoSection = css`
     align-items: center;
   }
 `;
+export const VerticalTextSection = css`
+  display: flex;
+  flex-direction: column; /* 세로로 배치 */
+  align-items: flex-start; /* 왼쪽 정렬 */
+  gap: 0rem; /* 요소 사이 간격 */
+
+  h3 {
+    font-size: 1.2rem; /* 큰 글씨 크기 */
+    margin: 0; /* 기본 여백 제거 */
+  }
+
+  h4 {
+    font-size: 1rem; /* 작은 글씨 크기 */
+    margin: 0; /* 기본 여백 제거 */
+    color: #333; /* 텍스트 색상 조정 (필요 시 변경 가능) */
+  }
+`;
+
 
 export const StatsSection = css`
   display: flex;
