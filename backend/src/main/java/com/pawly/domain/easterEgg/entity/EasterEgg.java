@@ -22,4 +22,7 @@ public class EasterEgg {
     private String content;
 
     private String reward;
+
+    @Column(name = "secret_flag")
+    private boolean secretFlag;
 }

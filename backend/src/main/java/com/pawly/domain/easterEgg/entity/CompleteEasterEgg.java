@@ -25,18 +25,19 @@ public class CompleteEasterEgg {
     @Column(name = "member_id")
     private Long memberId;
 
-    @Column(name = "easter_egg_id")
-    private Long easterEggId;
+    @ManyToOne
+    @JoinColumn(name = "easter_egg_id")
+    private EasterEgg easterEgg;
 
     @Column(name = "completed_at")
     private LocalDateTime completedAt;
 
-    @Convert(converter = StatusConverter.class)
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     public CompleteEasterEgg(CompleteEasterEggDto dto) {
         this.memberId = dto.getMemberId();
-        this.easterEggId = dto.getEasterEggId();
+        this.easterEgg = dto.getEasterEgg();
         this.status = dto.getStatus();
     }
 }

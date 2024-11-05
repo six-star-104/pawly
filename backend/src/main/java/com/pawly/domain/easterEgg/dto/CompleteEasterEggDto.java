@@ -1,5 +1,6 @@
 package com.pawly.domain.easterEgg.dto;
 
+import com.pawly.domain.easterEgg.entity.EasterEgg;
 import com.pawly.domain.easterEgg.entity.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +10,6 @@ import lombok.Getter;
 public class CompleteEasterEggDto {
 
     private Long memberId;
-    private Long easterEggId;
+    private EasterEgg easterEgg;
     private Status status;
 }
