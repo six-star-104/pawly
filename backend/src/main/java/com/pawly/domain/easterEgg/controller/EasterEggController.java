@@ -1,5 +1,6 @@
 package com.pawly.domain.easterEgg.controller;
 
+import com.pawly.domain.easterEgg.dto.IdRequestDto;
 import com.pawly.domain.easterEgg.service.EasterEggService;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.service.MemberService;
@@ -8,14 +9,12 @@ import com.pawly.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/api/easteregg")
+@RequestMapping("/api/easter-egg")
 public class EasterEggController {
 
     private final EasterEggService easterEggService;
@@ -39,6 +38,17 @@ public class EasterEggController {
         try {
             Member member = memberService.findByEmail(authentication.getName());
             return easterEggService.getEasterEgg(member.getMemberId());
+        }
+        catch (Exception e) {
+            return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+        }
+    }
+
+    @PostMapping
+    public ApiResponse<?> completeEasterEgg(Authentication authentication, @RequestBody IdRequestDto idRequestDto) {
+        try {
+            Member member = memberService.findByEmail(authentication.getName());
+            return easterEggService.completeEasterEgg(member.getMemberId(), idRequestDto.getEasterEggId());
         }
         catch (Exception e) {
             return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);

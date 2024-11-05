@@ -2,10 +2,7 @@ package com.pawly.domain.easterEgg.entity;
 
 import com.pawly.domain.easterEgg.dto.CompleteEasterEggDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -34,6 +31,11 @@ public class CompleteEasterEgg {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    public void updateStatus() {
+        this.status = Status.COMPLETE;
+        this.completedAt = LocalDateTime.now();
+    }
 
     public CompleteEasterEgg(CompleteEasterEggDto dto) {
         this.memberId = dto.getMemberId();
