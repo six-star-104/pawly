@@ -39,6 +39,9 @@ public enum ErrorCode {
     // AWS S3
     AWS_SERVER_ERROR("A008", HttpStatus.BAD_REQUEST, "AWS S3 서버 에러가 발생했습니다."),
 
+    // Fcm
+    NO_FCM_TOKEN("A009", HttpStatus.UNAUTHORIZED, "FCM Token을 찾을 수 없습니다."),
+
     // File Error
     FILE_UPLOAD_FAILED("F001", HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다."),
     INVALID_FILE_FORMAT("F002", HttpStatus.BAD_REQUEST, "유효하지 않은 파일 형식입니다."),

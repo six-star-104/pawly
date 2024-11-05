@@ -25,7 +25,7 @@ public class PostItCreateDto {
                 .content(this.content)
                 .status(Status.NOT_DELETE)
                 .createdAt(LocalDateTime.now())
-                .updateAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
     }
 }

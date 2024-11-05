@@ -12,6 +12,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
 @Getter
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-@Table(name = "post_it")
+@Table(name = "postit")
 public class PostIt extends BaseEntity {
 
     @Id
@@ -28,7 +29,7 @@ public class PostIt extends BaseEntity {
     private Long postId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rolling_paperId")
+    @JoinColumn(name = "rolling_paper_id")
     private RollingPaper rollingPaper;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -40,12 +41,13 @@ public class PostIt extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column(name = "update_at")
-    private LocalDateTime updateAt;
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     public void updatePostIt(String content) {
         this.content = content;
-        this.updateAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public void deletePostIt() {

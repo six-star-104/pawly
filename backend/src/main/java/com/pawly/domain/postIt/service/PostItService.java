@@ -12,8 +12,10 @@ import com.pawly.domain.postIt.enums.Status;
 import com.pawly.domain.postIt.repository.PostItRepository;
 import com.pawly.domain.rollingPaper.entity.RollingPaper;
 import com.pawly.domain.rollingPaper.repository.RollingPaperRepository;
+import com.pawly.global.dto.FcmMessageRequestDto;
 import com.pawly.global.exception.ErrorCode;
 import com.pawly.global.response.ApiResponse;
+import com.pawly.global.service.FirebaseCloudMessageService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,26 +29,31 @@ public class PostItService {
     private final MemberRepository memberRepository;
     private final RollingPaperRepository rollingPaperRepository;
     private final ReportRepository reportRepository;
+    private final FirebaseCloudMessageService firebaseCloudMessageService;
 
     @Transactional
     public ApiResponse<?> createPostIt(PostItCreateDto dto) {
         Optional<Member> requestMember = memberRepository.findById(dto.getMemberId());
-        if (!requestMember.isPresent()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+        if (requestMember.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
         Optional<RollingPaper> rollingPaper = rollingPaperRepository.findById(dto.getRollingPaperId());
-        if (!rollingPaper.isPresent()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+        if (rollingPaper.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
         postItRepository.save(dto.toEntity(requestMember.get(), rollingPaper.get()));
+
+        FcmMessageRequestDto request = new FcmMessageRequestDto(rollingPaper.get().getMember().getMemberId(), "롤링페이퍼가 작성되었어요!", "마음을 담은 롤링페이퍼가 작성되었습니다. 지금 확인해보세요.");
+        firebaseCloudMessageService.sendMessage(request);
+
         return ApiResponse.createSuccess(null, "생성 성공");
     }
 
     @Transactional
     public ApiResponse<?> readPostIt(Long requestMemberId, Long postItId) {
         Optional<Member> requestMember = memberRepository.findById(requestMemberId);
-        if (!requestMember.isPresent()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+        if (requestMember.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
         Optional<PostIt> postIt = postItRepository.findById(postItId);
-        if (!postIt.isPresent() || postIt.get().getStatus() == Status.DELETE){
+        if (postIt.isEmpty() || postIt.get().getStatus() == Status.DELETE){
             return ApiResponse.createError(ErrorCode.POST_IT_NOTFOUND);
         }
 
@@ -65,10 +72,10 @@ public class PostItService {
     @Transactional
     public ApiResponse<?> updatePostIt(PostItUpdateDto dto) {
         Optional<Member> requestMember = memberRepository.findById(dto.getMemberId());
-        if (!requestMember.isPresent()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+        if (requestMember.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
         Optional<PostIt> postIt = postItRepository.findById(dto.getPostItId());
-        if (!postIt.isPresent() || postIt.get().getStatus() == Status.DELETE) {
+        if (postIt.isEmpty() || postIt.get().getStatus() == Status.DELETE) {
             return ApiResponse.createError(ErrorCode.POST_IT_NOTFOUND);
         }
 
@@ -83,10 +90,10 @@ public class PostItService {
     @Transactional
     public ApiResponse<?> deletePostIt(Long requestMemberId, Long postItId) {
         Optional<Member> rqMember = memberRepository.findById(requestMemberId);
-        if (!rqMember.isPresent()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+        if (rqMember.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
         Optional<PostIt> postIt = postItRepository.findById(postItId);
-        if (!postIt.isPresent()) return ApiResponse.createError(ErrorCode.POST_IT_NOTFOUND);
+        if (postIt.isEmpty()) return ApiResponse.createError(ErrorCode.POST_IT_NOTFOUND);
 
         Member postItWriter = postIt.get().getMember();
 
@@ -99,10 +106,10 @@ public class PostItService {
     @Transactional
     public ApiResponse<?> reportPostIt(PostReportCreateDto dto) {
         Optional<Member> requestMember = memberRepository.findById(dto.getMemberId());
-        if (!requestMember.isPresent()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+        if (requestMember.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
         Optional<PostIt> postIt = postItRepository.findById(dto.getPostId());
-        if (!postIt.isPresent()) return ApiResponse.createError(ErrorCode.POST_IT_NOTFOUND);
+        if (postIt.isEmpty()) return ApiResponse.createError(ErrorCode.POST_IT_NOTFOUND);
 
         if (!postIt.get().getRollingPaper().getMember().equals(requestMember.get())) {
             return ApiResponse.createError(ErrorCode.ACCESS_DENIED);

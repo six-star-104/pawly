@@ -38,6 +38,8 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private Status status = Status.ACTIVATED;
+    @Column(name = "fcm_token")
+    private String fcmToken;
 
     public void updateOAuthInfo(String provider, String providerId) {
         this.provider = provider;

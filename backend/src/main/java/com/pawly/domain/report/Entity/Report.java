@@ -18,6 +18,7 @@ import lombok.experimental.SuperBuilder;
 public class Report extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "report_id")
     private Long ReportId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -27,6 +28,7 @@ public class Report extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Category category;
 
+    @Column(name = "detail_id")
     private Long detailId;
     private String content;
 
