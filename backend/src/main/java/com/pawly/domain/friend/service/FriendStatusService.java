@@ -37,7 +37,7 @@ public class FriendStatusService {
             friendRepository.save(friend);
             friendRequestRepository.delete(friendRequest);
 
-            FcmMessageRequestDto request = new FcmMessageRequestDto(receiver.getMemberId(), "친구가 되어주셨네요!", "함께 소중한 추억을 만들어가세요");
+            FcmMessageRequestDto request = new FcmMessageRequestDto(receiver.getMemberId(), "친구가 되어주셨네요!", "함께 소중한 추억을 만들어가세요!");
             firebaseCloudMessageService.sendMessage(request);
 
             return ApiResponse.createSuccessWithNoContent("친구 수락 성공");
