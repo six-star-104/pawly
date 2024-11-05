@@ -1,5 +1,4 @@
 /** @jsxImportSource @emotion/react */
-import React from "react";
 import { useState } from "react";
 import { data } from "./mockdata";
 import { PostIt } from "@/components/PostIt";
