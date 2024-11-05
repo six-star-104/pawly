@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import React from "react";
 import { useState } from "react";
-import { data } from "./mockdata";
 import { PostIt } from "@/components/PostIt";
 import { backButton, container, plusButton } from "./styles";
 import PlusButton from "@/assets/icons/PlusButton.png";
@@ -9,6 +8,7 @@ import Modal from "@/components/Modal";
 import { useNavigate } from "react-router-dom";
 import backButtonImg from "@/assets/images/back_button.png";
 import PostItForm from "@/components/PostItForm";
+import { useFetchSingleRollingpaper } from "@/hooks/useFetchSingleRollingPaper";
 // 특정 하나의 롤링 페이퍼만 볼 수 있는 페이지
 export const RollingPaper = () => {
   // 가능한 말풍선 선택지
@@ -18,8 +18,9 @@ export const RollingPaper = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navigate = useNavigate();
+  const { singleRollingpaper } = useFetchSingleRollingpaper(6, 0, 2);
 
-  const mockdata = {
+  const defaultData = {
     // 미리보기라서 적당히 포스트잇 id 정해주기
     postitId: 123,
     // 얘 둘은 가변으로 받아오기
@@ -43,16 +44,17 @@ export const RollingPaper = () => {
       </button>
       <h2>누구누구의 롤링페이퍼</h2>
       {/* 무한스크롤 페이지네이션 고려하기 */}
-      {data.content.map((postit, index) => (
-        <>
-          <PostIt key={index} props={postit} />
-          <PostIt key={index} props={postit} />
-          <PostIt key={index} props={postit} />
-          <PostIt key={index} props={postit} />
-          <PostIt key={index} props={postit} />
-          <PostIt key={index} props={postit} />
-        </>
-      ))}
+      {singleRollingpaper &&
+        singleRollingpaper.content.map((postit, index) => (
+          <>
+            <PostIt key={index} props={postit} />
+            <PostIt key={index} props={postit} />
+            <PostIt key={index} props={postit} />
+            <PostIt key={index} props={postit} />
+            <PostIt key={index} props={postit} />
+            <PostIt key={index} props={postit} />
+          </>
+        ))}
       <button
         css={plusButton}
         type="button"
@@ -68,7 +70,7 @@ export const RollingPaper = () => {
       >
         {/* 포스트잇 생성 폼 */}
         <PostItForm
-          props={mockdata}
+          props={defaultData}
           onClose={() => setIsOpen(false)}
           isCreate={true}
         />

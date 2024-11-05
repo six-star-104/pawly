@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import PixelContainer from "@/components/PixelContainer";
-import { data } from "./mockdata";
+// import { data } from "./mockdata";
+import { useFetchUserRollingpapers } from "../../hooks/useFetchUserRollingpaper"
 import {
   ListContainer,
   ContentContainer,
@@ -13,6 +14,8 @@ import backButtonImg from "@/assets/images/back_button.png";
 export const RollingPaperList = () => {
   const navigate = useNavigate();
 
+  const { userRollingpapers } = useFetchUserRollingpapers();
+
   return (
     <div css={container}>
       <button css={backButton} onClick={() => navigate(-1)}>
@@ -20,18 +23,19 @@ export const RollingPaperList = () => {
       </button>
       <h2>나의 롤링페이퍼들</h2>
       <div css={ListContainer}>
-        {data.content.map((rollingpaper) => (
-          //  여기다가 링크 걸어놓기
-          
-          <PixelContainer width="75%" height="8vh">
-            <div
-              css={ContentContainer}
-              onClick={() => navigate(`${rollingpaper.rollingPaperId}`)}
-            >
-              {rollingpaper.title}
-            </div>
-          </PixelContainer>
-        ))}
+        {userRollingpapers &&
+          userRollingpapers.content.map((rollingpaper) => (
+            //  여기다가 링크 걸어놓기
+
+            <PixelContainer width="75%" height="8vh">
+              <div
+                css={ContentContainer}
+                onClick={() => navigate(`${rollingpaper.rollingPaperId}`)}
+              >
+                {rollingpaper.title}
+              </div>
+            </PixelContainer>
+          ))}
       </div>
     </div>
   );
