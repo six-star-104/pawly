@@ -1,7 +1,7 @@
-package com.pawly.domain.Report.Entity;
+package com.pawly.domain.report.Entity;
 
-import com.pawly.domain.Report.enums.Category;
-import com.pawly.domain.Report.enums.Status;
+import com.pawly.domain.report.enums.Category;
+import com.pawly.domain.report.enums.Status;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.global.entity.BaseEntity;
 import jakarta.persistence.*;

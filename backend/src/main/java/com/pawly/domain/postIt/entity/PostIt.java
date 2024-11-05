@@ -20,7 +20,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-@Table(name = "post_it")
+@Table(name = "postit")
 public class PostIt extends BaseEntity {
 
     @Id

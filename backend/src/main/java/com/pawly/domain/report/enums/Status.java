@@ -1,4 +1,4 @@
-package com.pawly.domain.Report.enums;
+package com.pawly.domain.report.enums;
 
 public enum Status {
     COMPLETE, STANDBY
