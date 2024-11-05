@@ -11,7 +11,7 @@ const container = css`
 `;
 
 const title = css`
-  font-size: 1.25rem;
+  font-size: 1rem;
   text-align: center;
 `;
 
@@ -19,7 +19,6 @@ const nicknameInput = css`
   width: 60%;
   padding: 0.5rem;
   margin: 0 auto;
-
   border: none;
   box-shadow: 4px 0 0 0 black, -4px 0 0 0 black, 0 4px 0 0 black,
     0 -4px 0 0 black;

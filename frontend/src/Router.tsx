@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import PrivateRoute from "./PrivateRoute";
 import { Login } from "@/pages/Login";
 import { Main } from "@/pages/Main";
 import { MailBoxFind } from "./pages/MailBoxFind";
@@ -6,7 +7,7 @@ import { SignUp } from "@/pages/Signup";
 import { MyPage } from "@/pages/MyPage";
 import { Friends } from "./pages/Friends";
 import { Pedia } from "@/pages/Pedia";
-import PrivateRoute from "./PrivateRoute";
+import { Letter } from "@/pages/Letter";
 
 function Router() {
   return (
@@ -20,6 +21,7 @@ function Router() {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/friends" element={<Friends />} />
         <Route path="/pedia" element={<Pedia />} />
+        <Route path="/letter" element={<Letter />} />
       </Route>
     </Routes>
   );

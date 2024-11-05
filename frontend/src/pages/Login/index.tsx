@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import Pawly from "@/assets/images/Pawly.png";
+/** @jsxImportSource @emotion/react */
+import Pawly from "@/assets/icons/Pawly.svg";
 import kakao from "@/assets/images/kakao.png";
 import GooGle1 from "@/assets/images/GooGle1.png";
 import { container, imgCss, loginBtn } from "./styles";
@@ -58,8 +58,8 @@ export const Login = () => {
 
   return (
     <div css={container}>
-      <div css={imgCss}>
-        <img src={Pawly} alt="Pawly Logo" />
+      <div>
+        <img src={Pawly} css={imgCss} alt="Pawly Logo" />
       </div>
 
       <div css={loginBtn}>

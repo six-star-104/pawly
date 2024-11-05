@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { css } from "@emotion/react";
 
 export const Container = styled.div`
   display: flex;
@@ -12,6 +13,11 @@ export const Container = styled.div`
   transition: all 0.3s ease;
   z-index: 10;
   align-items: center;
+`;
+
+export const logoContainer = css`
+  width: 70%;
+  margin: 12rem auto 0;
 `;
 
 export const PageContainer = styled.div`

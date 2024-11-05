@@ -6,14 +6,14 @@ export const container = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   background-color: #f5eefc;
 `;
 
 export const imgCss = css`
   display: flex;
   justify-content: center;
-  margin-bottom: 5rem;
+  width: 80%;
+  margin: 15rem auto 0;
 `;
 
 export const loginBtn = css`
@@ -27,15 +27,16 @@ export const loginBtn = css`
     align-items: center;
     justify-content: flex-start;
     width: 14rem;
-    height: 3rem; /* 버튼의 높이 조정 */
+    height: 3rem;
     padding: 0 1rem;
     border: none;
-    font-size: 1rem; /* 글씨 크기 확대 */
+    font-size: 1rem;
     font-family: inherit;
     cursor: pointer;
   }
 
   button:first-of-type {
+    margin-top: 10rem;
     background-color: #fee500;
     color: #000;
   }
@@ -46,7 +47,7 @@ export const loginBtn = css`
   }
 
   img {
-    width: 1.5rem; 
+    width: 1.5rem;
     height: 1.5rem;
     margin-right: 1rem; /* 텍스트와의 간격 확대 */
   }

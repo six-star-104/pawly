@@ -9,10 +9,10 @@ export const pixelContainerStyle = ({
   display: flex;
   align-items: center;
   /* justify-content: center; */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  /* position: absolute; */
+  /* top: 50%;
+  left: 50%; */
+  transform: translate(-0%, -0%);
   width: ${width || "calc(100% - 40px)"};
   height: ${height || "300px"};
   font-size: 2rem;

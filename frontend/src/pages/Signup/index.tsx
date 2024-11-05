@@ -5,7 +5,7 @@ import { CreateAssets } from "@/components/CreateAssets";
 import { useSignUpStore } from "@/stores/signUpStore";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import * as style from "./style";
-import Pawly from "@/assets/images/Pawly.png";
+import Pawly from "@/assets/icons/Pawly.svg";
 
 export const SignUp = () => {
   const [pageNum, setPageNum] = useState(1);
