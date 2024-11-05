@@ -22,7 +22,7 @@ public class EasterEggResponseDto {
 
     public static EasterEggResponseDto to(CompleteEasterEgg easterEgg) {
         return EasterEggResponseDto.builder()
-                .easterEggId(easterEgg.getCompleteEasterEggId())
+                .easterEggId(easterEgg.getEasterEgg().getEasterEggId())
                 .content(easterEgg.getEasterEgg().getContent())
                 .reward(easterEgg.getEasterEgg().getReward())
                 .status(easterEgg.getStatus().getMessage())

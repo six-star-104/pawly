@@ -13,6 +13,6 @@ public interface CompleteEasterEggRepository extends JpaRepository<CompleteEaste
     List<CompleteEasterEgg> findByMemberId(Long memberId);
 
     @Query("SELECT c FROM CompleteEasterEgg c " +
-            "WHERE c.memberId =:memberId  AND c.completeEasterEggId =:easterEggId")
+            "WHERE c.memberId =:memberId  AND c.easterEgg.easterEggId =:easterEggId")
     Optional<CompleteEasterEgg> findByMemberIdAndCompleteEasterEggId(@Param("memberId") Long memberId, @Param("easterEggId") Long easterEggId);
 }

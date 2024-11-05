@@ -45,7 +45,7 @@ public class EasterEggService {
 
                     // secretFlag가 true이면서 IN_PROGRESS 상태일 때 "????" 처리
                     return isSecret && isInProgress
-                            ? new EasterEggResponseDto(completeEasterEgg.getCompleteEasterEggId(), "????", "????", Status.IN_PROGRESS.getMessage(), null)
+                            ? new EasterEggResponseDto(completeEasterEgg.getEasterEgg().getEasterEggId(), "????", "????", Status.IN_PROGRESS.getMessage(), null)
                             : EasterEggResponseDto.to(completeEasterEgg);
                 })
                 .collect(Collectors.toList());
