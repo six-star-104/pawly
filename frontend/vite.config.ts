@@ -9,7 +9,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      injectRegister: false,
+      injectRegister: "script", // 'false'에서 'script'로 변경
 
       pwaAssets: {
         disabled: false,
@@ -51,6 +51,18 @@ export default defineConfig({
         globPatterns: ["**/*.{js,css,html,svg,png,ico}"],
         cleanupOutdatedCaches: true,
         clientsClaim: true,
+        skipWaiting: true, // 추가: 새로운 서비스 워커 즉시 활성화
+        runtimeCaching: [
+          // 추가: 런타임 캐싱 설정
+          {
+            urlPattern: /^https:\/\/api\./i, // API 요청에 대한 캐시 규칙
+            handler: "NetworkFirst",
+            options: {
+              cacheName: "api-cache",
+              networkTimeoutSeconds: 10,
+            },
+          },
+        ],
       },
 
       devOptions: {
@@ -65,5 +77,30 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "src"),
     },
+  },
+
+  // 추가: 서버 설정
+  server: {
+    host: true,
+    port: 5173,
+    hmr: {
+      protocol: "ws",
+      host: "localhost",
+    },
+  },
+
+  // 추가: 빌드 설정
+  build: {
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
+  },
+
+  // 추가: WebSocket 관련 설정
+  optimizeDeps: {
+    exclude: ["@vite/client", "@vite/env"],
   },
 });
