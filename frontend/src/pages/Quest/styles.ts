@@ -66,8 +66,7 @@ export const panelContentStyle = css`
 `;
 
 export const challengeWrapper = css`
-  width:90%;
-  /* margin: 2rem auto; */
+  width: 90%;
   margin-top: 40%;
   display: flex;
   flex-direction: column;
@@ -78,13 +77,11 @@ export const challengeListContainer = css`
   display: flex;
   flex-direction: column;
   width: 100%;
-  /* gap: 1rem; */
 `;
 
 export const challengeItem = css`
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   background-color: #fff;
   padding: 1rem;
   border: 2px solid black;
@@ -108,13 +105,11 @@ export const challengeStatus = css`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  
 `;
 
 export const tabContainer = (activeTab: "inProgress" | "completed") => css`
   display: flex;
   width: 100%;
-  /* margin: 1rem auto; */
   justify-content: center;
 
   button {
@@ -144,6 +139,84 @@ export const tabContainer = (activeTab: "inProgress" | "completed") => css`
     background-color: #d1b3ff;
   }
 `;
+
+// export const progressContainer = css`
+//   width: 85%;
+//   height: 9vh;
+//   margin: 2rem auto;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+// `;
+
+export const deleteModalOverlayStyle = css`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const deleteModalContentStyle = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #F5EFFF;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  gap: 1rem;
+  & > .icon-text {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+`;
+
+export const rewardTextStyle = css`
+  font-weight: bold;
+  text-align: center;
+  justify-content: center;
+  color: #000;
+  background-color: green;
+  width: 124%;
+  height: 8vh;
+`;
+
+export const rewardTitleStyle = css`
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  border-bottom: 3px solid black;
+`;
+
+export const congratsContainerStyle = css`
+  background-color: #fff;
+  width: calc(100% + 4rem); /* 양쪽으로 확장 */
+  margin: 0 -1rem; /* 좌우 마진을 음수로 설정 */
+  padding: 0.5rem 1rem;
+  text-align: center;
+  font-weight: bold;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+`;
+
+
+
+export const warningIconStyle = css`
+  width: 3rem;
+  height: 3rem;
+`;
+
 export const progressContainer = css`
   width: 85%;
   height: 9vh;
@@ -153,27 +226,19 @@ export const progressContainer = css`
   align-items: center;
 `;
 
-export const progressBar = (progress: number) => css`
-  width: 100%;
-  height: 20px;
-  background-color: #fff;
-  border: 2px outset #000;
-  position: relative;
-
-  &::after {
-    content: '';
-    display: block;
-    height: 100%;
-    width: ${progress}%;
-    background-color: #92CC41;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
+export const modalBodyStyle = css`
+  padding: 1rem;
+  /* max-width: 500px; */
+  margin: 0 auto;
 `;
 
-export const progressPercentage = css`
-  margin-top: 0.5rem;
-  font-size: 1.2rem;
-  font-weight: bold;
+export const margin = css`
+  display: flex;
+  justify-content: space-evenly;
 `;
+export const iconTextContainer = css`
+  display: flex;
+  /* align-items: center; */
+  gap: 0.5rem; /* 이미지와 텍스트 사이의 간격 설정 */
+`;
+

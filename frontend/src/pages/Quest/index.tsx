@@ -17,11 +17,20 @@ import {
   challengeReward,
   challengeStatus,
   progressContainer,
+  deleteModalOverlayStyle,
+  deleteModalContentStyle,
+  warningIconStyle,
+  modalBodyStyle,
+  rewardTitleStyle,
+  congratsContainerStyle, 
 } from './styles';
 import NavButton from '../../assets/icons/NavButton.png';
 import BackButton from '../../assets/icons/BackButton.png';
+import cheer from '../../assets/icons/cheer.png'
 import { Hamberger } from '../Hamberger';
 import { IChallenges } from '@/types/questTypes';
+import Modal from '@/components/Modal';
+import { Button } from '@/components/Button';
 
 export const Quest = () => {
   const navigate = useNavigate();
@@ -29,6 +38,8 @@ export const Quest = () => {
   const [activeTab, setActiveTab] = useState<'inProgress' | 'completed'>('inProgress');
   const [challenges, setChallenges] = useState<IChallenges[]>([]);
   const [progress, setProgress] = useState<number>(71.2);
+  const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false);
+  const [selectedChallenge, setSelectedChallenge] = useState<IChallenges | null>(null);
 
   useEffect(() => {
     // Mock data for challenges
@@ -36,19 +47,19 @@ export const Quest = () => {
       {
         id: 1,
         title: '친구 도감 10명 이상 등록하기',
-        reward: '보상: 포스트잇 배경(하늘색)',
+        reward: '포스트잇 배경(하늘색)',
         status: '진행중',
       },
       {
         id: 2,
         title: '친구 도감 15명 이상 등록하기',
-        reward: '보상: 포스트잇 배경(하늘색)',
+        reward: '포스트잇 배경(크리스마스)',
         status: '완료하기',
       },
       {
         id: 3,
         title: '포스트잇 3회 작성',
-        reward: '보상: 포스트잇 배경(하늘색)',
+        reward: '포스트잇 배경(회색)',
         status: '완료됨',
       },
     ];
@@ -65,6 +76,16 @@ export const Quest = () => {
 
   const closeMyPage = () => {
     setMyPageVisible(false);
+  };
+
+  const openCompleteModal = (challenge: IChallenges) => {
+    setSelectedChallenge(challenge);
+    setIsCompleteModalOpen(true);
+  };
+
+  const closeCompleteModal = () => {
+    setIsCompleteModalOpen(false);
+    setSelectedChallenge(null);
   };
 
   return (
@@ -88,13 +109,11 @@ export const Quest = () => {
       </div>
 
       <div css={challengeWrapper}>
-        {/* 타블 메뉴 */}
         <div css={tabContainer(activeTab)}>
           <button onClick={() => setActiveTab('inProgress')} className={activeTab === 'inProgress' ? 'active' : ''}>진행중</button>
           <button onClick={() => setActiveTab('completed')} className={activeTab === 'completed' ? 'active' : ''}>완료됨</button>
         </div>
 
-        {/* 도전과제 목록 */}
         <div css={challengeListContainer}>
           {challenges
             .filter((challenge) => {
@@ -109,10 +128,10 @@ export const Quest = () => {
                 <div css={challengeReward}>{challenge.reward}</div>
                 <div css={challengeStatus}>
                   {challenge.status === '완료하기' && (
-                    <button type="button" className="nes-btn is-success">완료하기</button>
+                    <button type="button" className="nes-btn is-success" onClick={(e) => { e.currentTarget.blur(); openCompleteModal(challenge); }}>완료하기</button>
                   )}
                   {challenge.status === '진행중' && (
-                    <button type="button" className="nes-btn is-primary">진행중</button>
+                    <button type="button" className="nes-btn is-primary" onClick={(e) => { e.currentTarget.blur(); }}>진행중</button>
                   )}
                   {challenge.status === '완료됨' && (
                     <button type="button" className="nes-btn">완료됨</button>
@@ -123,7 +142,32 @@ export const Quest = () => {
         </div>
       </div>
 
-      {/* 진행도 바 */}
+      {selectedChallenge && (
+        <Modal isOpen={isCompleteModalOpen} onClose={closeCompleteModal} title="보상 수령">
+          <div css={[deleteModalOverlayStyle, modalBodyStyle]}>
+            <div css={deleteModalContentStyle}>
+              <h2 css={rewardTitleStyle}>보상 수령</h2>
+              <div css={congratsContainerStyle}>
+                <img src={cheer} alt="검색 아이콘"  css={warningIconStyle} />
+                <h4>축하합니다! <br /> '{selectedChallenge.reward}'을 획득했습니다!</h4>
+              </div>
+              <Button
+                backgroundColor='#ffffff'
+                color='#000'
+                variant="contained"
+                fullwidth={false}
+                rounded={0}
+                handler={closeCompleteModal}
+                fontSize='1rem'
+                width='40%'
+              >
+                확인
+              </Button>
+            </div>
+          </div>
+        </Modal>
+      )}
+
       <div css={progressContainer}>
         <progress className="nes-progress is-success" value={progress} max="100"></progress>
         <div>{progress}%</div>
