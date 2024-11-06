@@ -19,3 +19,4 @@ const useUserInfoStore = create<UserInfoStore>((set) => ({
 }));
 
 export default useUserInfoStore;
+
