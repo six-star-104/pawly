@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import PixelContainer from "@/components/PixelContainer";
 // import { data } from "./mockdata";
-import { useFetchUserRollingpapers } from "../../hooks/useFetchUserRollingpaper";
+import useFetchUserRollingpapers from "../../hooks/useFetchUserRollingpaper";
 import {
   ListContainer,
   ContentContainer,
