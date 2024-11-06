@@ -66,7 +66,7 @@ export const Login = () => {
       <div css={loginBtn}>
         <button onClick={handleKakaoLogin}>
           <img src={kakao} alt="Kakao" />
-          카카오로 시작하기기
+          카카오로 시작하기
         </button>
         <button>
           <img src={GooGle1} alt="Google" />
