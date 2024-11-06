@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum Status {
 
+    IN_PROGRESS("진행중"),
     COMPLETE("완료됨"),
     ACHIEVED("완료하기");
 

@@ -1,10 +1,8 @@
 package com.pawly.domain.easterEgg.entity;
 
+import com.pawly.domain.easterEgg.dto.CompleteEasterEggDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -24,11 +22,24 @@ public class CompleteEasterEgg {
     @Column(name = "member_id")
     private Long memberId;
 
-    @Column(name = "easter_egg_id")
-    private Long easterEggId;
+    @ManyToOne
+    @JoinColumn(name = "easter_egg_id")
+    private EasterEgg easterEgg;
 
     @Column(name = "completed_at")
     private LocalDateTime completedAt;
 
-    private Enum<Status> status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    public void updateStatus() {
+        this.status = Status.COMPLETE;
+        this.completedAt = LocalDateTime.now();
+    }
+
+    public CompleteEasterEgg(CompleteEasterEggDto dto) {
+        this.memberId = dto.getMemberId();
+        this.easterEgg = dto.getEasterEgg();
+        this.status = dto.getStatus();
+    }
 }
