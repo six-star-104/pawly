@@ -5,7 +5,7 @@ export const contentContainer = css`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  width: 400px;
+  width: 80vw;
   #textareacontainer {
     display: flex;
     justify-content: center;
@@ -38,6 +38,7 @@ export const ArrowContainer = css`
   align-items: center;
   width: 100%;
   height: 32px;
+  padding: 0px 20px;
 `;
 
 export const ArrowButton = css`
@@ -56,6 +57,12 @@ export const CreateButton = css`
   width: 100%;
   display: flex;
   justify-content: end;
-  margin-right: 8%;
-  
+  margin: 3% 8% 3% 0;
+`;
+export const PostitPreview = css`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90px;
 `;

@@ -1,12 +1,12 @@
 export interface IPostIt {
   postItId?: number;
-  memberId: number;
+  memberId?: number;
   memberNickname: string;
 
   content: string;
   status?: string;
-  backgroundColor:number;
-  fontColor:number;
+  backgroundColor: number;
+  fontColor: number;
   borderColor: number;
   image: string;
   speechBubbleSize: number;

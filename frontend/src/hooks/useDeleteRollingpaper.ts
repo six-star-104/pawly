@@ -6,7 +6,7 @@ export const useDeleteRollingpaper = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const deletRollingpaper = async (rollingpaperId: string) => {
+  const deletRollingpaper = async (rollingpaperId: number) => {
     setLoading(true);
     try {
       await axiosInstance.delete(`/rollingpaper/${rollingpaperId}`);

@@ -7,14 +7,35 @@ import {
   ContentContainer,
   backButton,
   container,
+  modalStyle,
 } from "./styles";
 import { useNavigate } from "react-router-dom";
 import backButtonImg from "@/assets/images/back_button.png";
+import { useRef, useState } from "react";
+import Modal from "@/components/Modal";
+import { useDeleteRollingpaper } from "@/hooks/useDeleteRollingpaper";
 // 내가 받은 롤링페이퍼들 모아볼 수 있는 페이지
 export const RollingPaperList = () => {
   const navigate = useNavigate();
 
   const { userRollingpapers } = useFetchUserRollingpapers();
+  const timerRef = useRef<number | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { deletRollingpaper } = useDeleteRollingpaper();
+  const handleMouseDown = () => {
+    // 미리보기면 no 클릭 이벤트
+
+    timerRef.current = window.setTimeout(() => {
+      setIsMenuOpen(true);
+    }, 300);
+  };
+
+  const handleMouseUp = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  };
 
   return (
     <div css={container}>
@@ -28,15 +49,45 @@ export const RollingPaperList = () => {
         {userRollingpapers &&
           userRollingpapers.content.map((rollingpaper, index) => (
             //  여기다가 링크 걸어놓기
-
-            <PixelContainer width="75%" height="8vh" key={index}>
-              <div
-                css={ContentContainer}
-                onClick={() => navigate(`${rollingpaper.rollingPaperId}`)}
-              >
-                {rollingpaper.title}
-              </div>
-            </PixelContainer>
+            <>
+              <PixelContainer width="75%" height="8vh" key={index}>
+                <div
+                  css={ContentContainer}
+                  onClick={() => navigate(`${rollingpaper.rollingPaperId}`)}
+                  // 모바일용
+                  onTouchStart={handleMouseDown}
+                  onTouchEnd={handleMouseUp}
+                  // pc 테스트용
+                  onMouseDown={handleMouseDown}
+                  onMouseUp={handleMouseUp}
+                  onMouseLeave={handleMouseUp}
+                >
+                  {rollingpaper.title}
+                </div>
+              </PixelContainer>
+              <Modal isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)}>
+                <div css={modalStyle}>
+                  <p>삭제하시겠습니까?</p>
+                  <div id="yesOrNo">
+                    <button
+                      className="nes-btn is-primary"
+                      onClick={() => {
+                        deletRollingpaper(rollingpaper.rollingPaperId);
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      예
+                    </button>
+                    <button
+                      className="nes-btn"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      아니오
+                    </button>
+                  </div>
+                </div>
+              </Modal>
+            </>
           ))}
       </div>
     </div>

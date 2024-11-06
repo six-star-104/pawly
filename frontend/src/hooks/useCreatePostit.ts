@@ -17,7 +17,7 @@ export const useCreatePostit = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const createPostit = async (postitData: IPostIt) => {
+  const createPostit = async (postitData: IPostIt, rollingPaperId: string) => {
     const testData = {
       rollingPaperId: 1,
       content: "롤링페이퍼 내용임니다",
@@ -30,7 +30,10 @@ export const useCreatePostit = () => {
     };
     setLoading(true);
     try {
-      await axiosInstance.post(`/postit`, postitData);
+      await axiosInstance.post(`/postit`, {
+        ...postitData,
+        rollingPaperId: rollingPaperId,
+      });
       setLoading(false);
       setError(null);
     } catch (err) {

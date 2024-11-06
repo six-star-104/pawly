@@ -10,7 +10,7 @@ export const useReport = () => {
     setLoading(true);
     try {
       await axiosInstance.post(`/postit/${postitId}`, {
-        data: { content: `${content}` },
+        content: `${content}`,
       });
       setLoading(false);
       setError(null);

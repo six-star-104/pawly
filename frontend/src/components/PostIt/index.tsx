@@ -5,8 +5,9 @@ import { useRef } from "react";
 import Modal from "../Modal";
 import PostItForm from "../PostItForm";
 import { PostItProps } from "./PostIt.type";
-
-export const PostIt: React.FC<PostItProps> = ({props, isPreview}) => {
+import { useReport } from "@/hooks/useReport";
+import { useDeletePostit } from "@/hooks/useDeletePostit";
+export const PostIt: React.FC<PostItProps> = ({ props, isPreview }) => {
   const randomDir = ["top", "right", "left", "bottom"];
   // 이러면 너무 랜더 될때마다 자꾸 반복돼서, 그냥 말풍선id넘버로 해줄까...?
   const [randomArrow, setRandomArrow] = useState("bottom");
@@ -28,8 +29,14 @@ export const PostIt: React.FC<PostItProps> = ({props, isPreview}) => {
 
   const timerRef = useRef<number | null>(null);
   const [reportContent, setReportContent] = useState("");
-
+  const { reportPostit } = useReport();
+  const { deletePostit } = useDeletePostit();
   const handleMouseDown = () => {
+    // 미리보기면 no 클릭 이벤트
+    if (isPreview) {
+      return;
+    }
+
     timerRef.current = window.setTimeout(() => {
       setIsMenuOpen(true);
     }, 300);
@@ -48,7 +55,10 @@ export const PostIt: React.FC<PostItProps> = ({props, isPreview}) => {
         css={bubbleStyle(
           randomTextColor[props.fontColor],
           randomBorderColor[props.borderColor],
-          randomBgColor[props.backgroundColor!],
+          // 배경이 있으면 => 남은 자투리 배경색이 테두리색 따라가게
+          props.image
+            ? randomBorderColor[props.borderColor]
+            : randomBgColor[props.backgroundColor!],
           props.image!
         )}
         className={`bubble ${isPreview ? "" : randomArrow} ${
@@ -63,7 +73,7 @@ export const PostIt: React.FC<PostItProps> = ({props, isPreview}) => {
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
       >
-        {isPreview ? "미리보기입니다" : props.content}
+        {isPreview ? "미리보기" : props.content}
         <div css={fromWho}>- {props.memberNickname}</div>
 
         <Modal
@@ -110,7 +120,10 @@ export const PostIt: React.FC<PostItProps> = ({props, isPreview}) => {
             <div id="yesOrNo">
               <button
                 className="nes-btn is-primary"
-                onClick={() => setIsConfirmOpen(false)}
+                onClick={() => {
+                  deletePostit(props.postItId!);
+                  setIsConfirmOpen(false);
+                }}
               >
                 예
               </button>
@@ -154,7 +167,10 @@ export const PostIt: React.FC<PostItProps> = ({props, isPreview}) => {
             <button
               id="reportButton"
               className="nes-btn is-primary"
-              onClick={() => setIsConfirmOpen(false)}
+              onClick={() => {
+                reportPostit(props.postItId!, reportContent);
+                setIsReportOpen(false);
+              }}
             >
               신고하기
             </button>

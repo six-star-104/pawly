@@ -5,6 +5,7 @@ import {
   ArrowButton,
   ArrowContainer,
   CreateButton,
+  PostitPreview,
 } from "./PostItForm.style";
 import { useState } from "react";
 import SelectOptions from "../SelectOptions";
@@ -14,7 +15,7 @@ import { useCreatePostit } from "@/hooks/useCreatePostit";
 import { useEditPostit } from "@/hooks/useEditPostit";
 import { IPostIt } from "@/types/rollingPaperTypes";
 
-const PostItForm: React.FC<FormProps> = ({ props, onClose, isCreate }) => {
+const PostItForm: React.FC<FormProps> = ({ props, onClose, isCreate, rollingPaperId }) => {
   const [isMaxLength, setIsMaxLength] = useState(false);
   const sizeArray = ["작게", "보통", "크게"];
 
@@ -37,11 +38,12 @@ const PostItForm: React.FC<FormProps> = ({ props, onClose, isCreate }) => {
       setIsMaxLength(true);
     }
   };
+
   const submitPostIt = () => {
     // 여기서 생성 api 호출해주기
     if (isCreate) {
       //여기에 생성
-      createPostit(previewPostIt);
+      createPostit(previewPostIt, rollingPaperId!);
     } else {
       //여기에 수정
       editPostit(previewPostIt);
@@ -120,9 +122,11 @@ const PostItForm: React.FC<FormProps> = ({ props, onClose, isCreate }) => {
             ▶️
           </button>
         </div>
-
+          
         <p>미리보기</p>
+        <div css={PostitPreview}>
         <PostIt props={previewPostIt} isPreview={true} />
+        </div>
 
         <div css={CreateButton}>
           {/* 이거 버튼 색 나중에 테마로 바꿀까 */}

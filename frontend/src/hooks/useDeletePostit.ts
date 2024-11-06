@@ -6,7 +6,7 @@ export const useDeletePostit = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const deletePostit = async (postitId: string) => {
+  const deletePostit = async (postitId: number) => {
     setLoading(true);
     try {
       await axiosInstance.delete(`/postit/${postitId}`);

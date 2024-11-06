@@ -10,7 +10,7 @@ export const useEditPostit = () => {
   const editPostit = async (postitData: IPostIt) => {
     setLoading(true);
     try {
-      await axiosInstance.put(`/postit`, postitData);
+      await axiosInstance.patch(`/postit/${postitData.postItId}`, postitData);
       setLoading(false);
       setError(null);
     } catch (err) {
