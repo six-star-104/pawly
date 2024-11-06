@@ -3,7 +3,10 @@ package com.pawly.global.service;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -16,11 +19,15 @@ public class FirebaseInitialization {
     @Value("${firebase.config.path}")
     private String firebasePath;
 
+    @Autowired
+    private ResourceLoader resourceLoader;
+
+
     @PostConstruct
     public void initialize() throws IOException {
         if (FirebaseApp.getApps().isEmpty()) { // FirebaseApp이 존재하지 않을 때만 초기화
-            FileInputStream serviceAccount = new FileInputStream(
-                String.valueOf(getClass().getResourceAsStream("firebase-service-account.json")));
+            Resource resource = resourceLoader.getResource(firebasePath);
+            FileInputStream serviceAccount = new FileInputStream(resource.getFile());
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .build();
