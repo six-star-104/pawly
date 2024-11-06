@@ -5,7 +5,11 @@ import com.pawly.domain.rollingPaper.entity.RollingPaper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 public interface PostItRepository extends JpaRepository<PostIt, Long> {
-        Page<PostIt>  findByRollingPaper(RollingPaper RollingPaper, Pageable pageable);
+        @Query("SELECT p FROM PostIt p " +
+                "WHERE p.rollingPaper = :rollingPaper " +
+                "AND p.status = 'NOT_DELETE'")
+        Page<PostIt>  findByRollingPaper(RollingPaper rollingPaper, Pageable pageable);
 }

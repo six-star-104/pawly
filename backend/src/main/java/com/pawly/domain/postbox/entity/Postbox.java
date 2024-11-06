@@ -41,4 +41,8 @@ public class Postbox extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    public void deletePostbox() {
+        this.status = Status.DELETE;
+    }
 }
