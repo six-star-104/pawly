@@ -3,6 +3,7 @@ export interface UserSearchResponse {
   data: 
     {
       nickname: string;
+      name:string;
       assets: string;
       memberId: number;
     }[];

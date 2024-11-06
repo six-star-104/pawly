@@ -33,10 +33,11 @@ import {
   searchResultActions
 } from './styles';
 import { searchUserByNickname } from '@/apis/userSearchService';
-import { postFriendRequest, getFriendRequestsReceived, respondToFriendRequest } from '@/apis/friendsService';
+import { postFriendRequest, getFriendRequestsReceived, respondToFriendRequest, getFriendList } from '@/apis/friendsService';
 
 interface Member {
   nickname: string;
+  name: string;
   assets: string;
   memberId: number;
   friendId?: number;
@@ -50,6 +51,7 @@ export const Friends = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<Member[]>([]);
   const [friendRequests, setFriendRequests] = useState<Member[]>([]);
+  const [friends, setFriends] = useState<Member[]>([]); // 친구 목록 상태 추가
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -124,7 +126,6 @@ export const Friends = () => {
       const response = await postFriendRequest(memberId);
       if (response.status === "success") {
         alert(response.message);
-        // 검색 결과에서 해당 사용자 제거
         setSearchResults(prev => prev.filter(user => user.memberId !== memberId));
       } else {
         alert("친구 요청에 실패했습니다.");
@@ -139,41 +140,26 @@ export const Friends = () => {
   };
 
   useEffect(() => {
-    let isMounted = true;
-
-    const fetchFriendRequests = async () => {
-      if (isProcessing) return;
-
-      setIsProcessing(true);
+    const fetchFriends = async () => {
+      setIsLoading(true);
       try {
-        const response = await getFriendRequestsReceived();
-
+        const response = await getFriendList();
         if (response.status === "success") {
-          const modifiedRequests = response.data.map(request => ({
-            ...request,
-            friendId: request.friendId // friendId가 포함된 데이터로 저장
-          }));
-          setFriendRequests(modifiedRequests);
-          setErrorMessage(null);
+          setFriends(response.data);
         } else {
-          console.error("친구 요청 목록을 불러오는데 실패했습니다.");
-          setErrorMessage("친구 요청 목록을 불러오는데 실패했습니다.");
+          setError("친구 목록을 불러오는 데 실패했습니다.");
         }
       } catch (error) {
-        console.error("친구 요청 목록 조회 오류:", error);
-        setErrorMessage("친구 요청 목록을 불러오는데 실패했습니다.");
+        console.error("친구 목록 조회 오류:", error);
+        setError("친구 목록을 불러오는 데 실패했습니다.");
       } finally {
-        setIsProcessing(false);
+        setIsLoading(false);
       }
     };
 
-    if (activeTab === "requests") {
-      fetchFriendRequests();
+    if (activeTab === "friends") {
+      fetchFriends();
     }
-
-    return () => {
-      isMounted = false;
-    };
   }, [activeTab]);
 
   const handleResponseToFriendRequest = async (friendId: number, isAccepted: boolean) => {
@@ -230,7 +216,7 @@ export const Friends = () => {
         </div>
       </div>
 
-      {isLoading && <p>검색 중...</p>}
+      {/* {isLoading && <p>검색 중...</p>} */}
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
       <div css={tabContainer(activeTab)}>
@@ -240,21 +226,23 @@ export const Friends = () => {
 
       <div css={friendListContainer}>
         {activeTab === "friends" && (
-          <div css={friendItem}>
-            <img src={PixelPuppy} alt="친구 아바타" width={40} height={40} />
-            <div css={friendName}>
-              <p>남은식다</p>
-              <span>남은식</span>
+          friends.map(friend => (
+            <div css={friendItem} key={friend.friendId}>
+              <img src={friend.assets || PixelPuppy} alt={`${friend.nickname} 아바타`} width={40} height={40} />
+              <div css={friendName}>
+                <p>{friend.nickname}</p>
+                <span>{friend.name}</span>
+              </div>
+              <div css={friendActionIcons}>
+                <button onClick={openModal}>
+                  <img src="https://unpkg.com/pixelarticons@1.8.1/svg/mail.svg" alt="메일 아이콘" width={20} height={20} />
+                </button>
+                <button>
+                  <img src="https://unpkg.com/pixelarticons@1.8.1/svg/close.svg" alt="삭제 아이콘" width={20} height={20} />
+                </button>
+              </div>
             </div>
-            <div css={friendActionIcons}>
-              <button onClick={openModal}>
-                <img src="https://unpkg.com/pixelarticons@1.8.1/svg/mail.svg" alt="메일 아이콘" width={20} height={20} />
-              </button>
-              <button>
-                <img src="https://unpkg.com/pixelarticons@1.8.1/svg/close.svg" alt="삭제 아이콘" width={20} height={20} />
-              </button>
-            </div>
-          </div>
+          ))
         )}
 
         {activeTab === "requests" && (

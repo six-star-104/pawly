@@ -25,3 +25,20 @@ export interface FriendRequestResponse {
   code: null | number;
   message: string;
 }
+
+
+export interface Friend {
+  friendId: number;     
+  memberId: number;     
+  name: string;         
+  nickname: string;     
+  assets: string;       
+}
+
+
+export interface FriendListResponse {
+  status: string;               
+  data: Friend[];               
+  code: null | string;          
+  message: string;              
+}
