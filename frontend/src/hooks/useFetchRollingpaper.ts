@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { axiosInstance } from "../apis/axiosInstance";
 import { IRollingPaper } from "@/types/rollingPaperTypes";
 
- const useFetchSingleRollingpaper = (
+const useFetchRollingpaper = (
   rollingpaperId: string,
   page: number,
   pageSize: number
@@ -33,4 +33,4 @@ import { IRollingPaper } from "@/types/rollingPaperTypes";
 
   return { singleRollingpaper, loading, error };
 };
-export default useFetchSingleRollingpaper;
+export default useFetchRollingpaper;

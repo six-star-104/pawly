@@ -7,16 +7,20 @@ import Modal from "@/components/Modal";
 import { useNavigate } from "react-router-dom";
 import backButtonImg from "@/assets/images/back_button.png";
 import PostItForm from "@/components/PostItForm";
-import  useFetchSingleRollingpaper  from "@/hooks/useFetchSingleRollingpaper";
 import { useParams } from "react-router-dom";
 import useUserInfoStore from "@/stores/userInfoStore";
 import { IPostIt } from "@/types/rollingPaperTypes";
+import useFetchRollingpaper from "@/hooks/useFetchRollingpaper";
 // 특정 하나의 롤링 페이퍼만 볼 수 있는 페이지
 export const RollingPaper = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { rollingpaperid } = useParams();
   const navigate = useNavigate();
-  const { singleRollingpaper } = useFetchSingleRollingpaper( rollingpaperid!, 0, 10);
+  const { singleRollingpaper } = useFetchRollingpaper(
+    String(rollingpaperid),
+    0,
+    10
+  );
 
   const { nickname } = useUserInfoStore();
   const defaultData = {
@@ -45,10 +49,9 @@ export const RollingPaper = () => {
       </div>
       <div css={ListContainer}>
         {/* 무한스크롤 페이지네이션 고려하기 */}
-        {singleRollingpaper &&
-          singleRollingpaper.content.map((postit:IPostIt, index:number) => (
-            <PostIt key={index} props={postit} isPreview={false} />
-          ))}
+        {singleRollingpaper?.content.map((postit: IPostIt, index: number) => (
+          <PostIt key={index} props={postit} isPreview={false} />
+        ))}
       </div>
       <button
         css={plusButton}

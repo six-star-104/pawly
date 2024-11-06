@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import { axiosInstance } from "../apis/axiosInstance";
 import { IRollingPapers } from "@/types/rollingPaperTypes";
 
-const useFetchUserRollingpapers = () => {
+const useFetchUserRollingpaper = () => {
   const [userRollingpapers, setUserRollingpapers] =
     useState<IRollingPapers | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchRollingPaper = async () => {
+    const fetchRollingPapers = async () => {
       setLoading(true);
       setError(null);
       try {
@@ -22,9 +22,9 @@ const useFetchUserRollingpapers = () => {
       }
     };
 
-    fetchRollingPaper();
+    fetchRollingPapers();
   }, []);
 
   return { userRollingpapers, loading, error };
 };
-export default useFetchUserRollingpapers;
+export default useFetchUserRollingpaper;

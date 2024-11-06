@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import PixelContainer from "@/components/PixelContainer";
 // import { data } from "./mockdata";
-import useFetchUserRollingpapers from "../../hooks/useFetchUserRollingpaper";
+import useFetchUserRollingpaper from "../../hooks/useFetchUserRollingpaper";
 import {
   ListContainer,
   ContentContainer,
@@ -18,7 +18,7 @@ import { useDeleteRollingpaper } from "@/hooks/useDeleteRollingpaper";
 export const RollingPaperList = () => {
   const navigate = useNavigate();
 
-  const { userRollingpapers } = useFetchUserRollingpapers();
+  const { userRollingpapers } = useFetchUserRollingpaper();
   const timerRef = useRef<number | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { deletRollingpaper } = useDeleteRollingpaper();
@@ -47,24 +47,27 @@ export const RollingPaperList = () => {
       </div>
       <div css={ListContainer}>
         {userRollingpapers &&
-          userRollingpapers.content.map((rollingpaper, index) => (
+          userRollingpapers.content.map((rollingpaper) => (
             //  여기다가 링크 걸어놓기
-            <>
-              <PixelContainer width="75%" height="8vh" key={index}>
-                <div
-                  css={ContentContainer}
-                  onClick={() => navigate(`${rollingpaper.rollingPaperId}`)}
-                  // 모바일용
-                  onTouchStart={handleMouseDown}
-                  onTouchEnd={handleMouseUp}
-                  // pc 테스트용
-                  onMouseDown={handleMouseDown}
-                  onMouseUp={handleMouseUp}
-                  onMouseLeave={handleMouseUp}
-                >
-                  {rollingpaper.title}
-                </div>
-              </PixelContainer>
+
+            <PixelContainer
+              key={rollingpaper.rollingPaperId}
+              width="75%"
+              height="8vh"
+            >
+              <div
+                css={ContentContainer}
+                onClick={() => navigate(`${rollingpaper.rollingPaperId}`)}
+                // 모바일용
+                onTouchStart={handleMouseDown}
+                onTouchEnd={handleMouseUp}
+                // pc 테스트용
+                onMouseDown={handleMouseDown}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseUp}
+              >
+                {rollingpaper.title}
+              </div>
               <Modal isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)}>
                 <div css={modalStyle}>
                   <p>삭제하시겠습니까?</p>
@@ -87,7 +90,7 @@ export const RollingPaperList = () => {
                   </div>
                 </div>
               </Modal>
-            </>
+            </PixelContainer>
           ))}
       </div>
     </div>
