@@ -23,7 +23,7 @@ import {
   modalActionsStyle, // 새로 추가된 모달 버튼 스타일
 } from './styles';
 import PixelContainer from '../../components/PixelContainer';
-import CancelButton from '../../assets/icons/CancelButton.png';
+// import CancelButton from '../../assets/icons/CancelButton.png';
 import PixelPuppy from '../../assets/icons/PixelPuppy.png';
 import NavButton from '../../assets/icons/NavButton.png';
 import BackButton from '../../assets/icons/BackButton.png';
@@ -38,8 +38,10 @@ export const MyPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [newNickname, setNewNickname] = useState('');
   const navigate = useNavigate();
-
   const { username, memberId, nickname, birth, assets, collections, isInitialized, setUserInfo } = useUserInfoStore();
+  
+  //빌드오류제거용
+  console.log(memberId, birth)
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -129,9 +131,9 @@ export const MyPage = () => {
                   <button onClick={handleEditNickname} css={closeButtonStyle}>
                     <img src="https://unpkg.com/pixelarticons@1.8.1/svg/edit.svg" alt="편집 버튼" width="30" height="30" />
                   </button>
-                  <button onClick={close} css={closeButtonStyle}>
+                  {/* <button onClick={close} css={closeButtonStyle}>
                     <img src={CancelButton} alt="닫기 버튼" width={25} />
-                  </button>
+                  </button> */}
                 </div>
               </div>
 
@@ -148,7 +150,7 @@ export const MyPage = () => {
 
               <div css={CollectionSection}>
                 <h3>{nickname}님의 보상목록</h3>
-                <div>◀️ 넷 다섯 여섯 ▶️</div>
+                <div>◀️ 할 지 말 지 고민 ▶️</div>
               </div>
             </div>
           }
@@ -161,12 +163,11 @@ export const MyPage = () => {
       </div>
 
       {/* 닉네임 수정 모달 */}
-      <Modal isOpen={isEditing} onClose={() => setIsEditing(false)} title="닉네임 수정">
+      <Modal isOpen={isEditing} title="닉네임 수정">
         <div css={modalOverlayStyle}>
           <div css={modalContentStyle}>
             <div css={modalHeaderStyle}>
               <span>닉네임 수정</span>
-              <button css={closeButtonStyle} onClick={() => setIsEditing(false)}>✖️</button>
             </div>
             <div css={inputStyle}>
               <input

@@ -96,3 +96,19 @@ export interface UpdateNicknameResponse {
   code: number | null;
   message: string;
 }
+
+export interface GetFriendInfoResponse {
+  status: string; 
+  data: {
+    member: {
+      nickname: string; 
+      birth: string; 
+      assets: string; 
+    };
+    collection: {
+      collections: any[];  
+    };
+  };
+  code: null | string; 
+  message: string; 
+}

@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 export const Container = css`
   width: 100%;
   height: 100vh;
-  background-color: #E6E6FA;
+  /* background-color: #E6E6FA; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -141,9 +141,12 @@ export const CollectionSection = css`
 `;
 
 export const closeButtonStyle = css`
+  width: 3rem;
+  height: 3rem;
+  /* margin-right: 1rem; */
   background: none;
   border: none;
-  padding: 0;
+  padding: 1;
   cursor: pointer;
   transition: transform 0.1s ease;
 
@@ -204,9 +207,21 @@ export const inputStyle = css`
     width: 80%;
     padding: 0.5rem;
     font-size: 1rem;
-    border: 1px solid #333;
-    border-radius: 4px;
+    border: none;
     outline: none;
+    box-shadow: 4px 0 0 0 black, -4px 0 0 0 black, 0 4px 0 0 black,
+      0 -4px 0 0 black; /* 테두리 효과 추가 */
+    transition: box-shadow 0.3s ease;
+
+    &:focus {
+      box-shadow: 4px 0 0 0 #007bff, -4px 0 0 0 #007bff, 0 4px 0 0 #007bff,
+        0 -4px 0 0 #007bff; /* 포커스 시 파란색 테두리 */
+    }
+
+    &:hover {
+      box-shadow: 4px 0 0 0 #ff8800, -4px 0 0 0 #ff8800, 0 4px 0 0 #ff8800,
+        0 -4px 0 0 #ff8800; /* 호버 시 주황색 테두리 */
+    }
   }
 `;
 
@@ -260,7 +275,7 @@ export const modalContentStyle = css`
 `;
 
 export const modalHeaderStyle = css`
-  width: 100%;
+  width: auto;
   font-size: 1.5rem;
   font-weight: bold;
   color: #333;
@@ -269,6 +284,7 @@ export const modalHeaderStyle = css`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
+  border-bottom: 2px solid black;
 
   button {
     background: none;
