@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import { css } from "@emotion/react";
 
 export const Container = styled.div`
   display: flex;
@@ -15,9 +14,10 @@ export const Container = styled.div`
   align-items: center;
 `;
 
-export const logoContainer = css`
-  width: 70%;
-  margin: 12rem auto 0;
+export const Logo = styled.img`
+  width: 120px;
+  height: auto;
+  margin-top: 2rem;
 `;
 
 export const PageContainer = styled.div`
@@ -101,9 +101,4 @@ export const SubmitButton = styled(Button)`
   &:hover:not(:disabled) {
     background-color: ${(props) => props.theme.colors.primaryHover};
   }
-`;
-export const Logo = styled.img`
-  width: 120px;
-  height: auto;
-  margin-bottom: 2rem;
 `;

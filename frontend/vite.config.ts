@@ -9,7 +9,8 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      injectRegister: false,
+      injectRegister: "script",
+      includeAssets: ["favicon.ico"],
 
       pwaAssets: {
         disabled: false,

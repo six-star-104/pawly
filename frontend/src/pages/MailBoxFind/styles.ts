@@ -10,3 +10,18 @@ export const container = css`
   background-color: transparent;
   background-image: none;
 `;
+
+export const backButton = css`
+  position: fixed;
+  left: 3%;
+  top: 3%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  background-color: transparent; 
+  border: none;
+`;
+
