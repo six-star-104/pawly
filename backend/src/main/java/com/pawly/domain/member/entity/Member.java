@@ -45,4 +45,8 @@ public class Member extends BaseEntity {
         this.provider = provider;
         this.providerId = providerId;
     }
+
+    public void deleteMember() {
+        this.status = Status.DEACTIVATED;
+    }
 }

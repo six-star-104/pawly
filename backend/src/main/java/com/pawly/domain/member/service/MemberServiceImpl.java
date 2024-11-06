@@ -89,9 +89,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void deleteUser(Long memberId) {
+    public void deleteUser(Member member) {
 
-        memberRepository.deleteById(memberId);
+        member.deleteMember();
     }
 
     @Override

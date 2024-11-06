@@ -224,7 +224,7 @@ public class MemberController {
                 return ApiResponse.createError(ErrorCode.INVALID_JWT_TOKEN);
             }
 
-            memberService.deleteUser(member.getMemberId());
+            memberService.deleteUser(member);
 
             return ApiResponse.createSuccess(null, "회원 탈퇴가 완료되었습니다.");
         } catch (Exception e) {
