@@ -1,7 +1,7 @@
 package com.pawly.domain.member.service;
 
 import com.pawly.domain.easterEgg.service.EasterEggService;
-import com.pawly.domain.easterEgg.service.MissionStatusService;
+import com.pawly.domain.missionStatus.service.MissionStatusService;
 import com.pawly.domain.member.dto.request.SignUpRequestDTO;
 import com.pawly.domain.member.dto.response.MemberProfileResponseDTO;
 import com.pawly.domain.member.entity.Member;

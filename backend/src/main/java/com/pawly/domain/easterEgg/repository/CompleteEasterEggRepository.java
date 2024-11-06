@@ -14,5 +14,5 @@ public interface CompleteEasterEggRepository extends JpaRepository<CompleteEaste
 
     @Query("SELECT c FROM CompleteEasterEgg c " +
             "WHERE c.memberId =:memberId  AND c.easterEgg.easterEggId =:easterEggId")
-    Optional<CompleteEasterEgg> findByMemberIdAndCompleteEasterEggId(@Param("memberId") Long memberId, @Param("easterEggId") Long easterEggId);
+    Optional<CompleteEasterEgg> findByMemberIdAndEasterEggId(@Param("memberId") Long memberId, @Param("easterEggId") Long easterEggId);
 }

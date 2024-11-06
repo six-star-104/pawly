@@ -1,7 +1,9 @@
 package com.pawly.domain.rollingPaper.service;
 
+import com.pawly.domain.missionStatus.service.MissionStatusService;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.repository.MemberRepository;
+import com.pawly.domain.missionStatus.service.RollingPaperMissionService;
 import com.pawly.domain.postIt.dto.PostItReadDto;
 import com.pawly.domain.postIt.entity.PostIt;
 import com.pawly.domain.postIt.repository.PostItRepository;
@@ -13,14 +15,15 @@ import com.pawly.domain.rollingPaper.dto.RollingPaperReadAllDto;
 import com.pawly.domain.rollingPaper.dto.RollingPaperReadDto;
 import com.pawly.domain.rollingPaper.entity.RollingPaper;
 import com.pawly.domain.rollingPaper.repository.RollingPaperRepository;
+import com.pawly.global.dto.FcmMessageRequestDto;
 import com.pawly.global.exception.ErrorCode;
 import com.pawly.global.response.ApiResponse;
+import com.pawly.global.service.FirebaseCloudMessageService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,16 +37,21 @@ public class RollingPaperService {
     private final RollingPaperRepository rollingPaperRepository;
     private final MemberRepository memberRepository;
     private final PostItRepository postItRepository;
+    private final MissionStatusService missionStatusService;
+    private final RollingPaperMissionService rollingPaperMissionService;
+    private final FirebaseCloudMessageService firebaseCloudMessageService;
 
     @Transactional
     public ApiResponse<?> createRollingPaper(RollingPaperCreateDto dto) {
         Optional<Member> member = memberRepository.findById(dto.getMemberId());
         if (member.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
-        RollingPaper createRollinPaper = rollingPaperRepository.save(dto.toEntity(member.get(), 1));
+        Member m  = member.get();
+
+        RollingPaper createRollinPaper = rollingPaperRepository.save(dto.toEntity(m, 1));
 
         PostboxCreateDto postboxCreateDto = PostboxCreateDto.builder()
-                .member(member.get())
+                .member(m)
                 .rollingPaper(createRollinPaper)
                 .title(dto.getTitle())
                 .latitude(dto.getLatitude())
@@ -55,7 +63,19 @@ public class RollingPaperService {
         if (!postboxService.createPostbox(postboxCreateDto)) {
             return ApiResponse.createError(ErrorCode.ROLLING_PAPER_CANNOT_CREATE);
         }
-        return ApiResponse.createSuccess(null,"성공");
+
+        // 롤링페이퍼 수 증가
+        rollingPaperMissionService.rollingPaper(m.getMemberId());
+
+        // 롤링페이퍼 수가 1인지 확인하고, 그에 따라 도전과제 실행
+        boolean isRollingPaperOne = rollingPaperMissionService.rollingPaperOne(m.getMemberId());
+        missionStatusService.mission(isRollingPaperOne, 2L, m.getMemberId());
+
+        // 알림
+        FcmMessageRequestDto request = new FcmMessageRequestDto(m.getMemberId(), "도전과제 달성!", "달성한 도전과제를 확인해보세요!");
+        firebaseCloudMessageService.sendMessage(request);
+
+        return ApiResponse.createSuccessWithNoContent("롤링페이퍼 작성 성공");
     }
 
     @Transactional

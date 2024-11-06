@@ -37,6 +37,10 @@ public class CompleteEasterEgg {
         this.completedAt = LocalDateTime.now();
     }
 
+    public void achievedStatus() {
+        this.status = Status.ACHIEVED;
+    }
+
     public CompleteEasterEgg(CompleteEasterEggDto dto) {
         this.memberId = dto.getMemberId();
         this.easterEgg = dto.getEasterEgg();

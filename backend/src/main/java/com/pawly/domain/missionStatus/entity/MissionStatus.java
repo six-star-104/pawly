@@ -1,4 +1,4 @@
-package com.pawly.domain.easterEgg.entity;
+package com.pawly.domain.missionStatus.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -35,5 +35,21 @@ public class MissionStatus {
 
     public MissionStatus(Long memberId) {
         this.memberId = memberId;
+    }
+
+    public void collectionPlus() {
+        this.collection++;
+    }
+
+    public void receiveLetterPlus() {
+        this.receiveLetter++;
+    }
+
+    public void sendLetterPlus() {
+        this.sendLetter++;
+    }
+
+    public void rollingPaperPlus() {
+        this.rollingPaper++;
     }
 }
