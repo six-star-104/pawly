@@ -13,11 +13,31 @@ public class PostItUpdateRequest {
     @NotNull
     private String content;
 
-    public PostItUpdateDto toDto(Long memberId, Long postItId) {
+    @NotNull
+    private int backgroundColor;
+
+    @NotNull
+    private int fontColor;
+
+    @NotNull
+    private int borderColor;
+
+    @NotNull
+    private String image;
+
+    @NotNull
+    private int speechBubbleSize;
+
+    public PostItUpdateDto toDto(String memberName, Long postItId) {
         return PostItUpdateDto.builder()
-                .memberId(memberId)
+                .memberName(memberName)
                 .postItId(postItId)
                 .content(this.content)
+                .backgroundColor(this.backgroundColor)
+                .fontColor(this.fontColor)
+                .borderColor(this.borderColor)
+                .image(this.image)
+                .speechBubbleSize(this.speechBubbleSize)
                 .build();
     }
 }

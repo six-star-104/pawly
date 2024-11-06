@@ -13,9 +13,9 @@ public class PostReportRequest {
     @NotNull
     private String content;
 
-    public PostReportCreateDto toDto(Long memberId, Long postId){
+    public PostReportCreateDto toDto(String memberName, Long postId){
         return PostReportCreateDto.builder()
-                .memberId(memberId)
+                .memberName(memberName)
                 .postId(postId)
                 .content(this.content)
                 .build();

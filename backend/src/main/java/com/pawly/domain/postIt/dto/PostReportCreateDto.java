@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class PostReportCreateDto {
-    private Long memberId;
+    private String memberName;
     private Long postId;
     private String content;
 
