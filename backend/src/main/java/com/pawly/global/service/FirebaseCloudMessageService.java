@@ -19,6 +19,8 @@ public class FirebaseCloudMessageService {
         // 사용자의 Firebase 토큰 값을 조회
         String userFirebaseToken = memberRepository.findFcmTokenByMemberId(requestDto.getMemberId());
 
+        if(userFirebaseToken == null) return "Fcm Token is null";
+
         // 메시지 구성
         Message message = Message.builder()
                 .setNotification(Notification.builder()
