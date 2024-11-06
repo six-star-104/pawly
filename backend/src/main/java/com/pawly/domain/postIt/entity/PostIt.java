@@ -1,6 +1,7 @@
 package com.pawly.domain.postIt.entity;
 
 import com.pawly.domain.member.entity.Member;
+import com.pawly.domain.postIt.dto.PostItUpdateDto;
 import com.pawly.domain.postIt.enums.Status;
 import com.pawly.domain.rollingPaper.entity.RollingPaper;
 import com.pawly.global.entity.BaseEntity;
@@ -45,8 +46,27 @@ public class PostIt extends BaseEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public void updatePostIt(String content) {
-        this.content = content;
+    @Column(name = "background_color")
+    private int backgroundColor;
+
+    @Column(name = "font_color")
+    private int fontColor;
+
+    @Column(name = "border_color")
+    private int borderColor;
+
+    private String image;
+
+    @Column(name = "speech_bubble_size")
+    private int speechBubbleSize;
+
+    public void updatePostIt(PostItUpdateDto dto) {
+        this.content = dto.getContent();
+        this.backgroundColor = dto.getBackgroundColor();
+        this.fontColor = dto.getFontColor();
+        this.borderColor = dto.getBorderColor();
+        this.image = dto.getImage();
+        this.speechBubbleSize = dto.getSpeechBubbleSize();
         this.updatedAt = LocalDateTime.now();
     }
 

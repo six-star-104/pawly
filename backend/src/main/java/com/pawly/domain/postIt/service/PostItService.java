@@ -33,7 +33,7 @@ public class PostItService {
 
     @Transactional
     public ApiResponse<?> createPostIt(PostItCreateDto dto) {
-        Optional<Member> requestMember = memberRepository.findById(dto.getMemberId());
+        Optional<Member> requestMember = memberRepository.findByEmail(dto.getMemberName());
         if (requestMember.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
         Optional<RollingPaper> rollingPaper = rollingPaperRepository.findById(dto.getRollingPaperId());
@@ -44,12 +44,12 @@ public class PostItService {
         FcmMessageRequestDto request = new FcmMessageRequestDto(rollingPaper.get().getMember().getMemberId(), "롤링페이퍼가 작성되었어요!", "마음을 담은 롤링페이퍼가 작성되었습니다. 지금 확인해보세요.");
         firebaseCloudMessageService.sendMessage(request);
 
-        return ApiResponse.createSuccess(null, "생성 성공");
+        return ApiResponse.createSuccessWithNoContent("생성 성공");
     }
 
     @Transactional
-    public ApiResponse<?> readPostIt(Long requestMemberId, Long postItId) {
-        Optional<Member> requestMember = memberRepository.findById(requestMemberId);
+    public ApiResponse<?> readPostIt(String requestMemberName, Long postItId) {
+        Optional<Member> requestMember = memberRepository.findByEmail(requestMemberName);
         if (requestMember.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
         Optional<PostIt> postIt = postItRepository.findById(postItId);
@@ -71,7 +71,7 @@ public class PostItService {
 
     @Transactional
     public ApiResponse<?> updatePostIt(PostItUpdateDto dto) {
-        Optional<Member> requestMember = memberRepository.findById(dto.getMemberId());
+        Optional<Member> requestMember = memberRepository.findByEmail(dto.getMemberName());
         if (requestMember.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
         Optional<PostIt> postIt = postItRepository.findById(dto.getPostItId());
@@ -83,39 +83,43 @@ public class PostItService {
 
         if (!requestMember.get().equals(postItWriter)) return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
 
-        postIt.get().updatePostIt(dto.getContent());
-        return ApiResponse.createSuccess(null, "수정 성공");
+        postIt.get().updatePostIt(dto);
+        return ApiResponse.createSuccessWithNoContent("수정 성공");
     }
 
     @Transactional
-    public ApiResponse<?> deletePostIt(Long requestMemberId, Long postItId) {
-        Optional<Member> rqMember = memberRepository.findById(requestMemberId);
+    public ApiResponse<?> deletePostIt(String requestMemberName, Long postItId) {
+        Optional<Member> rqMember = memberRepository.findByEmail(requestMemberName);
         if (rqMember.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
         Optional<PostIt> postIt = postItRepository.findById(postItId);
-        if (postIt.isEmpty()) return ApiResponse.createError(ErrorCode.POST_IT_NOTFOUND);
+        if (postIt.isEmpty() || postIt.get().getStatus() == Status.DELETE) {
+            return ApiResponse.createError(ErrorCode.POST_IT_NOTFOUND);
+        }
 
         Member postItWriter = postIt.get().getMember();
 
         if (!postItWriter.equals(rqMember.get())) return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
 
         postIt.get().deletePostIt();
-        return ApiResponse.createSuccess(null, "삭제 성공");
+        return ApiResponse.createSuccessWithNoContent("삭제 성공");
     }
 
     @Transactional
     public ApiResponse<?> reportPostIt(PostReportCreateDto dto) {
-        Optional<Member> requestMember = memberRepository.findById(dto.getMemberId());
+        Optional<Member> requestMember = memberRepository.findByEmail(dto.getMemberName());
         if (requestMember.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
         Optional<PostIt> postIt = postItRepository.findById(dto.getPostId());
-        if (postIt.isEmpty()) return ApiResponse.createError(ErrorCode.POST_IT_NOTFOUND);
+        if (postIt.isEmpty() || postIt.get().getStatus() == Status.DELETE) {
+            return ApiResponse.createError(ErrorCode.POST_IT_NOTFOUND);
+        }
 
         if (!postIt.get().getRollingPaper().getMember().equals(requestMember.get())) {
             return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
         }
 
         reportRepository.save(dto.toEntity(requestMember.get(), dto.getPostId()));
-        return ApiResponse.createSuccess(null,"신고성공");
+        return ApiResponse.createSuccessWithNoContent("신고성공");
     }
 }
