@@ -44,6 +44,7 @@ export const ListContainer = css`
   padding-top: 40px;
   padding-bottom: 40px;
   gap: 40px;
+
 `;
 
 export const backButton = css`
