@@ -163,7 +163,7 @@ export const MyPage = () => {
       </div>
 
       {/* 닉네임 수정 모달 */}
-      <Modal isOpen={isEditing} title="닉네임 수정">
+      <Modal isOpen={isEditing} onClose={closeMyPage} title="닉네임 수정">
         <div css={modalOverlayStyle}>
           <div css={modalContentStyle}>
             <div css={modalHeaderStyle}>
