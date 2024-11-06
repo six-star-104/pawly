@@ -1,6 +1,7 @@
 package com.pawly.domain.postIt.controller.dto;
 
 import com.pawly.domain.postIt.dto.PostItCreateDto;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,19 +16,18 @@ public class PostItCreateRequest {
     @NotNull
     private Long rollingPaperId;
 
-    @NotNull
+    @NotBlank
     private String content;
 
     @NotNull
-    private int backgroundColor;
+    private Integer backgroundColor;
 
     @NotNull
-    private int fontColor;
+    private Integer fontColor;
 
     @NotNull
-    private int borderColor;
+    private Integer borderColor;
 
-    @NotNull
     private String image;
 
     @NotNull

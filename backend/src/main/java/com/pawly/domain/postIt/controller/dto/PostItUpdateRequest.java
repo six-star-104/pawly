@@ -14,13 +14,13 @@ public class PostItUpdateRequest {
     private String content;
 
     @NotNull
-    private int backgroundColor;
+    private Integer backgroundColor;
 
     @NotNull
-    private int fontColor;
+    private Integer fontColor;
 
     @NotNull
-    private int borderColor;
+    private Integer borderColor;
 
     @NotNull
     private String image;
