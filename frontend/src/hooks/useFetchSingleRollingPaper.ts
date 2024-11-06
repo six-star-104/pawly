@@ -9,7 +9,7 @@ export const useFetchSingleRollingpaper = (
   pageSize: number
 ) => {
   const [singleRollingpaper, setSingleRollingpaper] =
-    useState<IRollingPaper>();
+    useState<IRollingPaper | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

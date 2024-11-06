@@ -7,7 +7,7 @@ import Modal from "@/components/Modal";
 import { useNavigate } from "react-router-dom";
 import backButtonImg from "@/assets/images/back_button.png";
 import PostItForm from "@/components/PostItForm";
-import { useFetchSingleRollingpaper } from "@/hooks/useFetchSingleRollingpaper";
+import { useFetchSingleRollingpaper } from "../../hooks/useFetchSingleRollingpaper";
 import { useParams } from "react-router-dom";
 import useUserInfoStore from "@/stores/userInfoStore";
 import { IPostIt } from "@/types/rollingPaperTypes";
@@ -50,7 +50,7 @@ export const RollingPaper = () => {
       <div css={ListContainer}>
         {/* 무한스크롤 페이지네이션 고려하기 */}
         {singleRollingpaper &&
-          singleRollingpaper.content.map((postit:IPostIt, index:number) => (
+          singleRollingpaper.content.map((postit: IPostIt, index: number) => (
             <PostIt key={index} props={postit} isPreview={false} />
           ))}
       </div>
