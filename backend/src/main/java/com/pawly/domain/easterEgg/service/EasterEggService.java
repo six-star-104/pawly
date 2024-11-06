@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -45,24 +46,24 @@ public class EasterEggService {
 
                     // secretFlag가 true이면서 IN_PROGRESS 상태일 때 "????" 처리
                     return isSecret && isInProgress
-                            ? new EasterEggResponseDto(completeEasterEgg.getEasterEgg().getEasterEggId(), "????", "????", Status.IN_PROGRESS.getMessage(), null)
+                            ? new EasterEggResponseDto(completeEasterEgg.getCompleteEasterEggId(), "????", "????", Status.IN_PROGRESS.getMessage(), null)
                             : EasterEggResponseDto.to(completeEasterEgg);
                 })
                 .collect(Collectors.toList());
+
 
         return ApiResponse.createSuccess(response, "도전과제 조회 성공");
     }
 
     @Transactional
     public ApiResponse<?> completeEasterEgg(Long memberId, Long easterEggId) {
-        Optional<CompleteEasterEgg> optionalEasterEgg = completeEasterEggRepository.findByMemberIdAndCompleteEasterEggId(memberId, easterEggId);
+        Optional<CompleteEasterEgg> optionalEasterEgg = completeEasterEggRepository.findById(easterEggId);
 
-        // 도전과제를 찾을 수 없는 경우
-        if (optionalEasterEgg.isEmpty()) {
-            return ApiResponse.createError(ErrorCode.NOT_FOUND_EASTER);
-        }
+        if (optionalEasterEgg.isEmpty()) return ApiResponse.createError(ErrorCode.NOT_FOUND_EASTER);
 
-        CompleteEasterEgg now = optionalEasterEgg.get();
+        CompleteEasterEgg now =  optionalEasterEgg.get();
+
+        if(!Objects.equals(now.getMemberId(), memberId)) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
         // 도전과제가 ACHIEVED 상태일 경우 완료 처리
         if (now.getStatus().equals(Status.ACHIEVED)) {
