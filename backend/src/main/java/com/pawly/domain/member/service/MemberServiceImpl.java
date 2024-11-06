@@ -59,13 +59,11 @@ public class MemberServiceImpl implements MemberService {
         }
 
         Member member = signUpRequestDTO.toMemberEntity();
+        memberRepository.save(member);
 
         String fileUrl = fileService.saveAsset(asset);
         member.setAssets(fileUrl);
-        member.setRole(Role.USER);
-        member.setStatus(Status.ACTIVATED);
 
-        memberRepository.save(member);
         easterEggService.initializeChallengesForNewUser(member.getMemberId());
         missionStatusService.initializeMissionStatus(member.getMemberId());
 
