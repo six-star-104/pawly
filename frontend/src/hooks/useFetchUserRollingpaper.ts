@@ -1,9 +1,8 @@
-// src/hooks/useUserRollingpapers.ts
 import { useState, useEffect } from "react";
 import { axiosInstance } from "../apis/axiosInstance";
 import { IRollingPapers } from "@/types/rollingPaperTypes";
 
-export const useFetchUserRollingpapers = () => {
+const useFetchUserRollingpapers = () => {
   const [userRollingpapers, setUserRollingpapers] =
     useState<IRollingPapers | null>(null);
   const [loading, setLoading] = useState(true);
@@ -28,3 +27,4 @@ export const useFetchUserRollingpapers = () => {
 
   return { userRollingpapers, loading, error };
 };
+export default useFetchUserRollingpapers;

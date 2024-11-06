@@ -1,9 +1,8 @@
-// src/hooks/useUserRollingpapers.ts
 import { useState, useEffect } from "react";
 import { axiosInstance } from "../apis/axiosInstance";
 import { IRollingPaper } from "@/types/rollingPaperTypes";
 
-export const useFetchSingleRollingpaper = (
+ const useFetchSingleRollingpaper = (
   rollingpaperId: string,
   page: number,
   pageSize: number
@@ -34,3 +33,4 @@ export const useFetchSingleRollingpaper = (
 
   return { singleRollingpaper, loading, error };
 };
+export default useFetchSingleRollingpaper;

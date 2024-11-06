@@ -1,17 +1,6 @@
-// src/hooks/useUserRollingpapers.ts
 import { useState } from "react";
 import { axiosInstance } from "../apis/axiosInstance";
 import { IPostIt } from "@/types/rollingPaperTypes";
-
-// interface formType {
-//   rollingPaperId: number;
-//   content: string;
-//   backgroundColor: number;
-//   fontColor: number;
-//   borderColor: number;
-//   image: string;
-//   speechBubbleSize: number;
-// }
 
 export const useCreatePostit = () => {
   const [loading, setLoading] = useState(true);
