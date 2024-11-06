@@ -9,32 +9,34 @@ import { useNavigate } from "react-router-dom";
 import backButtonImg from "@/assets/images/back_button.png";
 import PostItForm from "@/components/PostItForm";
 import { useFetchSingleRollingpaper } from "@/hooks/useFetchSingleRollingpaper";
+import { useParams } from "react-router-dom";
+import useUserInfoStore from "@/stores/userInfoStore";
+
 // 특정 하나의 롤링 페이퍼만 볼 수 있는 페이지
 export const RollingPaper = () => {
-  // 가능한 말풍선 선택지
-  // 사이즈  mini  medium  large  - large는 너무크고, medium은 우측 말꼬리가 짤려서, mini랑 기본사이즈로 통일을할까...?
-  //  그림자 여부  shadow    - 얘를 default로 넣을까...?
-  //  말꼬리 방향  top right left bottom   -- 랜덤 아니면 유저가 지정 가능하도록...?
   const [isOpen, setIsOpen] = useState(false);
-
+  const { rollingpaperid } = useParams();
   const navigate = useNavigate();
-  const { singleRollingpaper } = useFetchSingleRollingpaper(6, 0, 2);
+  const { userId, nickname } = useUserInfoStore();
+  const { singleRollingpaper } = useFetchSingleRollingpaper(
+    rollingpaperid,
+    0,
+    10
+  );
 
   const defaultData = {
-    // 미리보기라서 적당히 포스트잇 id 정해주기
-    postitId: 123,
+    // 미리보기라서 적당히 포스트잇 id 없음
     // 얘 둘은 가변으로 받아오기
-    memberId: 123,
-    memberNickname: "민준",
+    memberId: Number(userId),
+    memberNickname: nickname,
 
     // 아래애들은 기본 셋팅 값들
     content: "",
-    backgroundColorer: 0,
-    image: null,
-    fontColorer: 0,
-    borderColorer: 0,
+    backgroundColor: 0,
+    image: "",
+    fontColor: 0,
+    borderColor: 0,
     speechBubbleSize: 1,
-    preview: true,
   };
 
   return (
@@ -47,12 +49,7 @@ export const RollingPaper = () => {
       {singleRollingpaper &&
         singleRollingpaper.content.map((postit, index) => (
           <>
-            <PostIt key={index} props={postit} />
-            <PostIt key={index} props={postit} />
-            <PostIt key={index} props={postit} />
-            <PostIt key={index} props={postit} />
-            <PostIt key={index} props={postit} />
-            <PostIt key={index} props={postit} />
+            <PostIt key={index} props={postit} isPreview={false} />
           </>
         ))}
       <button

@@ -1,19 +1,16 @@
 // src/hooks/useUserRollingpapers.ts
 import { useState } from "react";
 import { axiosInstance } from "../apis/axiosInstance";
+import { IPostIt } from "@/types/rollingPaperTypes";
 
 export const useEditPostit = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const editPostit = async (postitData: FormData) => {
+  const editPostit = async (postitData: IPostIt) => {
     setLoading(true);
     try {
-      await axiosInstance.put(`/postit`, postitData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await axiosInstance.put(`/postit`, postitData);
       setLoading(false);
       setError(null);
     } catch (err) {

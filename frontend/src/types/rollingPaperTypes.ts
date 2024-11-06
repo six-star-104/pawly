@@ -1,31 +1,17 @@
-export interface IPostItSummary {
-  postitId: number;
-  memberId: number;
-  memberNickname: string;
-  content: string;
-
-  backgroundColorer: number | null;
-  image: string | null;
-
-  fontColorer: number;
-  borderColorer: number;
-  speechBubbleSize: number;
-  preview?: boolean;
-}
-
 export interface IPostIt {
-  postitId: number;
+  postItId?: number;
   memberId: number;
   memberNickname: string;
+
   content: string;
-
-  backgroundColorer: number | null;
-  image: string | null;
-
-  fontColorer: number;
-  borderColorer: number;
+  status?: string;
+  backgroundColor:number;
+  fontColor:number;
+  borderColor: number;
+  image: string;
   speechBubbleSize: number;
-  preview?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface IRollingPaper {

@@ -4,7 +4,7 @@ import { axiosInstance } from "../apis/axiosInstance";
 import { IRollingPaper } from "@/types/rollingPaperTypes";
 
 export const useFetchSingleRollingpaper = (
-  rollingpaperId: number,
+  rollingpaperId: string | undefined,
   page: number,
   pageSize: number
 ) => {

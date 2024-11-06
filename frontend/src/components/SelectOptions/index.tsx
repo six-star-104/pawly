@@ -33,22 +33,25 @@ const SelectOptions: React.FC<SelectOptionsProps> = ({
 
   const changeColor = (index: number) => {
     if (selectOption == "backgroundColorer") {
-      setPreview({ ...previewPostIt, backgroundColorer: index, image: '' });
+      setPreview({ ...previewPostIt, backgroundColor: index, image: "" });
     } else if (selectOption == "fontColorer") {
-      setPreview({ ...previewPostIt, fontColorer: index });
+      setPreview({ ...previewPostIt, fontColor: index });
     } else if (selectOption == "borderColorer") {
-      setPreview({ ...previewPostIt, borderColorer: index });
+      setPreview({ ...previewPostIt, borderColor: index });
     } else {
-      setPreview({ ...previewPostIt, image: colorOptions[index], backgroundColorer: 0 });
+      setPreview({
+        ...previewPostIt,
+        image: colorOptions[index],
+        backgroundColor: 0,
+      });
     }
   };
 
   return (
     <div css={container}>
       {colorOptions.map((colorOption, index) => (
-        <PixelContainer width="24px" height="24px">
+        <PixelContainer width="24px" height="24px" key={index}>
           <div
-            key={index}
             css={optionColor(colorOption, selectOption)}
             onClick={() => changeColor(index)}
           ></div>

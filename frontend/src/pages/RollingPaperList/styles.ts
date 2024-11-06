@@ -11,11 +11,11 @@ export const container = css`
 
   #title {
     text-align: center;
-    display:flex;
-      align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: fixed;
-    width: 100%;
+    width: 412px;
     height: 10vh;
     z-index: 2;
     background-color: rgba(255, 255, 255, 0.7);
@@ -40,10 +40,10 @@ export const ListContainer = css`
   min-height: 90vh;
   overflow-y: hidden;
   margin-top: 10vh;
-  
-  padding-top:40px;
+
+  padding-top: 40px;
   padding-bottom: 40px;
-  gap:40px;
+  gap: 40px;
 `;
 
 export const backButton = css`
@@ -54,7 +54,7 @@ export const backButton = css`
   height: 40px;
   display: flex;
   align-items: center;
-  justify-content: center;  
+  justify-content: center;
   z-index: 3;
   background-color: transparent;
   border: none;

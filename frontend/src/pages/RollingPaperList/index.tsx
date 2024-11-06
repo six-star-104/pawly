@@ -26,10 +26,10 @@ export const RollingPaperList = () => {
       </div>
       <div css={ListContainer}>
         {userRollingpapers &&
-          userRollingpapers.content.map((rollingpaper) => (
+          userRollingpapers.content.map((rollingpaper, index) => (
             //  여기다가 링크 걸어놓기
 
-            <PixelContainer width="75%" height="8vh">
+            <PixelContainer width="75%" height="8vh" key={index}>
               <div
                 css={ContentContainer}
                 onClick={() => navigate(`${rollingpaper.rollingPaperId}`)}

@@ -1,11 +1,12 @@
 /** @jsxImportSource @emotion/react */
-import { PostItProps } from "./PostIt.type";
 import { bubbleStyle, fromWho, menuStyle, modalStyle } from "./PostIt.style";
 import { useState, useEffect } from "react";
 import { useRef } from "react";
 import Modal from "../Modal";
 import PostItForm from "../PostItForm";
-export const PostIt: React.FC<PostItProps> = ({ props }) => {
+import { PostItProps } from "./PostIt.type";
+
+export const PostIt: React.FC<PostItProps> = ({props, isPreview}) => {
   const randomDir = ["top", "right", "left", "bottom"];
   // 이러면 너무 랜더 될때마다 자꾸 반복돼서, 그냥 말풍선id넘버로 해줄까...?
   const [randomArrow, setRandomArrow] = useState("bottom");
@@ -45,12 +46,12 @@ export const PostIt: React.FC<PostItProps> = ({ props }) => {
     <>
       <div
         css={bubbleStyle(
-          randomTextColor[props.fontColorer],
-          randomBorderColor[props.borderColorer],
-          randomBgColor[props.backgroundColorer!],
+          randomTextColor[props.fontColor],
+          randomBorderColor[props.borderColor],
+          randomBgColor[props.backgroundColor!],
           props.image!
         )}
-        className={`bubble ${props.preview ? "" : randomArrow} ${
+        className={`bubble ${isPreview ? "" : randomArrow} ${
           speechBubbleSize[props.speechBubbleSize]
         } 
       `}
@@ -62,7 +63,7 @@ export const PostIt: React.FC<PostItProps> = ({ props }) => {
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
       >
-        {props.preview ? "미리보기입니다" : props.content}
+        {isPreview ? "미리보기입니다" : props.content}
         <div css={fromWho}>- {props.memberNickname}</div>
 
         <Modal
@@ -107,15 +108,18 @@ export const PostIt: React.FC<PostItProps> = ({ props }) => {
           <div css={modalStyle}>
             <p>삭제하시겠습니까?</p>
             <div id="yesOrNo">
-            <button
-              className="nes-btn is-primary"
-              onClick={() => setIsConfirmOpen(false)}
-            >
-              예
-            </button>
-            <button className="nes-btn" onClick={() => setIsConfirmOpen(false)}>
-              아니오
-            </button>
+              <button
+                className="nes-btn is-primary"
+                onClick={() => setIsConfirmOpen(false)}
+              >
+                예
+              </button>
+              <button
+                className="nes-btn"
+                onClick={() => setIsConfirmOpen(false)}
+              >
+                아니오
+              </button>
             </div>
           </div>
         </Modal>

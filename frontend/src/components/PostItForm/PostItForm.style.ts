@@ -5,7 +5,7 @@ export const contentContainer = css`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-
+  width: 400px;
   #textareacontainer {
     display: flex;
     justify-content: center;
