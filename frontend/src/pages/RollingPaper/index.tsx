@@ -10,13 +10,14 @@ import PostItForm from "@/components/PostItForm";
 import { useFetchSingleRollingpaper } from "@/hooks/useFetchSingleRollingpaper";
 import { useParams } from "react-router-dom";
 import useUserInfoStore from "@/stores/userInfoStore";
+import { IPostIt } from "@/types/rollingPaperTypes";
 // 특정 하나의 롤링 페이퍼만 볼 수 있는 페이지
 export const RollingPaper = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { rollingpaperid } = useParams();
   const navigate = useNavigate();
   const { singleRollingpaper } = useFetchSingleRollingpaper(
-    rollingpaperid,
+    rollingpaperid!,
     0,
     10
   );
@@ -49,7 +50,7 @@ export const RollingPaper = () => {
       <div css={ListContainer}>
         {/* 무한스크롤 페이지네이션 고려하기 */}
         {singleRollingpaper &&
-          singleRollingpaper.content.map((postit, index) => (
+          singleRollingpaper.content.map((postit:IPostIt, index:number) => (
             <PostIt key={index} props={postit} isPreview={false} />
           ))}
       </div>

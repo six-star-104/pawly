@@ -4,12 +4,12 @@ import { axiosInstance } from "../apis/axiosInstance";
 import { IRollingPaper } from "@/types/rollingPaperTypes";
 
 export const useFetchSingleRollingpaper = (
-  rollingpaperId: string | undefined,
+  rollingpaperId: string,
   page: number,
   pageSize: number
 ) => {
   const [singleRollingpaper, setSingleRollingpaper] =
-    useState<IRollingPaper | null>(null);
+    useState<IRollingPaper>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
