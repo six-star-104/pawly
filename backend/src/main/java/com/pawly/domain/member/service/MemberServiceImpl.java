@@ -5,8 +5,6 @@ import com.pawly.domain.missionStatus.service.MissionStatusService;
 import com.pawly.domain.member.dto.request.SignUpRequestDTO;
 import com.pawly.domain.member.dto.response.MemberProfileResponseDTO;
 import com.pawly.domain.member.entity.Member;
-import com.pawly.domain.member.entity.Role;
-import com.pawly.domain.member.entity.Status;
 import com.pawly.domain.member.repository.MemberRepository;
 import com.pawly.global.exception.ErrorCode;
 import com.pawly.global.response.ApiResponse;
