@@ -84,7 +84,3 @@ cloud:
       secretKey: ${S3_SECRET_KEY}
     region.static: ap-northeast-2
     stack.auto: false
-
-firebase:
-  config:
-    path: "/var/jenkins_home/workspace/pawly-backend/backend/src/main/resources/firebase-service-account.json"
