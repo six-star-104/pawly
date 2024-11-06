@@ -18,16 +18,6 @@ export const useCreatePostit = () => {
   const [error, setError] = useState<string | null>(null);
 
   const createPostit = async (postitData: IPostIt, rollingPaperId: string) => {
-    const testData = {
-      rollingPaperId: 1,
-      content: "롤링페이퍼 내용임니다",
-      backgroundColor: 1,
-      fontColor: 1,
-      borderColor: 1,
-      image: "url",
-      speechBubbleSize: 1,
-      preview: false,
-    };
     setLoading(true);
     try {
       await axiosInstance.post(`/postit`, {
