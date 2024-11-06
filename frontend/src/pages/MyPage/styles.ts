@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 export const Container = css`
   width: 100%;
   height: 100vh;
-  background-color: #E6E6FA;
+  /* background-color: #E6E6FA; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,7 +38,8 @@ export const MyInfo = css`
   font-size: 1.5rem;
   font-weight: bold;
   padding-bottom: 0.2rem;
-  margin-bottom: 0.2rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
   border-bottom: 3px solid black;
   width: auto;
 `;
@@ -55,8 +56,8 @@ export const InfoSection = css`
 
   div:first-of-type {
     display: flex;
-    gap: 0.5rem;
     align-items: center;
+    gap: 0.5rem; /* 이미지와 텍스트 사이의 간격 설정 */
   }
 
   div {
@@ -64,24 +65,24 @@ export const InfoSection = css`
     align-items: center;
   }
 `;
+
 export const VerticalTextSection = css`
   display: flex;
-  flex-direction: column; /* 세로로 배치 */
-  align-items: flex-start; /* 왼쪽 정렬 */
-  gap: 0rem; /* 요소 사이 간격 */
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.2rem; /* 닉네임과 유저네임 사이의 간격 설정 */
 
   h3 {
-    font-size: 1.2rem; /* 큰 글씨 크기 */
-    margin: 0; /* 기본 여백 제거 */
+    font-size: 1.2rem;
+    margin: 0;
   }
 
   h4 {
-    font-size: 1rem; /* 작은 글씨 크기 */
-    margin: 0; /* 기본 여백 제거 */
-    color: #333; /* 텍스트 색상 조정 (필요 시 변경 가능) */
+    font-size: 1rem;
+    margin: 0;
+    color: #333;
   }
 `;
-
 
 export const StatsSection = css`
   display: flex;
@@ -140,9 +141,12 @@ export const CollectionSection = css`
 `;
 
 export const closeButtonStyle = css`
+  width: 3rem;
+  height: 3rem;
+  /* margin-right: 1rem; */
   background: none;
   border: none;
-  padding: 0;
+  padding: 1;
   cursor: pointer;
   transition: transform 0.1s ease;
 
@@ -163,6 +167,7 @@ export const BackBtnCss = css`
   padding: 0;
   cursor: pointer;
 `;
+
 // 슬라이딩 패널 스타일
 export const slidePanelStyle = css`
   position: fixed;
@@ -179,7 +184,6 @@ export const slidePanelStyle = css`
 
 // 패널 내부 콘텐츠 스타일
 export const panelContentStyle = css`
-  /* padding: 10px; */
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -189,6 +193,103 @@ export const panelContentStyle = css`
     background: none;
     border: none;
     font-size: 20px;
+    cursor: pointer;
+  }
+`;
+
+export const inputStyle = css`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 20px 0;
+
+  input {
+    width: 80%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: none;
+    outline: none;
+    box-shadow: 4px 0 0 0 black, -4px 0 0 0 black, 0 4px 0 0 black,
+      0 -4px 0 0 black; /* 테두리 효과 추가 */
+    transition: box-shadow 0.3s ease;
+
+    &:focus {
+      box-shadow: 4px 0 0 0 #007bff, -4px 0 0 0 #007bff, 0 4px 0 0 #007bff,
+        0 -4px 0 0 #007bff; /* 포커스 시 파란색 테두리 */
+    }
+
+    &:hover {
+      box-shadow: 4px 0 0 0 #ff8800, -4px 0 0 0 #ff8800, 0 4px 0 0 #ff8800,
+        0 -4px 0 0 #ff8800; /* 호버 시 주황색 테두리 */
+    }
+  }
+`;
+
+export const modalActionsStyle = css`
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  padding: 1rem 0;
+
+  button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+
+    &:hover {
+      background-color: #45a049;
+    }
+
+    &:nth-of-type(2) {
+      background-color: #f44336;
+    }
+  }
+`;
+export const modalOverlayStyle = css`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* 배경색을 반투명하게 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+export const modalContentStyle = css`
+  background-color: #fff;
+  width: 80%;
+  max-width: 400px;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const modalHeaderStyle = css`
+  width: auto;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid black;
+
+  button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
     cursor: pointer;
   }
 `;

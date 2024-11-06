@@ -1,5 +1,4 @@
 /** @jsxImportSource @emotion/react */
-import React from "react";
 import { useState } from "react";
 import { PostIt } from "@/components/PostIt";
 import { backButton, container, plusButton } from "./styles";
