@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { useSignUpStore } from "@/stores/signUpStore"; // useSignUpStore 가져오기
 import { isNicknameDup } from "@/apis/userService";
-import { SignupNicknameProps } from "@/types/UserType";
+import { SignupNicknameProps } from "@/types/UserTypes";
 import styles from "./CreateNickname.style";
 
 export const CreateNickname: React.FC<SignupNicknameProps> = ({

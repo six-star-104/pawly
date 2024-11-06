@@ -31,7 +31,7 @@ import { Button } from '@/components/Button';
 import Modal from '@/components/Modal';
 import { Hamberger } from '../Hamberger';
 import { useUserInfoStore } from '@/stores/mypageStore';
-import { getMyInfo, updateNickname } from '@/apis/myPage';
+import { getMyInfo, updateNickname } from '@/apis/myPageService';
 
 export const MyPage = () => {
   const [mypageVisible, setMyPageVisible] = useState(false);

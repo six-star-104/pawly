@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GetMyInfoResponse, UpdateNicknameResponse, GetFriendInfoResponse  } from "@/types/UserType";
+import { GetMyInfoResponse, UpdateNicknameResponse, GetFriendInfoResponse  } from "@/types/UserTypes";
 
 export const getMyInfo = async (): Promise<GetMyInfoResponse["data"]> => {
   try {

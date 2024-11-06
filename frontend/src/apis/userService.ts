@@ -1,6 +1,6 @@
 import axios from "axios";
 import { axiosInstance, flaskAxiosInstance } from "./axiosInstance";
-import { UserInfoType, LoginResponseType, SignUpType } from "@/types/UserType";
+import { UserInfoType, LoginResponseType, SignUpType } from "@/types/UserTypes";
 
 export const kakaoLogin = async () => {
   try {

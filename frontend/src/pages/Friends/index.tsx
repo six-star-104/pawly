@@ -1,5 +1,4 @@
-/** @jsxImportSource @emotion/react */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Hamberger } from '../Hamberger';
 import NavButton from '../../assets/icons/NavButton.png';
@@ -15,31 +14,53 @@ import {
   BackBtnCss,
   slidePanelStyle,
   panelContentStyle,
+  searchPixelContainerWrapper,
   searchContainer,
   tabContainer,
   friendListContainer,
   friendItem,
   friendName,
   friendActionIcons,
-  searchPixelContainerWrapper,
   modalOverlayStyle,
   modalContentStyle,
   modalHeaderStyle,
   modalInputStyle,
   sendButtonStyle,
-  closeButtonStyle
+  closeButtonStyle,
+  searchResultsContainer,
+  searchResultItem,
+  searchResultText,
+  searchResultActions
 } from './styles';
+import { searchUserByNickname } from '@/apis/userSearchService';
+import { postFriendRequest, getFriendRequestsReceived, respondToFriendRequest } from '@/apis/friendsService';
+
+interface Member {
+  nickname: string;
+  assets: string;
+  memberId: number;
+  friendId?: number;
+}
 
 export const Friends = () => {
   const [mypageVisible, setMyPageVisible] = useState(false);
   const [activeTab, setActiveTab] = useState<"friends" | "requests">("friends");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [message, setMessage] = useState(""); // 메시지 상태 추가
+  const [message, setMessage] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState<Member[]>([]);
+  const [friendRequests, setFriendRequests] = useState<Member[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const navigate = useNavigate();
 
   const backBtn = () => {
-    navigate(-1)
-  }
+    navigate(-1);
+  };
+
   const Hambtn = () => {
     setMyPageVisible(true);
   };
@@ -54,120 +75,272 @@ export const Friends = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setMessage(""); // 모달 닫힐 때 메시지 초기화
+    setMessage("");
   };
 
   const handleSend = () => {
     console.log("전송된 메시지:", message);
-    setMessage(""); // 메시지 초기화
-    closeModal(); // 모달 닫기
+    setMessage("");
+    closeModal();
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleSearch = async () => {
+    if (!searchTerm.trim()) {
+      setError("검색어를 입력해주세요.");
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+    setSearchResults([]);
+
+    try {
+      const results = await searchUserByNickname(searchTerm);
+
+      // friendId를 undefined로 추가
+      const modifiedResults = results.map(user => ({ ...user, friendId: undefined }));
+      setSearchResults(modifiedResults);
+    } catch (error) {
+      setError("검색에 실패했습니다. 다시 시도해 주세요.");
+      console.error("검색 오류:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleFriendRequest = async (memberId: number) => {
+    if (isProcessing) return;
+
+    setIsProcessing(true);
+    try {
+      const response = await postFriendRequest(memberId);
+      if (response.status === "success") {
+        alert(response.message);
+        // 검색 결과에서 해당 사용자 제거
+        setSearchResults(prev => prev.filter(user => user.memberId !== memberId));
+      } else {
+        alert("친구 요청에 실패했습니다.");
+      }
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || "친구 요청 중 오류가 발생했습니다.";
+      console.error("친구 요청 오류:", error);
+      alert(errorMessage);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchFriendRequests = async () => {
+      if (isProcessing) return;
+
+      setIsProcessing(true);
+      try {
+        const response = await getFriendRequestsReceived();
+
+        if (response.status === "success") {
+          const modifiedRequests = response.data.map(request => ({
+            ...request,
+            friendId: request.friendId // friendId가 포함된 데이터로 저장
+          }));
+          setFriendRequests(modifiedRequests);
+          setErrorMessage(null);
+        } else {
+          console.error("친구 요청 목록을 불러오는데 실패했습니다.");
+          setErrorMessage("친구 요청 목록을 불러오는데 실패했습니다.");
+        }
+      } catch (error) {
+        console.error("친구 요청 목록 조회 오류:", error);
+        setErrorMessage("친구 요청 목록을 불러오는데 실패했습니다.");
+      } finally {
+        setIsProcessing(false);
+      }
+    };
+
+    if (activeTab === "requests") {
+      fetchFriendRequests();
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [activeTab]);
+
+  const handleResponseToFriendRequest = async (friendId: number, isAccepted: boolean) => {
+    if (isProcessing) return;
+
+    setIsProcessing(true);
+    try {
+      const response = await respondToFriendRequest(friendId, isAccepted);
+
+      if (response.status === "success") {
+        setFriendRequests(prevRequests =>
+          prevRequests.filter(request => request.friendId !== friendId)
+        );
+
+        alert(isAccepted ? "친구 요청을 수락했습니다." : "친구 요청을 거절했습니다.");
+        setErrorMessage(null);
+      } else {
+        setErrorMessage("요청 처리에 실패했습니다. 다시 시도해주세요.");
+      }
+    } catch (error: any) {
+      console.error("친구 요청 처리 오류:", error);
+      const errorMessage = error.response?.data?.message || "친구 요청 처리 중 오류가 발생했습니다.";
+      setErrorMessage(errorMessage);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   return (
     <div css={Container}>
-      {/* 뒤로가기 버튼 */}
       <div css={BackBtnContainer}>
         <button css={BackBtnCss} onClick={backBtn}>
           <img src={BackButton} alt="뒤로가기 버튼" width={35} height={35} />
         </button>
       </div>
 
-      {/* 햄버거 메뉴 버튼 */}
       <div css={HamBtnContainer}>
         <button css={HamBtnCss} onClick={Hambtn}>
           <img src={NavButton} alt="햄버거 버튼" width={40} />
         </button>
       </div>
 
-      {/* 검색창 */}
       <div css={searchPixelContainerWrapper}>
         <div css={searchContainer}>
-          <input type="text" placeholder="친구 검색" />
-          <button>
+          <input
+            type="text"
+            placeholder="닉네임으로 검색..."
+            value={searchTerm}
+            onChange={handleInputChange}
+          />
+          <button onClick={handleSearch} disabled={isProcessing}>
             <img src="https://unpkg.com/pixelarticons@1.8.1/svg/search.svg" alt="검색 아이콘" width={20} height={20} />
           </button>
         </div>
       </div>
 
-      {/* 탭 메뉴 */}
+      {isLoading && <p>검색 중...</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+
       <div css={tabContainer(activeTab)}>
         <button onClick={() => setActiveTab("friends")} className={activeTab === "friends" ? "active" : ""}>친구 목록</button>
         <button onClick={() => setActiveTab("requests")} className={activeTab === "requests" ? "active" : ""}>친구 요청</button>
       </div>
 
-      {/* 친구 목록 / 친구 요청 */}
       <div css={friendListContainer}>
         {activeTab === "friends" && (
-          <>
-            {/* 친구 목록 */}
-            <div css={friendItem}>
-              <img src={PixelPuppy} alt="친구 아바타" width={40} height={40} />
-              <div css={friendName}>
-                <p>남은식다</p>
-                <span>남은식</span>
-              </div>
-              <div css={friendActionIcons}>
-                <button onClick={openModal}>
-                  <img src="https://unpkg.com/pixelarticons@1.8.1/svg/mail.svg" alt="메일 아이콘" width={20} height={20} />
-                </button>
-                <button>
-                  <img src="https://unpkg.com/pixelarticons@1.8.1/svg/close.svg" alt="삭제 아이콘" width={20} height={20} />
-                </button>
-              </div>
+          <div css={friendItem}>
+            <img src={PixelPuppy} alt="친구 아바타" width={40} height={40} />
+            <div css={friendName}>
+              <p>남은식다</p>
+              <span>남은식</span>
             </div>
-          </>
+            <div css={friendActionIcons}>
+              <button onClick={openModal}>
+                <img src="https://unpkg.com/pixelarticons@1.8.1/svg/mail.svg" alt="메일 아이콘" width={20} height={20} />
+              </button>
+              <button>
+                <img src="https://unpkg.com/pixelarticons@1.8.1/svg/close.svg" alt="삭제 아이콘" width={20} height={20} />
+              </button>
+            </div>
+          </div>
         )}
+
         {activeTab === "requests" && (
           <>
-            {/* 친구 요청 */}
-            <div css={friendItem}>
-              <img src={PixelPuppy} alt="친구 요청 아바타" width={40} height={40} />
-              <div css={friendName}>
-                <p>민준이다</p>
-                <span>박민준</span>
+            {errorMessage && (
+              <div style={{ color: 'red', textAlign: 'center', marginTop: '10px' }}>
+                {errorMessage}
               </div>
-              <div css={friendActionIcons}>
-                <button>
-                  <img src="https://unpkg.com/pixelarticons@1.8.1/svg/check.svg" alt="수락 아이콘" width={20} height={20} />
-                </button>
-                <button>
-                  <img src="https://unpkg.com/pixelarticons@1.8.1/svg/close.svg" alt="거절 아이콘" width={20} height={20} />
-                </button>
+            )}
+            {friendRequests.length === 0 ? (
+              <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                받은 친구 요청이 없습니다.
               </div>
-            </div>
+            ) : (
+              friendRequests.map((request) => (
+                <div css={friendItem} key={request.friendId}>
+                  <img src={request.assets || PixelPuppy} alt={`${request.nickname} 아바타`} width={40} height={40} />
+                  <div css={friendName}>
+                    <p>{request.nickname}</p>
+                  </div>
+                  <div css={friendActionIcons}>
+                    <button 
+                      onClick={() => handleResponseToFriendRequest(request.friendId!, true)}
+                      disabled={isProcessing}
+                    >
+                      <img src="https://unpkg.com/pixelarticons@1.8.1/svg/check.svg" alt="수락 아이콘" width={20} height={20} />
+                    </button>
+                    <button 
+                      onClick={() => handleResponseToFriendRequest(request.friendId!, false)}
+                      disabled={isProcessing}
+                    >
+                      <img src="https://unpkg.com/pixelarticons@1.8.1/svg/close.svg" alt="거절 아이콘" width={20} height={20} />
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
           </>
         )}
       </div>
 
-      {/* 슬라이딩 패널 */}
+      {searchResults && searchResults.length > 0 && (
+        <div css={searchResultsContainer}>
+          <h3>검색 결과</h3>
+          {searchResults.map((result) => (
+            <div css={searchResultItem} key={result.memberId}>
+              <img src={result.assets || PixelPuppy} alt={`${result.nickname} 아바타`} width={50} height={50} />
+              <div css={searchResultText}>
+                <h3>{result.nickname}</h3>
+              </div>
+              <div css={searchResultActions}>
+                <button 
+                  onClick={() => handleFriendRequest(result.memberId)}
+                  disabled={isProcessing}
+                >
+                  <img src="https://unpkg.com/pixelarticons@1.8.1/svg/user-plus.svg" alt="친구 추가 아이콘" width={20} height={20} />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
       <div css={[slidePanelStyle, mypageVisible && { transform: 'translateX(0)' }]}>
         <div css={panelContentStyle}>
           <Hamberger closeMyPage={closeMyPage} />
         </div>
       </div>
 
-      {/* 모달 */}
       <Modal isOpen={isModalOpen} onClose={closeModal} title="">
         <div css={modalOverlayStyle}>
           <div css={modalContentStyle}>
             <div css={modalHeaderStyle}>
               <span>To. 친구</span>
-              <button css={closeButtonStyle} onClick={closeModal}><img src={CancelButton} alt="Cancel Button" width={25} /></button>
+              <button css={closeButtonStyle} onClick={closeModal}>
+                <img src={CancelButton} alt="Cancel Button" width={25} />
+              </button>
             </div>
             <textarea
               css={modalInputStyle}
               placeholder="메시지를 입력하세요..."
-              rows={15} // 기본 textarea 크기 설정
+              rows={15}
               value={message}
               onChange={handleChange}
             />
-            <button css={sendButtonStyle} onClick={handleSend}>
-              전송하기
-            </button>
+            <button css={sendButtonStyle} onClick={handleSend}>메시지 전송</button>
           </div>
         </div>
       </Modal>

@@ -116,6 +116,7 @@ export const friendListContainer = css`
   width: 90%;
   max-width: 500px;
   gap: 0.5rem;
+  
 `;
 
 export const friendItem = css`
@@ -259,5 +260,71 @@ export const closeButtonStyle = css`
 
   &:active {
     transform: scale(0.95);
+  }
+`;
+export const VerticalTextSection = css`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.2rem; /* 닉네임과 유저네임 사이의 간격 설정 */
+
+  h3 {
+    font-size: 1.2rem;
+    margin: 0;
+  }
+
+  h4 {
+    font-size: 1rem;
+    margin: 0;
+    color: #333;
+  }
+`;
+export const searchResultsContainer = css`
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  max-width: 500px;
+  gap: 0.5rem;
+  margin-top: 1rem;
+`;
+
+export const searchResultItem = css`
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 1rem;
+  gap: 1rem;
+  box-shadow: 4px 0 0 0 black, -4px 0 0 0 black, 0 4px 0 0 black, 0 -4px 0 0 black; /* 테두리 효과 */
+
+  /* &:last-of-type {
+    border-bottom: 2px solid black;
+  } */
+`;
+
+export const searchResultText = css`
+  flex: 1;
+  text-align: left;
+
+  h3 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  p {
+    font-size: 0.85rem;
+    color: #666;
+    margin: 0;
+  }
+`;
+
+export const searchResultActions = css`
+  display: flex;
+  gap: 0.5rem;
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
   }
 `;
