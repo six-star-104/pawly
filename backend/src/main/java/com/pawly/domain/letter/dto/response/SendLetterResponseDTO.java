@@ -10,7 +10,7 @@ import lombok.Getter;
 @Builder
 public class SendLetterResponseDTO {
 
-    private Long receiveLetterId;
+    private Long sendLetterId;
     private Long recipientId;
     private String recipientName;
     private Long letterId;
@@ -19,7 +19,7 @@ public class SendLetterResponseDTO {
 
     public static SendLetterResponseDTO toDTO(SendLetter sendLetter) {
         return SendLetterResponseDTO.builder()
-            .receiveLetterId(sendLetter.getSendLetterId())
+            .sendLetterId(sendLetter.getSendLetterId())
             .recipientId(sendLetter.getLetter().getRecipient().getMemberId())
             .recipientName(sendLetter.getLetter().getRecipient().getNickname())
             .letterId(sendLetter.getLetter().getLetterId())
