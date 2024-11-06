@@ -5,18 +5,24 @@ import {
   ArrowButton,
   ArrowContainer,
   CreateButton,
+  PostitPreview,
 } from "./PostItForm.style";
 import { useState } from "react";
-import { PostItStyle } from "../SelectOptions/SelectOptions.type";
 import SelectOptions from "../SelectOptions";
 import { PostIt } from "../PostIt";
 import { FormProps } from "./PostItForm.type";
+import { useCreatePostit } from "@/hooks/useCreatePostit";
+import { useEditPostit } from "@/hooks/useEditPostit";
+import { IPostIt } from "@/types/rollingPaperTypes";
 
-const PostItForm: React.FC<FormProps> = ({ props, onClose, isCreate }) => {
+const PostItForm: React.FC<FormProps> = ({ props, onClose, isCreate, rollingPaperId }) => {
   const [isMaxLength, setIsMaxLength] = useState(false);
   const sizeArray = ["작게", "보통", "크게"];
 
-  const [previewPostIt, setPreviewPostIt] = useState<PostItStyle>(props);
+  const [previewPostIt, setPreviewPostIt] = useState<IPostIt>(props);
+
+  const { createPostit } = useCreatePostit();
+  const { editPostit } = useEditPostit();
 
   // 내용 입력칸 4줄 이상시 경고 + 글자 제한
   const handleChangeOptionValues = (
@@ -32,12 +38,15 @@ const PostItForm: React.FC<FormProps> = ({ props, onClose, isCreate }) => {
       setIsMaxLength(true);
     }
   };
-  const createPostIt = () => {
+
+  const submitPostIt = () => {
     // 여기서 생성 api 호출해주기
     if (isCreate) {
       //여기에 생성
+      createPostit(previewPostIt, rollingPaperId!);
     } else {
       //여기에 수정
+      editPostit(previewPostIt);
     }
     onClose();
   };
@@ -113,13 +122,15 @@ const PostItForm: React.FC<FormProps> = ({ props, onClose, isCreate }) => {
             ▶️
           </button>
         </div>
-
+          
         <p>미리보기</p>
-        <PostIt props={previewPostIt} />
+        <div css={PostitPreview}>
+        <PostIt props={previewPostIt} isPreview={true} />
+        </div>
 
         <div css={CreateButton}>
           {/* 이거 버튼 색 나중에 테마로 바꿀까 */}
-          <button className="nes-btn is-primary" onClick={() => createPostIt()}>
+          <button className="nes-btn is-primary" onClick={() => submitPostIt()}>
             {isCreate ? "생성" : "수정"}
           </button>
         </div>

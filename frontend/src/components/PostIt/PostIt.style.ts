@@ -41,14 +41,10 @@ export const bubbleStyle = (
 
   color: ${textColor};
   padding: ${3 * px}px;
-  box-shadow: 0 -${px}px ${bgColor}, 0 -${2 * px}px ${borderColor},
-    ${px}px 0 ${bgColor}, ${px}px -${px}px ${borderColor},
-    ${2 * px}px 0 ${borderColor}, 0 ${px}px ${bgColor},
-    0 ${2 * px}px ${borderColor}, -${px}px 0 ${bgColor},
-    -${px}px ${px}px ${borderColor}, -${2 * px}px 0 ${borderColor},
-    -${px}px -${px}px ${borderColor}, ${px}px ${px}px ${borderColor};
+
   box-sizing: border-box;
   width: 200px;
+
   box-shadow: 0 -${px}px ${bgColor}, 0 -${2 * px}px ${borderColor},
     ${px}px 0 ${bgColor}, ${px}px -${px}px ${borderColor},
     ${2 * px}px 0 ${borderColor}, 0 ${px}px ${bgColor},
@@ -59,8 +55,8 @@ export const bubbleStyle = (
     ${2 * px}px ${2 * px}px ${shadow};
 
   &.mini {
-    width: 110px;
-    font-size: 16px;
+    width: 120px;
+    // font-size: 16px;
     padding: 4px;
   }
 
@@ -162,7 +158,7 @@ export const modalStyle = css`
   #yesOrNo {
     display: flex;
     justify-content: space-evenly;
-    margin:10px;
+    margin: 10px;
     button {
       width: 30%;
     }
@@ -170,7 +166,7 @@ export const modalStyle = css`
   textarea {
     width: 90%;
     margin-left: 5%;
-     resize: none;
+    resize: none;
   }
   #reportButton {
     margin: 10px;
