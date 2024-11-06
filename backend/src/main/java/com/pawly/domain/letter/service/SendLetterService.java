@@ -11,6 +11,8 @@ import com.pawly.domain.letter.repository.ReceiveLetterRepository;
 import com.pawly.domain.letter.repository.SendLetterRepository;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.repository.MemberRepository;
+import com.pawly.domain.missionStatus.service.LetterMissionService;
+import com.pawly.domain.missionStatus.service.MissionStatusService;
 import com.pawly.global.dto.FcmMessageRequestDto;
 import com.pawly.global.dto.PageResponseDTO;
 import java.util.List;
@@ -34,6 +36,8 @@ public class SendLetterService {
     private final ReceiveLetterRepository receiveLetterRepository;
     private final MemberRepository memberRepository;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
+    private final LetterMissionService letterMissionService;
+    private final MissionStatusService missionStatusService;
 
     public PageResponseDTO getSendLetters(Member member, int pageNumber, int pageSize, String sortType, String sortBy) {
 
@@ -95,7 +99,32 @@ public class SendLetterService {
         FcmMessageRequestDto request = new FcmMessageRequestDto(recipient.getMemberId(), "새 편지가 도착했어요!", "친구에게서 따뜻한 편지가 도착했습니다. 확인해보세요.");
         firebaseCloudMessageService.sendMessage(request);
 
+        sendLetterMission(member.getMemberId());
+        receiveLetterMission(recipient.getMemberId());
+
         receiveLetterRepository.save(receiveLetter);
+    }
+
+    // 도전과제 3번: 편지 3회 작성
+    private void sendLetterMission(Long memberId) {
+        letterMissionService.sendLetter(memberId);
+
+        boolean flag = letterMissionService.sendLetterThree(memberId);
+        missionStatusService.mission(flag, 3L, memberId);
+
+        FcmMessageRequestDto request = new FcmMessageRequestDto(memberId, "도전과제 달성!", "달성한 도전과제를 확인해보세요!");
+        firebaseCloudMessageService.sendMessage(request);
+    }
+
+    // 도전과제 7번: 편지 5회 받기
+    private void receiveLetterMission(Long memberId) {
+        letterMissionService.receiveLetter(memberId);
+
+        boolean flag = letterMissionService.receiveLetterFive(memberId);
+        missionStatusService.mission(flag, 7L, memberId);
+
+        FcmMessageRequestDto request = new FcmMessageRequestDto(memberId, "도전과제 달성!", "달성한 도전과제를 확인해보세요!");
+        firebaseCloudMessageService.sendMessage(request);
     }
 
     @Transactional
