@@ -87,4 +87,4 @@ cloud:
 
 firebase:
   config:
-    path: ${FIRE_BASE_PATH}
+    path: "/var/jenkins_home/workspace/pawly-backend/backend/src/main/resources/firebase-service-account.json"
