@@ -156,12 +156,14 @@ def remove_bg():
 ##########################################################
 @app.route(context_path + '/make_image', methods=['GET'])
 def make_image():
+    global count
     # 입력 폼에서 프롬프트 입력받으면, 
     if request.method == 'GET':
         # prompt = request.form['prompt']
         # prompt += ' with a thick black line at its boundary, animation, Pixel art, no background, no fruits'
         # print('입력받은 데이터: ', prompt)
         user_input = request.args.get('word')
+        count += 1
         
         if user_input:
             translatedWord = translateWord(user_input)
@@ -187,7 +189,7 @@ def make_image():
                 )
                 image_url = response.data[0].url
                 image_data = requests.get(image_url).content
-                image_filename = f"gen_img_{time.localtime().tm_year}_{time.localtime().tm_mon}_{time.localtime().tm_mday}_{time.localtime().tm_hour}{time.localtime().tm_min}{time.localtime().tm_sec}.jpg"
+                image_filename = f"gen_img_{count}_{time.localtime().tm_year}_{time.localtime().tm_mon}_{time.localtime().tm_mday}_{time.localtime().tm_hour}{time.localtime().tm_min}{time.localtime().tm_sec}.jpg"
                 # 'static/images' 디렉토리가 없으면 생성
                 image_directory = os.path.join('static', 'images')
                 if not os.path.exists(image_directory):
@@ -220,4 +222,5 @@ def make_image():
 ###############################################################################
 
 if __name__ == '__main__':
+    count = 0
     app.run(host='0.0.0.0', port=5000, debug=True)
