@@ -9,9 +9,16 @@ export const container = css`
     display: none;
   }
 
-  h2 {
+  #title {
     text-align: center;
-    margin-top: 3vh;
+    display:flex;
+      align-items: center;
+  justify-content: center;
+    position: fixed;
+    width: 100%;
+    height: 10vh;
+    z-index: 2;
+    background-color: rgba(255, 255, 255, 0.7);
   }
   scrollbar-width: none;
 `;
@@ -21,7 +28,7 @@ export const ContentContainer = css`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color:white;
+  background-color: white;
   font-size: 1.2rem;
 `;
 
@@ -29,8 +36,14 @@ export const ListContainer = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
-  height: 120vh;
+  // justify-content: space-evenly;
+  min-height: 90vh;
+  overflow-y: hidden;
+  margin-top: 10vh;
+  
+  padding-top:40px;
+  padding-bottom: 40px;
+  gap:40px;
 `;
 
 export const backButton = css`
@@ -41,7 +54,7 @@ export const backButton = css`
   height: 40px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center;  
   z-index: 3;
   background-color: transparent;
   border: none;

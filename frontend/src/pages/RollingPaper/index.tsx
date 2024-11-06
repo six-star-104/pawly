@@ -8,7 +8,7 @@ import Modal from "@/components/Modal";
 import { useNavigate } from "react-router-dom";
 import backButtonImg from "@/assets/images/back_button.png";
 import PostItForm from "@/components/PostItForm";
-import { useFetchSingleRollingpaper } from "@/hooks/useFetchSingleRollingPaper";
+import { useFetchSingleRollingpaper } from "@/hooks/useFetchSingleRollingpaper";
 // 특정 하나의 롤링 페이퍼만 볼 수 있는 페이지
 export const RollingPaper = () => {
   // 가능한 말풍선 선택지

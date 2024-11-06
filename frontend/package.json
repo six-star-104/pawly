@@ -19,6 +19,7 @@
     "@types/uuid": "^10.0.0",
     "aframe": "^0.8.2",
     "axios": "^1.7.7",
+    "firebase": "^11.0.1",
     "galmuri": "^2.39.6",
     "nes.css": "^2.3.0",
     "openai": "^4.69.0",

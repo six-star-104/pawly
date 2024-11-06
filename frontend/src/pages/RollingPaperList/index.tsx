@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import PixelContainer from "@/components/PixelContainer";
 // import { data } from "./mockdata";
-import { useFetchUserRollingpapers } from "../../hooks/useFetchUserRollingpaper"
+import { useFetchUserRollingpapers } from "../../hooks/useFetchUserRollingpaper";
 import {
   ListContainer,
   ContentContainer,
@@ -21,7 +21,9 @@ export const RollingPaperList = () => {
       <button css={backButton} onClick={() => navigate(-1)}>
         <img src={backButtonImg} alt="" />
       </button>
-      <h2>나의 롤링페이퍼들</h2>
+      <div id="title">
+        <h2>나의 롤링페이퍼들</h2>
+      </div>
       <div css={ListContainer}>
         {userRollingpapers &&
           userRollingpapers.content.map((rollingpaper) => (
