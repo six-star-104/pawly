@@ -1,11 +1,13 @@
 package com.pawly.domain.postbox.repository;
 
 import com.pawly.domain.postbox.entity.Postbox;
+import com.pawly.domain.rollingPaper.entity.RollingPaper;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PostboxRepository extends JpaRepository<Postbox, Long> {
     @Query(value = "SELECT p FROM Postbox p WHERE " +
@@ -16,4 +18,6 @@ public interface PostboxRepository extends JpaRepository<Postbox, Long> {
     List<Postbox> findPostboxesWithinRadius(@Param("latitude") Double latitude,
                                             @Param("longitude") Double longitude,
                                             @Param("radius") Double radius);
+
+    Postbox findByRollingpaper(RollingPaper rollingPaper);
 }

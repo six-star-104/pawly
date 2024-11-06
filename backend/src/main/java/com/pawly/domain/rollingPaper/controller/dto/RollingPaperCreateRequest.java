@@ -1,6 +1,7 @@
 package com.pawly.domain.rollingPaper.controller.dto;
 
 import com.pawly.domain.rollingPaper.dto.RollingPaperCreateDto;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import jakarta.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RollingPaperCreateRequest {
-    @NotNull
+    @NotBlank
     private String title;
 
     @NotNull
@@ -21,9 +22,9 @@ public class RollingPaperCreateRequest {
     @NotNull
     private Double longitude;
 
-    public RollingPaperCreateDto toDto(Long memberId){
+    public RollingPaperCreateDto toDto(String memberName){
         return RollingPaperCreateDto.builder()
-                .memberId(memberId)
+                .memberName(memberName)
                 .title(title)
                 .latitude(latitude)
                 .longitude(longitude)

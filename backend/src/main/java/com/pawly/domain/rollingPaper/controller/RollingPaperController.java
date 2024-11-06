@@ -23,44 +23,28 @@ public class RollingPaperController {
     private final MemberService memberService;
 
     @PostMapping
-    public ResponseEntity<?> createRollingPaper(Authentication authentication, @Valid @RequestBody RollingPaperCreateRequest rollingPaperCreateRequest) throws Exception {
-
-        Member member = memberService.findByEmail(authentication.getName());
-
-        ApiResponse<?> response = rollingPaperService.createRollingPaper(rollingPaperCreateRequest.toDto(member.getMemberId()));
-        return ResponseEntity.ok(response);
+    public ApiResponse<?> createRollingPaper(Authentication authentication, @Valid @RequestBody RollingPaperCreateRequest rollingPaperCreateRequest) {
+        return rollingPaperService.createRollingPaper(rollingPaperCreateRequest.toDto(authentication.getName()));
     }
 
     @GetMapping
-    public ResponseEntity<?> readAllRollingPaper(Authentication authentication, @PageableDefault(size = 10) Pageable pageable) throws Exception {
-
-        Member member = memberService.findByEmail(authentication.getName());
-
-        ApiResponse<?> response = rollingPaperService.readAllRollingPaper(member.getMemberId(), pageable);
-        return ResponseEntity.ok(response);
+    public ApiResponse<?> readAllRollingPaper(Authentication authentication, @PageableDefault(size = 10) Pageable pageable) {
+        return rollingPaperService.readAllRollingPaper(authentication.getName(), pageable);
     }
 
     @GetMapping("/{rollingPaperId}")
-    public ResponseEntity<?> readRollingPaper(Authentication authentication,
-                                                @PathVariable Long rollingPaperId,
+    public ApiResponse<?> readRollingPaper(Authentication authentication,
+                                              @PathVariable Long rollingPaperId,
                                               @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
                                               @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
                                               @RequestParam(name = "sortType", defaultValue = "desc") String sortType,
                                               @RequestParam(name = "sortBy", required = false, defaultValue = "createdAt") String sortBy) throws Exception {
-
-        Member member = memberService.findByEmail(authentication.getName());
-
-        ApiResponse<?> response = rollingPaperService.readRollingPaper(member.getMemberId(), rollingPaperId, pageNumber, pageSize, sortType, sortBy);
-        return ResponseEntity.ok(response);
+        return rollingPaperService.readRollingPaper(authentication.getName(), rollingPaperId, pageNumber, pageSize, sortType, sortBy);
     }
 
     @DeleteMapping("/{rollingPaperId}")
-    public ResponseEntity<?> deleteRollingPaper(Authentication authentication, @PathVariable Long rollingPaperId) throws Exception {
-
-        Member member = memberService.findByEmail(authentication.getName());
-
-        ApiResponse<?> response = rollingPaperService.deleteRollingPaper(member.getMemberId(), rollingPaperId);
-        return ResponseEntity.ok(response);
+    public ApiResponse<?> deleteRollingPaper(Authentication authentication, @PathVariable Long rollingPaperId) {
+        return rollingPaperService.deleteRollingPaper(authentication.getName(), rollingPaperId);
     }
 
 

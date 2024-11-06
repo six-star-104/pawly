@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class RollingPaperCreateDto {
-    private Long memberId;
+    private String memberName;
     private String title;
     private Double latitude;
     private Double longitude;
