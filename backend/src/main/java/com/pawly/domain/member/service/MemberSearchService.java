@@ -20,8 +20,8 @@ public class MemberSearchService {
 
     private final MemberRepository memberRepository;
 
-    public ApiResponse<?> memberSearch(String nickname) {
-        List<Member> member = memberRepository.findByNicknameContaining(nickname);
+    public ApiResponse<?> memberSearch(String nickname, Long memberId) {
+        List<Member> member = memberRepository.findByNicknameContainingAndExcludeSelf(nickname, memberId);
 
         List<SearchResponseDto> responseList = member.stream()
                 .map(SearchResponseDto::info)
