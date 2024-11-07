@@ -85,6 +85,8 @@ public enum ErrorCode {
 
     // Postbox Error
     POSTBOX_NOT_FOUND("B001", HttpStatus.NOT_FOUND, "포스트박스를 찾을 수 없습니다."),
+    POSTBOX_TOO_MANY("B002", HttpStatus.TOO_MANY_REQUESTS, "포스트박스를 너무 많이 가지고 있습니다."),
+    POSTBOX_ALREADY_LOCATED("B003", HttpStatus.TOO_MANY_REQUESTS, "근처에 이미 포스트박스가 존재 합니다."),
 
     // Theme Error
     THEME_NOT_FOUND("H001", HttpStatus.NOT_FOUND, "테마를 찾을 수 없습니다.");

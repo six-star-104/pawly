@@ -49,6 +49,15 @@ public class RollingPaperService {
 
         Member m  = member.get();
 
+        List<RollingPaper> rollingPapers = rollingPaperRepository.findByMember(m);
+        if (rollingPapers.size() > 3) return ApiResponse.createError(ErrorCode.POSTBOX_TOO_MANY);
+
+        List<Postbox> postboxes = postboxRepository.findPostboxesByMemberWithinRadius(m, dto.getLatitude(), dto.getLongitude(), 5.0);
+        if (!postboxes.isEmpty()) return ApiResponse.createError(ErrorCode.POSTBOX_ALREADY_LOCATED);
+
+        List<Postbox> postboxes1 = postboxRepository.findPostboxesWithinRadius(dto.getLatitude(), dto.getLongitude(), 1.0);
+        if (!postboxes1.isEmpty()) return ApiResponse.createError(ErrorCode.POSTBOX_ALREADY_LOCATED);
+
         RollingPaper createRollinPaper = rollingPaperRepository.save(dto.toEntity(m, 1));
 
         PostboxCreateDto postboxCreateDto = PostboxCreateDto.builder()
