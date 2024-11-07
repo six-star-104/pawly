@@ -33,6 +33,8 @@ public class MissionStatus {
     @Column(name = "rolling_paper")
     private Long rollingPaper = 0L;
 
+    private Long postit = 0L;
+
     public MissionStatus(Long memberId) {
         this.memberId = memberId;
     }
@@ -51,5 +53,9 @@ public class MissionStatus {
 
     public void rollingPaperPlus() {
         this.rollingPaper++;
+    }
+
+    public void postitPlus() {
+        this.postit++;
     }
 }
