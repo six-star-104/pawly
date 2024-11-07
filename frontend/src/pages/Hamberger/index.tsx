@@ -5,9 +5,12 @@ import { containerStyle, headerStyle, closeButtonStyle, menuListStyle, menuItemS
 import { FaStickyNote, FaEnvelope, FaTasks, FaGraduationCap, FaPaw, FaUser } from 'react-icons/fa';
 import CancelButton from '../../assets/icons/CancelButton.png';
 import { IHamberger } from '../../types/hambergerTypes'
+import { useUserInfoStore } from '@/stores/mypageStore';
 
 export const Hamberger: React.FC<IHamberger> = ({ closeMyPage }) => { 
+  
   const navigate = useNavigate();
+  const { nickname } = useUserInfoStore();
   
   const rollingPaperMove = () => {
     // 햄버거 메뉴에서 들어가는 페이지는 내가 받은거만 다뜨는거니까
@@ -33,7 +36,7 @@ export const Hamberger: React.FC<IHamberger> = ({ closeMyPage }) => {
     <>
     <div css={containerStyle}>
       <div css={headerStyle}>
-        남은식다 님 환영합니다!
+        {nickname}님 환영합니다!
         <button css={closeButtonStyle} onClick={closeMyPage}>
           <img src={CancelButton} alt="Cancel Button" width={25} />
         </button>

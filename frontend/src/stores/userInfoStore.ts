@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { UserInfoType } from "@/types/UserType";
+import { UserInfoType } from "@/types/UserTypes";
 
 type UserInfoStore = UserInfoType & {
   setUserInfo: (userInfo: Partial<UserInfoType>) => void;
