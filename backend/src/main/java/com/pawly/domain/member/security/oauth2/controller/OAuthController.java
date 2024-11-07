@@ -87,16 +87,26 @@ public class OAuthController {
             //refresh토큰 저장
             saveRefreshToken(userEmail, refreshToken);
 
+//            ResponseCookie responseCookieForAccessToken = ResponseCookie.from("accessToken", accessToken)
+//                .httpOnly(true)
+//                .secure(true)
+//                .maxAge(60*60*24*7)
+//                .path("/")
+//                .sameSite("None")
+//                .domain("pawly.o-r.kr")
+//                .build();
+
             ResponseCookie responseCookie = ResponseCookie.from("refreshToken", refreshToken)
                 .httpOnly(true)
                 .secure(true) //이거 나중에 수정해줘야하는데 true로
                 .maxAge(60*60*24*14)
                 .path("/")
                 .sameSite("None")
-                .domain("k11d104.p.ssafy.io")
+                .domain("pawly.o-r.kr")
                 .build();
 
 
+//            response.addHeader(HttpHeaders.SET_COOKIE, responseCookieForAccessToken.toString());
             response.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
 
             accessToken = "Bearer " + accessToken;
