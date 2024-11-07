@@ -83,7 +83,10 @@ public enum ErrorCode {
     NOT_FOUND_EASTER("N002", HttpStatus.NOT_FOUND, "도전 과제를 찾을 수 없습니다."),
 
     // Postbox Error
-    POSTBOX_NOT_FOUND("B001", HttpStatus.NOT_FOUND, "포스트박스를 찾을 수 없습니다.");
+    POSTBOX_NOT_FOUND("B001", HttpStatus.NOT_FOUND, "포스트박스를 찾을 수 없습니다."),
+
+    // Theme Error
+    THEME_NOT_FOUND("H001", HttpStatus.NOT_FOUND, "테마를 찾을 수 없습니다.");
 
     private final String code;
     private final HttpStatus httpStatus;

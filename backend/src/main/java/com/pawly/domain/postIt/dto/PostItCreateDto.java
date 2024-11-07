@@ -4,6 +4,7 @@ import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.postIt.entity.PostIt;
 import com.pawly.domain.postIt.enums.Status;
 import com.pawly.domain.rollingPaper.entity.RollingPaper;
+import com.pawly.domain.theme.entity.Theme;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -17,13 +18,11 @@ public class PostItCreateDto {
     private String memberName;
     private Long rollingPaperId;
     private String content;
-    private int backgroundColor;
-    private int fontColor;
-    private int borderColor;
-    private String image;
     private int speechBubbleSize;
+    private int font;
+    private Long themeId;
 
-    public PostIt toEntity(Member member, RollingPaper rollingPaper) {
+    public PostIt toEntity(Member member, RollingPaper rollingPaper, Theme theme) {
         return PostIt.builder()
                 .member(member)
                 .rollingPaper(rollingPaper)
@@ -31,10 +30,8 @@ public class PostItCreateDto {
                 .status(Status.NOT_DELETE)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
-                .backgroundColor(this.backgroundColor)
-                .fontColor(this.fontColor)
-                .borderColor(this.borderColor)
-                .image(this.image)
+                .font(this.font)
+                .theme(theme)
                 .speechBubbleSize(this.speechBubbleSize)
                 .build();
     }

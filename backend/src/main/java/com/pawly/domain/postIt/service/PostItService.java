@@ -14,6 +14,8 @@ import com.pawly.domain.postIt.enums.Status;
 import com.pawly.domain.postIt.repository.PostItRepository;
 import com.pawly.domain.rollingPaper.entity.RollingPaper;
 import com.pawly.domain.rollingPaper.repository.RollingPaperRepository;
+import com.pawly.domain.theme.entity.Theme;
+import com.pawly.domain.theme.repository.ThemeRepository;
 import com.pawly.global.dto.FcmMessageRequestDto;
 import com.pawly.global.exception.ErrorCode;
 import com.pawly.global.response.ApiResponse;
@@ -32,6 +34,7 @@ public class PostItService {
     private final RollingPaperRepository rollingPaperRepository;
     private final ReportRepository reportRepository;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
+    private final ThemeRepository themeRepository;
     private final PostitMissionService postitMissionService;
     private final CollectionService collectionService;
 
@@ -47,7 +50,10 @@ public class PostItService {
 
         RollingPaper rollingPaper1 = rollingPaper.get();
 
-        postItRepository.save(dto.toEntity(member, rollingPaper1));
+        Optional<Theme> theme = themeRepository.findById(dto.getThemeId());
+        if (theme.isEmpty()) return ApiResponse.createError(ErrorCode.THEME_NOT_FOUND);
+
+        postItRepository.save(dto.toEntity(member, rollingPaper1, theme.get()));
 
         // 도감 저장
         collectionService.collectionAdd(member, rollingPaper1.getMember());
@@ -58,7 +64,8 @@ public class PostItService {
 
         // 도전과제
         postitMissionService.postitMission(member.getMemberId());
-        return ApiResponse.createSuccessWithNoContent("생성 성공");
+
+        return ApiResponse.createSuccessWithNoContent("포스트잇 생성 성공");
     }
 
     @Transactional
@@ -79,7 +86,7 @@ public class PostItService {
             return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
         }
 
-        PostItReadDto response = PostItReadDto.of(postItWriter, postIt.get());
+        PostItReadDto response = PostItReadDto.of(postItWriter, postIt.get(), postIt.get().getTheme());
         return ApiResponse.createSuccess(response, "차트 조회 성공");
     }
 
@@ -97,8 +104,11 @@ public class PostItService {
 
         if (!requestMember.get().equals(postItWriter)) return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
 
-        postIt.get().updatePostIt(dto);
-        return ApiResponse.createSuccessWithNoContent("수정 성공");
+        Optional<Theme> theme = themeRepository.findById(dto.getThemeId());
+        if (theme.isEmpty()) return ApiResponse.createError(ErrorCode.THEME_NOT_FOUND);
+
+        postIt.get().updatePostIt(dto, theme.get());
+        return ApiResponse.createSuccessWithNoContent("포스트잇 수정 성공");
     }
 
     @Transactional
@@ -116,7 +126,7 @@ public class PostItService {
         if (!postItWriter.equals(rqMember.get())) return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
 
         postIt.get().deletePostIt();
-        return ApiResponse.createSuccessWithNoContent("삭제 성공");
+        return ApiResponse.createSuccessWithNoContent("포스트잇 삭제 성공");
     }
 
     @Transactional
@@ -134,6 +144,6 @@ public class PostItService {
         }
 
         reportRepository.save(dto.toEntity(requestMember.get(), dto.getPostId()));
-        return ApiResponse.createSuccessWithNoContent("신고성공");
+        return ApiResponse.createSuccessWithNoContent("포스트잇 신고 성공");
     }
 }
