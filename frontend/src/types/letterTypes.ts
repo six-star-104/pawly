@@ -6,6 +6,7 @@ export interface ILetter {
   updatedAt: string;
 }
 
+export interface ILetterList {}
 export interface IReadLetter {
   letterId: number;
   senderId: string;
