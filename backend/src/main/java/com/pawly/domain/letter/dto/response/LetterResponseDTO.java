@@ -1,7 +1,6 @@
 package com.pawly.domain.letter.dto.response;
 
 import com.pawly.domain.letter.entity.Letter;
-import com.pawly.domain.member.entity.Member;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;

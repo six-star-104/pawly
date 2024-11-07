@@ -49,4 +49,8 @@ public class Member extends BaseEntity {
     public void deleteMember() {
         this.status = Status.DEACTIVATED;
     }
+
+    public void stopMember() {
+        this.status = Status.SUSPENDED;
+    }
 }

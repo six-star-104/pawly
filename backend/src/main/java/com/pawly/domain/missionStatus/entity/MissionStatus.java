@@ -35,6 +35,8 @@ public class MissionStatus {
 
     private Long postit = 0L;
 
+    private Long reportsCount = 0L;
+
     public MissionStatus(Long memberId) {
         this.memberId = memberId;
     }
@@ -58,4 +60,6 @@ public class MissionStatus {
     public void postitPlus() {
         this.postit++;
     }
+
+    public void reportsCountPlus() { this.reportsCount++; }
 }

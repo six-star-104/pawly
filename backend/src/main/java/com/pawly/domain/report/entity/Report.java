@@ -1,4 +1,4 @@
-package com.pawly.domain.report.Entity;
+package com.pawly.domain.report.entity;
 
 import com.pawly.domain.report.enums.Category;
 import com.pawly.domain.report.enums.Status;

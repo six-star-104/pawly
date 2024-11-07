@@ -1,6 +1,5 @@
 package com.pawly.domain.letter.dto.response;
 
-import com.pawly.domain.letter.entity.Letter;
 import com.pawly.domain.letter.entity.ReceiveLetter;
 import java.time.LocalDateTime;
 import lombok.Builder;
@@ -13,6 +12,7 @@ public class ReceiveLetterResponseDTO {
     private Long receiveLetterId;
     private Long senderId;
     private String senderName;
+    private String content;
     private Long letterId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -22,6 +22,7 @@ public class ReceiveLetterResponseDTO {
             .receiveLetterId(receiveLetter.getReceiveLetterId())
             .senderId(receiveLetter.getLetter().getSender().getMemberId())
             .senderName(receiveLetter.getLetter().getSender().getNickname())
+            .content(receiveLetter.getLetter().getContent())
             .letterId(receiveLetter.getLetter().getLetterId())
             .createdAt(receiveLetter.getLetter().getCreatedAt())
             .updatedAt(receiveLetter.getLetter().getUpdatedAt())
