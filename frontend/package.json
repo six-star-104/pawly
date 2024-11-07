@@ -20,6 +20,7 @@
     "axios": "^1.7.7",
     "firebase": "^11.0.1",
     "galmuri": "^2.39.6",
+    "idb": "^8.0.0",
     "nes.css": "^2.3.0",
     "openai": "^4.69.0",
     "pixelarticons": "^1.8.1",

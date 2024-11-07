@@ -26,7 +26,8 @@ export const bubbleStyle = (
   textColor: string,
   borderColor: string,
   bgColor: string | null,
-  bgImg: string | null
+  bgImg: string | null,
+  isPreview: boolean | undefined
 ) => css`
   position: relative;
   display: inline-block;
@@ -35,15 +36,20 @@ export const bubbleStyle = (
   font-size: 16px;
   line-height: 1.3em;
   white-space: pre-wrap;
+
+  // 이미지 있으면 배경이 이미지 되도록
   ${bgImg
-    ? ` background-image: url(${bgImg}); background-position: center; background-repeat: repeat; background-size: contatin; opacity: 0.7; `
+    ? ` background-image: url(${bgImg}); background-position: center; background-repeat: repeat; background-size: contatin;`
     : `  background-color: ${bgColor}; `}
 
   color: ${textColor};
-  padding: ${3 * px}px;
+  padding: ${4 * px}px;
 
   box-sizing: border-box;
   width: 200px;
+
+  // 미리보기면 텍스트 중앙 정렬
+  ${isPreview ? "text-align:center" : ""};
 
   box-shadow: 0 -${px}px ${bgColor}, 0 -${2 * px}px ${borderColor},
     ${px}px 0 ${bgColor}, ${px}px -${px}px ${borderColor},
