@@ -1,9 +1,21 @@
 import { axiosInstance } from "./axiosInstance";
-import { ILetter } from "@/types/letterTypes";
+import { ILetterList } from "@/types/letterTypes";
 
-export const getReceiveLetterList = async (): Promise<ILetter> => {
+export const getReceiveLetterList = async (
+  pageNumber: number,
+  pageSize: number,
+  sortType: string,
+  sortBy: string
+): Promise<ILetterList> => {
   try {
-    const response = await axiosInstance.get(`receiveLetter`);
+    const response = await axiosInstance.get(`receiveLetter`, {
+      params: {
+        pageNumber,
+        pageSize,
+        sortType,
+        sortBy,
+      },
+    });
     return response.data.data;
   } catch (error) {
     console.error("get receive letter list failed: ", error);
@@ -16,8 +28,7 @@ export const getReceiveLetterDetail = async (receiveLetterId: number) => {
     const response = await axiosInstance.get(
       `receiveLetter/${receiveLetterId}`
     );
-    console.log(response.data);
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.error("get receive letter detail failed", error);
     throw error;

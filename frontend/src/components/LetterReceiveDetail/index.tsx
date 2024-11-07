@@ -1,5 +1,3 @@
-// LetterReceiveDetail.tsx
-/** @jsxImportSource @emotion/react */
 import { useState } from "react";
 import {
   modalOverlayStyle,
@@ -11,28 +9,42 @@ import {
   modalActionsStyle,
 } from "./LetterReceiveDetail.style";
 import { Button } from "@/components/Button";
-import Modal from "@/components/Modal";
-import { IReadLetter } from "@/types/letterTypes";
+import { IReceiveLetter } from "@/types/letterTypes";
+import { useQuery } from "@tanstack/react-query";
+import { getReceiveLetterDetail } from "@/apis/letterService";
 
-export const LetterReceiveDetail = ({ selectedLetter, onClose }) => {
+interface LetterReceiveDetailProps {
+  receiveLetterId: number;
+  onClose: () => void;
+}
+
+export const LetterReceiveDetail: React.FC<LetterReceiveDetailProps> = ({
+  receiveLetterId,
+  onClose,
+}) => {
   const [reactionIcon, setReactionIcon] = useState<JSX.Element | null>(null);
 
   const handleReactionChange = (icon: JSX.Element) => {
     setReactionIcon(icon);
   };
 
+  const { data: letterDetail } = useQuery<IReceiveLetter>({
+    queryKey: ["receiveLetterList"],
+    queryFn: () => getReceiveLetterDetail(receiveLetterId),
+  });
+  console.log(letterDetail);
   return (
-    <Modal isOpen={!!selectedLetter} onClose={onClose}>
+    <div>
       <div css={modalOverlayStyle}>
         <div css={modalContentStyle}>
           <div css={modalHeaderStyle}>
-            <span>From. {selectedLetter?.senderNickname}</span>
+            <span>From. {letterDetail?.senderName}</span>
             <button css={closeButtonStyle} onClick={onClose}>
               ✖️
             </button>
           </div>
           <div css={modalBodyStyle}>
-            <p>{selectedLetter?.content}</p>
+            <p>{letterDetail?.content}</p>
             <p>반응: {reactionIcon}</p>
           </div>
           <div css={modalActionsStyle}>
@@ -62,10 +74,10 @@ export const LetterReceiveDetail = ({ selectedLetter, onClose }) => {
                 }
               ></i>
             </div>
-            <Button onClick={onClose}>답장하기</Button>
+            <Button handler={onClose}>답장하기</Button>
           </div>
         </div>
       </div>
-    </Modal>
+    </div>
   );
 };

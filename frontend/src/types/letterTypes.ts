@@ -1,19 +1,28 @@
-export interface ILetter {
-  letterId: number;
+export interface ILetterList {
+  content: ILetterListContent[];
+  pageNumber: number;
+  pageSize: number;
+  totalPage: number;
+  totalElements: number;
+}
+
+export interface ILetterListContent {
+  receiveLetterId: number;
   senderId: string;
-  senderNickname: string;
+  senderName: string;
+  content: string;
+  letterId: number;
   createdAt: string;
   updatedAt: string;
 }
-
-export interface ILetterList {}
-export interface IReadLetter {
+export interface IReceiveLetter {
+  receiveLetterId: number;
   letterId: number;
   senderId: string;
-  senderNickname: string;
+  senderName: string;
+  content: string;
+  picture?: string;
+  reaction?: number;
   createdAt: string;
   updatedAt: string;
-  content: string;
-  picture: string;
-  reaction: string;
 }

@@ -1,10 +1,14 @@
 import axios from "axios";
-import { GetMyInfoResponse, UpdateNicknameResponse, GetFriendInfoResponse  } from "@/types/UserType";
+import {
+  GetMyInfoResponse,
+  UpdateNicknameResponse,
+  GetFriendInfoResponse,
+} from "@/types/UserType";
 
 export const getMyInfo = async (): Promise<GetMyInfoResponse["data"]> => {
   try {
     // sessionStorage에서 토큰을 가져옵니다.
-    const token = sessionStorage.getItem("accessToken");
+    const token = localStorage.getItem("accessToken");
     console.log("토큰 확인:", token); // 디버깅용 로그
 
     // 토큰이 없는 경우 예외를 발생시킵니다.
@@ -37,10 +41,12 @@ export const getMyInfo = async (): Promise<GetMyInfoResponse["data"]> => {
 };
 
 // 닉네임 업데이트 함수
-export const updateNickname = async (nickname: string): Promise<UpdateNicknameResponse> => {
+export const updateNickname = async (
+  nickname: string
+): Promise<UpdateNicknameResponse> => {
   try {
     // sessionStorage에서 토큰을 가져옵니다.
-    const token = sessionStorage.getItem("accessToken");
+    const token = localStorage.getItem("accessToken");
     console.log("토큰 확인:", token); // 디버깅용 로그
 
     // 토큰이 없는 경우 예외를 발생시킵니다.
@@ -65,7 +71,9 @@ export const updateNickname = async (nickname: string): Promise<UpdateNicknameRe
       return response.data;
     } else {
       console.error("닉네임 업데이트 실패:", response.data.message);
-      throw new Error(response.data.message || "닉네임 업데이트에 실패했습니다.");
+      throw new Error(
+        response.data.message || "닉네임 업데이트에 실패했습니다."
+      );
     }
   } catch (error) {
     console.error("updateNickname 요청 실패:", error);
@@ -73,7 +81,9 @@ export const updateNickname = async (nickname: string): Promise<UpdateNicknameRe
   }
 };
 
-export const getFriendInfo = async (memberId: number): Promise<GetFriendInfoResponse["data"]> => {
+export const getFriendInfo = async (
+  memberId: number
+): Promise<GetFriendInfoResponse["data"]> => {
   try {
     // sessionStorage에서 토큰을 가져옵니다.
     const token = sessionStorage.getItem("accessToken");
@@ -100,7 +110,9 @@ export const getFriendInfo = async (memberId: number): Promise<GetFriendInfoResp
       return response.data.data;
     } else {
       console.error("친구 프로필 조회 실패:", response.data.message);
-      throw new Error(response.data.message || "친구 프로필 조회에 실패했습니다.");
+      throw new Error(
+        response.data.message || "친구 프로필 조회에 실패했습니다."
+      );
     }
   } catch (error) {
     console.error("getFriendInfo 요청 실패:", error);

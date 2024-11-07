@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 
 export const Container = css`
   width: 100%;
@@ -6,75 +7,8 @@ export const Container = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1rem;
   position: relative;
   box-sizing: border-box;
-`;
-
-export const BackBtnContainer = css`
-  position: absolute;
-  top: 0;
-  left: 0;
-  margin: 1.45rem 1rem;
-  display: flex;
-  align-items: center;
-`;
-
-export const HamBtnContainer = css`
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-`;
-
-export const HamBtnCss = css`
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-`;
-
-export const BackBtnCss = css`
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-`;
-
-export const searchPixelContainerWrapper = css`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-top: 45%;
-`;
-
-export const searchContainer = css`
-  display: flex;
-  align-items: center;
-  width: 90%;
-  max-width: 500px;
-  background-color: #fff;
-  padding: 0.5rem;
-  border-radius: 8px;
-  border: 2px solid black;
-
-  input {
-    flex: 1;
-    border: none;
-    outline: none;
-    font-size: 1rem;
-    font-family: "Galmuri9";
-  }
-
-  button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-  }
 `;
 
 export const tabContainer = (activeTab: "received" | "sent") => css`
@@ -113,7 +47,7 @@ export const tabContainer = (activeTab: "received" | "sent") => css`
 export const letterListContainer = css`
   display: flex;
   flex-direction: column;
-  width: 90%;
+  width: 100%;
   max-width: 500px;
 `;
 
@@ -142,4 +76,22 @@ export const deleteIcon = css`
   background: none;
   border: none;
   cursor: pointer;
+`;
+
+export const PageButton = styled.div<{ $active?: boolean }>`
+  padding: 1rem;
+  color: ${(props) =>
+    props.$active ? props.theme.colors.primary : props.theme.colors.text};
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    color: ${(props) => props.theme.colors.yellow};
+  }
+  @media (max-width: 767px) {
+    padding: 0.5rem;
+    font-weight: normal;
+    font-family: "Righteous";
+    margin-bottom: 2rem;
+  }
 `;
