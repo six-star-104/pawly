@@ -3,7 +3,6 @@ package com.pawly.domain.postIt.service;
 import com.pawly.domain.Report.repository.ReportRepository;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.repository.MemberRepository;
-import com.pawly.domain.missionStatus.service.MissionStatusService;
 import com.pawly.domain.missionStatus.service.PostitMissionService;
 import com.pawly.domain.postIt.dto.PostItCreateDto;
 import com.pawly.domain.postIt.dto.PostItReadDto;
@@ -33,7 +32,6 @@ public class PostItService {
     private final ReportRepository reportRepository;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
     private final PostitMissionService postitMissionService;
-    private final MissionStatusService missionStatusService;
 
     @Transactional
     public ApiResponse<?> createPostIt(PostItCreateDto dto) {
@@ -52,20 +50,9 @@ public class PostItService {
         FcmMessageRequestDto request = new FcmMessageRequestDto(rollingPaper1.getMember().getMemberId(), "롤링페이퍼가 작성되었어요!", "마음을 담은 롤링페이퍼가 작성되었습니다. 지금 확인해보세요.");
         firebaseCloudMessageService.sendMessage(request);
 
-        postitMission(member.getMemberId());
+        postitMissionService.postitMission(member.getMemberId());
 
         return ApiResponse.createSuccess(null, "생성 성공");
-    }
-
-    // 도전과제 4번: 포스트잇 3회 생성
-    private void postitMission(Long memberId) {
-        postitMissionService.postit(memberId);
-
-        boolean flag = postitMissionService.postitThree(memberId);
-        missionStatusService.mission(flag, 3L, memberId);
-
-        FcmMessageRequestDto request = new FcmMessageRequestDto(memberId, "도전과제 달성!", "달성한 도전과제를 확인해보세요!");
-        firebaseCloudMessageService.sendMessage(request);
     }
 
     @Transactional

@@ -2,6 +2,8 @@ package com.pawly.domain.missionStatus.service;
 
 import com.pawly.domain.missionStatus.entity.MissionStatus;
 import com.pawly.domain.missionStatus.repository.MissionStatusRepository;
+import com.pawly.global.dto.FcmMessageRequestDto;
+import com.pawly.global.service.FirebaseCloudMessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,8 +16,21 @@ import java.util.Optional;
 public class PostitMissionService {
 
     private final MissionStatusRepository missionStatusRepository;
+    private final MissionStatusService missionStatusService;
+    private final FirebaseCloudMessageService firebaseCloudMessageService;
 
-    public void postit(Long memberId) {
+    // 도전과제 4번: 포스트잇 3회 생성
+    public void postitMission(Long memberId) {
+        postit(memberId);
+
+        boolean flag = postitThree(memberId);
+        missionStatusService.mission(flag, 3L, memberId);
+
+        FcmMessageRequestDto request = new FcmMessageRequestDto(memberId, "도전과제 달성!", "달성한 도전과제를 확인해보세요!");
+        firebaseCloudMessageService.sendMessage(request);
+    }
+
+    private void postit(Long memberId) {
         Optional<MissionStatus> missionStatus = missionStatusRepository.findById(memberId);
 
         if (missionStatus.isPresent()) {
@@ -24,7 +39,7 @@ public class PostitMissionService {
         }
     }
 
-    public boolean postitThree(Long memberId) {
+    private boolean postitThree(Long memberId) {
         Long count = missionStatusRepository.countRolllingPaper(memberId);
 
         return count == 3;
