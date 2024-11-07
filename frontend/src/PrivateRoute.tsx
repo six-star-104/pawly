@@ -24,7 +24,7 @@ const PrivateRoute = () => {
           try {
             const response = await getOAuthAccessToken(queryCode);
             if (response?.accessToken) {
-              sessionStorage.setItem("accessToken", response.accessToken);
+              localStorage.setItem("accessToken", response.accessToken);
               setLogin();
               navigateTo("/", { replace: true });
               setIsLoading(false);
@@ -41,7 +41,7 @@ const PrivateRoute = () => {
         }
 
         // 2. sessionStorage에서 accessToken 확인
-        const storedToken = sessionStorage.getItem("accessToken");
+        const storedToken = localStorage.getItem("accessToken");
         if (storedToken) {
           setLogin();
           setIsLoading(false);
@@ -52,7 +52,7 @@ const PrivateRoute = () => {
         try {
           const newAccessToken = await getRefreshToken();
           if (newAccessToken) {
-            sessionStorage.setItem("accessToken", newAccessToken);
+            localStorage.setItem("accessToken", newAccessToken);
             setLogin();
             setIsLoading(false);
             return;

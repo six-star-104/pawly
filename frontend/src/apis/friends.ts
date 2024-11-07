@@ -1,10 +1,12 @@
 import axios from "axios";
 import { FriendRequestResponse } from "@/types/FriendsTypes"; // 새로운 타입 정의 필요
 
-export const sendFriendRequest = async (memberId: number): Promise<FriendRequestResponse> => {
+export const sendFriendRequest = async (
+  memberId: number
+): Promise<FriendRequestResponse> => {
   try {
     // sessionStorage에서 토큰을 가져옵니다.
-    const token = sessionStorage.getItem("accessToken");
+    const token = localStorage.getItem("accessToken");
     console.log("토큰 확인:", token); // 디버깅용 로그
 
     // 토큰이 없는 경우 예외를 발생시킵니다.
