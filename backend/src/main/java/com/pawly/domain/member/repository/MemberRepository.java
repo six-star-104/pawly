@@ -28,7 +28,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("SELECT m FROM Member m " +
             "WHERE m.nickname LIKE CONCAT(:nickname, '%') " +
             "OR m.nickname LIKE CONCAT('%', :nickname) " +
-            "OR m.nickname LIKE CONCAT('%', :nickname, '%')")
+            "OR m.nickname LIKE CONCAT('%', :nickname, '%') " +
+            "OR m.name LIKE CONCAT(:nickname, '%') " +
+            "OR m.name LIKE CONCAT('%', :nickname) " +
+            "OR m.name LIKE CONCAT('%', :nickname, '%') ")
     List<Member> findByNicknameContaining(@Param("nickname") String nickname);
 
     @Query("SELECT m.fcmToken FROM Member m " +
