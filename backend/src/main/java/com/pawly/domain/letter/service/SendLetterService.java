@@ -11,6 +11,7 @@ import com.pawly.domain.letter.repository.ReceiveLetterRepository;
 import com.pawly.domain.letter.repository.SendLetterRepository;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.repository.MemberRepository;
+import com.pawly.domain.missionStatus.service.LetterMissionService;
 import com.pawly.global.dto.FcmMessageRequestDto;
 import com.pawly.global.dto.PageResponseDTO;
 import com.pawly.global.service.FileService;
@@ -37,6 +38,7 @@ public class SendLetterService {
     private final ReceiveLetterRepository receiveLetterRepository;
     private final MemberRepository memberRepository;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
+    private final LetterMissionService letterMissionService;
     private final FileService fileService;
 
     public PageResponseDTO getSendLetters(Member member, int pageNumber, int pageSize, String sortType, String sortBy) {
@@ -98,6 +100,9 @@ public class SendLetterService {
 
         FcmMessageRequestDto request = new FcmMessageRequestDto(recipient.getMemberId(), "새 편지가 도착했어요!", "친구에게서 따뜻한 편지가 도착했습니다. 확인해보세요.");
         firebaseCloudMessageService.sendMessage(request);
+
+        letterMissionService.sendLetterMission(member.getMemberId());
+        letterMissionService.receiveLetterMission(recipient.getMemberId());
 
         receiveLetterRepository.save(receiveLetter);
 

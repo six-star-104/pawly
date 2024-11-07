@@ -1,11 +1,10 @@
 package com.pawly.domain.member.service;
 
 import com.pawly.domain.easterEgg.service.EasterEggService;
+import com.pawly.domain.missionStatus.service.MissionStatusService;
 import com.pawly.domain.member.dto.request.SignUpRequestDTO;
 import com.pawly.domain.member.dto.response.MemberProfileResponseDTO;
 import com.pawly.domain.member.entity.Member;
-import com.pawly.domain.member.entity.Role;
-import com.pawly.domain.member.entity.Status;
 import com.pawly.domain.member.repository.MemberRepository;
 import com.pawly.global.exception.ErrorCode;
 import com.pawly.global.response.ApiResponse;
@@ -29,6 +28,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final FileService fileService;
     private final EasterEggService easterEggService;
+    private final MissionStatusService missionStatusService;
 
     @Override
     public Member findByMemberId(Long memberId) {
@@ -57,14 +57,13 @@ public class MemberServiceImpl implements MemberService {
         }
 
         Member member = signUpRequestDTO.toMemberEntity();
+        memberRepository.save(member);
 
         String fileUrl = fileService.saveAsset(asset);
         member.setAssets(fileUrl);
-        member.setRole(Role.USER);
-        member.setStatus(Status.ACTIVATED);
 
-        memberRepository.save(member);
         easterEggService.initializeChallengesForNewUser(member.getMemberId());
+        missionStatusService.initializeMissionStatus(member.getMemberId());
 
         return ApiResponse.createSuccessWithNoContent("회원가입 성공");
     }
