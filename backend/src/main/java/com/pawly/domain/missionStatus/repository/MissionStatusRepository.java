@@ -22,4 +22,6 @@ public interface MissionStatusRepository extends JpaRepository<MissionStatus, Lo
     @Query("SELECT m.collection FROM MissionStatus m " +
             "WHERE m.memberId =:memberId ")
     Long countCollection(@Param("memberId") Long memberId);
+
+    MissionStatus findByMemberId(@Param("memberId") Long memberId);
 }

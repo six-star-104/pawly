@@ -1,5 +1,5 @@
 package com.pawly.domain.report.enums;
 
 public enum Status {
-    COMPLETE, STANDBY
+    COMPLETE, STANDBY, DENIED
 }
