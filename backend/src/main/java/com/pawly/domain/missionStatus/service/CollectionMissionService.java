@@ -20,7 +20,7 @@ public class CollectionMissionService {
     private final FirebaseCloudMessageService firebaseCloudMessageService;
 
     // 도전과제 5번: 도감 동물 10마리 생성
-    public void sendLetterMission(Long memberId) {
+    public void collectionMission(Long memberId) {
         collection(memberId);
 
         boolean flag = collectionTen(memberId);

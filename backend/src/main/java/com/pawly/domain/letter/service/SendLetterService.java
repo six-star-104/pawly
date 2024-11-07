@@ -1,5 +1,6 @@
 package com.pawly.domain.letter.service;
 
+import com.pawly.domain.collection.service.CollectionService;
 import com.pawly.domain.letter.dto.request.LetterRequestDTO;
 import com.pawly.domain.letter.dto.response.LetterResponseDTO;
 import com.pawly.domain.letter.dto.response.SendLetterResponseDTO;
@@ -40,6 +41,7 @@ public class SendLetterService {
     private final FirebaseCloudMessageService firebaseCloudMessageService;
     private final LetterMissionService letterMissionService;
     private final FileService fileService;
+    private final CollectionService collectionService;
 
     public PageResponseDTO getSendLetters(Member member, int pageNumber, int pageSize, String sortType, String sortBy) {
 
@@ -98,17 +100,22 @@ public class SendLetterService {
             .letter(letter)
             .build();
 
+        receiveLetterRepository.save(receiveLetter);
+
+        // 파일 저장
+        String fileUrl = fileService.savePicture(picture);
+        letter.updatePicture(fileUrl);
+
+        // 알림
         FcmMessageRequestDto request = new FcmMessageRequestDto(recipient.getMemberId(), "새 편지가 도착했어요!", "친구에게서 따뜻한 편지가 도착했습니다. 확인해보세요.");
         firebaseCloudMessageService.sendMessage(request);
 
+        // 도전과제
         letterMissionService.sendLetterMission(member.getMemberId());
         letterMissionService.receiveLetterMission(recipient.getMemberId());
 
-        receiveLetterRepository.save(receiveLetter);
-
-        String fileUrl = fileService.savePicture(picture);
-
-        letter.updatePicture(fileUrl);
+        // 도감 저장
+        collectionService.collectionAdd(member, recipient);
     }
 
     @Transactional
