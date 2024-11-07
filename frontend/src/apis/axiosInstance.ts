@@ -7,7 +7,7 @@ export const axiosInstance = axios.create({
 });
 
 export const flaskAxiosInstance = axios.create({
-  baseURL: "https://k11d104.p.ssafy.io:5000/flask",
+  baseURL: "https://k11d104.p.ssafy.io/flask",
 });
 
 axiosInstance.interceptors.request.use(
