@@ -1,6 +1,5 @@
 package com.pawly.domain.letter.dto.response;
 
-import com.pawly.domain.letter.entity.ReceiveLetter;
 import com.pawly.domain.letter.entity.SendLetter;
 import java.time.LocalDateTime;
 import lombok.Builder;
