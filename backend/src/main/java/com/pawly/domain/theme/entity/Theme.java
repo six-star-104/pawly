@@ -1,16 +1,15 @@
 package com.pawly.domain.theme.entity;
 
+import com.pawly.domain.theme.dto.ThemeUpdateDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Theme {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,5 +29,18 @@ public class Theme {
     private String borderColor;
 
     private String image;
-    private boolean base;
+    private Boolean base;
+
+    private Boolean deleteFlag = false;
+
+    public void updateTheme(ThemeUpdateDto dto) {
+        this.themeName = dto.getThemeName();
+        this.backgroundColor = dto.getBackgroundColor();
+        this.fontColor = dto.getFontColor();
+        this.borderColor = dto.getBorderColor();
+        this.image = dto.getImage();
+        this.base = dto.getBase();
+    }
+
+    public void deleteTheme() {this.deleteFlag = true;}
 }

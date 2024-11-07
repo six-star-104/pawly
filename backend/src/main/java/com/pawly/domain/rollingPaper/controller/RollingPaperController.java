@@ -1,16 +1,12 @@
 package com.pawly.domain.rollingPaper.controller;
 
-import com.pawly.domain.member.entity.Member;
-import com.pawly.domain.member.repository.MemberRepository;
 import com.pawly.domain.member.service.MemberService;
-import com.pawly.domain.member.service.MemberServiceImpl;
 import com.pawly.domain.rollingPaper.controller.dto.RollingPaperCreateRequest;
 import com.pawly.domain.rollingPaper.service.RollingPaperService;
 import com.pawly.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
