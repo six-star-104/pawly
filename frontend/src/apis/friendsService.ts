@@ -19,7 +19,7 @@ export const getFriendRequestsReceived = async (): Promise<FriendRequestResponse
     const response = await axiosInstance.get<FriendRequestResponse>('friend/response');
 
     // 받아온 데이터를 콘솔에 출력
-    console.log("받아온 친구 요청 데이터:", response.data);
+    // console.log("받아온 친구 요청 데이터:", response.data);
 
     // 응답이 성공적이지만 요청 목록이 없는 경우 처리
     if (response.data.status === 'success' && (!response.data.data || response.data.data.length === 0)) {
@@ -57,7 +57,7 @@ export const respondToFriendRequest = async (friendId: number, status: boolean):
     }
 
     const requestData = { friendId, status };
-    console.log("Request Data:", requestData);
+    // console.log("Request Data:", requestData);
 
     const response = await axiosInstance.patch<FriendResponse>('/friend', requestData);
     return response.data;
@@ -84,7 +84,7 @@ export const getFriendList = async (): Promise<FriendListResponse> => {
     const response = await axiosInstance.get<FriendListResponse>('/friend');
     
     // 받아온 데이터를 콘솔에 출력
-    console.log("받아온 친구 목록 데이터:", response.data);
+    // console.log("받아온 친구 목록 데이터:", response.data);
 
     // 응답이 성공적이지만 친구 목록이 없는 경우 처리
     if (response.data.status === 'success' && (!response.data.data || response.data.data.length === 0)) {
@@ -119,7 +119,7 @@ export const getFriendRequestsSent = async (): Promise<SentFriendRequestResponse
     const response = await axiosInstance.get<SentFriendRequestResponse>('/friend/request');
 
     // 받아온 데이터를 콘솔에 출력
-    console.log("친구 신청한 목록 데이터:", response.data);
+    // console.log("친구 신청한 목록 데이터:", response.data);
 
     // 응답이 성공적이지만 신청 목록이 없는 경우 처리
     if (response.data.status === 'success' && (!response.data.data || response.data.data.length === 0)) {
@@ -157,7 +157,7 @@ export const deleteFriend = async (memberId: number): Promise<DeleteFriendRespon
 
     // 응답 성공 시 메시지 출력
     if (response.data.status === "success") {
-      console.log("친구 삭제 성공:", response.data.message);
+      // console.log("친구 삭제 성공:", response.data.message);
     }
     
     return response.data;
@@ -183,7 +183,7 @@ export const getMemberInfo = async (memberId: number): Promise<MemberInfoRespons
 
     // API 응답이 성공적이지만 데이터가 비어있는 경우 처리
     if (response.data.status === 'success' && !response.data.data) {
-      console.warn("회원 정보가 비어 있습니다.");
+      // console.warn("회원 정보가 비어 있습니다.");
       return {
         status: "success",
         data: {

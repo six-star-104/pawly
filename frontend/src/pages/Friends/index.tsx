@@ -274,6 +274,8 @@ export const Friends = () => {
     }
   }, [activeTab]);
 
+  console.log(isLoading)
+  
   return (
     <div css={Container}>
       <div css={BackBtnContainer}>
@@ -292,7 +294,7 @@ export const Friends = () => {
         <div css={searchContainer}>
           <input
             type="text"
-            placeholder="닉네임으로 검색..."
+            placeholder="닉네임 or 이름으로 검색"
             value={searchTerm}
             onChange={handleInputChange}
           />

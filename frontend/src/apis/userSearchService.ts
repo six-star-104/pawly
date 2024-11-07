@@ -5,7 +5,7 @@ export const searchUserByNickname = async (nickname: string): Promise<UserSearch
   try {
     // sessionStorage에서 토큰을 가져옵니다.
     const token = localStorage.getItem("accessToken");
-    console.log("토큰 확인:", token); // 디버깅용 로그
+    
 
     // 토큰이 없는 경우 예외를 발생시킵니다.
     if (!token) {
@@ -24,7 +24,7 @@ export const searchUserByNickname = async (nickname: string): Promise<UserSearch
     );
 
     if (response.data.status === "success") {
-      console.log("유저 검색 성공:", response.data.data);
+      // console.log("유저 검색 성공:", response.data.data);
       return response.data.data;
     } else {
       console.error("유저 검색 실패:", response.data.message);
