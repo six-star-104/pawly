@@ -41,3 +41,4 @@ const useFriendInfoStore = create<FriendInfoStore>((set) => ({
 }));
 
 export default useFriendInfoStore;
+
