@@ -74,15 +74,7 @@ const PrivateRoute = () => {
     };
 
     checkAuthentication();
-  }, [
-    query,
-    navigateTo,
-    location,
-    accessToken,
-    setAccessToken,
-    setLogin,
-    setLogout,
-  ]);
+  }, []);
 
   if (isLoading) {
     return <div>Loading...</div>;
