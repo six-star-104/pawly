@@ -1,5 +1,6 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
 import { logout } from "@/apis/userService";
+import useLoginStore from "@/stores/loginStore";
 
 export const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL,
@@ -12,7 +13,7 @@ export const flaskAxiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const accessToken = sessionStorage.getItem("accessToken");
+    const accessToken = useLoginStore.getState().accessToken;
     if (accessToken) {
       config.headers["Authorization"] = accessToken;
     }
@@ -55,7 +56,7 @@ export const getRefreshToken = async () => {
     console.log("getRefreshToken", response);
     if (response.data.data) {
       const accessToken = response.data.data.accessToken;
-      sessionStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("accessToken", accessToken);
       axiosInstance.defaults.headers["Authorization"] = accessToken;
       return accessToken;
     }
