@@ -1,5 +1,6 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
 import { logout } from "@/apis/userService";
+import useLoginStore from "@/stores/loginStore";
 
 export const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL,
@@ -12,7 +13,7 @@ export const flaskAxiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = useLoginStore.getState().accessToken;
     if (accessToken) {
       config.headers["Authorization"] = accessToken;
     }

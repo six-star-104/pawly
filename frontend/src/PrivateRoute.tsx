@@ -11,26 +11,26 @@ const useQuery = () => {
 const PrivateRoute = () => {
   const query = useQuery();
   const [isLoading, setIsLoading] = useState(true);
-  const { isLogin, setLogin, setLogout } = useLoginStore();
+  const { isLogin, setLogin, setLogout, accessToken, setAccessToken } =
+    useLoginStore();
   const navigateTo = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
-        // 1. 먼저 URL에서 인증 코드 확인
+        // 1. URL에서 인증 코드 확인
         const queryCode = query.get("code");
         if (queryCode) {
           try {
             const response = await getOAuthAccessToken(queryCode);
             if (response?.accessToken) {
-              localStorage.setItem("accessToken", response.accessToken);
+              setAccessToken(response.accessToken);
               setLogin();
               navigateTo("/", { replace: true });
               setIsLoading(false);
               return;
             } else {
-              // OAuth 토큰 발급은 성공했지만 accessToken이 없는 경우
               console.error("OAuth token response missing accessToken");
               setLogout();
             }
@@ -40,9 +40,8 @@ const PrivateRoute = () => {
           }
         }
 
-        // 2. sessionStorage에서 accessToken 확인
-        const storedToken = localStorage.getItem("accessToken");
-        if (storedToken) {
+        // 2. 스토어에서 accessToken 확인
+        if (accessToken) {
           setLogin();
           setIsLoading(false);
           return;
@@ -52,12 +51,11 @@ const PrivateRoute = () => {
         try {
           const newAccessToken = await getRefreshToken();
           if (newAccessToken) {
-            localStorage.setItem("accessToken", newAccessToken);
+            setAccessToken(newAccessToken); // 스토어에 accessToken 저장
             setLogin();
             setIsLoading(false);
             return;
           } else {
-            // refresh token으로 새 토큰 발급 실패
             console.error("Failed to get new access token");
             setLogout();
           }
@@ -66,10 +64,8 @@ const PrivateRoute = () => {
           setLogout();
         }
 
-        //  모든 인증 시도 실패
         navigateTo("/login", { replace: true, state: { from: location } });
       } catch (error) {
-        // 전체 인증 프로세스 실패
         console.error("Authentication check failed:", error);
         setLogout();
         setIsLoading(false);
@@ -78,7 +74,15 @@ const PrivateRoute = () => {
     };
 
     checkAuthentication();
-  }, []);
+  }, [
+    query,
+    navigateTo,
+    location,
+    accessToken,
+    setAccessToken,
+    setLogin,
+    setLogout,
+  ]);
 
   if (isLoading) {
     return <div>Loading...</div>;
