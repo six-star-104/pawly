@@ -42,3 +42,38 @@ export interface FriendListResponse {
   code: null | string;          
   message: string;              
 }
+
+export interface SentFriendRequest {
+  friendId: number; // 친구 요청 ID
+  memberId: number; // 신청한 친구 ID
+  name: string; // 친구 이름
+  nickname: string; // 친구 닉네임
+  assets: string; // 자산 정보
+}
+
+export interface SentFriendRequestResponse {
+  status: string; // 응답 상태 (예: "success")
+  data: SentFriendRequest[]; // 친구 요청 목록 배열
+  code: null | string; // 코드 (null이거나 문자열)
+  message: string; // 응답 메시지
+}
+
+export interface DeleteFriendResponse {
+  status: string; // 응답 상태 (예: "success")
+  data: null; // 데이터가 없으므로 null
+  code: null | string; // 에러 코드가 없으면 null, 있을 경우 문자열
+  message: string; // 응답 메시지 (예: "친구 삭제 성공")
+}
+
+export interface MemberInfoResponse {
+  status: string;
+  data: {
+    nickname: string;
+    name: string;
+    assets?: string | null; // assets가 null일 가능성이 있으므로 옵셔널로 설정
+    memberId: number;
+    birth?: string | null;
+  };
+  code: number | null;
+  message: string;
+}
