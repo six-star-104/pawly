@@ -4,24 +4,14 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import java.io.InputStream;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 @Service
 public class FirebaseInitialization {
-
-    private final Environment environment;
-
-    public FirebaseInitialization(Environment environment) {
-        this.environment = environment;
-    }
 
     @PostConstruct
     public void initialize() throws IOException {

@@ -63,14 +63,9 @@ public class RollingPaperService {
         if (!postboxService.createPostbox(postboxCreateDto)) {
             return ApiResponse.createError(ErrorCode.ROLLING_PAPER_CANNOT_CREATE);
         }
-<<<<<<< backend/src/main/java/com/pawly/domain/rollingPaper/service/RollingPaperService.java
-
         rollingPaperMissionService.rollingPaperMission(m.getMemberId());
 
         return ApiResponse.createSuccessWithNoContent("롤링페이퍼 작성 성공");
-=======
-        return ApiResponse.createSuccessWithNoContent("성공");
->>>>>>> backend/src/main/java/com/pawly/domain/rollingPaper/service/RollingPaperService.java
     }
 
     @Transactional
