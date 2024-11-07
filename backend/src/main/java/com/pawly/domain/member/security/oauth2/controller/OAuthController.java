@@ -93,7 +93,7 @@ public class OAuthController {
                 .maxAge(60*60*24*14)
                 .path("/")
                 .sameSite("None")
-                .domain("k11d104.p.ssafy.io")
+                .domain("pawly.o-r.kr")
                 .build();
 
             response.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
