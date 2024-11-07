@@ -1,8 +1,10 @@
 package com.pawly.domain.postIt.service;
 
+import com.pawly.domain.collection.service.CollectionService;
 import com.pawly.domain.report.repository.ReportRepository;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.repository.MemberRepository;
+import com.pawly.domain.missionStatus.service.PostitMissionService;
 import com.pawly.domain.postIt.dto.PostItCreateDto;
 import com.pawly.domain.postIt.dto.PostItReadDto;
 import com.pawly.domain.postIt.dto.PostItUpdateDto;
@@ -33,24 +35,37 @@ public class PostItService {
     private final ReportRepository reportRepository;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
     private final ThemeRepository themeRepository;
+    private final PostitMissionService postitMissionService;
+    private final CollectionService collectionService;
 
     @Transactional
     public ApiResponse<?> createPostIt(PostItCreateDto dto) {
         Optional<Member> requestMember = memberRepository.findByEmail(dto.getMemberName());
         if (requestMember.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
+        Member member = requestMember.get();
+
         Optional<RollingPaper> rollingPaper = rollingPaperRepository.findById(dto.getRollingPaperId());
         if (rollingPaper.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+
+        RollingPaper rollingPaper1 = rollingPaper.get();
 
         Optional<Theme> theme = themeRepository.findById(dto.getThemeId());
         if (theme.isEmpty()) return ApiResponse.createError(ErrorCode.THEME_NOT_FOUND);
 
-        postItRepository.save(dto.toEntity(requestMember.get(), rollingPaper.get(), theme.get()));
+        postItRepository.save(dto.toEntity(member, rollingPaper1, theme.get()));
 
-        FcmMessageRequestDto request = new FcmMessageRequestDto(rollingPaper.get().getMember().getMemberId(), "롤링페이퍼가 작성되었어요!", "마음을 담은 롤링페이퍼가 작성되었습니다. 지금 확인해보세요.");
+        // 도감 저장
+        collectionService.collectionAdd(member, rollingPaper1.getMember());
+
+        // 알림
+        FcmMessageRequestDto request = new FcmMessageRequestDto(rollingPaper1.getMember().getMemberId(), "롤링페이퍼가 작성되었어요!", "마음을 담은 롤링페이퍼가 작성되었습니다. 지금 확인해보세요.");
         firebaseCloudMessageService.sendMessage(request);
 
-        return ApiResponse.createSuccessWithNoContent("생성 성공");
+        // 도전과제
+        postitMissionService.postitMission(member.getMemberId());
+
+        return ApiResponse.createSuccessWithNoContent("포스트잇 생성 성공");
     }
 
     @Transactional
@@ -93,7 +108,7 @@ public class PostItService {
         if (theme.isEmpty()) return ApiResponse.createError(ErrorCode.THEME_NOT_FOUND);
 
         postIt.get().updatePostIt(dto, theme.get());
-        return ApiResponse.createSuccessWithNoContent("수정 성공");
+        return ApiResponse.createSuccessWithNoContent("포스트잇 수정 성공");
     }
 
     @Transactional
@@ -111,7 +126,7 @@ public class PostItService {
         if (!postItWriter.equals(rqMember.get())) return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
 
         postIt.get().deletePostIt();
-        return ApiResponse.createSuccessWithNoContent("삭제 성공");
+        return ApiResponse.createSuccessWithNoContent("포스트잇 삭제 성공");
     }
 
     @Transactional
@@ -129,6 +144,6 @@ public class PostItService {
         }
 
         reportRepository.save(dto.toEntity(requestMember.get(), dto.getPostId()));
-        return ApiResponse.createSuccessWithNoContent("신고성공");
+        return ApiResponse.createSuccessWithNoContent("포스트잇 신고 성공");
     }
 }

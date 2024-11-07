@@ -5,6 +5,7 @@ import com.pawly.domain.collection.entity.Collection;
 import com.pawly.domain.collection.repository.CollectionRepository;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.repository.MemberRepository;
+import com.pawly.domain.missionStatus.service.CollectionMissionService;
 import com.pawly.global.dto.PageResponseDTO;
 import com.pawly.global.exception.ErrorCode;
 import com.pawly.global.response.ApiResponse;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +26,7 @@ public class CollectionService {
 
     private final CollectionRepository collectionRepository;
     private final MemberRepository memberRepository;
+    private final CollectionMissionService collectionMissionService;
 
     public ApiResponse<?> collectionList(Long memberId, int pageNumber, int pageSize, String sortType, String sortBy) {
 
@@ -57,4 +60,15 @@ public class CollectionService {
         return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
     }
 
+    @Transactional
+    public void collectionAdd(Member member, Member friend) {
+        Optional<Collection> collectionOptional = collectionRepository.findByMemberId1AndMemberId2(member, friend);
+
+        if(collectionOptional.isEmpty()) {
+            Collection collection = new Collection(member, friend);
+            collectionRepository.save(collection);
+
+            collectionMissionService.collectionMission(member.getMemberId());
+        }
+    }
 }

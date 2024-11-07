@@ -6,11 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface CollectionRepository extends JpaRepository<Collection, Long> {
 
-    List<Collection> findByMemberId1(Member memberId);
-
     Page<Collection> findByMemberId1(Member memberId, Pageable pageable);
+    Optional<Collection> findByMemberId1AndMemberId2(Member memberId, Member friendId);
 }

@@ -2,6 +2,7 @@ package com.pawly.domain.rollingPaper.service;
 
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.repository.MemberRepository;
+import com.pawly.domain.missionStatus.service.RollingPaperMissionService;
 import com.pawly.domain.postIt.dto.PostItReadDto;
 import com.pawly.domain.postIt.entity.PostIt;
 import com.pawly.domain.postIt.repository.PostItRepository;
@@ -37,6 +38,7 @@ public class RollingPaperService {
     private final RollingPaperRepository rollingPaperRepository;
     private final MemberRepository memberRepository;
     private final PostItRepository postItRepository;
+    private final RollingPaperMissionService rollingPaperMissionService;
     private final PostboxRepository postboxRepository;
     private final ThemeRepository themeRepository;
 
@@ -45,10 +47,12 @@ public class RollingPaperService {
         Optional<Member> member = memberRepository.findByEmail(dto.getMemberName());
         if (member.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
-        RollingPaper createRollinPaper = rollingPaperRepository.save(dto.toEntity(member.get(), 1));
+        Member m  = member.get();
+
+        RollingPaper createRollinPaper = rollingPaperRepository.save(dto.toEntity(m, 1));
 
         PostboxCreateDto postboxCreateDto = PostboxCreateDto.builder()
-                .member(member.get())
+                .member(m)
                 .rollingPaper(createRollinPaper)
                 .title(dto.getTitle())
                 .latitude(dto.getLatitude())
@@ -60,7 +64,9 @@ public class RollingPaperService {
         if (!postboxService.createPostbox(postboxCreateDto)) {
             return ApiResponse.createError(ErrorCode.ROLLING_PAPER_CANNOT_CREATE);
         }
-        return ApiResponse.createSuccessWithNoContent("성공");
+        rollingPaperMissionService.rollingPaperMission(m.getMemberId());
+
+        return ApiResponse.createSuccessWithNoContent("롤링페이퍼 작성 성공");
     }
 
     @Transactional

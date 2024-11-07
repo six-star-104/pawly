@@ -29,7 +29,9 @@ public class EasterEggService {
         List<EasterEgg> easterEggs = easterEggRepository.findAll();
 
         for (EasterEgg easterEgg : easterEggs) {
-            CompleteEasterEggDto dto = new CompleteEasterEggDto(memberId, easterEgg, Status.IN_PROGRESS);
+            Status status = (easterEgg.getEasterEggId() == 1) ? Status.ACHIEVED : Status.IN_PROGRESS;
+
+            CompleteEasterEggDto dto = new CompleteEasterEggDto(memberId, easterEgg, status);
             CompleteEasterEgg challenge = new CompleteEasterEgg(dto);
 
             completeEasterEggRepository.save(challenge);
