@@ -11,5 +11,4 @@ public class LetterRequestDTO {
 
     private Long recipientId;
     private String content;
-    private String picture;
 }
