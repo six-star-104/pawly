@@ -1,5 +1,6 @@
 package com.pawly.domain.postIt.service;
 
+import com.pawly.domain.collection.service.CollectionService;
 import com.pawly.domain.report.repository.ReportRepository;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.repository.MemberRepository;
@@ -32,6 +33,7 @@ public class PostItService {
     private final ReportRepository reportRepository;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
     private final PostitMissionService postitMissionService;
+    private final CollectionService collectionService;
 
     @Transactional
     public ApiResponse<?> createPostIt(PostItCreateDto dto) {
@@ -47,9 +49,14 @@ public class PostItService {
 
         postItRepository.save(dto.toEntity(member, rollingPaper1));
 
+        // 도감 저장
+        collectionService.collectionAdd(member, rollingPaper1.getMember());
+
+        // 알림
         FcmMessageRequestDto request = new FcmMessageRequestDto(rollingPaper1.getMember().getMemberId(), "롤링페이퍼가 작성되었어요!", "마음을 담은 롤링페이퍼가 작성되었습니다. 지금 확인해보세요.");
         firebaseCloudMessageService.sendMessage(request);
 
+        // 도전과제
         postitMissionService.postitMission(member.getMemberId());
         return ApiResponse.createSuccessWithNoContent("생성 성공");
     }

@@ -28,4 +28,9 @@ public class Collection extends BaseEntity {
     @ManyToOne
     @JoinColumn(name="member_id2")
     private Member memberId2;
+
+    public Collection(Member memberId1, Member memberId2) {
+        this.memberId1 = memberId1;
+        this.memberId2 = memberId2;
+    }
 }
