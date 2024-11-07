@@ -4,6 +4,7 @@ import com.pawly.global.entity.BaseEntity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,6 +41,7 @@ public class Member extends BaseEntity {
     private Status status = Status.ACTIVATED;
     @Column(name = "fcm_token")
     private String fcmToken;
+    private LocalDateTime suspendedUntil;
 
     public void updateOAuthInfo(String provider, String providerId) {
         this.provider = provider;
@@ -52,5 +54,10 @@ public class Member extends BaseEntity {
 
     public void stopMember() {
         this.status = Status.SUSPENDED;
+    }
+    // 정지 해제 메서드
+    public void resumeMember() {
+        this.suspendedUntil = null;
+        this.status = Status.ACTIVATED; // 예시로 ACTIVE 상태로 복구
     }
 }

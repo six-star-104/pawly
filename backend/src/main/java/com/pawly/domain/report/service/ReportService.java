@@ -9,6 +9,7 @@ import com.pawly.domain.report.enums.Category;
 import com.pawly.domain.report.enums.Status;
 import com.pawly.domain.report.repository.ReportRepository;
 import com.pawly.global.dto.PageResponseDTO;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -61,6 +62,7 @@ public class ReportService {
                 member.deleteMember();
             } else if (missionStatus.getReportsCount() >= 3) {
                 member.stopMember();
+                member.setSuspendedUntil(LocalDateTime.now().plusDays(3)); // 현재 시점에서 3일 뒤를 정지 해제 시간으로 설정
             }
         } else if (confirmStatus.equals(Status.DENIED)) {
             report.setStatus(Status.DENIED);

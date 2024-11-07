@@ -1,6 +1,7 @@
 package com.pawly.domain.member.security.service;
 
 import com.pawly.domain.member.entity.Member;
+import com.pawly.domain.member.entity.Status;
 import com.pawly.domain.member.repository.MemberRepository;
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +24,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Member member = memberRepository.findByEmail(email).orElseThrow(() ->
             new UsernameNotFoundException("User not found with userEmail: " + email));
+
+        // 상태가 ACTIVATED가 아니면 로그인 불가
+        if (member.getStatus() != Status.ACTIVATED) {
+            throw new UsernameNotFoundException("User is not activated");
+        }
 
         List<GrantedAuthority> authorities = Collections.singletonList(
             new SimpleGrantedAuthority("ROLE_USER"));

@@ -1,6 +1,7 @@
 package com.pawly.domain.member.service;
 
 import com.pawly.domain.easterEgg.service.EasterEggService;
+import com.pawly.domain.member.entity.Status;
 import com.pawly.domain.missionStatus.service.MissionStatusService;
 import com.pawly.domain.member.dto.request.SignUpRequestDTO;
 import com.pawly.domain.member.dto.response.MemberProfileResponseDTO;
@@ -13,9 +14,12 @@ import jakarta.persistence.EntityNotFoundException;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -100,5 +104,20 @@ public class MemberServiceImpl implements MemberService {
 
         return new MemberProfileResponseDTO(member);
 
+    }
+
+    // 매일 자정에 실행 (크론 표현식 "0 0 0 * * *" 사용)
+    @Scheduled(cron = "0 0 0 * * *")
+    public void autoUnsuspendMembers() {
+        // SUSPENDED 상태인 모든 멤버를 조회
+        List<Member> suspendedMembers = memberRepository.findByStatus(Status.SUSPENDED);
+
+        for (Member member : suspendedMembers) {
+            // 정지 해제 시간이 현재보다 이전이라면 정지 해제
+            if (member.getSuspendedUntil() != null && LocalDateTime.now().isAfter(member.getSuspendedUntil())) {
+                member.resumeMember();
+                memberRepository.save(member); // 상태 변경 후 저장
+            }
+        }
     }
 }
