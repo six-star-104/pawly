@@ -66,7 +66,7 @@ public class SendLetterController {
     }
 
     @PostMapping()
-    public ApiResponse<?> sendLetter(Authentication authentication, @RequestPart(name = "asset", required = false) MultipartFile picture,
+    public ApiResponse<?> sendLetter(Authentication authentication, @RequestPart(name = "picture", required = false) MultipartFile picture,
                                                                     @RequestPart(name = "data") LetterRequestDTO letterRequestDTO) {
         try {
             Member member = memberService.findByEmail(authentication.getName());
