@@ -22,7 +22,7 @@ public interface MemberService {
 
     void updateBirth(Member member, String birth);
 
-    void deleteUser(Long memberId);
+    void deleteUser(Member member);
 
     MemberProfileResponseDTO getProfile(Long memberId) throws Exception;
 }

@@ -8,7 +8,12 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class PostItUpdateDto {
-    private Long memberId;
+    private String memberName;
     private Long postItId;
     private String content;
+    private int backgroundColor;
+    private int fontColor;
+    private int borderColor;
+    private String image;
+    private int speechBubbleSize;
 }

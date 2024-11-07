@@ -27,12 +27,23 @@ public class FileService {
     @Value("${cloud.aws.s3.path.asset}")
     private String ASSET_IMG_DIR;
 
+    @Value("${cloud.aws.s3.path.letter}")
+    private String LETTER_IMG_DIR;
+
     public String saveAsset(MultipartFile multipartFile) throws IOException {
         if(multipartFile.isEmpty()) {
             return null;
         }
         return upload(multipartFile, ASSET_IMG_DIR);
     }
+
+    public String savePicture(MultipartFile multipartFile) throws IOException {
+        if(multipartFile.isEmpty()) {
+            return null;
+        }
+        return upload(multipartFile, LETTER_IMG_DIR);
+    }
+
 
     private String upload(MultipartFile multipartFile, String dirName) throws IOException {
         String fileName = dirName + UUID.randomUUID()  + "_" +  UUID.randomUUID() + ".jpg";

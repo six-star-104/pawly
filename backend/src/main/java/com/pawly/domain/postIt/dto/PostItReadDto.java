@@ -18,6 +18,11 @@ public class PostItReadDto {
     private String memberNickname;
     private String content;
     private Status status;
+    private int backgroundColor;
+    private int fontColor;
+    private int borderColor;
+    private String image;
+    private int speechBubbleSize;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -27,19 +32,14 @@ public class PostItReadDto {
                 .memberId(member.getMemberId())
                 .memberNickname(member.getNickname())
                 .content(postIt.getContent())
+                .backgroundColor(postIt.getBackgroundColor())
+                .fontColor(postIt.getFontColor())
+                .borderColor(postIt.getBorderColor())
+                .image(postIt.getImage())
+                .speechBubbleSize(postIt.getSpeechBubbleSize())
                 .status(postIt.getStatus())
                 .createdAt(postIt.getCreatedAt())
                 .updatedAt(postIt.getUpdatedAt())
                 .build();
     }
-
-//    public static PostItReadDto of(Long postItId, Long memberId, String memberNickname, String content, Status status) {
-//        return PostItReadDto.builder()
-//                .postItId(postItId)
-//                .memberId(memberId)
-//                .memberNickname(memberNickname)
-//                .content(content)
-//                .status(status)
-//                .build();
-//    }
 }

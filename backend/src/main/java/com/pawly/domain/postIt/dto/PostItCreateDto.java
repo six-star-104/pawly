@@ -14,9 +14,14 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class PostItCreateDto {
-    private Long memberId;
+    private String memberName;
     private Long rollingPaperId;
     private String content;
+    private int backgroundColor;
+    private int fontColor;
+    private int borderColor;
+    private String image;
+    private int speechBubbleSize;
 
     public PostIt toEntity(Member member, RollingPaper rollingPaper) {
         return PostIt.builder()
@@ -26,6 +31,11 @@ public class PostItCreateDto {
                 .status(Status.NOT_DELETE)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
+                .backgroundColor(this.backgroundColor)
+                .fontColor(this.fontColor)
+                .borderColor(this.borderColor)
+                .image(this.image)
+                .speechBubbleSize(this.speechBubbleSize)
                 .build();
     }
 }

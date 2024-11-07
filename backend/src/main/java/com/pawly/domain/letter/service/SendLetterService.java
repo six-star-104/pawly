@@ -14,6 +14,8 @@ import com.pawly.domain.member.repository.MemberRepository;
 import com.pawly.domain.missionStatus.service.LetterMissionService;
 import com.pawly.global.dto.FcmMessageRequestDto;
 import com.pawly.global.dto.PageResponseDTO;
+import com.pawly.global.service.FileService;
+import java.io.IOException;
 import java.util.List;
 
 import com.pawly.global.service.FirebaseCloudMessageService;
@@ -24,6 +26,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +39,7 @@ public class SendLetterService {
     private final MemberRepository memberRepository;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
     private final LetterMissionService letterMissionService;
+    private final FileService fileService;
 
     public PageResponseDTO getSendLetters(Member member, int pageNumber, int pageSize, String sortType, String sortBy) {
 
@@ -69,7 +73,8 @@ public class SendLetterService {
     }
 
     @Transactional
-    public void sendLetter(Member member, LetterRequestDTO letterRequestDTO) {
+    public void sendLetter(Member member, LetterRequestDTO letterRequestDTO, MultipartFile picture)
+        throws IOException {
 
         Member recipient = memberRepository.getReferenceById(letterRequestDTO.getRecipientId());
 
@@ -77,7 +82,6 @@ public class SendLetterService {
             .sender(member)
             .recipient(recipient)
             .content(letterRequestDTO.getContent())
-            .picture(letterRequestDTO.getPicture())
             .build();
 
         letterRepository.save(letter);
@@ -101,6 +105,10 @@ public class SendLetterService {
         letterMissionService.receiveLetterMission(recipient.getMemberId());
 
         receiveLetterRepository.save(receiveLetter);
+
+        String fileUrl = fileService.savePicture(picture);
+
+        letter.updatePicture(fileUrl);
     }
 
     @Transactional
