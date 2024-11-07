@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import backButtonImg from "@/assets/images/back_button.png";
 import PostItForm from "@/components/PostItForm";
 import { useParams } from "react-router-dom";
-import useUserInfoStore from "@/stores/userInfoStore";
 import { IPostIt } from "@/types/rollingPaperTypes";
 import useFetchRollingpaper from "@/hooks/useFetchRollingpaper";
 // 특정 하나의 롤링 페이퍼만 볼 수 있는 페이지
@@ -20,23 +19,7 @@ export const RollingPaper = () => {
     String(rollingpaperid),
     0,
     10
-  );
-
-  const { nickname } = useUserInfoStore();
-  const defaultData = {
-    // 미리보기라서 적당히 포스트잇 id 없음
-    // 얘 둘은 가변으로 받아오기
-    // memberId: Number(signUpState),?
-    memberNickname: nickname,
-
-    // 아래애들은 기본 셋팅 값들
-    content: "",
-    backgroundColor: 0,
-    image: "",
-    fontColor: 0,
-    borderColor: 0,
-    speechBubbleSize: 1,
-  };
+  ); 
 
   return (
     <div css={container}>
@@ -69,7 +52,6 @@ export const RollingPaper = () => {
       >
         {/* 포스트잇 생성 폼 */}
         <PostItForm
-          props={defaultData}
           onClose={() => setIsOpen(false)}
           isCreate={true}
           rollingPaperId={rollingpaperid}
