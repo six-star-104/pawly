@@ -1,7 +1,7 @@
 import axios from "axios";
 import { axiosInstance, flaskAxiosInstance } from "./axiosInstance";
 import { UserInfoType, LoginResponseType, SignUpType } from "@/types/UserTypes";
-
+import { removeToken } from '@/stores/tokenStorage';
 export const kakaoLogin = async () => {
   try {
     const response = await axios.get(`oauth/login/kakao`);
@@ -131,6 +131,7 @@ export const getUserInfo = async (): Promise<UserInfoType> => {
 export const logout = async () => {
   try {
     const response = await axiosInstance.post(`member/logout`, "");
+    removeToken();
     console.log(response);
   } catch (error) {
     console.error("logout failed: ", error);

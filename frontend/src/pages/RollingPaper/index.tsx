@@ -19,7 +19,7 @@ export const RollingPaper = () => {
     String(rollingpaperid),
     0,
     10
-  ); 
+  );
 
   return (
     <div css={container}>
