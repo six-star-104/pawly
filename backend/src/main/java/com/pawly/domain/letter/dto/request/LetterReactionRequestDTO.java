@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LetterReactionRequestDTO {
 
-    private String reaction;
+    private Integer reaction;
 }

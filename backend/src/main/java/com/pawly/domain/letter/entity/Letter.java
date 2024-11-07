@@ -35,7 +35,7 @@ public class Letter extends BaseEntity {
     @Column(nullable = false)
     private String content;
     private String picture;
-    private String reaction;
+    private Integer reaction;
     @LastModifiedDate
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;

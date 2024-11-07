@@ -16,7 +16,7 @@ public class LetterResponseDTO {
     private String recipientName;
     private String content;
     private String picture;
-    private String reaction;
+    private Integer reaction;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
