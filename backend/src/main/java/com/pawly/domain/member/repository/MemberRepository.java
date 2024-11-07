@@ -2,6 +2,7 @@ package com.pawly.domain.member.repository;
 
 import com.pawly.domain.member.entity.Member;
 
+import com.pawly.domain.member.entity.Status;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByEmail(String email);
 
     boolean existsByNickname(String nickname);
+
+    List<Member> findByStatus(Status status);
 
     @Query(value = "SELECT * FROM Member m WHERE DATE_FORMAT(m.birth, '%m-%d') = DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 4 DAY), '%m-%d')", nativeQuery = true)
     List<Member> findByBirthInThreeDays();
