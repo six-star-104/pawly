@@ -61,6 +61,11 @@ public class MemberController {
                 cookie.setDomain("pawly.o-r.kr"); // 생성 시와 동일한 도메인 설정
                 response.addCookie(cookie);
 
+                Cookie oldCookie = new Cookie("refreshToken", null);
+                oldCookie.setMaxAge(0);
+                oldCookie.setPath("/"); // 생성 시와 동일한 경로 설정
+                oldCookie.setDomain("k11d104.p.ssafy.io"); // 생성 시와 동일한 도메인 설정
+                response.addCookie(oldCookie);
             }
 
             return ApiResponse.createSuccess(null, "로그아웃 성공");
@@ -108,6 +113,18 @@ public class MemberController {
                 .domain("pawly.o-r.kr")
                 .build();
 
+            // k11d104.p.ssafy.io 도메인용 쿠키
+            ResponseCookie responseCookieForOldDomain = ResponseCookie.from("refreshToken", newRefreshToken)
+                .httpOnly(true)
+                .secure(true)
+                .maxAge(60*60*24*14)
+                .path("/")
+                .sameSite("None")
+                .domain("k11d104.p.ssafy.io")
+                .build();
+
+
+            response.addHeader(HttpHeaders.SET_COOKIE, responseCookieForOldDomain.toString());
             response.setHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
 
             newAccessToken = "Bearer " + newAccessToken;
@@ -220,6 +237,12 @@ public class MemberController {
                 cookie.setPath("/"); // 생성 시와 동일한 경로 설정
                 cookie.setDomain("pawly.o-r.kr"); // 생성 시와 동일한 도메인 설정
                 response.addCookie(cookie);
+
+                Cookie oldCookie = new Cookie("refreshToken", null);
+                oldCookie.setMaxAge(0);
+                oldCookie.setPath("/"); // 생성 시와 동일한 경로 설정
+                oldCookie.setDomain("k11d104.p.ssafy.io"); // 생성 시와 동일한 도메인 설정
+                response.addCookie(oldCookie);
             } else {
                 return ApiResponse.createError(ErrorCode.INVALID_JWT_TOKEN);
             }
