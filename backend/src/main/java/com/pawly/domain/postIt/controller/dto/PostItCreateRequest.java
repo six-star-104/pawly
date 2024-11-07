@@ -20,28 +20,21 @@ public class PostItCreateRequest {
     private String content;
 
     @NotNull
-    private Integer backgroundColor;
+    private Integer font;
 
     @NotNull
-    private Integer fontColor;
+    private Integer speechBubbleSize;
 
     @NotNull
-    private Integer borderColor;
-
-    private String image;
-
-    @NotNull
-    private int speechBubbleSize;
+    private Long themeId;
 
     public PostItCreateDto toDto(String name){
         return PostItCreateDto.builder()
                 .memberName(name)
                 .rollingPaperId(this.rollingPaperId)
                 .content(this.content)
-                .backgroundColor(this.backgroundColor)
-                .fontColor(this.fontColor)
-                .borderColor(this.borderColor)
-                .image(this.image)
+                .font(this.font)
+                .themeId(themeId)
                 .speechBubbleSize(this.speechBubbleSize)
                 .build();
     }

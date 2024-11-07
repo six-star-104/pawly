@@ -12,6 +12,8 @@ import com.pawly.domain.postIt.enums.Status;
 import com.pawly.domain.postIt.repository.PostItRepository;
 import com.pawly.domain.rollingPaper.entity.RollingPaper;
 import com.pawly.domain.rollingPaper.repository.RollingPaperRepository;
+import com.pawly.domain.theme.entity.Theme;
+import com.pawly.domain.theme.repository.ThemeRepository;
 import com.pawly.global.dto.FcmMessageRequestDto;
 import com.pawly.global.exception.ErrorCode;
 import com.pawly.global.response.ApiResponse;
@@ -30,6 +32,7 @@ public class PostItService {
     private final RollingPaperRepository rollingPaperRepository;
     private final ReportRepository reportRepository;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
+    private final ThemeRepository themeRepository;
 
     @Transactional
     public ApiResponse<?> createPostIt(PostItCreateDto dto) {
@@ -39,7 +42,10 @@ public class PostItService {
         Optional<RollingPaper> rollingPaper = rollingPaperRepository.findById(dto.getRollingPaperId());
         if (rollingPaper.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
-        postItRepository.save(dto.toEntity(requestMember.get(), rollingPaper.get()));
+        Optional<Theme> theme = themeRepository.findById(dto.getThemeId());
+        if (theme.isEmpty()) return ApiResponse.createError(ErrorCode.THEME_NOT_FOUND);
+
+        postItRepository.save(dto.toEntity(requestMember.get(), rollingPaper.get(), theme.get()));
 
         FcmMessageRequestDto request = new FcmMessageRequestDto(rollingPaper.get().getMember().getMemberId(), "롤링페이퍼가 작성되었어요!", "마음을 담은 롤링페이퍼가 작성되었습니다. 지금 확인해보세요.");
         firebaseCloudMessageService.sendMessage(request);
@@ -65,7 +71,7 @@ public class PostItService {
             return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
         }
 
-        PostItReadDto response = PostItReadDto.of(postItWriter, postIt.get());
+        PostItReadDto response = PostItReadDto.of(postItWriter, postIt.get(), postIt.get().getTheme());
         return ApiResponse.createSuccess(response, "차트 조회 성공");
     }
 
@@ -83,7 +89,10 @@ public class PostItService {
 
         if (!requestMember.get().equals(postItWriter)) return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
 
-        postIt.get().updatePostIt(dto);
+        Optional<Theme> theme = themeRepository.findById(dto.getThemeId());
+        if (theme.isEmpty()) return ApiResponse.createError(ErrorCode.THEME_NOT_FOUND);
+
+        postIt.get().updatePostIt(dto, theme.get());
         return ApiResponse.createSuccessWithNoContent("수정 성공");
     }
 

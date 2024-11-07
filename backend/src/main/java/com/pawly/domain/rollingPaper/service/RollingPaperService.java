@@ -15,17 +15,16 @@ import com.pawly.domain.rollingPaper.dto.RollingPaperReadAllDto;
 import com.pawly.domain.rollingPaper.dto.RollingPaperReadDto;
 import com.pawly.domain.rollingPaper.entity.RollingPaper;
 import com.pawly.domain.rollingPaper.repository.RollingPaperRepository;
+import com.pawly.domain.theme.entity.Theme;
+import com.pawly.domain.theme.repository.ThemeRepository;
 import com.pawly.global.exception.ErrorCode;
 import com.pawly.global.response.ApiResponse;
 import lombok.AllArgsConstructor;
-import org.joda.time.DateTime;
 import org.springframework.data.domain.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +38,7 @@ public class RollingPaperService {
     private final MemberRepository memberRepository;
     private final PostItRepository postItRepository;
     private final PostboxRepository postboxRepository;
+    private final ThemeRepository themeRepository;
 
     @Transactional
     public ApiResponse<?> createRollingPaper(RollingPaperCreateDto dto) {
@@ -111,7 +111,11 @@ public class RollingPaperService {
         for (PostIt postIt : postIts) {
             Optional<Member> postItMember = memberRepository.findById(postIt.getMember().getMemberId());
             if (postItMember.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
-            postItReadDtos.add(PostItReadDto.of(postItMember.get(), postIt));
+
+            Optional<Theme> theme = themeRepository.findById(postIt.getTheme().getThemeId());
+            if (theme.isEmpty()) return ApiResponse.createError(ErrorCode.THEME_NOT_FOUND);
+
+            postItReadDtos.add(PostItReadDto.of(postItMember.get(), postIt, theme.get()));
         }
 
         RollingPaperReadAllDto rollingPaperReadAllDto = RollingPaperReadAllDto.toDto(postItReadDtos, rollingPaper.get(), pageNumber, pageSize, (long) Math.ceil((double) postIts.getTotalElements() / pageSize),postIts.getTotalElements());
