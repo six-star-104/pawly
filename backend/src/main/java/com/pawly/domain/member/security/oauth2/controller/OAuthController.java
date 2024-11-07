@@ -87,14 +87,14 @@ public class OAuthController {
             //refresh토큰 저장
             saveRefreshToken(userEmail, refreshToken);
 
-//            ResponseCookie responseCookieForAccessToken = ResponseCookie.from("accessToken", accessToken)
-//                .httpOnly(true)
-//                .secure(true)
-//                .maxAge(60*60*24*7)
-//                .path("/")
-//                .sameSite("None")
-//                .domain("pawly.o-r.kr")
-//                .build();
+            ResponseCookie responseCookieForAccessToken = ResponseCookie.from("accessToken", accessToken)
+                .httpOnly(true)
+                .secure(true)
+                .maxAge(60*60*24*7)
+                .path("/")
+                .sameSite("None")
+                .domain("k11d104.p.ssafy.io")
+                .build();
 
             ResponseCookie responseCookie = ResponseCookie.from("refreshToken", refreshToken)
                 .httpOnly(true)
@@ -102,11 +102,11 @@ public class OAuthController {
                 .maxAge(60*60*24*14)
                 .path("/")
                 .sameSite("None")
-                .domain("pawly.o-r.kr")
+                .domain("k11d104.p.ssafy.io")
                 .build();
 
 
-//            response.addHeader(HttpHeaders.SET_COOKIE, responseCookieForAccessToken.toString());
+            response.addHeader(HttpHeaders.SET_COOKIE, responseCookieForAccessToken.toString());
             response.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
 
             accessToken = "Bearer " + accessToken;
