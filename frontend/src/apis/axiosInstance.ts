@@ -1,6 +1,6 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
 import { logout } from "@/apis/userService";
-import { setToken, getToken,  } from '@/stores/tokenStorage';
+import { setToken, getToken } from "@/stores/tokenStorage";
 
 export const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL,
@@ -17,7 +17,7 @@ axiosInstance.interceptors.request.use(
     try {
       const accessToken = await getToken();
       if (accessToken) {
-        config.headers["Authorization"] = `Bearer ${accessToken}`;
+        config.headers["Authorization"] = `${accessToken}`;
       }
       return config;
     } catch (error) {
@@ -45,10 +45,10 @@ axiosInstance.interceptors.response.use(
       try {
         console.log("Attempting to refresh token...");
         const newToken = await getRefreshToken();
-        
+
         if (newToken) {
           // Update the header of the original request with the new token
-          originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
+          originalRequest.headers["Authorization"] = `${newToken}`;
           return axiosInstance(originalRequest);
         }
       } catch (refreshError) {
@@ -68,11 +68,11 @@ export const getRefreshToken = async () => {
 
     if (response.data.data) {
       const accessToken = response.data.data.accessToken;
-      
+
       // Save the new token in localStorage and update axios defaults
       await setToken(accessToken);
-      axiosInstance.defaults.headers["Authorization"] = `Bearer ${accessToken}`;
-      
+      axiosInstance.defaults.headers["Authorization"] = `${accessToken}`;
+
       return accessToken;
     }
     return null;
