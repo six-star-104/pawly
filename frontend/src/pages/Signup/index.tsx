@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { getOAuthInformation, kakaoLogin, signUp } from "@/apis/userService";
+import {
+  getOAuthInformation,
+  kakaoLogin,
+  googleLogin,
+  signUp,
+} from "@/apis/userService";
 import { CreateNickname } from "@/components/CreateNickname";
 import { CreateAssets } from "@/components/CreateAssets";
 import { useSignUpStore } from "@/stores/signUpStore";
@@ -63,7 +68,9 @@ export const SignUp = () => {
       if (signUpState.provider === "kakao") {
         await kakaoLogin();
       }
-
+      if (signUpState.provider === "google") {
+        await googleLogin();
+      }
       navigateTo("/");
     } catch (error) {
       console.log("durl");

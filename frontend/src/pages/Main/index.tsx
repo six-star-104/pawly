@@ -74,7 +74,7 @@ export const Main = () => {
 
   const handleLogout = async () => {
     await logout();
-    sessionStorage.removeItem("accessToken");
+    localStorage.removeItem("accessToken");
     navigateTo("/login");
   };
 

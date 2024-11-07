@@ -3,7 +3,7 @@ import Pawly from "@/assets/icons/Pawly.svg";
 import kakao from "@/assets/images/kakao.png";
 import GooGle1 from "@/assets/images/GooGle1.png";
 import { container, imgCss, loginBtn } from "./styles";
-import { kakaoLogin } from "@/apis/userService";
+import { kakaoLogin, googleLogin } from "@/apis/userService";
 import { useNavigate, useLocation } from "react-router-dom";
 import useLoginStore from "@/stores/loginStore";
 import { getRefreshToken } from "@/apis/axiosInstance";
@@ -52,11 +52,6 @@ export const Login = () => {
     };
   }, []);
 
-  // 카카오 로그인 버튼 클릭 핸들러
-  const handleKakaoLogin = () => {
-    kakaoLogin();
-  };
-
   return (
     <div css={container}>
       <div>
@@ -64,11 +59,11 @@ export const Login = () => {
       </div>
 
       <div css={loginBtn}>
-        <button onClick={handleKakaoLogin}>
+        <button onClick={kakaoLogin}>
           <img src={kakao} alt="Kakao" />
-          카카오로 시작하기기
+          카카오로 시작하기
         </button>
-        <button>
+        <button onClick={googleLogin}>
           <img src={GooGle1} alt="Google" />
           구글로 시작하기
         </button>

@@ -7,12 +7,12 @@ export const axiosInstance = axios.create({
 });
 
 export const flaskAxiosInstance = axios.create({
-  baseURL: "http://k11d104.p.ssafy.io:5000/flask",
+  baseURL: "https://k11d104.p.ssafy.io/flask",
 });
 
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const accessToken = sessionStorage.getItem("accessToken");
+    const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
       config.headers["Authorization"] = accessToken;
     }
@@ -55,7 +55,7 @@ export const getRefreshToken = async () => {
     console.log("getRefreshToken", response);
     if (response.data.data) {
       const accessToken = response.data.data.accessToken;
-      sessionStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("accessToken", accessToken);
       axiosInstance.defaults.headers["Authorization"] = accessToken;
       return accessToken;
     }

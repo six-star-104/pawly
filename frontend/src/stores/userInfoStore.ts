@@ -14,9 +14,7 @@ const useUserInfoStore = create<UserInfoStore>((set) => ({
   providerId: "",
   nickname: "",
   assets: "",
-  assetsName: "",
   setUserInfo: (userInfo) => set((state) => ({ ...state, ...userInfo })),
 }));
 
 export default useUserInfoStore;
-
