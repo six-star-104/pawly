@@ -24,7 +24,7 @@ public class PostitMissionService {
         postit(memberId);
 
         boolean flag = postitThree(memberId);
-        missionStatusService.mission(flag, 3L, memberId);
+        missionStatusService.mission(flag, 4L, memberId);
 
         FcmMessageRequestDto request = new FcmMessageRequestDto(memberId, "도전과제 달성!", "달성한 도전과제를 확인해보세요!");
         firebaseCloudMessageService.sendMessage(request);
