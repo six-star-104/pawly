@@ -1,4 +1,4 @@
-import { css } from '@emotion/react';
+import { css } from "@emotion/react";
 
 export const Container = css`
   width: 100%;
@@ -66,7 +66,7 @@ export const searchContainer = css`
     border: none;
     outline: none;
     font-size: 1rem;
-    font-family: 'Galmuri9';
+    font-family: "Galmuri9";
   }
 
   button {
@@ -107,19 +107,19 @@ export const tabContainer = (activeTab: "received" | "sent") => css`
     padding: 0.5rem 1rem;
     cursor: pointer;
     font-weight: bold;
-    font-family: 'Galmuri9';
-    border-top: 2px solid black;
+    font-family: "Galmuri9";
+    border-top: 3px solid black;
     border-bottom: none;
-    border-right: 2px solid black;
+    border-right: 3px solid black;
 
     &:nth-of-type(1) {
-      border-left: 2px solid black;
-      border-bottom: ${activeTab === "sent" ? "2px solid black" : "none"};
+      border-left: 3px solid black;
+      border-bottom: ${activeTab === "sent" ? "3px solid black" : "none"};
     }
 
     &:nth-of-type(2) {
       border-left: none;
-      border-bottom: ${activeTab === "received" ? "2px solid black" : "none"};
+      border-bottom: ${activeTab === "received" ? "3px solid black" : "none"};
     }
   }
 
@@ -181,7 +181,7 @@ export const deleteModalContentStyle = css`
   padding: 20px;
   width: 85%;
   text-align: center;
-  font-family: 'Galmuri9';
+  font-family: "Galmuri9";
   color: #333;
   display: flex;
   flex-direction: column;
@@ -218,7 +218,7 @@ export const modalContentStyle = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: 'Galmuri9';
+  font-family: "Galmuri9";
   font-size: 1.3rem;
 `;
 
@@ -246,7 +246,7 @@ export const modalBodyStyle = css`
   width: 100%;
   height: 40vh;
   padding: 10px;
-  font-family: 'Galmuri9';
+  font-family: "Galmuri9";
   text-align: center;
   color: #333;
   border-bottom: 1px solid #333;
@@ -273,13 +273,12 @@ export const modalActionsStyle = css`
   /* margin-top: 1rem; */
 `;
 
-
 export const replyTextareaStyle = css`
   width: 100%;
   padding: 0.5rem;
   margin-top: 1rem;
   border: 1px solid #000;
-  font-family: 'Galmuri9';
+  font-family: "Galmuri9";
   font-size: 1rem;
   resize: none;
   outline: none;

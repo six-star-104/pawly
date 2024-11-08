@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-
+import styled from "@emotion/styled";
 export const modalOverlayStyle = css`
   display: flex;
   align-items: center;
@@ -14,29 +14,31 @@ export const modalOverlayStyle = css`
 `;
 
 export const modalContentStyle = css`
-  background: #fff;
-  border: 2px solid black;
-  padding: 0px;
-  width: 80%;
-  height: 60vh;
-  /* max-width: 400px; */
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 80%;
+  max-height: 60vh;
+  min-height: 40vh;
+  padding: 0;
+  background: #fff;
+  border: 2px solid black;
   font-family: "Galmuri9";
-  font-size: 1.3rem;
+  font-size: 1rem;
 `;
 
-export const modalHeaderStyle = css`
-  background-color: #ece7ff;
-  padding: 0.5rem;
+export const modalHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-bottom: 1rem;
-  font-size: 1.4rem;
+  padding: 0.5rem;
   color: #333;
+  background-color: ${(props) => props.theme.colors.lightpurple};
+  font-size: 1.2rem;
+  position: sticky;
+  top: 0;
+  z-index: 1; /* 헤더 고정 */
 `;
 
 export const closeButtonStyle = css`
@@ -47,33 +49,39 @@ export const closeButtonStyle = css`
   font-size: 1.5rem;
 `;
 
-export const modalBodyStyle = css`
+export const letterContent = css`
   width: 100%;
-  height: 40vh;
   padding: 10px;
-  font-family: "Galmuri9";
-  text-align: center;
   color: #333;
-  border-bottom: 1px solid #333;
-  margin-bottom: 1rem;
+  overflow-y: auto;
+  flex: 1;
 `;
 
 export const reactionIconsStyle = css`
   display: flex;
   gap: 0.5rem;
   padding: 1rem;
-  margin-right: auto; /* 아이콘을 왼쪽으로 정렬 */
+  margin-right: auto;
   .nes-icon {
-    font-size: 1.5rem; /* 아이콘 크기 조절 */
+    font-size: 2rem;
     cursor: pointer;
   }
 `;
 
 export const modalActionsStyle = css`
   display: flex;
-  justify-content: space-between; /* 아이콘과 버튼 사이의 간격 조정 */
+  justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 0 1rem;
-  /* margin-top: 1rem; */
+  padding: 1rem;
+  background-color: #ece7ff;
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+`;
+
+export const deleteIcon = css`
+  background: none;
+  border: none;
+  cursor: pointer;
 `;

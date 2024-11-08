@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import * as style from "./LetterReceiveList.style";
-import { ILetterList } from "@/types/letterTypes";
+import { IReceiveLetterList } from "@/types/letterTypes";
 import { getReceiveLetterList } from "@/apis/letterService";
 import { LetterReceiveDetail } from "@/components/LetterReceiveDetail";
 import Modal from "@/components/Modal";
@@ -12,7 +12,7 @@ export const LetterReceiveList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data: letterList } = useQuery<ILetterList>({
+  const { data: letterList } = useQuery<IReceiveLetterList>({
     queryKey: ["receiveLetterList", currentPage],
     queryFn: () =>
       getReceiveLetterList(currentPage - 1, 10, "desc", "createdAt"),
@@ -43,24 +43,19 @@ export const LetterReceiveList = () => {
               key={letter.letterId}
               onClick={() => openModal(letter.receiveLetterId)}
             >
-              <div css={style.letterContent}>
-                <p>{letter.senderName}</p>
+              <div css={style.contentContainer}>
+                <div css={style.content}>{letter.content}</div>
+                <div css={style.nickname}>{letter.senderName}</div>
               </div>
-              <div css={style.letterDate}>
+              <div css={style.date}>
                 {new Date(letter.createdAt).toLocaleDateString("ko-KR")}
               </div>
-              <button css={style.deleteIcon}>
-                <img
-                  src="https://unpkg.com/pixelarticons@1.8.1/svg/trash.svg"
-                  alt="삭제"
-                  width={20}
-                  height={20}
-                />
-              </button>
             </div>
           ))
         ) : (
-          <p>아직 받은 편지가 없습니다.</p>
+          <div css={style.letterItem}>
+            <div css={style.noLetter}>받은 편지가 없습니다.</div>
+          </div>
         )}
       </div>
 

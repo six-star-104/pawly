@@ -1,12 +1,14 @@
-export interface ILetterList {
-  content: ILetterListContent[];
+// 편지함 응답
+export interface IReceiveLetterList {
+  content: IReceiveLetterListContent[];
   pageNumber: number;
   pageSize: number;
   totalPage: number;
   totalElements: number;
 }
 
-export interface ILetterListContent {
+// 받은 편지 content
+export interface IReceiveLetterListContent {
   receiveLetterId: number;
   senderId: string;
   senderName: string;
@@ -15,8 +17,44 @@ export interface ILetterListContent {
   createdAt: string;
   updatedAt: string;
 }
+
+// 받은 편지 detail
 export interface IReceiveLetter {
   receiveLetterId: number;
+  letterId: number;
+  senderId: string;
+  senderName: string;
+  content: string;
+  picture?: string;
+  reaction?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// 보낸 편지함 응답
+export interface ISendLetterList {
+  content: ISendLetterListContent[];
+  pageNumber: number;
+  pageSize: number;
+  totalPage: number;
+  totalElements: number;
+}
+
+// 보낸 편지 content
+export interface ISendLetterListContent {
+  sendLetterId: number;
+  recipientId: string;
+  recipientName: string;
+  content: string;
+  letterId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// 보낸 편지 detail
+export interface IReceiveLetter {
+  recipientId: number;
+  recipientName: string;
   letterId: number;
   senderId: string;
   senderName: string;

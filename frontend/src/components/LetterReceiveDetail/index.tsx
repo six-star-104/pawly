@@ -1,13 +1,4 @@
-import { useState } from "react";
-import {
-  modalOverlayStyle,
-  modalContentStyle,
-  modalHeaderStyle,
-  closeButtonStyle,
-  modalBodyStyle,
-  reactionIconsStyle,
-  modalActionsStyle,
-} from "./LetterReceiveDetail.style";
+import * as style from "./LetterReceiveDetail.style";
 import { Button } from "@/components/Button";
 import { IReceiveLetter } from "@/types/letterTypes";
 import { useQuery } from "@tanstack/react-query";
@@ -22,60 +13,38 @@ export const LetterReceiveDetail: React.FC<LetterReceiveDetailProps> = ({
   receiveLetterId,
   onClose,
 }) => {
-  const [reactionIcon, setReactionIcon] = useState<JSX.Element | null>(null);
-
-  const handleReactionChange = (icon: JSX.Element) => {
-    setReactionIcon(icon);
-  };
-
   const { data: letterDetail } = useQuery<IReceiveLetter>({
     queryKey: ["receiveLetterList"],
     queryFn: () => getReceiveLetterDetail(receiveLetterId),
   });
-  console.log(letterDetail);
+
   return (
-    <div>
-      <div css={modalOverlayStyle}>
-        <div css={modalContentStyle}>
-          <div css={modalHeaderStyle}>
-            <span>From. {letterDetail?.senderName}</span>
-            <button css={closeButtonStyle} onClick={onClose}>
-              ✖️
-            </button>
+    <div css={style.modalOverlayStyle}>
+      <div css={style.modalContentStyle}>
+        <style.modalHeader>
+          <span>From. {letterDetail?.senderName}</span>
+          <button css={style.deleteIcon}>
+            <img
+              src="https://unpkg.com/pixelarticons@1.8.1/svg/trash.svg"
+              alt="삭제"
+              width={20}
+              height={20}
+            />
+          </button>
+          <button css={style.closeButtonStyle} onClick={onClose}>
+            ✖️
+          </button>
+        </style.modalHeader>
+        <div css={style.letterContent}>
+          <p>{letterDetail?.content}</p>
+        </div>
+        <div css={style.modalActionsStyle}>
+          <div css={style.reactionIconsStyle}>
+            <i className="nes-icon is-small heart"></i>
+            <i className="nes-icon is-small star"></i>
+            <i className="nes-icon is-small like"></i>
           </div>
-          <div css={modalBodyStyle}>
-            <p>{letterDetail?.content}</p>
-            <p>반응: {reactionIcon}</p>
-          </div>
-          <div css={modalActionsStyle}>
-            <div css={reactionIconsStyle}>
-              <i
-                className="nes-icon is-small heart"
-                onClick={() =>
-                  handleReactionChange(
-                    <i className="nes-icon is-small heart"></i>
-                  )
-                }
-              ></i>
-              <i
-                className="nes-icon is-small star"
-                onClick={() =>
-                  handleReactionChange(
-                    <i className="nes-icon is-small star"></i>
-                  )
-                }
-              ></i>
-              <i
-                className="nes-icon is-small like"
-                onClick={() =>
-                  handleReactionChange(
-                    <i className="nes-icon is-small like"></i>
-                  )
-                }
-              ></i>
-            </div>
-            <Button handler={onClose}>답장하기</Button>
-          </div>
+          <Button handler={onClose}>답장하기</Button>
         </div>
       </div>
     </div>

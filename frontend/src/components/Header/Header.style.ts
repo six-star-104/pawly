@@ -2,13 +2,12 @@ import { css } from "@emotion/react";
 
 export const Container = css`
   width: 100%;
-  /* height: 214vh; */
+  height: 80px;
   /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 1rem;
-  position: relative;
   box-sizing: border-box;
 `;
 

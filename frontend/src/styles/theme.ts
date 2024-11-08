@@ -11,6 +11,7 @@ export const theme = {
     gray: "#D6D6D6",
     grayHover: "#C1C1C1",
     orange: "#FFB145",
+    lightpurple: "#ece7ff",
     text: "#333",
   },
 };
@@ -28,6 +29,7 @@ declare module "@emotion/react" {
       gray: string;
       grayHover: string;
       orange: string;
+      lightpurple: string;
       text: string;
     };
   }
