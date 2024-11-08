@@ -4,25 +4,40 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "gen-pwa": "pwa-assets-generator --preset minimal public/logo.svg"
   },
   "dependencies": {
     "@emotion/css": "^11.13.4",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
     "@tanstack/react-query": "^5.59.15",
+    "@types/uuid": "^10.0.0",
+    "aframe": "^0.8.2",
     "axios": "^1.7.7",
+    "firebase": "^11.0.1",
+    "galmuri": "^2.39.6",
+    "idb": "^8.0.0",
+    "nes.css": "^2.3.0",
+    "openai": "^4.69.0",
+    "pixelarticons": "^1.8.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-icons": "^5.3.0",
+    "react-router-dom": "^6.27.0",
+    "uuid": "^11.0.2",
     "zustand": "^5.0.0"
   },
   "devDependencies": {
+    "@types/node": "^22.8.1",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
-    "@vite-pwa/assets-generator": "^0.2.4",
+    "@vite-pwa/assets-generator": "^0.2.6",
     "@vitejs/plugin-react": "^4.3.3",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.2",
@@ -36,5 +51,8 @@
   "overrides": {
     "sharp": "0.32.6",
     "sharp-ico": "0.1.5"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.24.4"
   }
 }
