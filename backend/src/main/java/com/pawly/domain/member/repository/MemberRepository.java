@@ -26,14 +26,15 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findByBirthInThreeDays();
 
     @Query("SELECT m FROM Member m " +
-            "WHERE m.nickname LIKE CONCAT(:nickname, '%') " +
-            "OR m.nickname LIKE CONCAT('%', :nickname) " +
-            "OR m.nickname LIKE CONCAT('%', :nickname, '%') " +
-            "OR m.name LIKE CONCAT(:nickname, '%') " +
-            "OR m.name LIKE CONCAT('%', :nickname) " +
-            "OR m.name LIKE CONCAT('%', :nickname, '%') " +
-            "AND m.memberId <> :excludeId")
+        "WHERE  m.memberId <> :excludeId AND" +
+        "(m.nickname LIKE CONCAT(:nickname, '%') " +
+        "OR m.nickname LIKE CONCAT('%', :nickname) " +
+        "OR m.nickname LIKE CONCAT('%', :nickname, '%') " +
+        "OR m.name LIKE CONCAT(:nickname, '%') " +
+        "OR m.name LIKE CONCAT('%', :nickname) " +
+        "OR m.name LIKE CONCAT('%', :nickname, '%'))")
     List<Member> findByNicknameContainingAndExcludeSelf(@Param("nickname") String nickname, @Param("excludeId") Long excludeId);
+
 
     @Query("SELECT m.fcmToken FROM Member m " +
             "WHERE m.memberId = :memberId")
