@@ -1,10 +1,11 @@
 import axios from "axios";
 import { UserSearchResponse } from "@/types/UserSearchTypes"; // 새로운 타입 정의 필요
+import {  getToken,  } from '@/stores/tokenStorage';
 
 export const searchUserByNickname = async (nickname: string): Promise<UserSearchResponse["data"]> => {
   try {
     // sessionStorage에서 토큰을 가져옵니다.
-    const token = localStorage.getItem("accessToken");
+    const token = await getToken();
     
 
     // 토큰이 없는 경우 예외를 발생시킵니다.

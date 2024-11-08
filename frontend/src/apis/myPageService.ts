@@ -4,11 +4,12 @@ import {
   UpdateNicknameResponse,
   GetFriendInfoResponse,
 } from "@/types/UserTypes";
+import { getToken  } from '@/stores/tokenStorage';
 
 export const getMyInfo = async (): Promise<GetMyInfoResponse["data"]> => {
   try {
     // sessionStorage에서 토큰을 가져옵니다.
-    const token = localStorage.getItem("accessToken");
+    const token = await getToken();
     
 
     // 토큰이 없는 경우 예외를 발생시킵니다.
@@ -46,7 +47,7 @@ export const updateNickname = async (
 ): Promise<UpdateNicknameResponse> => {
   try {
     // sessionStorage에서 토큰을 가져옵니다.
-    const token = localStorage.getItem("accessToken");
+    const token = await getToken();
     
 
     // 토큰이 없는 경우 예외를 발생시킵니다.
@@ -86,7 +87,7 @@ export const getFriendInfo = async (
 ): Promise<GetFriendInfoResponse["data"]> => {
   try {
     // sessionStorage에서 토큰을 가져옵니다.
-    const token = localStorage.getItem("accessToken");
+    const token = await getToken();
     
 
     // 토큰이 없는 경우 예외를 발생시킵니다.
