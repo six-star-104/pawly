@@ -7,9 +7,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface PostItRepository extends JpaRepository<PostIt, Long> {
         @Query("SELECT p FROM PostIt p " +
                 "WHERE p.rollingPaper = :rollingPaper " +
                 "AND p.status = 'NOT_DELETE'")
-        Page<PostIt>  findByRollingPaper(RollingPaper rollingPaper, Pageable pageable);
+        Page<PostIt> findByRollingPaper(RollingPaper rollingPaper, Pageable pageable);
+
+        @Query("SELECT p FROM PostIt p " +
+                "WHERE p.rollingPaper =:rollingPaper " +
+                "AND p.status = 'NOT_DELETE' ")
+        List<PostIt> findByRollingPaper(RollingPaper rollingPaper);
 }

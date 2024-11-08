@@ -42,6 +42,4 @@ public class RollingPaperController {
     public ApiResponse<?> deleteRollingPaper(Authentication authentication, @PathVariable Long rollingPaperId) {
         return rollingPaperService.deleteRollingPaper(authentication.getName(), rollingPaperId);
     }
-
-
 }

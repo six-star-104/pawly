@@ -48,18 +48,20 @@ public class PostItService {
         Optional<RollingPaper> rollingPaper = rollingPaperRepository.findById(dto.getRollingPaperId());
         if (rollingPaper.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
-        RollingPaper rollingPaper1 = rollingPaper.get();
+        RollingPaper r = rollingPaper.get();
+
+        if (r.isDeleteFlag()) return ApiResponse.createError(ErrorCode.ROLLING_PAPER_NOTFOUND);
 
         Optional<Theme> theme = themeRepository.findById(dto.getThemeId());
         if (theme.isEmpty()) return ApiResponse.createError(ErrorCode.THEME_NOT_FOUND);
 
-        postItRepository.save(dto.toEntity(member, rollingPaper1, theme.get()));
+        postItRepository.save(dto.toEntity(member, r, theme.get()));
 
         // 도감 저장
-        collectionService.collectionAdd(member, rollingPaper1.getMember());
+        collectionService.collectionAdd(member, r.getMember());
 
         // 알림
-        FcmMessageRequestDto request = new FcmMessageRequestDto(rollingPaper1.getMember().getMemberId(), "롤링페이퍼가 작성되었어요!", "마음을 담은 롤링페이퍼가 작성되었습니다. 지금 확인해보세요.");
+        FcmMessageRequestDto request = new FcmMessageRequestDto(r.getMember().getMemberId(), "롤링페이퍼가 작성되었어요!", "마음을 담은 롤링페이퍼가 작성되었습니다. 지금 확인해보세요.");
         firebaseCloudMessageService.sendMessage(request);
 
         // 도전과제
