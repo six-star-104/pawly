@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -22,50 +21,59 @@ import {
   warningIconStyle,
   modalBodyStyle,
   rewardTitleStyle,
-  congratsContainerStyle, 
+  congratsContainerStyle,
 } from './styles';
 import NavButton from '../../assets/icons/NavButton.png';
 import BackButton from '../../assets/icons/BackButton.png';
-import cheer from '../../assets/icons/cheer.png'
+import cheer from '../../assets/icons/cheer.png';
 import { Hamberger } from '../Hamberger';
-import { IChallenges } from '@/types/questTypes';
 import Modal from '@/components/Modal';
 import { Button } from '@/components/Button';
+import useEasterEggStore from '@/stores/easterEggStore';
+import { EasterEggData } from '@/types/questTypes';
+import { getEasterEggs } from '@/apis/easterEggService';
 
-export const Quest = () => {
+export const EasterEgg = () => {
   const navigate = useNavigate();
   const [mypageVisible, setMyPageVisible] = useState(false);
   const [activeTab, setActiveTab] = useState<'inProgress' | 'completed'>('inProgress');
-  const [challenges, setChallenges] = useState<IChallenges[]>([]);
-  const [progress, setProgress] = useState<number>(71.2);
+  const [progress, setProgress] = useState<number>(0);
   const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false);
-  const [selectedChallenge, setSelectedChallenge] = useState<IChallenges | null>(null);
-  console.log(setProgress)
-  useEffect(() => {
-    // Mock data for challenges
-    const mockChallenges: IChallenges[] = [
-      {
-        id: 1,
-        title: '친구 도감 10명 이상 등록하기',
-        reward: '포스트잇 배경(하늘색)',
-        status: '진행중',
-      },
-      {
-        id: 2,
-        title: '친구 도감 15명 이상 등록하기',
-        reward: '포스트잇 배경(크리스마스)',
-        status: '완료하기',
-      },
-      {
-        id: 3,
-        title: '포스트잇 3회 작성',
-        reward: '포스트잇 배경(회색)',
-        status: '완료됨',
-      },
-    ];
-    setChallenges(mockChallenges);
-  }, []);
+  const [selectedChallenge, setSelectedChallenge] = useState<EasterEggData | null>(null);
 
+  const { easterEggs, isInitialized, setEasterEggs, markEasterEggComplete } = useEasterEggStore();
+
+  // `easterEggs`와 `challenges` 간의 동기화
+  const challenges = easterEggs; // 스토어의 상태를 직접 사용하여 동기화
+
+  useEffect(() => {
+    const fetchEasterEggs = async () => {
+      try {
+        const response = await getEasterEggs(); // 실제 조회 API 호출 함수
+        if (response.status === 'success') {
+          setEasterEggs(response.data); // 스토어에 원본 데이터를 저장
+          console.log("조회된 과제들:", response.data); // 콘솔에 과제 데이터 출력
+        }
+      } catch (error) {
+        console.error("도전과제 데이터 조회 실패:", error);
+      }
+    };
+  
+    if (!isInitialized) {
+      fetchEasterEggs();
+    }
+  }, [isInitialized, setEasterEggs]);
+  
+  useEffect(() => {
+    // 진행률 계산
+    const completedChallenges = challenges.filter((challenge) => challenge.status === '완료됨').length;
+    const progressPercentage = (completedChallenges / challenges.length) * 100;
+    setProgress(progressPercentage);
+  
+    // 콘솔에 현재 challenges 상태 출력
+    console.log("현재 저장된 과제들 (challenges):", challenges);
+  }, [challenges]);
+  
   const close = () => {
     navigate(-1);
   };
@@ -78,7 +86,7 @@ export const Quest = () => {
     setMyPageVisible(false);
   };
 
-  const openCompleteModal = (challenge: IChallenges) => {
+  const openCompleteModal = (challenge: EasterEggData) => {
     setSelectedChallenge(challenge);
     setIsCompleteModalOpen(true);
   };
@@ -86,6 +94,19 @@ export const Quest = () => {
   const closeCompleteModal = () => {
     setIsCompleteModalOpen(false);
     setSelectedChallenge(null);
+  };
+
+  const handleCompleteChallenge = async () => {
+    if (!selectedChallenge) return;
+
+    try {
+      // 도전과제 완료 API 호출 및 상태 업데이트
+      await markEasterEggComplete(selectedChallenge.easterEggId);
+      closeCompleteModal();
+      console.log(`도전과제 ${selectedChallenge.easterEggId} 완료 처리되었습니다.`);
+    } catch (error) {
+      console.error("도전과제 완료 중 오류 발생:", error);
+    }
   };
 
   return (
@@ -123,15 +144,15 @@ export const Quest = () => {
               return challenge.status === '완료됨';
             })
             .map((challenge) => (
-              <div key={challenge.id} css={challengeItem}>
-                <div css={challengeTitle}>{challenge.title}</div>
-                <div css={challengeReward}>{challenge.reward}</div>
+              <div key={challenge.easterEggId} css={challengeItem}>
+                <div css={challengeTitle}>{challenge.content}</div>
+                <div css={challengeReward}>{challenge.reward || '???'}</div>
                 <div css={challengeStatus}>
                   {challenge.status === '완료하기' && (
-                    <button type="button" className="nes-btn is-success" onClick={(e) => { e.currentTarget.blur(); openCompleteModal(challenge); }}>완료하기</button>
+                    <button type="button" className="nes-btn is-success" onClick={() => openCompleteModal(challenge)}>완료하기</button>
                   )}
                   {challenge.status === '진행중' && (
-                    <button type="button" className="nes-btn is-primary" onClick={(e) => { e.currentTarget.blur(); }}>진행중</button>
+                    <button type="button" className="nes-btn is-primary">진행중</button>
                   )}
                   {challenge.status === '완료됨' && (
                     <button type="button" className="nes-btn">완료됨</button>
@@ -148,7 +169,7 @@ export const Quest = () => {
             <div css={deleteModalContentStyle}>
               <h2 css={rewardTitleStyle}>보상 수령</h2>
               <div css={congratsContainerStyle}>
-                <img src={cheer} alt="검색 아이콘"  css={warningIconStyle} />
+                <img src={cheer} alt="축하 아이콘" css={warningIconStyle} />
                 <h4>축하합니다! <br /> '{selectedChallenge.reward}'을 획득했습니다!</h4>
               </div>
               <Button
@@ -157,7 +178,7 @@ export const Quest = () => {
                 variant="contained"
                 fullwidth={false}
                 rounded={0}
-                handler={closeCompleteModal}
+                handler={handleCompleteChallenge}
                 fontSize='1rem'
                 width='40%'
               >
@@ -170,7 +191,7 @@ export const Quest = () => {
 
       <div css={progressContainer}>
         <progress className="nes-progress is-success" value={progress} max="100"></progress>
-        <div>{progress}%</div>
+        <div>{progress.toFixed(1)}%</div>
       </div>
     </div>
   );
