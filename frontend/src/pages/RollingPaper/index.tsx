@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PostIt } from "@/components/PostIt";
 import { backButton, container, plusButton, ListContainer } from "./styles";
 import PlusButton from "@/assets/icons/PlusButton.png";
@@ -14,12 +14,16 @@ import useFetchRollingpaper from "@/hooks/useFetchRollingpaper";
 export const RollingPaper = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { rollingpaperid } = useParams();
-  const navigate = useNavigate();
-  const { singleRollingpaper } = useFetchRollingpaper(
-    String(rollingpaperid),
-    0,
-    10
-  );
+
+  const navigate = useNavigate(); 
+  // 페이지네이션
+  // const [pageNum, setPageNum] = useState(0);
+
+  const { singleRollingpaper,fetchRollingPaper } = useFetchRollingpaper(String(rollingpaperid), 0, 10);
+
+  useEffect(() => {
+    fetchRollingPaper();
+  }, []);
 
   return (
     <div css={container}>
@@ -32,8 +36,13 @@ export const RollingPaper = () => {
       </div>
       <div css={ListContainer}>
         {/* 무한스크롤 페이지네이션 고려하기 */}
-        {singleRollingpaper?.content.map((postit: IPostIt, index: number) => (
-          <PostIt key={index} props={postit} isPreview={false} />
+        {singleRollingpaper?.content?.map((postit: IPostIt, index: number) => (
+          <PostIt
+            postitId={postit.postItId}
+            key={index}
+            props={postit}
+            isPreview={false}
+          />
         ))}
       </div>
       <button

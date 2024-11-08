@@ -37,14 +37,14 @@ export interface IPostIt {
 
 // 롤링페이퍼 상세 조회
 export interface IRollingPaper {
-  ownerMemberId: number;
-  ownerMemberNickname: string;
-  rollingPaperTitle: string;
-  content: IPostIt[];
-  pageNumber: number;
-  pageSize: number;
-  totalPage: number;
-  totalElements: number;
+  ownerMemberId?: number;
+  ownerMemberNickname?: string;
+  rollingPaperTitle?: string;
+  content?: IPostIt[];
+  pageNumber?: number;
+  pageSize?: number;
+  totalPage?: number;
+  totalElements?: number;
 }
 
 // 롤링페이퍼 전체 조회

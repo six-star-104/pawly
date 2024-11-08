@@ -1,7 +1,7 @@
 import { IPostIt } from "@/types/rollingPaperTypes";
 
 export type PostItProps = {
-  // postitId:number;
+  postitId?: number;
   // content: string;
   // memberId:number;
   // nickname:string;

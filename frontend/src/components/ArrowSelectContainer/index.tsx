@@ -20,7 +20,7 @@ const ArrowSelectContainer: React.FC<ArrowSelectContainerProps> = ({
       image: "",
       themeName: "기본",
       base: true,
-    }, 
+    },
     {
       backgroundColor: "red",
       fontColor: "#ffffff",
@@ -103,6 +103,9 @@ const ArrowSelectContainer: React.FC<ArrowSelectContainerProps> = ({
         <div>
           {/* 미리보기용 포스트잇 */}
           <PostIt
+            setRefetchKey={()=>""}
+            // 미리보기용 임시 id
+            postitId={0}
             props={{
               ...themeArray[
                 (preViewPostIt.themeId - 1 + themeArray.length) %

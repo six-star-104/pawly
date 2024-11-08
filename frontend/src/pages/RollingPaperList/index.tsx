@@ -21,8 +21,9 @@ import { useEffect } from "react";
 export const RollingPaperList = () => {
   const navigate = useNavigate();
 
+  const [reFetchKey, setRefetchKey] = useState(0);
   const { createRollingpaper } = useCreateRollingpaper();
-  const { userRollingpapers } = useFetchUserRollingpaper();
+  const { userRollingpapers } = useFetchUserRollingpaper(reFetchKey);
   const timerRef = useRef<number | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { deletRollingpaper } = useDeleteRollingpaper();
@@ -58,8 +59,6 @@ export const RollingPaperList = () => {
       <div css={ListContainer}>
         {userRollingpapers &&
           userRollingpapers.content.map((rollingpaper) => (
-            //  여기다가 링크 걸어놓기
-
             <PixelContainer
               key={rollingpaper.rollingPaperId}
               width="75%"
@@ -86,6 +85,7 @@ export const RollingPaperList = () => {
                       className="nes-btn is-primary"
                       onClick={() => {
                         deletRollingpaper(rollingpaper.rollingPaperId);
+                        setRefetchKey((prev) => prev + 1);  
                         setIsMenuOpen(false);
                       }}
                     >
@@ -105,7 +105,10 @@ export const RollingPaperList = () => {
       </div>
 
       <button
-        onClick={() => createRollingpaper("임시 롤링페이퍼", randomX, randomY)}
+        onClick={() => {
+          createRollingpaper("임시 롤링페이퍼", randomX, randomY);
+          setRefetchKey((prev) => prev + 1);
+        }}
         className="nes-btn"
         css={tempBtn}
       >

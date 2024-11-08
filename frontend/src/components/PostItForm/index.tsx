@@ -9,7 +9,7 @@ import { useCreatePostit } from "@/hooks/useCreatePostit";
 import { useEditPostit } from "@/hooks/useEditPostit";
 import ArrowSelectContainer from "../ArrowSelectContainer";
 import useUserInfoStore from "@/stores/userInfoStore";
-
+import useFetchRollingpaper from "@/hooks/useFetchRollingpaper";
 const PostItForm: React.FC<FormProps> = ({
   onClose,
   isCreate,
@@ -34,7 +34,7 @@ const PostItForm: React.FC<FormProps> = ({
     speechBubbleSize: 1,
   });
 
-  const { createPostit } = useCreatePostit();
+  // const { createPostit } = useCreatePostit();
   const { editPostit } = useEditPostit();
 
   // 내용 입력칸 4줄 이상시 경고 + 글자 제한
@@ -52,11 +52,13 @@ const PostItForm: React.FC<FormProps> = ({
     }
   };
 
+  const {createPostit} = useFetchRollingpaper()
   const submitPostIt = () => {
     // 여기서 생성 api 호출해주기
     if (isCreate) {
       //여기에 생성
-      createPostit(previewPostIt, rollingPaperId!);
+      // createPostit(previewPostIt, rollingPaperId!);
+      createPostit(previewPostIt, rollingPaperId!)
     } else {
       //여기에 수정
       editPostit(previewPostIt);
