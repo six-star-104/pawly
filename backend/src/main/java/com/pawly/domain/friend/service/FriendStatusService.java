@@ -5,6 +5,7 @@ import com.pawly.domain.friend.entity.FriendRequest;
 import com.pawly.domain.friend.repository.FriendRepository;
 import com.pawly.domain.friend.repository.FriendRequestRepository;
 import com.pawly.domain.member.entity.Member;
+import com.pawly.domain.member.service.MemberServiceImpl;
 import com.pawly.global.exception.ErrorCode;
 import com.pawly.global.response.ApiResponse;
 import com.pawly.global.dto.FcmMessageRequestDto;
@@ -22,22 +23,25 @@ public class FriendStatusService {
     private final FriendRepository friendRepository;
     private final FriendRequestRepository friendRequestRepository;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
+    private final MemberServiceImpl memberService;
 
     @Transactional
-    public ApiResponse<?> updateFriend(Long friendId, Boolean status) {
-        Optional<FriendRequest> friendRequestOptional = friendRequestRepository.findById(friendId);
+    public ApiResponse<?> updateFriend(String email, Long friendId, Boolean status) {
+        Member member = memberService.findByEmail2(email);
+        if (member == null) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+
+        Optional<FriendRequest> friendRequestOptional = friendRequestRepository.findByFriendRequestIdAndReceiverId(friendId, member);
         if (friendRequestOptional.isEmpty()) return ApiResponse.createError(ErrorCode.FRIEND_NOT_REQUEST);
 
         FriendRequest friendRequest = friendRequestOptional.get();
         Member sender = friendRequest.getSenderId();
-        Member receiver = friendRequest.getReceiverId();
 
         if (status) {
-            Friend friend = new Friend(sender, receiver);
+            Friend friend = new Friend(sender, member);
             friendRepository.save(friend);
             friendRequestRepository.delete(friendRequest);
 
-            FcmMessageRequestDto request = new FcmMessageRequestDto(receiver.getMemberId(), "친구가 되어주셨네요!", "함께 소중한 추억을 만들어가세요!");
+            FcmMessageRequestDto request = new FcmMessageRequestDto(sender.getMemberId(), "친구가 추가되었습니다!", "함께 소중한 추억을 만들어가세요!");
             firebaseCloudMessageService.sendMessage(request);
 
             return ApiResponse.createSuccessWithNoContent("친구 수락 성공");

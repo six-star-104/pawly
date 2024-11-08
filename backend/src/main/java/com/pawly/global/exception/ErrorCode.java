@@ -62,6 +62,8 @@ public enum ErrorCode {
     FRIEND_REQUEST_ALREADY_SENT("E003", HttpStatus.BAD_REQUEST, "이미 친구 요청을 보냈습니다."),
     FRIEND_REQUEST_ALREADY_RECEIVED("E004", HttpStatus.BAD_REQUEST, "이미 친구 요청을 받았습니다."),
     FRIEND_NOT_REQUEST("E005", HttpStatus.BAD_REQUEST, "친구 요청이 없습니다."),
+    SELF_FRIEND_REQUEST("E006", HttpStatus.BAD_REQUEST, "본인과는 친구할 수 없습니다."),
+
 
     // Letter Error
     LETTER_NOT_FOUND("L001", HttpStatus.NOT_FOUND, "편지를 찾을 수 없습니다."),

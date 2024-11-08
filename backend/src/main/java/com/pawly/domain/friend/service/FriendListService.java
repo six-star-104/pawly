@@ -5,6 +5,8 @@ import com.pawly.domain.friend.repository.FriendRepository;
 import com.pawly.domain.friend.repository.FriendRequestRepository;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.repository.MemberRepository;
+import com.pawly.domain.member.service.MemberServiceImpl;
+import com.pawly.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.pawly.global.response.ApiResponse;
@@ -21,8 +23,12 @@ public class FriendListService {
     private final FriendRepository friendRepository;
     private final FriendRequestRepository friendRequestRepository;
     private final MemberRepository memberRepository;
+    private final MemberServiceImpl memberService;
 
-    public ApiResponse<?> requestFriend(Member member) {
+    public ApiResponse<?> requestFriend(String email) {
+        Member member = memberService.findByEmail2(email);
+        if (member == null) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+
         List<FriendResponse> friendResponseList = friendRequestRepository.findBySenderId(member).stream()
                 .map(FriendResponse::requestList)
                 .collect(Collectors.toList());
@@ -30,7 +36,10 @@ public class FriendListService {
         return ApiResponse.createSuccess(friendResponseList, "친구 신청한 목록 조회 성공");
     }
 
-    public ApiResponse<?> responseFriend(Member member) {
+    public ApiResponse<?> responseFriend(String email) {
+        Member member = memberService.findByEmail2(email);
+        if (member == null) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+
         List<FriendResponse> friendResponseList = friendRequestRepository.findByReceiverId(member).stream()
                 .map(FriendResponse::responseList)
                 .collect(Collectors.toList());
@@ -38,7 +47,10 @@ public class FriendListService {
         return ApiResponse.createSuccess(friendResponseList, "친구 신청받은 목록 조회 성공");
     }
 
-    public ApiResponse<List<FriendResponse>> getFriendsByMemberId(Member member) {
+    public ApiResponse<List<FriendResponse>> getFriends(String email) {
+        Member member = memberService.findByEmail2(email);
+        if (member == null) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+
         List<FriendResponse> friendResponseDtoList = friendRepository.findFriendsByMemberId(member.getMemberId()).stream()
                 .map(friend -> {
                     Member targetMemberId = friend.getMemberId1().getMemberId().equals(member.getMemberId()) ? friend.getMemberId2() : friend.getMemberId1();
