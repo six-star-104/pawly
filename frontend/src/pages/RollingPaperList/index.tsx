@@ -16,6 +16,7 @@ import { useRef, useState } from "react";
 import Modal from "@/components/Modal";
 import { useDeleteRollingpaper } from "@/hooks/useDeleteRollingpaper";
 import { useCreateRollingpaper } from "@/hooks/useCreateRollingpaper";
+import { useEffect } from "react";
 // 내가 받은 롤링페이퍼들 모아볼 수 있는 페이지
 export const RollingPaperList = () => {
   const navigate = useNavigate();
@@ -38,6 +39,13 @@ export const RollingPaperList = () => {
       timerRef.current = null;
     }
   };
+  const [randomX, setRandomX] = useState(0);
+  const [randomY, setRandomY] = useState(0);
+
+  useEffect(() => {
+    setRandomX(Math.random() * 100);
+    setRandomY(Math.random() * 100);
+  }, []);
 
   return (
     <div css={container}>
@@ -97,7 +105,7 @@ export const RollingPaperList = () => {
       </div>
 
       <button
-        onClick={() => createRollingpaper("임시 롤링페이퍼", 56, 31)}
+        onClick={() => createRollingpaper("임시 롤링페이퍼", randomX, randomY)}
         className="nes-btn"
         css={tempBtn}
       >
