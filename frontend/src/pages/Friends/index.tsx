@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useUserInfoStore } from '@/stores/mypageStore';
 import { Hamberger } from '../Hamberger';
 import NavButton from '../../assets/icons/NavButton.png';
 import PixelPuppy from '../../assets/icons/PixelPuppy.png';
@@ -49,6 +50,7 @@ interface Member {
 }
 
 export const Friends = () => {
+  const myMemberId = Number(useUserInfoStore().memberId); 
   const [mypageVisible, setMyPageVisible] = useState(false);
   const [activeTab, setActiveTab] = useState<"friends" | "requests">("friends");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -154,7 +156,9 @@ export const Friends = () => {
 
     try {
       const results = await searchUserByNickname(searchTerm);
-      const modifiedResults = results.map((user: Member) => ({ ...user, friendId: undefined }));
+      const modifiedResults = results
+        .filter((user: Member) => user.memberId !== myMemberId)
+        .map((user: Member) => ({ ...user, friendId: undefined }));
       setSearchResults(modifiedResults);
     } catch (error) {
       setError("검색에 실패했습니다. 다시 시도해 주세요.");
@@ -274,8 +278,9 @@ export const Friends = () => {
     }
   }, [activeTab]);
 
+  //빌드 오류 제거
   console.log(isLoading)
-  
+
   return (
     <div css={Container}>
       <div css={BackBtnContainer}>
@@ -486,8 +491,7 @@ export const Friends = () => {
             {selectedMember ? (
               <>
                 <h2>{selectedMember.nickname}</h2>
-                <p>이름: {selectedMember.name}</p>
-                <p>생일: {selectedMember.birth}</p>
+                <h3>주인: {selectedMember.name}</h3>
                 <p><img src={selectedMember.assets} alt={`${selectedMember.nickname} 이미지`} /></p>
               </>
             ) : (
