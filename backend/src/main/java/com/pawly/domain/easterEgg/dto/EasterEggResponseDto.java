@@ -24,7 +24,7 @@ public class EasterEggResponseDto {
         return EasterEggResponseDto.builder()
                 .easterEggId(easterEgg.getCompleteEasterEggId())
                 .content(easterEgg.getEasterEgg().getContent())
-                .reward(easterEgg.getEasterEgg().getReward())
+                .reward(easterEgg.getEasterEgg().getTheme().getThemeName())
                 .status(easterEgg.getStatus().getMessage())
                 .completedAt(easterEgg.getCompletedAt())
                 .build();

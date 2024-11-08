@@ -1,34 +1,26 @@
 package com.pawly.domain.theme.controller;
 
-import com.pawly.domain.rollingPaper.controller.dto.RollingPaperCreateRequest;
-import com.pawly.domain.theme.controller.dto.ThemeCreateRequest;
-import com.pawly.domain.theme.controller.dto.ThemeUpdateRequest;
+import com.pawly.domain.member.service.MemberService;
 import com.pawly.domain.theme.service.ThemeService;
 import com.pawly.global.response.ApiResponse;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/admin/theme")
 @RequiredArgsConstructor
+@Slf4j
+@RequestMapping("/api/theme")
 public class ThemeController {
+
     private final ThemeService themeService;
+    private final MemberService memberService;
 
-    @PostMapping
-    public ApiResponse<?> createTheme(Authentication authentication, @Valid @RequestBody ThemeCreateRequest themeCreateRequest) {
-        return themeService.createTheme(themeCreateRequest.toDto(authentication.getName()));
-    }
-
-    @PatchMapping("/{themeId}")
-    public ApiResponse<?> updateTheme(Authentication authentication, @PathVariable Long themeId,
-                                                                     @Valid @RequestBody ThemeUpdateRequest themeUpdateRequest) {
-        return themeService.updateTheme(themeUpdateRequest.toDto(authentication.getName(), themeId));
-    }
-
-    @DeleteMapping("/{themeId}")
-    public ApiResponse<?> deleteTheme(Authentication authentication, @PathVariable Long themeId) {
-        return themeService.deleteTheme(authentication.getName(), themeId);
+    @GetMapping
+    public ApiResponse<?> getTheme(Authentication authentication) {
+        return  themeService.getTheme(authentication.getName());
     }
 }

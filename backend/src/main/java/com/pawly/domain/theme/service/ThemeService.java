@@ -1,68 +1,63 @@
 package com.pawly.domain.theme.service;
 
+import com.pawly.domain.easterEgg.entity.Status;
+import com.pawly.domain.easterEgg.repository.CompleteEasterEggRepository;
+import com.pawly.domain.easterEgg.repository.EasterEggRepository;
 import com.pawly.domain.member.entity.Member;
-import com.pawly.domain.member.entity.Role;
-import com.pawly.domain.member.repository.MemberRepository;
-import com.pawly.domain.theme.dto.ThemeCreateDto;
-import com.pawly.domain.theme.dto.ThemeUpdateDto;
+import com.pawly.domain.member.service.MemberServiceImpl;
+import com.pawly.domain.theme.dto.ThemeResponseDto;
 import com.pawly.domain.theme.entity.Theme;
 import com.pawly.domain.theme.repository.ThemeRepository;
 import com.pawly.global.exception.ErrorCode;
 import com.pawly.global.response.ApiResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class ThemeService {
+
     private final ThemeRepository themeRepository;
-    private final MemberRepository memberRepository;
+    private final EasterEggRepository easterEggRepository;
+    private final CompleteEasterEggRepository completeEasterEggRepository;
+    private final MemberServiceImpl memberService;
 
-    @Transactional
-    public ApiResponse<?> createTheme(ThemeCreateDto dto){
-        Optional<Member> member = memberRepository.findByEmail(dto.getMemberName());
-        if (member.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+    public ApiResponse<?> getTheme(String email) {
+        // 회원 정보 확인
+        Member member = memberService.findByEmail2(email);
+        if (member == null) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
-        Member m = member.get();
+        // 모든 테마 조회
+        List<Theme> themes = themeRepository.findAll();
+        List<ThemeResponseDto> response = new ArrayList<>();
 
-        if (m.getRole() != Role.ADMIN) return ApiResponse.createError(ErrorCode.NOT_ADMIN_FAILED);
+        // 각 테마별로 처리
+        for (Theme theme : themes) {
+            ThemeResponseDto dto = new ThemeResponseDto(theme);
 
-        themeRepository.save(dto.toEntity());
-        return ApiResponse.createSuccessWithNoContent("테마 생성 완료");
+            // 배경 설정
+            dto.setBackground(theme.getImage() != null ? theme.getImage() : theme.getBackgroundColor());
+
+            // 기본 테마 여부 또는 부활절 달성 여부에 따른 flag 설정
+            if (theme.getBase()) {
+                dto.setFlag(true);
+            } else {
+                dto.setFlag(getEasterEggFlag(member.getMemberId(), theme.getThemeId()));
+            }
+
+            response.add(dto);
+        }
+
+        return ApiResponse.createSuccess(response, "테마 조회 성공");
     }
 
-    @Transactional
-    public ApiResponse<?> updateTheme(ThemeUpdateDto dto){
-        Optional<Member> member = memberRepository.findByEmail(dto.getMemberName());
-        if (member.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
-
-        Member m = member.get();
-
-        if (m.getRole() != Role.ADMIN) return ApiResponse.createError(ErrorCode.NOT_ADMIN_FAILED);
-
-        Optional<Theme> theme = themeRepository.findById(dto.getThemeId());
-        if (theme.isEmpty()) return ApiResponse.createError(ErrorCode.THEME_NOT_FOUND);
-
-        theme.get().updateTheme(dto);
-        return ApiResponse.createSuccessWithNoContent("테마 수정 성공");
-    }
-
-    @Transactional
-    public ApiResponse<?> deleteTheme(String memberName ,Long themeId){
-        Optional<Member> member = memberRepository.findByEmail(memberName);
-        if (member.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
-
-        Member m = member.get();
-
-        if (m.getRole() != Role.ADMIN) return ApiResponse.createError(ErrorCode.NOT_ADMIN_FAILED);
-
-        Optional<Theme> theme = themeRepository.findById(themeId);
-        if (theme.isEmpty()) return ApiResponse.createError(ErrorCode.THEME_NOT_FOUND);
-
-        theme.get().deleteTheme();
-        return ApiResponse.createSuccessWithNoContent("테마 삭제 성공");
+    private boolean getEasterEggFlag(Long memberId, Long themeId) {
+        return easterEggRepository.findByEasterEggId(themeId)
+                .flatMap(easterEggId -> completeEasterEggRepository.findByStatus(memberId, easterEggId))
+                .map(status -> status.equals(Status.COMPLETE))
+                .orElse(false);
     }
 }
