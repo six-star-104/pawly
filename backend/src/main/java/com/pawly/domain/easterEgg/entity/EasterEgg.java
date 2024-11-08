@@ -1,5 +1,6 @@
 package com.pawly.domain.easterEgg.entity;
 
+import com.pawly.domain.theme.entity.Theme;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +22,9 @@ public class EasterEgg {
 
     private String content;
 
-    private String reward;
+    @ManyToOne
+    @JoinColumn(name = "theme_id")
+    private Theme theme;
 
     @Column(name = "secret_flag")
     private boolean secretFlag;
