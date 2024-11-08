@@ -141,19 +141,25 @@ public class RollingPaperService {
     public ApiResponse<?> deleteRollingPaper(String memberName, Long rollingPaperId) {
         Optional<RollingPaper> rollingPaper = rollingPaperRepository.findById(rollingPaperId);
         if (rollingPaper.isEmpty()) return ApiResponse.createError(ErrorCode.ROLLING_PAPER_NOTFOUND);
-        if (rollingPaper.get().isDeleteFlag()) return ApiResponse.createError(ErrorCode.ROLLING_PAPER_NOTFOUND);
+        RollingPaper r = rollingPaper.get();
+        if (r.isDeleteFlag()) return ApiResponse.createError(ErrorCode.ROLLING_PAPER_NOTFOUND);
 
-        Member member = rollingPaper.get().getMember();
+        Member member = r.getMember();
 
         Optional<Member> requestMember = memberRepository.findByEmail(memberName);
         if (requestMember.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
         if (!member.equals(requestMember.get())) return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
 
-        Optional<Postbox> postbox = Optional.ofNullable(postboxRepository.findByRollingpaper(rollingPaper.get()));
+        Optional<Postbox> postbox = Optional.ofNullable(postboxRepository.findByRollingpaper(r));
         if (postbox.isEmpty()) return ApiResponse.createError(ErrorCode.POSTBOX_NOT_FOUND);
 
-        rollingPaper.get().delete();
+        List<PostIt> postIts = postItRepository.findByRollingPaper(r);
+        for (PostIt postIt : postIts) {
+            postIt.deletePostIt();
+        }
+
+        r.delete();
         postbox.get().deletePostbox();
 
         return ApiResponse.createSuccessWithNoContent("RollingPaper 삭제 성공");
