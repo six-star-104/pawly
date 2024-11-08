@@ -70,7 +70,7 @@ public enum ErrorCode {
     LETTER_REACTION_FAILED("L004", HttpStatus.BAD_REQUEST, "편지 반응 생성에 실패했습니다."),
 
     // Proxy Error
-    PROXY_TRANSLATE_FAILED("T001", HttpStatus.BAD_REQUEST, "번역 요청 중 오류가 발생했습니다."),
+    TOO_MANY_REQUEST("T001", HttpStatus.BAD_REQUEST, "요청이 너무 많아요 잠시 기다려 주세요."),
 
     // RollingPaper Error
     ROLLING_PAPER_NOTFOUND("R001", HttpStatus.NOT_FOUND, "롤링페이퍼를 찾을 수 없습니다."),

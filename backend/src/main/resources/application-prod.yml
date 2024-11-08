@@ -85,3 +85,6 @@ cloud:
       secretKey: ${S3_SECRET_KEY}
     region.static: ap-northeast-2
     stack.auto: false
+
+flask:
+  url: ${FLASK_DOMAIN}
