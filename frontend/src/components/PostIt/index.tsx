@@ -18,9 +18,9 @@ export const PostIt: React.FC<PostItProps> = ({ props, isPreview }) => {
   const speechBubbleSize = ["mini", "", "medium"];
 
   // 나중에 색 정해지면 다 바꿔주기
-  const randomTextColor = ["black", "white", "blue", "red", "yellow"];
-  const randomBgColor = ["white", "black", "blue", "red", "yellow"];
-  const randomBorderColor = ["black", "white", "blue", "red", "yellow"];
+  // const randomTextColor = ["black", "white", "blue", "red", "yellow"];
+  // const randomBgColor = ["white", "black", "blue", "red", "yellow"];
+  // const randomBorderColor = ["black", "white", "blue", "red", "yellow"];
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -53,13 +53,14 @@ export const PostIt: React.FC<PostItProps> = ({ props, isPreview }) => {
     <>
       <div
         css={bubbleStyle(
-          randomTextColor[props.fontColor],
-          randomBorderColor[props.borderColor],
+          props.fontColor,
+          props.borderColor,
           // 배경이 있으면 => 남은 자투리 배경색이 테두리색 따라가게
           props.image
-            ? randomBorderColor[props.borderColor]
-            : randomBgColor[props.backgroundColor!],
-          props.image!
+            ? props.borderColor
+            : props.backgroundColor,
+          props.image!,
+          isPreview
         )}
         className={`bubble ${isPreview ? "" : randomArrow} ${
           speechBubbleSize[props.speechBubbleSize]
@@ -71,12 +72,14 @@ export const PostIt: React.FC<PostItProps> = ({ props, isPreview }) => {
         // pc 테스트용
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
+        // onMouseLeave={handleMouseUp}
       >
-        {isPreview ? "미리보기" : props.content}
-        <div css={fromWho}>- {props.memberNickname}</div>
+        {props.content}
+        <div css={fromWho}>{isPreview? "" : `- ${props.memberNickname}`}</div>
 
-        <Modal
+       
+      </div>
+      <Modal
           isOpen={isMenuOpen}
           onClose={() => setIsMenuOpen(false)}
           title="세부메뉴"
@@ -176,7 +179,7 @@ export const PostIt: React.FC<PostItProps> = ({ props, isPreview }) => {
             </button>
           </div>
         </Modal>
-      </div>
+
     </>
   );
 };

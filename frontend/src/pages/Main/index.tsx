@@ -14,6 +14,7 @@ import { logout } from "@/apis/userService";
 import { useNavigate } from "react-router-dom";
 import { useUserInfoStore } from "@/stores/mypageStore"; // 스토어 가져오기
 import { getMyInfo } from "@/apis/myPageService"; // 사용자 정보 API 가져오기
+import {  removeToken } from '@/stores/tokenStorage';
 
 export const Main = () => {
   const navigateTo = useNavigate();
@@ -74,7 +75,8 @@ export const Main = () => {
 
   const handleLogout = async () => {
     await logout();
-    localStorage.removeItem("accessToken");
+    await removeToken();
+    // localStorage.removeItem("accessToken");
     navigateTo("/login");
   };
 

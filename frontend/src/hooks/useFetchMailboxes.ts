@@ -30,7 +30,7 @@ export const useFetchMailboxes = (method: string) => {
     };
 
     fetchRollingPaper();
-  }, []);
+  }, [method]);
 
   return { mailboxes, loading, error };
 };

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { axiosInstance, flaskAxiosInstance } from "./axiosInstance";
 import { UserInfoType, LoginResponseType, SignUpType } from "@/types/UserTypes";
-
+import { setToken, removeToken } from "@/stores/tokenStorage";
 export const kakaoLogin = async () => {
   try {
     const response = await axios.get(`oauth/login/kakao`);
@@ -17,7 +17,6 @@ export const kakaoLogin = async () => {
 export const googleLogin = async () => {
   try {
     const response = await axios.get(`oauth/login/google`);
-    console.log(response);
     window.location.replace(response.data.url);
   } catch (error) {
     console.error("Google Login failed:", error);
@@ -34,7 +33,6 @@ export const getOAuthInformation = async (
         token,
       },
     });
-    console.log(response.data.data);
     return response.data.data;
   } catch (error) {
     console.error("getOAuthInformation failed:", error);
@@ -55,7 +53,8 @@ export const getOAuthAccessToken = async (
     let userInfo: UserInfoType;
     if (accessToken) {
       userInfo = await getOAuthInformation(accessToken);
-      localStorage.setItem("accessToken", accessToken);
+      // localStorage.setItem("accessToken", accessToken);
+      await setToken(accessToken);
     } else {
       console.error("No access Token received from server");
       throw new Error("No access Token received from server");
@@ -92,13 +91,11 @@ export const signUp = async (signUpForm: SignUpType) => {
     formData.append("data", jsonBlob);
 
     // axios 요청
-    const response = await axios.post(`member/sign-up`, formData, {
+    await axios.post(`member/sign-up`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
-
-    console.log(response);
   } catch (error) {
     console.log(error);
     throw error;
@@ -110,7 +107,6 @@ export const isNicknameDup = async (nickname: string): Promise<boolean> => {
     const response = await axios.post(`member/check/exist-nickname`, {
       nickname: nickname,
     });
-    console.log(response.data);
     return response.data.data;
   } catch (error) {
     console.error(error);
@@ -130,8 +126,8 @@ export const getUserInfo = async (): Promise<UserInfoType> => {
 
 export const logout = async () => {
   try {
-    const response = await axiosInstance.post(`member/logout`, "");
-    console.log(response);
+    await axiosInstance.post(`member/logout`, "");
+    await removeToken();
   } catch (error) {
     console.error("logout failed: ", error);
     throw error;
@@ -145,7 +141,6 @@ export const makeAsset = async (word: string) => {
         word: word,
       },
     });
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("translate failed", error);
