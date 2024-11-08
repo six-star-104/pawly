@@ -46,6 +46,10 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findByEmail(email).get();
     }
 
+    public Member findByEmail2(String email) {
+        return memberRepository.findByEmail(email).orElse(null);
+    }
+
     @Override
     @Transactional
     public ApiResponse<?> signUp(MultipartFile asset, SignUpRequestDTO signUpRequestDTO) throws IOException {
