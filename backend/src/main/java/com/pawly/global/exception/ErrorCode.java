@@ -82,6 +82,7 @@ public enum ErrorCode {
     // EasterEgg Error
     NOT_STATUS("N001", HttpStatus.BAD_REQUEST, "도전 과제를 완료할 수 없습니다."),
     NOT_FOUND_EASTER("N002", HttpStatus.NOT_FOUND, "도전 과제를 찾을 수 없습니다."),
+    NOT_EASTER_EGG_ID("N003", HttpStatus.BAD_REQUEST, "잘못된 도전과제 ID입니다."),
 
     // Postbox Error
     POSTBOX_NOT_FOUND("B001", HttpStatus.NOT_FOUND, "포스트박스를 찾을 수 없습니다."),
