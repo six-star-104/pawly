@@ -20,24 +20,32 @@ const ArrowSelectContainer: React.FC<ArrowSelectContainerProps> = ({
       image: "",
       themeName: "기본",
       base: true,
-    },
+    }, 
     {
-      backgroundColor: "#000000",
+      backgroundColor: "red",
       fontColor: "#ffffff",
-      borderColor: "#000000",
+      borderColor: "red",
       image: "",
-      themeName: "다크",
+      themeName: "레드",
       base: true,
     },
-    {
-      backgroundColor: "#000000",
-      fontColor: "#ffffff",
-      borderColor: "#000000",
-      image:
-        "https://st2.depositphotos.com/46898394/50276/v/380/depositphotos_502768918-stock-illustration-pixel-art-halloween-seamless-pattern.jpg",
-      themeName: "할로윈",
-      base: true,
-    },
+    // {
+    //   backgroundColor: "#000000",
+    //   fontColor: "#ffffff",
+    //   borderColor: "#000000",
+    //   image: "",
+    //   themeName: "다크",
+    //   base: true,
+    // },
+    // {
+    //   backgroundColor: "#000000",
+    //   fontColor: "#ffffff",
+    //   borderColor: "#000000",
+    //   image:
+    //     "https://st2.depositphotos.com/46898394/50276/v/380/depositphotos_502768918-stock-illustration-pixel-art-halloween-seamless-pattern.jpg",
+    //   themeName: "할로윈",
+    //   base: true,
+    // },
   ];
 
   const decreaseIndex = () => {
