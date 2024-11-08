@@ -87,4 +87,4 @@ cloud:
     stack.auto: false
 
 flask:
-  url: https://k11d104.p.ssafy.io
+  url: ${FLASK_DOMAIN}
