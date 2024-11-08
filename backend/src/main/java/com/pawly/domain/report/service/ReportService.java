@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -47,6 +48,7 @@ public class ReportService {
             .build();
     }
 
+    @Transactional
     public void confirmReport(Long reportId, Status confirmStatus) {
 
         Report report = reportRepository.findByReportId(reportId);
