@@ -98,7 +98,7 @@ public class OAuthController {
                 .build();
 
             // k11d104.p.ssafy.io 도메인용 쿠키
-            ResponseCookie responseCookieForOldDomain = ResponseCookie.from("oldRefreshToken", refreshToken)
+            ResponseCookie responseCookieForOldDomain = ResponseCookie.from("refreshToken", refreshToken)
                 .httpOnly(true)
                 .secure(true)
                 .maxAge(60*60*24*14)
