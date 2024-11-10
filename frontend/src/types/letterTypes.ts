@@ -20,7 +20,8 @@ export interface IReceiveLetterListContent {
 
 // 받은 편지 detail
 export interface IReceiveLetter {
-  receiveLetterId: number;
+  recipientName: string;
+  recipientId: number;
   letterId: number;
   senderId: string;
   senderName: string;
@@ -52,7 +53,7 @@ export interface ISendLetterListContent {
 }
 
 // 보낸 편지 detail
-export interface IReceiveLetter {
+export interface ISendLetter {
   recipientId: number;
   recipientName: string;
   letterId: number;

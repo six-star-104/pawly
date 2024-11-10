@@ -5,7 +5,6 @@ export const Container = css`
   height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
   position: relative;
   box-sizing: border-box;
 `;
@@ -25,11 +24,13 @@ export const letterItem = css`
   border-left: 3px solid black;
   border-right: 3px solid black;
   border-bottom: 3px solid black;
-  gap: 1rem;
 `;
 
 export const content = css`
   font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const date = css`
@@ -42,7 +43,7 @@ export const nickname = css`
 `;
 
 export const contentContainer = css`
-  width: 75%;
+  width: 70%;
   padding: 0 0.5rem;
 `;
 

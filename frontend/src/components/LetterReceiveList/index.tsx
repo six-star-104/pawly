@@ -4,8 +4,8 @@ import * as style from "./LetterReceiveList.style";
 import { IReceiveLetterList } from "@/types/letterTypes";
 import { getReceiveLetterList } from "@/apis/letterService";
 import { LetterReceiveDetail } from "@/components/LetterReceiveDetail";
-import Modal from "@/components/Modal";
 import Pagination from "@/components/Pagination";
+import ModalLetter from "../ModalLetter";
 
 export const LetterReceiveList = () => {
   const [selectedLetterId, setSelectedLetterId] = useState<number | null>(null);
@@ -66,12 +66,14 @@ export const LetterReceiveList = () => {
       />
 
       {isModalOpen && selectedLetterId && (
-        <Modal isOpen={isModalOpen} onClose={closeModal}>
-          <LetterReceiveDetail
-            receiveLetterId={selectedLetterId}
-            onClose={closeModal}
-          />
-        </Modal>
+        <ModalLetter isOpen={isModalOpen} onClose={closeModal}>
+          {selectedLetterId && (
+            <LetterReceiveDetail
+              receiveLetterId={selectedLetterId}
+              onClose={closeModal}
+            />
+          )}
+        </ModalLetter>
       )}
     </div>
   );

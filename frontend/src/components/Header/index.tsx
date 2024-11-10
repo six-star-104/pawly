@@ -9,7 +9,7 @@ export const Header = () => {
   const [mypageVisible, setMyPageVisible] = useState(false);
 
   const backBtn = () => {
-    navigate(-1);
+    navigate("/");
   };
 
   const Hambtn = () => {

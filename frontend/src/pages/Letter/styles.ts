@@ -242,17 +242,6 @@ export const closeButtonStyle = css`
   font-size: 1.5rem;
 `;
 
-export const modalBodyStyle = css`
-  width: 100%;
-  height: 40vh;
-  padding: 10px;
-  font-family: "Galmuri9";
-  text-align: center;
-  color: #333;
-  border-bottom: 1px solid #333;
-  margin-bottom: 1rem;
-`;
-
 export const reactionIconsStyle = css`
   display: flex;
   gap: 0.5rem;

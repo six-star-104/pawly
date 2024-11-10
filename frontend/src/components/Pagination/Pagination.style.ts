@@ -7,20 +7,17 @@ export const Container = styled.div`
   margin-top: 20px;
 `;
 
-export const PageButton = styled.div<{ $active?: boolean }>`
+export const PageButton = styled.button<{ $active?: boolean }>`
   padding: 1rem;
+  border: none;
+  background: none;
+  outline: none;
   color: ${(props) =>
-    props.$active ? props.theme.colors.primary : props.theme.colors.text};
-  font-weight: 600;
+    props.$active ? props.theme.colors.darkpurple : props.theme.colors.text};
+  font-weight: ${(props) => (props.$active ? "800" : "500")};
   cursor: pointer;
 
-  &:hover {
-    color: ${(props) => props.theme.colors.yellow};
-  }
-  @media (max-width: 767px) {
-    padding: 0.5rem;
-    font-weight: normal;
-    font-family: "Righteous";
-    margin-bottom: 2rem;
+  &:disabled {
+    color: ${(props) => props.theme.colors.paginationDisabled};
   }
 `;

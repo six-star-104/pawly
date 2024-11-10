@@ -12,7 +12,10 @@ export const theme = {
     grayHover: "#C1C1C1",
     orange: "#FFB145",
     lightpurple: "#ece7ff",
+    purpleHover: "#BE96D7",
+    darkpurple: "#561A7C",
     text: "#333",
+    paginationDisabled: "#909090",
   },
 };
 
@@ -30,7 +33,10 @@ declare module "@emotion/react" {
       grayHover: string;
       orange: string;
       lightpurple: string;
+      purpleHover: string;
+      darkpurple: string;
       text: string;
+      paginationDisabled: string;
     };
   }
 }

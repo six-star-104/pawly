@@ -23,12 +23,6 @@ const Pagination: React.FC<PaginationProps> = ({
       >
         {"<<"}
       </style.PageButton>
-      <style.PageButton
-        onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-      >
-        {"<"}
-      </style.PageButton>
       {[...Array(lastPage - firstPage + 1)].map((_, index) => {
         const pageNumber = firstPage + index;
         return (
@@ -41,12 +35,6 @@ const Pagination: React.FC<PaginationProps> = ({
           </style.PageButton>
         );
       })}
-      <style.PageButton
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-      >
-        {">"}
-      </style.PageButton>
       <style.PageButton
         onClick={() => onPageChange(totalPages)}
         disabled={currentPage === totalPages}

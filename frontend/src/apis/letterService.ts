@@ -40,7 +40,6 @@ export const deleteReveiveLetter = async (receiveLetterId: number) => {
     const response = await axiosInstance.delete(
       `receiveLetter/${receiveLetterId}`
     );
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("delete receive letter failed", error);
@@ -48,12 +47,15 @@ export const deleteReveiveLetter = async (receiveLetterId: number) => {
   }
 };
 
-export const reactToReveiveLetter = async (receiveLetterId: number) => {
+export const reactToReceiveLetter = async (
+  receiveLetterId: number,
+  reaction: number
+) => {
   try {
     const response = await axiosInstance.patch(
-      `receiveLetter/${receiveLetterId}`
+      `receiveLetter/${receiveLetterId}`,
+      { reaction }
     );
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("react to receive letter detail failed", error);
@@ -66,7 +68,6 @@ export const reportReveiveLetter = async (receiveLetterId: number) => {
     const response = await axiosInstance.post(
       `receiveLetter/${receiveLetterId}`
     );
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("report letter failed", error);
@@ -97,8 +98,7 @@ export const getSendLetterList = async (
 export const getSendLetterDetail = async (sendLetterId: number) => {
   try {
     const response = await axiosInstance.get(`sendLetter/${sendLetterId}`);
-    console.log(response.data);
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.error("get send letter detail failed", error);
     throw error;
@@ -119,7 +119,6 @@ export const postLetter = async () => {
 export const deleteSendLetter = async (sendLetterId: number) => {
   try {
     const response = await axiosInstance.delete(`sendLetter/${sendLetterId}`);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("delete send letter failed", error);

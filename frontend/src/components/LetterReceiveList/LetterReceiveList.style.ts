@@ -28,6 +28,9 @@ export const letterItem = css`
 
 export const content = css`
   font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const date = css`
@@ -40,7 +43,7 @@ export const nickname = css`
 `;
 
 export const contentContainer = css`
-  width: 75%;
+  width: 70%;
   padding: 0 0.5rem;
 `;
 

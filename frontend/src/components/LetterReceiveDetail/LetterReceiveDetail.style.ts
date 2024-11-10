@@ -35,10 +35,10 @@ export const modalHeader = styled.div`
   padding: 0.5rem;
   color: #333;
   background-color: ${(props) => props.theme.colors.lightpurple};
-  font-size: 1.2rem;
+  font-size: 1rem;
   position: sticky;
   top: 0;
-  z-index: 1; /* 헤더 고정 */
+  z-index: 1;
 `;
 
 export const closeButtonStyle = css`
@@ -46,7 +46,6 @@ export const closeButtonStyle = css`
   border: none;
   padding: 0;
   cursor: pointer;
-  font-size: 1.5rem;
 `;
 
 export const letterContent = css`
@@ -60,8 +59,6 @@ export const letterContent = css`
 export const reactionIconsStyle = css`
   display: flex;
   gap: 0.5rem;
-  padding: 1rem;
-  margin-right: auto;
   .nes-icon {
     font-size: 2rem;
     cursor: pointer;
@@ -81,7 +78,49 @@ export const modalActionsStyle = css`
 `;
 
 export const deleteIcon = css`
+  margin-right: 0.5rem;
   background: none;
   border: none;
   cursor: pointer;
+`;
+
+export const replyButton = css`
+  display: inline-block;
+  padding: 8px 16px;
+  font-size: 1rem;
+  color: #000;
+  background-color: #ffffff;
+  border: 3px solid #000;
+  position: relative;
+  box-shadow: 3px 3px 0 gray;
+  cursor: pointer;
+  text-align: center;
+
+  &:active {
+    box-shadow: 2px 2px 0 #000;
+    transform: translate(2px, 2px);
+  }
+`;
+
+export const iconContainer = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+`;
+
+export const selectedIconBorder = css`
+  background: #d7b5ec;
+  box-shadow: 2px 2px 0 gray;
+
+  transition: background-color 0.2s ease;
+`;
+
+export const replyIcon = css`
+  width: 24px;
+  height: 24px;
 `;

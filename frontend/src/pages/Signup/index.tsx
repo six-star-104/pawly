@@ -69,11 +69,11 @@ export const SignUp = () => {
         await kakaoLogin();
       }
       if (signUpState.provider === "google") {
+        console.log("구글로그인");
         await googleLogin();
       }
       navigateTo("/");
     } catch (error) {
-      console.log("durl");
       console.error("Sign up failed:", error);
     }
   };

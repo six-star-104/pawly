@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
 
 export const Container = css`
+  position: relative;
   width: 100%;
   height: 80px;
   /* min-height: 100vh; */
@@ -9,6 +10,7 @@ export const Container = css`
   align-items: center;
   padding: 1rem;
   box-sizing: border-box;
+  z-index: 1000;
 `;
 
 export const BackBtnContainer = css`
@@ -60,7 +62,6 @@ export const panelContentStyle = css`
   flex-direction: column;
   gap: 10px;
   border: 3px solid black;
-
   button {
     align-self: flex-end;
     background: none;

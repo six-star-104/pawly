@@ -4,7 +4,7 @@ import * as style from "./LetterSendList.style";
 import { ISendLetterList } from "@/types/letterTypes";
 import { getSendLetterList } from "@/apis/letterService";
 import { LetterSendDetail } from "@/components/LetterSendDetail";
-import Modal from "@/components/Modal";
+import ModalLetter from "@/components/ModalLetter";
 import Pagination from "@/components/Pagination";
 
 export const LetterSendList = () => {
@@ -65,12 +65,14 @@ export const LetterSendList = () => {
       />
 
       {isModalOpen && selectedLetterId && (
-        <Modal isOpen={isModalOpen} onClose={closeModal}>
-          <LetterSendDetail
-            sendLetterId={selectedLetterId}
-            onClose={closeModal}
-          />
-        </Modal>
+        <ModalLetter isOpen={isModalOpen} onClose={closeModal}>
+          {selectedLetterId && (
+            <LetterSendDetail
+              sendLetterId={selectedLetterId}
+              onClose={closeModal}
+            />
+          )}
+        </ModalLetter>
       )}
     </div>
   );
