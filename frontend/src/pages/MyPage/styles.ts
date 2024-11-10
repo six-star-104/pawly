@@ -56,7 +56,7 @@ export const InfoSection = css`
 
   div:first-of-type {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.5rem; /* 이미지와 텍스트 사이의 간격 설정 */
   }
 
@@ -66,23 +66,52 @@ export const InfoSection = css`
   }
 `;
 
+// export const VerticalTextSection = css`
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   gap: 0.2rem; /* 닉네임과 유저네임 사이의 간격 설정 */
+
+//   h3 {
+//     font-size: 1.2rem;
+//     margin: 0;
+//   }
+
+//   h4 {
+//     font-size: 1rem;
+//     margin: 0;
+//     color: #333;
+//     align-self: flex-start; /* 유저네임을 왼쪽에 고정 */
+//   }
+// `;
+
+// 닉네임과 유저네임 각각의 스타일을 따로 정의
+export const NicknameStyle = css`
+  font-size: 1.2rem;
+  margin: 0;
+  white-space: nowrap; /* 텍스트가 한 줄에 표시되도록 설정 */
+  overflow: hidden; /* 영역을 벗어난 텍스트 숨김 */
+  text-overflow: ellipsis; /* 영역을 벗어난 텍스트에 ... 표시 */
+`;
+
+export const UsernameStyle = css`
+  font-size: 1rem;
+  margin: 0;
+  color: #333;
+  align-self: flex-start; /* 유저네임을 왼쪽에 고정 */
+`;
+
+// VerticalTextSection 스타일은 컨테이너 역할만 담당
 export const VerticalTextSection = css`
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 0.2rem; /* 닉네임과 유저네임 사이의 간격 설정 */
-
-  h3 {
-    font-size: 1.2rem;
-    margin: 0;
-  }
-
-  h4 {
-    font-size: 1rem;
-    margin: 0;
-    color: #333;
-  }
+  text-align: left; /* 텍스트를 왼쪽에 정렬 */
 `;
+
+
+
 
 export const StatsSection = css`
   display: flex;

@@ -21,6 +21,8 @@ import {
   modalHeaderStyle,
   inputStyle,
   modalActionsStyle,
+  NicknameStyle,
+  UsernameStyle
 } from './styles';
 import PixelContainer from '../../components/PixelContainer';
 import PixelPuppy from '../../assets/icons/PixelPuppy.png';
@@ -121,13 +123,14 @@ export const MyPage = () => {
               <div css={MyInfo}>나의 정보</div>
 
               <div css={InfoSection}>
-                <div>
-                  <img src={assets} width={50} height={50} alt="User Asset" />
-                  <div css={VerticalTextSection}>
-                    <h3>{nickname}</h3>
-                    <h4>{username}</h4>
-                  </div>
+              <div>
+                <img src={assets} width={50} height={50} alt="User Asset" />
+                <div css={VerticalTextSection}>
+                  <h3 css={NicknameStyle}>{nickname}</h3>
+                  <h4 css={UsernameStyle}>{username}</h4>
                 </div>
+              </div>
+
                 <div>
                   <button onClick={handleEditNickname} css={closeButtonStyle}>
                     <img src="https://unpkg.com/pixelarticons@1.8.1/svg/edit.svg" alt="편집 버튼" width="30" height="30" />
