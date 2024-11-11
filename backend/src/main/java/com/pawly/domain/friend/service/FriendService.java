@@ -6,6 +6,7 @@ import com.pawly.domain.friend.entity.FriendRequest;
 import com.pawly.domain.friend.repository.FriendRepository;
 import com.pawly.domain.friend.repository.FriendRequestRepository;
 import com.pawly.domain.member.repository.MemberRepository;
+import com.pawly.domain.member.service.MemberServiceImpl;
 import com.pawly.global.exception.ErrorCode;
 import com.pawly.global.response.ApiResponse;
 import com.pawly.global.dto.FcmMessageRequestDto;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -24,13 +26,18 @@ public class FriendService {
     private final FriendRequestRepository friendRequestRepository;
     private final MemberRepository memberRepository;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
+    private final MemberServiceImpl memberService;
 
     @Transactional
-    public ApiResponse<Object> friend(Member member, Long memberId2) {
+    public ApiResponse<Object> addFriend(String email, Long memberId2) {
+        Member member = memberService.findByEmail2(email);
+        if (member == null) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+
         Optional<Member> receiverOptional = checkMemberId(memberId2);
         Long memberId = member.getMemberId();
 
         if (receiverOptional.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+        if(Objects.equals(memberId, memberId2)) return ApiResponse.createError(ErrorCode.SELF_FRIEND_REQUEST);
         if(!checkIfFriendExists(memberId, memberId2)) return ApiResponse.createError(ErrorCode.ALREADY_FRIEND);
         if(!checkRequestFriendExists(memberId, memberId2)) return ApiResponse.createError(ErrorCode.FRIEND_REQUEST_ALREADY_SENT);
         if(!checkResponseFriendExists(memberId, memberId2)) return ApiResponse.createError(ErrorCode.FRIEND_REQUEST_ALREADY_RECEIVED);
@@ -46,7 +53,10 @@ public class FriendService {
     }
 
     @Transactional
-    public ApiResponse<Object> friendDelete(Member member, Long memberId2) {
+    public ApiResponse<Object> friendDelete(String email, Long memberId2) {
+        Member member = memberService.findByEmail2(email);
+        if (member == null) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+
         Optional<Member> receiverOptional = checkMemberId(memberId2);
 
         if (receiverOptional.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
@@ -60,7 +70,7 @@ public class FriendService {
         }
 
         Friend friend = friendOptional.get();
-        friend.delete();
+        friend.changeStatus();
 
         return ApiResponse.createSuccessWithNoContent("친구 삭제 성공");
     }

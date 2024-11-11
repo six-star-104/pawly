@@ -20,6 +20,16 @@ public class EasterEggController {
     private final EasterEggService easterEggService;
     private final MemberService memberService;
 
+    @GetMapping
+    public ApiResponse<?> getEasterEgg(Authentication authentication) {
+        return easterEggService.getEasterEgg(authentication.getName());
+    }
+
+    @PostMapping
+    public ApiResponse<?> completeEasterEgg(Authentication authentication, @RequestBody IdRequestDto idRequestDto) {
+        return easterEggService.completeEasterEgg(authentication.getName(), idRequestDto.getEasterEggId());
+    }
+
     // 도전과제 생성 테스트용
     @GetMapping("/test")
     public ApiResponse<?> create(Authentication authentication) {
@@ -27,28 +37,6 @@ public class EasterEggController {
             Member member = memberService.findByEmail(authentication.getName());
             easterEggService.initializeChallengesForNewUser(member.getMemberId());
             return ApiResponse.createSuccessWithNoContent("도전과제 생성 성공");
-        }
-        catch (Exception e) {
-            return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
-        }
-    }
-
-    @GetMapping
-    public ApiResponse<?> getEasterEgg(Authentication authentication) {
-        try {
-            Member member = memberService.findByEmail(authentication.getName());
-            return easterEggService.getEasterEgg(member.getMemberId());
-        }
-        catch (Exception e) {
-            return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
-        }
-    }
-
-    @PostMapping
-    public ApiResponse<?> completeEasterEgg(Authentication authentication, @RequestBody IdRequestDto idRequestDto) {
-        try {
-            Member member = memberService.findByEmail(authentication.getName());
-            return easterEggService.completeEasterEgg(member.getMemberId(), idRequestDto.getEasterEggId());
         }
         catch (Exception e) {
             return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);

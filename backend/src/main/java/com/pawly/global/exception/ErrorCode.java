@@ -62,6 +62,8 @@ public enum ErrorCode {
     FRIEND_REQUEST_ALREADY_SENT("E003", HttpStatus.BAD_REQUEST, "이미 친구 요청을 보냈습니다."),
     FRIEND_REQUEST_ALREADY_RECEIVED("E004", HttpStatus.BAD_REQUEST, "이미 친구 요청을 받았습니다."),
     FRIEND_NOT_REQUEST("E005", HttpStatus.BAD_REQUEST, "친구 요청이 없습니다."),
+    SELF_FRIEND_REQUEST("E006", HttpStatus.BAD_REQUEST, "본인과는 친구할 수 없습니다."),
+
 
     // Letter Error
     LETTER_NOT_FOUND("L001", HttpStatus.NOT_FOUND, "편지를 찾을 수 없습니다."),
@@ -82,6 +84,7 @@ public enum ErrorCode {
     // EasterEgg Error
     NOT_STATUS("N001", HttpStatus.BAD_REQUEST, "도전 과제를 완료할 수 없습니다."),
     NOT_FOUND_EASTER("N002", HttpStatus.NOT_FOUND, "도전 과제를 찾을 수 없습니다."),
+    NOT_EASTER_EGG_ID("N003", HttpStatus.BAD_REQUEST, "잘못된 도전과제 ID입니다."),
 
     // Postbox Error
     POSTBOX_NOT_FOUND("B001", HttpStatus.NOT_FOUND, "포스트박스를 찾을 수 없습니다."),

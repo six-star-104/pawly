@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class LetterMissionService {
 
     private final MissionStatusRepository missionStatusRepository;
@@ -20,6 +19,7 @@ public class LetterMissionService {
     private final FirebaseCloudMessageService firebaseCloudMessageService;
 
     // 도전과제 3번: 편지 3회 작성
+    @Transactional
     public void sendLetterMission(Long memberId) {
         sendLetter(memberId);
 
@@ -31,6 +31,7 @@ public class LetterMissionService {
     }
 
     // 도전과제 7번: 편지 5회 받기
+    @Transactional
     public void receiveLetterMission(Long memberId) {
         receiveLetter(memberId);
 

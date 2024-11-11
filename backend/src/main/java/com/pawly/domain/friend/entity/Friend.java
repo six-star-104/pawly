@@ -45,8 +45,8 @@ public class Friend {
         this.memberId2 = receiver;
     }
 
-    public void delete() {
-        this.deleteFlag = true;
+    public void changeStatus() {
+        this.deleteFlag = !this.deleteFlag;
         this.updatedAt = LocalDateTime.now();  // 수동으로 updatedAt 업데이트
     }
 }
