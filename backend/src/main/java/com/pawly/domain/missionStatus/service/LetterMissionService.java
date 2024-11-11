@@ -42,21 +42,25 @@ public class LetterMissionService {
         firebaseCloudMessageService.sendMessage(request);
     }
 
-    private void sendLetter(Long memberId) {
+    @Transactional
+    public void sendLetter(Long memberId) {
         Optional<MissionStatus> missionStatus = missionStatusRepository.findById(memberId);
 
         if (missionStatus.isPresent()) {
             MissionStatus missionStatus1 = missionStatus.get();
             missionStatus1.sendLetterPlus();
+            missionStatusRepository.save(missionStatus1);
         }
     }
 
-    private void receiveLetter(Long memberId) {
-        Optional<MissionStatus> missionStatus = missionStatusRepository.findById(memberId);
+    @Transactional
+    public void receiveLetter(Long memberId) {
+        Optional<MissionStatus> missionStatus = missionStatusRepository.findByMemberId(memberId);
 
         if (missionStatus.isPresent()) {
             MissionStatus missionStatus1 = missionStatus.get();
             missionStatus1.receiveLetterPlus();
+            missionStatusRepository.save(missionStatus1);
         }
     }
 

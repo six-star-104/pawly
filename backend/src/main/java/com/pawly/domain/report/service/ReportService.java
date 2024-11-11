@@ -11,6 +11,8 @@ import com.pawly.domain.report.repository.ReportRepository;
 import com.pawly.global.dto.PageResponseDTO;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -56,15 +58,19 @@ public class ReportService {
 
         if (confirmStatus.equals(Status.COMPLETE)) {
             report.setStatus(Status.COMPLETE);
-            MissionStatus missionStatus = missionStatusRepository.findByMemberId(member.getMemberId());
+            Optional<MissionStatus> optionalMissionStatus = missionStatusRepository.findByMemberId(member.getMemberId());
 
-            missionStatus.reportsCountPlus();
+            if(optionalMissionStatus.isPresent()) {
+                MissionStatus missionStatus = optionalMissionStatus.get();
 
-            if (missionStatus.getReportsCount() >= 5) {
-                member.deleteMember();
-            } else if (missionStatus.getReportsCount() >= 3) {
-                member.stopMember();
-                member.setSuspendedUntil(LocalDateTime.now().plusDays(3)); // 현재 시점에서 3일 뒤를 정지 해제 시간으로 설정
+                missionStatus.reportsCountPlus();
+
+                if (missionStatus.getReportsCount() >= 5) {
+                    member.deleteMember();
+                } else if (missionStatus.getReportsCount() >= 3) {
+                    member.stopMember();
+                    member.setSuspendedUntil(LocalDateTime.now().plusDays(3)); // 현재 시점에서 3일 뒤를 정지 해제 시간으로 설정
+                }
             }
         } else if (confirmStatus.equals(Status.DENIED)) {
             report.setStatus(Status.DENIED);
