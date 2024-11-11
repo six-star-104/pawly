@@ -114,8 +114,10 @@ public class SendLetterService {
         receiveLetterRepository.save(receiveLetter);
 
         // 파일 저장
-        String fileUrl = fileService.savePicture(picture);
-        letter.updatePicture(fileUrl);
+        if(picture != null && !picture.isEmpty()) {
+            String fileUrl = fileService.savePicture(picture);
+            letter.updatePicture(fileUrl);
+        }
 
         // 알림
         FcmMessageRequestDto request = new FcmMessageRequestDto(recipient.getMemberId(), "새 편지가 도착했어요!", "친구에게서 따뜻한 편지가 도착했습니다. 확인해보세요.");
