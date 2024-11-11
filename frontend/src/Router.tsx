@@ -10,7 +10,7 @@ import { Pedia } from "@/pages/Pedia";
 import { RollingPaper } from "@/pages/RollingPaper";
 import { RollingPaperList } from "./pages/RollingPaperList";
 import { Letter } from "@/pages/Letter";
-import { Quest } from "@/pages/Quest";
+import { EasterEgg } from "@/pages/EasterEgg";
 
 
 function Router() {
@@ -31,7 +31,7 @@ function Router() {
         <Route path="/friends" element={<Friends />} />
         <Route path="/pedia" element={<Pedia />} />
         <Route path="/letter" element={<Letter />} />
-        <Route path="/quest" element={<Quest />} />
+        <Route path="/easteregg" element={<EasterEgg />} />
       </Route>
     </Routes>
   );

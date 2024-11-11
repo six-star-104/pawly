@@ -3,7 +3,7 @@ import {
   GetMyInfoResponse,
   UpdateNicknameResponse,
   GetFriendInfoResponse,
-} from "@/types/UserType";
+} from "@/types/UserTypes";
 
 export const getMyInfo = async (): Promise<GetMyInfoResponse["data"]> => {
   try {

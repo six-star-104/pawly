@@ -1,25 +1,38 @@
 /** @jsxImportSource @emotion/react */
 import React from "react";
-import {
-  contentContainer,
-  ArrowButton,
-  ArrowContainer,
-  CreateButton,
-  PostitPreview,
-} from "./PostItForm.style";
+import { contentContainer, CreateButton } from "./PostItForm.style";
 import { useState } from "react";
-import SelectOptions from "../SelectOptions";
-import { PostIt } from "../PostIt";
+// import SelectOptions from "../SelectOptions";
+import { IPostIt } from "@/types/rollingPaperTypes";
 import { FormProps } from "./PostItForm.type";
 import { useCreatePostit } from "@/hooks/useCreatePostit";
 import { useEditPostit } from "@/hooks/useEditPostit";
-import { IPostIt } from "@/types/rollingPaperTypes";
+import ArrowSelectContainer from "../ArrowSelectContainer";
+import useUserInfoStore from "@/stores/userInfoStore";
 
-const PostItForm: React.FC<FormProps> = ({ props, onClose, isCreate, rollingPaperId }) => {
+const PostItForm: React.FC<FormProps> = ({
+  onClose,
+  isCreate,
+  rollingPaperId,
+}) => {
   const [isMaxLength, setIsMaxLength] = useState(false);
-  const sizeArray = ["작게", "보통", "크게"];
+  const { nickname } = useUserInfoStore();
+  const [previewPostIt, setPreviewPostIt] = useState<IPostIt>({
+    // 미리보기라서 적당히 포스트잇 id 없음
+    // 얘 둘은 가변으로 받아오기
+    // memberId: Number(signUpState),?
+    memberNickname: nickname,
 
-  const [previewPostIt, setPreviewPostIt] = useState<IPostIt>(props);
+    // 아래애들은 기본 셋팅 값들
+    themeId: 1,
+    content: "",
+    backgroundColor: "#000000",
+    image: "",
+    font:1, 
+    fontColor: "#FFFFFF",
+    borderColor: "#FFFFFF",
+    speechBubbleSize: 1,
+  });
 
   const { createPostit } = useCreatePostit();
   const { editPostit } = useEditPostit();
@@ -69,7 +82,7 @@ const PostItForm: React.FC<FormProps> = ({ props, onClose, isCreate, rollingPape
           {/* {isMaxLength && <p id="alert">최대 4줄까지 작성 가능합니다</p>} */}
         </div>
 
-        <p>배경</p>
+        {/* <p>배경</p>
         <SelectOptions
           selectOption="backgroundColorer"
           setPreview={setPreviewPostIt}
@@ -94,39 +107,33 @@ const PostItForm: React.FC<FormProps> = ({ props, onClose, isCreate, rollingPape
           selectOption="borderColorer"
           setPreview={setPreviewPostIt}
           previewPostIt={previewPostIt}
+        /> */}
+
+        <p>말풍선 크기</p>
+        <ArrowSelectContainer
+          forWhat="speechBubbleSize"
+          setPreviewPostIt={setPreviewPostIt}
+          preViewPostIt={previewPostIt}
         />
 
-        <p> 말풍선 크기</p>
-        <div css={ArrowContainer}>
-          <button
-            css={ArrowButton}
-            onClick={() =>
-              setPreviewPostIt((prev) => ({
-                ...prev,
-                speechBubbleSize: Math.abs(prev.speechBubbleSize + 2) % 3,
-              }))
-            }
-          >
-            ◀️
-          </button>
-          <div>{sizeArray[previewPostIt.speechBubbleSize]}</div>
-          <button
-            css={ArrowButton}
-            onClick={() =>
-              setPreviewPostIt((prev) => ({
-                ...prev,
-                speechBubbleSize: Math.abs(prev.speechBubbleSize + 1) % 3,
-              }))
-            }
-          >
-            ▶️
-          </button>
-        </div>
-          
-        <p>미리보기</p>
+        <p>폰트</p>
+        <ArrowSelectContainer
+          forWhat="font"
+          setPreviewPostIt={setPreviewPostIt}
+          preViewPostIt={previewPostIt}
+        />
+
+        <p>테마 </p>
+        <ArrowSelectContainer
+          forWhat="themeId"
+          setPreviewPostIt={setPreviewPostIt}
+          preViewPostIt={previewPostIt}
+        />
+
+        {/* <p>미리보기</p>
         <div css={PostitPreview}>
-        <PostIt props={previewPostIt} isPreview={true} />
-        </div>
+          <PostIt props={previewPostIt} isPreview={true} />
+        </div> */}
 
         <div css={CreateButton}>
           {/* 이거 버튼 색 나중에 테마로 바꿀까 */}

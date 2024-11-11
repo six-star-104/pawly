@@ -20,6 +20,7 @@
     "axios": "^1.7.7",
     "firebase": "^11.0.1",
     "galmuri": "^2.39.6",
+    "idb": "^8.0.0",
     "nes.css": "^2.3.0",
     "openai": "^4.69.0",
     "pixelarticons": "^1.8.1",
@@ -51,5 +52,8 @@
   "overrides": {
     "sharp": "0.32.6",
     "sharp-ico": "0.1.5"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.24.4"
   }
 }

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { SignUpType } from "@/types/UserType";
+import { SignUpType } from "@/types/UserTypes";
 
 type SignUpStore = {
   signUpState: SignUpType;

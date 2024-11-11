@@ -5,9 +5,12 @@ import { containerStyle, headerStyle, closeButtonStyle, menuListStyle, menuItemS
 import { FaStickyNote, FaEnvelope, FaTasks, FaGraduationCap, FaPaw, FaUser } from 'react-icons/fa';
 import CancelButton from '../../assets/icons/CancelButton.png';
 import { IHamberger } from '../../types/hambergerTypes'
+import { useUserInfoStore } from '@/stores/mypageStore';
 
 export const Hamberger: React.FC<IHamberger> = ({ closeMyPage }) => { 
+  
   const navigate = useNavigate();
+  const { nickname } = useUserInfoStore();
   
   const rollingPaperMove = () => {
     // 햄버거 메뉴에서 들어가는 페이지는 내가 받은거만 다뜨는거니까
@@ -25,15 +28,15 @@ export const Hamberger: React.FC<IHamberger> = ({ closeMyPage }) => {
   const letterMove =() => {
     navigate('/letter')
   }
-  const questMove =() => {
-    navigate('/quest')
+  const eastereggMove =() => {
+    navigate('/easteregg')
   }
 
   return (
     <>
     <div css={containerStyle}>
       <div css={headerStyle}>
-        남은식다 님 환영합니다!
+        {nickname}님 환영합니다!
         <button css={closeButtonStyle} onClick={closeMyPage}>
           <img src={CancelButton} alt="Cancel Button" width={25} />
         </button>
@@ -41,7 +44,7 @@ export const Hamberger: React.FC<IHamberger> = ({ closeMyPage }) => {
       <ul css={menuListStyle}>
         <li onClick={rollingPaperMove}  css={menuItemStyle}><FaStickyNote /> 롤링페이퍼</li>
         <li onClick={letterMove} css={menuItemStyle}><FaEnvelope /> 편지함</li>
-        <li onClick={questMove} css={menuItemStyle}><FaTasks /> 도전과제</li>
+        <li onClick={eastereggMove} css={menuItemStyle}><FaTasks /> 도전과제</li>
         <li onClick={pediaMove} css={menuItemStyle}><FaGraduationCap /> 도감</li>
         <li onClick={friendsMove} css={menuItemStyle}><FaPaw /> 친구</li>
         <li onClick={mypageMove} css={menuItemStyle}><FaUser /> 마이페이지</li>

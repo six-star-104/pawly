@@ -2,8 +2,6 @@ import { css } from "@emotion/react";
 
 export const Container = css`
   width: 100%;
-  /* height: 214vh; */
-  /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -115,7 +113,6 @@ export const friendListContainer = css`
   flex-direction: column;
   width: 90%;
   max-width: 500px;
-  gap: 0.5rem;
 `;
 
 export const friendItem = css`
@@ -140,7 +137,7 @@ export const friendName = css`
   }
 
   span {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: #666;
   }
 `;
@@ -191,7 +188,7 @@ export const modalOverlayStyle = css`
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5); /* 단순 반투명 배경 */
+  background: rgba(0, 0, 0, 0.5);
   z-index: 1000;
 `;
 
@@ -259,5 +256,93 @@ export const closeButtonStyle = css`
 
   &:active {
     transform: scale(0.95);
+  }
+`;
+
+export const deleteModalOverlayStyle = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+`;
+
+export const deleteModalContentStyle = css`
+  background: #fff;
+  border: 2px solid black;
+  padding: 20px;
+  width: 85%;
+  text-align: center;
+  font-family: 'Galmuri9';
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+export const warningIconStyle = css`
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: 0.5rem;
+`;
+
+export const searchResultsContainer = css`
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  max-width: 500px;
+  margin-top: 1rem;
+`;
+
+export const searchResultItem = css`
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 1rem;
+  gap: 1rem;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+  border-top: 1px solid black;
+
+  &:first-of-type {
+    border-top: 2px solid black;
+  }
+
+  &:last-of-type {
+    border-bottom: 2px solid black;
+  }
+`;
+
+export const searchResultText = css`
+  flex: 1;
+  text-align: left;
+
+  h3 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  p {
+    font-size: 0.85rem;
+    color: #666;
+    margin: 0;
+  }
+`;
+
+export const searchResultActions = css`
+  display: flex;
+  gap: 0.5rem;
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
   }
 `;

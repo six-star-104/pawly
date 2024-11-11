@@ -85,3 +85,14 @@ export const modalStyle = css`
     width: 30%;
   }
 `;
+export const tempBtn = css`
+  position: fixed;
+  right: 3%;
+  bottom: 3%;
+  width: 30%;
+  height: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+`;

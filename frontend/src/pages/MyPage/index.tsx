@@ -19,11 +19,10 @@ import {
   modalOverlayStyle,
   modalContentStyle,
   modalHeaderStyle,
-  inputStyle, // 새로 추가된 닉네임 입력 스타일
-  modalActionsStyle, // 새로 추가된 모달 버튼 스타일
+  inputStyle,
+  modalActionsStyle,
 } from './styles';
 import PixelContainer from '../../components/PixelContainer';
-// import CancelButton from '../../assets/icons/CancelButton.png';
 import PixelPuppy from '../../assets/icons/PixelPuppy.png';
 import NavButton from '../../assets/icons/NavButton.png';
 import BackButton from '../../assets/icons/BackButton.png';
@@ -31,7 +30,8 @@ import { Button } from '@/components/Button';
 import Modal from '@/components/Modal';
 import { Hamberger } from '../Hamberger';
 import { useUserInfoStore } from '@/stores/mypageStore';
-import { getMyInfo, updateNickname } from '@/apis/myPage';
+import useEasterEggStore from '@/stores/easterEggStore';
+import { getMyInfo, updateNickname } from '@/apis/myPageService';
 
 export const MyPage = () => {
   const [mypageVisible, setMyPageVisible] = useState(false);
@@ -40,8 +40,9 @@ export const MyPage = () => {
   const navigate = useNavigate();
   const { username, memberId, nickname, birth, assets, collections, isInitialized, setUserInfo } = useUserInfoStore();
   
-  //빌드오류제거용
-  console.log(memberId, birth)
+  const { completedChallengesCount } = useEasterEggStore(); // 완료된 과제 수 가져오기
+
+  console.log(memberId, birth, collections)
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -131,15 +132,12 @@ export const MyPage = () => {
                   <button onClick={handleEditNickname} css={closeButtonStyle}>
                     <img src="https://unpkg.com/pixelarticons@1.8.1/svg/edit.svg" alt="편집 버튼" width="30" height="30" />
                   </button>
-                  {/* <button onClick={close} css={closeButtonStyle}>
-                    <img src={CancelButton} alt="닫기 버튼" width={25} />
-                  </button> */}
                 </div>
               </div>
 
               <div css={StatsSection}>
                 <div><img src="https://unpkg.com/pixelarticons@1.8.1/svg/reciept.svg" alt="롤링페이퍼 아이콘" width="20" height="20" /> 작성한 롤링페이퍼: n개</div>
-                <div><img src="https://unpkg.com/pixelarticons@1.8.1/svg/trophy.svg" alt="도전과제 아이콘" width="20" height="20" /> 달성한 도전과제: n개</div>
+                <div><img src="https://unpkg.com/pixelarticons@1.8.1/svg/trophy.svg" alt="도전과제 아이콘" width="20" height="20" /> 달성한 도전과제: {completedChallengesCount}개</div>
                 <div><img src={PixelPuppy} alt="동물 도감 아이콘" width={20} height={20}/> 저장된 동물 도감: {collections.length}개</div>
               </div>
 
@@ -162,7 +160,6 @@ export const MyPage = () => {
         </div>
       </div>
 
-      {/* 닉네임 수정 모달 */}
       <Modal isOpen={isEditing} onClose={closeMyPage} title="닉네임 수정">
         <div css={modalOverlayStyle}>
           <div css={modalContentStyle}>
@@ -186,7 +183,7 @@ export const MyPage = () => {
                 width='30%'
                 handler={handleSaveNickname}>
                 저장
-                </Button>
+              </Button>
               <Button
                 backgroundColor='#4CAF50' 
                 color='#000' 
@@ -194,9 +191,7 @@ export const MyPage = () => {
                 width='30%'
                 handler={() => setIsEditing(false)}>
                 취소
-                </Button>
-              
-              
+              </Button>
             </div>
           </div>
         </div>
