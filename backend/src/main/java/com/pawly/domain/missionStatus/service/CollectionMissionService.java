@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class CollectionMissionService {
 
     private final MissionStatusRepository missionStatusRepository;
@@ -20,6 +19,7 @@ public class CollectionMissionService {
     private final FirebaseCloudMessageService firebaseCloudMessageService;
 
     // 도전과제 5번: 도감 동물 10마리 생성
+    @Transactional
     public void collectionMission(Long memberId) {
         collection(memberId);
 
@@ -30,7 +30,8 @@ public class CollectionMissionService {
         firebaseCloudMessageService.sendMessage(request);
     }
 
-    private void collection(Long memberId) {
+    @Transactional
+    public void collection(Long memberId) {
         Optional<MissionStatus> missionStatus = missionStatusRepository.findById(memberId);
 
         if (missionStatus.isPresent()) {

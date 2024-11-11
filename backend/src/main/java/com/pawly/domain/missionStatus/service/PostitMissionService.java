@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class PostitMissionService {
 
     private final MissionStatusRepository missionStatusRepository;
@@ -20,6 +19,7 @@ public class PostitMissionService {
     private final FirebaseCloudMessageService firebaseCloudMessageService;
 
     // 도전과제 4번: 포스트잇 3회 생성
+    @Transactional
     public void postitMission(Long memberId) {
         postit(memberId);
 
@@ -30,7 +30,8 @@ public class PostitMissionService {
         firebaseCloudMessageService.sendMessage(request);
     }
 
-    private void postit(Long memberId) {
+    @Transactional
+    public void postit(Long memberId) {
         Optional<MissionStatus> missionStatus = missionStatusRepository.findById(memberId);
 
         if (missionStatus.isPresent()) {

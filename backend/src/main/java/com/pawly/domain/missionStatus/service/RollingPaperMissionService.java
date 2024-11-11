@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class RollingPaperMissionService {
 
     private final MissionStatusRepository missionStatusRepository;
@@ -20,6 +19,7 @@ public class RollingPaperMissionService {
     private final FirebaseCloudMessageService firebaseCloudMessageService;
 
     // 도전과제 2번: 우체통(롤링페이퍼) 1회 생성
+    @Transactional
     public void rollingPaperMission(Long memberId) {
         rollingPaper(memberId);
 
@@ -30,7 +30,8 @@ public class RollingPaperMissionService {
         firebaseCloudMessageService.sendMessage(request);
     }
 
-    private void rollingPaper(Long memberId) {
+    @Transactional
+    public void rollingPaper(Long memberId) {
         Optional<MissionStatus> missionStatus = missionStatusRepository.findById(memberId);
 
         if (missionStatus.isPresent()) {
