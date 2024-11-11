@@ -1,4 +1,4 @@
-import { css } from '@emotion/react';
+import { css } from "@emotion/react";
 
 export const Container = css`
   width: 100%;
@@ -64,7 +64,7 @@ export const searchContainer = css`
     border: none;
     outline: none;
     font-size: 1rem;
-    font-family: 'Galmuri9';
+    font-family: "Galmuri9";
   }
 
   button {
@@ -87,7 +87,7 @@ export const tabContainer = (activeTab: "friends" | "requests") => css`
     padding: 0.5rem 1rem;
     cursor: pointer;
     font-weight: bold;
-    font-family: 'Galmuri9';
+    font-family: "Galmuri9";
     border-top: 2px solid black;
     border-bottom: none;
     border-right: 2px solid black;
@@ -211,7 +211,7 @@ export const modalHeaderStyle = css`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
-  font-family: 'Galmuri9';
+  font-family: "Galmuri9";
   font-size: 1.2rem;
 `;
 
@@ -221,7 +221,7 @@ export const modalInputStyle = css`
   border: none;
   border-bottom: 2px solid black;
   margin: 8px 0;
-  font-family: 'Galmuri9';
+  font-family: "Galmuri9";
   font-size: 1rem;
   background: transparent;
   outline: none;
@@ -236,7 +236,7 @@ export const sendButtonStyle = css`
   background-color: #4caf50;
   color: white;
   font-size: 1rem;
-  font-family: 'Galmuri9';
+  font-family: "Galmuri9";
   border: 2px solid black;
   border-radius: 5px;
   cursor: pointer;
