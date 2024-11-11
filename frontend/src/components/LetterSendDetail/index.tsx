@@ -54,6 +54,8 @@ export const LetterSendDetail: React.FC<LetterSendDetailProps> = ({
       <div css={style.letterContent}>
         <p>{letterDetail?.content}</p>
       </div>
+      <img src={letterDetail?.picture} css={style.pictureStyle} />
+
       <ModalConfirm
         isOpen={isConfirmOpen}
         onConfirm={confirmDelete}

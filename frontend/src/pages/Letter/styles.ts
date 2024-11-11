@@ -2,13 +2,12 @@ import { css } from "@emotion/react";
 
 export const Container = css`
   width: 100%;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1rem;
   position: relative;
   box-sizing: border-box;
+  overflow-y: auto;
 `;
 
 export const BackBtnContainer = css`
@@ -66,7 +65,6 @@ export const searchContainer = css`
     border: none;
     outline: none;
     font-size: 1rem;
-    font-family: "Galmuri9";
   }
 
   button {
@@ -97,10 +95,10 @@ export const panelContentStyle = css`
 
 export const tabContainer = (activeTab: "received" | "sent") => css`
   display: flex;
-  width: 90%;
+  width: 100%;
   max-width: 500px;
   margin-top: 1rem;
-
+  padding: 0 1rem;
   button {
     flex: 1;
     background: #fff;
@@ -131,8 +129,11 @@ export const tabContainer = (activeTab: "received" | "sent") => css`
 export const letterListContainer = css`
   display: flex;
   flex-direction: column;
-  width: 90%;
+  width: 100%;
   max-width: 500px;
+  max-height: 75vh;
+  overflow-y: auto;
+  padding: 0 1rem;
 `;
 
 export const letterItem = css`
@@ -267,7 +268,6 @@ export const replyTextareaStyle = css`
   padding: 0.5rem;
   margin-top: 1rem;
   border: 1px solid #000;
-  font-family: "Galmuri9";
   font-size: 1rem;
   resize: none;
   outline: none;

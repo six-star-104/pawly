@@ -20,11 +20,13 @@ export const LetterSendList = () => {
   const openModal = (sendLetterId: number) => {
     setSelectedLetterId(sendLetterId);
     setIsModalOpen(true);
+    document.body.classList.add("no-scroll");
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedLetterId(null);
+    document.body.classList.remove("no-scroll");
   };
 
   const handlePageChange = (page: number) => {

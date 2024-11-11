@@ -105,9 +105,34 @@ export const getSendLetterDetail = async (sendLetterId: number) => {
   }
 };
 
-export const postLetter = async () => {
+export const postLetter = async (
+  picture: File | null,
+  recipientId: number,
+  content: string
+) => {
   try {
-    const response = await axiosInstance.post("sendLetter");
+    const formData = new FormData();
+
+    if (picture) {
+      formData.append("picture", picture);
+    }
+
+    const jsonBlob = new Blob(
+      [
+        JSON.stringify({
+          recipientId: recipientId,
+          content: content,
+        }),
+      ],
+      { type: "application/json" }
+    );
+    formData.append("data", jsonBlob);
+
+    const response = await axiosInstance.post("sendLetter", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     console.log(response.data);
     return response.data;
   } catch (error) {

@@ -8,7 +8,7 @@ export const Container = styled.div`
 `;
 
 export const PageButton = styled.button<{ $active?: boolean }>`
-  padding: 1rem;
+  padding: 0.5rem;
   border: none;
   background: none;
   outline: none;

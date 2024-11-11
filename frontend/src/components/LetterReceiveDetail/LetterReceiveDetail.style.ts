@@ -23,7 +23,6 @@ export const modalContentStyle = css`
   padding: 0;
   background: #fff;
   border: 2px solid black;
-  font-family: "Galmuri9";
   font-size: 1rem;
 `;
 
@@ -54,6 +53,13 @@ export const letterContent = css`
   color: #333;
   overflow-y: auto;
   flex: 1;
+`;
+
+export const pictureStyle = css`
+  display: block;
+  margin: auto;
+  max-width: 100%;
+  height: auto;
 `;
 
 export const reactionIconsStyle = css`

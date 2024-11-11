@@ -42,6 +42,8 @@ export const modalContent = css`
   background: #fefefe;
   max-width: 80%;
   width: 100%;
+  max-height: 60vh;
+  overflow-y: auto;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   opacity: 0;
   animation: ${fadeOut} 0.2s forwards;

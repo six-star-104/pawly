@@ -17,6 +17,9 @@ function GlobalStyles() {
           -ms-use-select: none;
           user-select: none;
         }
+        .no-scroll {
+          overflow: hidden;
+        }
       `}
     />
   );

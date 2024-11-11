@@ -18,14 +18,16 @@ export const LetterReceiveList = () => {
       getReceiveLetterList(currentPage - 1, 10, "desc", "createdAt"),
   });
 
-  const openModal = (receiveLetterId: number) => {
-    setSelectedLetterId(receiveLetterId);
+  const openModal = (sendLetterId: number) => {
+    setSelectedLetterId(sendLetterId);
     setIsModalOpen(true);
+    document.body.classList.add("no-scroll");
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedLetterId(null);
+    document.body.classList.remove("no-scroll");
   };
 
   const handlePageChange = (page: number) => {
@@ -34,47 +36,49 @@ export const LetterReceiveList = () => {
   };
 
   return (
-    <div css={style.Container}>
-      <div css={style.letterListContainer}>
-        {letterList?.content && letterList.content.length > 0 ? (
-          letterList.content.map((letter) => (
-            <div
-              css={style.letterItem}
-              key={letter.letterId}
-              onClick={() => openModal(letter.receiveLetterId)}
-            >
-              <div css={style.contentContainer}>
-                <div css={style.content}>{letter.content}</div>
-                <div css={style.nickname}>{letter.senderName}</div>
+    <>
+      <div css={style.Container}>
+        <div css={style.letterListContainer}>
+          {letterList?.content && letterList.content.length > 0 ? (
+            letterList.content.map((letter) => (
+              <div
+                css={style.letterItem}
+                key={letter.letterId}
+                onClick={() => openModal(letter.receiveLetterId)}
+              >
+                <div css={style.contentContainer}>
+                  <div css={style.content}>{letter.content}</div>
+                  <div css={style.nickname}>{letter.senderName}</div>
+                </div>
+                <div css={style.date}>
+                  {new Date(letter.createdAt).toLocaleDateString("ko-KR")}
+                </div>
               </div>
-              <div css={style.date}>
-                {new Date(letter.createdAt).toLocaleDateString("ko-KR")}
-              </div>
+            ))
+          ) : (
+            <div css={style.letterItem}>
+              <div css={style.noLetter}>받은 편지가 없습니다.</div>
             </div>
-          ))
-        ) : (
-          <div css={style.letterItem}>
-            <div css={style.noLetter}>받은 편지가 없습니다.</div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-
       <Pagination
         totalPages={letterList?.totalPage || 0}
         currentPage={currentPage}
         onPageChange={handlePageChange}
       />
-
-      {isModalOpen && selectedLetterId && (
-        <ModalLetter isOpen={isModalOpen} onClose={closeModal}>
-          {selectedLetterId && (
-            <LetterReceiveDetail
-              receiveLetterId={selectedLetterId}
-              onClose={closeModal}
-            />
-          )}
-        </ModalLetter>
-      )}
-    </div>
+      <div>
+        {isModalOpen && selectedLetterId && (
+          <ModalLetter isOpen={isModalOpen} onClose={closeModal}>
+            {selectedLetterId && (
+              <LetterReceiveDetail
+                receiveLetterId={selectedLetterId}
+                onClose={closeModal}
+              />
+            )}
+          </ModalLetter>
+        )}
+      </div>
+    </>
   );
 };

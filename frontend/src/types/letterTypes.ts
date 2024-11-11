@@ -23,7 +23,7 @@ export interface IReceiveLetter {
   recipientName: string;
   recipientId: number;
   letterId: number;
-  senderId: string;
+  senderId: number;
   senderName: string;
   content: string;
   picture?: string;

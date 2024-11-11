@@ -14,6 +14,7 @@ export const letterListContainer = css`
   flex-direction: column;
   width: 100%;
   max-width: 500px;
+  overflow-y: hidden;
 `;
 
 export const letterItem = css`

@@ -11,6 +11,8 @@ import ModalConfirm from "../ModalConfirm";
 import replyHeart from "@/assets/icons/replyHeart.svg";
 import replyLike from "@/assets/icons/replyLike.svg";
 import replayStar from "@/assets/icons/replyStar.svg";
+import { LetterWrite } from "../LetterWrite";
+import ModalLetter from "../ModalLetter";
 
 interface LetterReceiveDetailProps {
   receiveLetterId: number;
@@ -24,6 +26,7 @@ export const LetterReceiveDetail: React.FC<LetterReceiveDetailProps> = ({
   const queryClient = useQueryClient();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [reaction, setReaction] = useState<number | null>(null);
+  const [isReplyModalOpen, setIsReplyModalOpen] = useState(false);
 
   const { data: letterDetail, refetch } = useQuery<IReceiveLetter>({
     queryKey: ["receiveLetterDetail", receiveLetterId],
@@ -36,7 +39,6 @@ export const LetterReceiveDetail: React.FC<LetterReceiveDetailProps> = ({
     }
   }, [letterDetail]);
 
-  console.log(letterDetail);
   const handleDelete = () => {
     setIsConfirmOpen(true);
   };
@@ -52,10 +54,18 @@ export const LetterReceiveDetail: React.FC<LetterReceiveDetailProps> = ({
     setReaction(iconReaction);
     try {
       await reactToReceiveLetter(receiveLetterId, iconReaction);
-      await refetch(); // patch 요청 후 letterDetail 새로 불러오기
+      await refetch();
     } catch (error) {
       console.error("Failed to react to letter", error);
     }
+  };
+
+  const openReplyModal = () => {
+    setIsReplyModalOpen(true);
+  };
+
+  const closeReplyModal = () => {
+    setIsReplyModalOpen(false);
   };
 
   return (
@@ -79,6 +89,7 @@ export const LetterReceiveDetail: React.FC<LetterReceiveDetailProps> = ({
       <div css={style.letterContent}>
         <p>{letterDetail?.content}</p>
       </div>
+      <img src={letterDetail?.picture} css={style.pictureStyle} />
 
       <ModalConfirm
         isOpen={isConfirmOpen}
@@ -118,8 +129,20 @@ export const LetterReceiveDetail: React.FC<LetterReceiveDetailProps> = ({
           </div>
         </div>
 
-        <button css={style.replyButton}>답장하기</button>
+        <button css={style.replyButton} onClick={openReplyModal}>
+          답장하기
+        </button>
       </div>
+
+      {isReplyModalOpen && (
+        <ModalLetter isOpen={isReplyModalOpen} onClose={closeReplyModal}>
+          <LetterWrite
+            recipientId={letterDetail?.senderId || 0}
+            recipientName={letterDetail?.senderName || ""}
+            onClose={closeReplyModal}
+          />
+        </ModalLetter>
+      )}
     </>
   );
 };
