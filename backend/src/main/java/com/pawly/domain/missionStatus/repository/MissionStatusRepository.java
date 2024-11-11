@@ -5,6 +5,8 @@ import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 public interface MissionStatusRepository extends JpaRepository<MissionStatus, Long> {
 
     @Query("SELECT m.rollingPaper FROM MissionStatus m " +
@@ -23,5 +25,5 @@ public interface MissionStatusRepository extends JpaRepository<MissionStatus, Lo
             "WHERE m.memberId =:memberId ")
     Long countCollection(@Param("memberId") Long memberId);
 
-    MissionStatus findByMemberId(@Param("memberId") Long memberId);
+    Optional<MissionStatus> findByMemberId(@Param("memberId") Long memberId);
 }

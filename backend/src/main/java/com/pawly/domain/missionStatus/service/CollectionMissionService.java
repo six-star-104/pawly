@@ -32,16 +32,17 @@ public class CollectionMissionService {
 
     @Transactional
     public void collection(Long memberId) {
-        Optional<MissionStatus> missionStatus = missionStatusRepository.findById(memberId);
+        Optional<MissionStatus> missionStatus = missionStatusRepository.findByMemberId(memberId);
 
         if (missionStatus.isPresent()) {
             MissionStatus missionStatus1 = missionStatus.get();
             missionStatus1.collectionPlus();
+            missionStatusRepository.save(missionStatus1);
         }
     }
 
     private boolean collectionTen(Long memberId) {
-        Long count = missionStatusRepository.countSendLetter(memberId);
+        Long count = missionStatusRepository.countCollection(memberId);
         return count == 10;
     }
 }

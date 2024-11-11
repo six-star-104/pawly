@@ -32,11 +32,12 @@ public class PostitMissionService {
 
     @Transactional
     public void postit(Long memberId) {
-        Optional<MissionStatus> missionStatus = missionStatusRepository.findById(memberId);
+        Optional<MissionStatus> missionStatus = missionStatusRepository.findByMemberId(memberId);
 
         if (missionStatus.isPresent()) {
             MissionStatus missionStatus1 = missionStatus.get();
             missionStatus1.postitPlus();
+            missionStatusRepository.save(missionStatus1);
         }
     }
 
