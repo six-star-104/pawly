@@ -24,6 +24,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -58,7 +59,7 @@ public class PostItService {
         postItRepository.save(dto.toEntity(member, r, theme.get()));
 
         // 도감 저장
-        collectionService.collectionAdd(member, r.getMember());
+        if(!Objects.equals(member.getMemberId(), r.getMember().getMemberId())) collectionService.collectionAdd(member, r.getMember());
 
         // 알림
         FcmMessageRequestDto request = new FcmMessageRequestDto(r.getMember().getMemberId(), "롤링페이퍼가 작성되었어요!", "마음을 담은 롤링페이퍼가 작성되었습니다. 지금 확인해보세요.");
