@@ -2,7 +2,6 @@ package com.pawly.domain.letter.controller;
 
 import com.pawly.domain.letter.dto.request.LetterRequestDTO;
 import com.pawly.domain.letter.service.SendLetterService;
-import com.pawly.domain.member.dto.request.SignUpRequestDTO;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.service.MemberService;
 import com.pawly.global.exception.ErrorCode;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -69,15 +67,7 @@ public class SendLetterController {
     public ApiResponse<?> sendLetter(Authentication authentication, @RequestPart(name = "picture", required = false) MultipartFile picture,
                                                                     @RequestPart(name = "data") LetterRequestDTO letterRequestDTO) {
         try {
-            Member member = memberService.findByEmail(authentication.getName());
-
-            if (member == null) {
-                return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
-            }
-
-            sendLetterService.sendLetter(member, letterRequestDTO, picture);
-
-            return ApiResponse.createSuccessWithNoContent("편지 보내기 성공");
+            return sendLetterService.sendLetter(authentication.getName(), letterRequestDTO, picture);
         } catch (Exception e) {
             return ApiResponse.createError(ErrorCode.LETTER_SEND_FAILED);
         }

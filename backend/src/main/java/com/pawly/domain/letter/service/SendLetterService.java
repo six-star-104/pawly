@@ -12,12 +12,18 @@ import com.pawly.domain.letter.repository.ReceiveLetterRepository;
 import com.pawly.domain.letter.repository.SendLetterRepository;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.repository.MemberRepository;
+import com.pawly.domain.member.service.MemberServiceImpl;
 import com.pawly.domain.missionStatus.service.LetterMissionService;
 import com.pawly.global.dto.FcmMessageRequestDto;
 import com.pawly.global.dto.PageResponseDTO;
+import com.pawly.global.exception.ErrorCode;
+import com.pawly.global.response.ApiResponse;
 import com.pawly.global.service.FileService;
+
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import com.pawly.global.service.FirebaseCloudMessageService;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +44,7 @@ public class SendLetterService {
     private final SendLetterRepository sendLetterRepository;
     private final ReceiveLetterRepository receiveLetterRepository;
     private final MemberRepository memberRepository;
+    private final MemberServiceImpl memberService;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
     private final LetterMissionService letterMissionService;
     private final FileService fileService;
@@ -75,10 +82,14 @@ public class SendLetterService {
     }
 
     @Transactional
-    public void sendLetter(Member member, LetterRequestDTO letterRequestDTO, MultipartFile picture)
-        throws IOException {
+    public ApiResponse<?> sendLetter(String email, LetterRequestDTO letterRequestDTO, MultipartFile picture) throws IOException {
+        Member member = memberService.findByEmail2(email); // 보낸 사람
+        if (member == null) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
-        Member recipient = memberRepository.getReferenceById(letterRequestDTO.getRecipientId());
+        Member recipient = memberRepository.getReferenceById(letterRequestDTO.getRecipientId()); // 받는 사람
+
+        // 받는 사람 == 보낸 사람 오류
+        if(Objects.equals(member.getMemberId(), recipient.getMemberId())) return ApiResponse.createError(ErrorCode.LETTER_SEND_FAILED);
 
         Letter letter = Letter.builder()
             .sender(member)
@@ -115,7 +126,9 @@ public class SendLetterService {
         letterMissionService.receiveLetterMission(recipient.getMemberId());
 
         // 도감 저장
-        collectionService.collectionAdd(member, recipient);
+        if(!Objects.equals(member.getMemberId(), recipient.getMemberId())) collectionService.collectionAdd(member, recipient);
+
+        return ApiResponse.createSuccessWithNoContent("편지 보내기 성공");
     }
 
     @Transactional

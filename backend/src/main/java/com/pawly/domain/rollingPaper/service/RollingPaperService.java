@@ -1,5 +1,7 @@
 package com.pawly.domain.rollingPaper.service;
 
+import com.pawly.domain.easterEgg.entity.CompleteEasterEgg;
+import com.pawly.domain.easterEgg.repository.CompleteEasterEggRepository;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.repository.MemberRepository;
 import com.pawly.domain.missionStatus.service.RollingPaperMissionService;
@@ -18,8 +20,10 @@ import com.pawly.domain.rollingPaper.entity.RollingPaper;
 import com.pawly.domain.rollingPaper.repository.RollingPaperRepository;
 import com.pawly.domain.theme.entity.Theme;
 import com.pawly.domain.theme.repository.ThemeRepository;
+import com.pawly.global.dto.FcmMessageRequestDto;
 import com.pawly.global.exception.ErrorCode;
 import com.pawly.global.response.ApiResponse;
+import com.pawly.global.service.FirebaseCloudMessageService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -41,6 +45,8 @@ public class RollingPaperService {
     private final RollingPaperMissionService rollingPaperMissionService;
     private final PostboxRepository postboxRepository;
     private final ThemeRepository themeRepository;
+    private final FirebaseCloudMessageService firebaseCloudMessageService;
+    private final CompleteEasterEggRepository  completeEasterEggRepository;
 
     @Transactional
     public ApiResponse<?> createRollingPaper(RollingPaperCreateDto dto) {
@@ -92,6 +98,30 @@ public class RollingPaperService {
     }
 
     @Transactional
+    @Scheduled(cron = "0 0 0 * * *")
+    public void findBirthDayRollingPaper() {
+        List<Member> members = memberRepository.findTodayBirthdayMembers();
+        for (Member member : members) {
+            FcmMessageRequestDto request = new FcmMessageRequestDto(member.getMemberId(), "생일 롤링페이퍼가 도착했어요!", "친구에게서 따뜻한 생일 롤링페이퍼가 도착했습니다. 확인해보세요.");
+            firebaseCloudMessageService.sendMessage(request);
+
+            Optional<CompleteEasterEgg> completeEasterEgg = completeEasterEggRepository.findByMemberIdAndEasterEggId(member.getMemberId(), 6L);
+
+            // 도전과제 6번: 생일 롤링페이퍼 오픈
+            if (completeEasterEgg.isPresent()) {
+                CompleteEasterEgg completeEasterEgg1 = completeEasterEgg.get();
+
+                if(completeEasterEgg1.getStatus() == com.pawly.domain.easterEgg.entity.Status.IN_PROGRESS) {
+                    completeEasterEgg1.achievedStatus();
+
+                    FcmMessageRequestDto request2 = new FcmMessageRequestDto(member.getMemberId(), "도전과제 달성!", "달성한 도전과제를 확인해보세요!");
+                    firebaseCloudMessageService.sendMessage(request2);
+                }
+            }
+        }
+    }
+
+    @Transactional
     public ApiResponse<?> readAllRollingPaper(String memberName, Pageable pageable) {
         Optional<Member> member = memberRepository.findByEmail(memberName);
         if (member.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
@@ -107,21 +137,26 @@ public class RollingPaperService {
 
     @Transactional
     public ApiResponse<?> readRollingPaper(String memberName, Long rollingPaperId, int pageNumber, int pageSize, String sortType, String sortBy) {
-        Optional<Member> member = memberRepository.findByEmail(memberName);
-        if (member.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+        Optional<Member> optionalMember = memberRepository.findByEmail(memberName);
+        if (optionalMember.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
-        Optional<RollingPaper> rollingPaper = rollingPaperRepository.findById(rollingPaperId);
-        if (rollingPaper.isEmpty() || rollingPaper.get().isDeleteFlag()) return ApiResponse.createError(ErrorCode.ROLLING_PAPER_NOTFOUND);
+        Member member = optionalMember.get();
 
-        if (!rollingPaper.get().getMember().equals(member.get())) return  ApiResponse.createError(ErrorCode.ACCESS_DENIED);
+        Optional<RollingPaper> optionalRollingPaper = rollingPaperRepository.findById(rollingPaperId);
+        if (optionalRollingPaper.isEmpty() || optionalRollingPaper.get().isDeleteFlag()) return ApiResponse.createError(ErrorCode.ROLLING_PAPER_NOTFOUND);
 
-        if (rollingPaper.get().getCategory() == 2 && member.get().getBirth() != null && !rollingPaper.get().getCreatedAt().plusDays(4).isBefore(LocalDateTime.now())) return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
+        RollingPaper rollingPaper = optionalRollingPaper.get();
+
+        if (!rollingPaper.getMember().equals(member)) return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
+
+        if (rollingPaper.getCategory() == 2 && member.getBirth() != null)
+            if(!rollingPaper.getCreatedAt().plusDays(4).isBefore(LocalDateTime.now())) return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
 
         Sort sort = sortType.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending()
                 : Sort.by(sortBy).ascending();
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-        Page<PostIt> postIts = postItRepository.findByRollingPaper(rollingPaper.get(), pageable);
+        Page<PostIt> postIts = postItRepository.findByRollingPaper(rollingPaper, pageable);
 
         List<PostItReadDto> postItReadDtos = new ArrayList<>();
         for (PostIt postIt : postIts) {
@@ -134,7 +169,7 @@ public class RollingPaperService {
             postItReadDtos.add(PostItReadDto.of(postItMember.get(), postIt, theme.get()));
         }
 
-        RollingPaperReadAllDto rollingPaperReadAllDto = RollingPaperReadAllDto.toDto(postItReadDtos, rollingPaper.get(), pageNumber, pageSize, (long) Math.ceil((double) postIts.getTotalElements() / pageSize),postIts.getTotalElements());
+        RollingPaperReadAllDto rollingPaperReadAllDto = RollingPaperReadAllDto.toDto(postItReadDtos, rollingPaper, pageNumber, pageSize, (long) Math.ceil((double) postIts.getTotalElements() / pageSize),postIts.getTotalElements());
         return ApiResponse.createSuccess(rollingPaperReadAllDto,"롤링페이퍼 상세 조회 성공");
     }
 
