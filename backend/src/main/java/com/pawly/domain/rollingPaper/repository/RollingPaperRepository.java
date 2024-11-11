@@ -17,6 +17,7 @@ public interface RollingPaperRepository extends JpaRepository<RollingPaper, Long
 
     @Query ("SELECT r FROM RollingPaper r " +
             "WHERE r.member =:member " +
-            "AND r.category = 1")
+            "AND r.category = 1" +
+            "AND r.deleteFlag = false ")
     List<RollingPaper> findByMember(Member member);
 }
