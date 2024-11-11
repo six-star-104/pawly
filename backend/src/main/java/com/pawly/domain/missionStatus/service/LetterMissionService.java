@@ -44,7 +44,7 @@ public class LetterMissionService {
 
     @Transactional
     public void sendLetter(Long memberId) {
-        Optional<MissionStatus> missionStatus = missionStatusRepository.findById(memberId);
+        Optional<MissionStatus> missionStatus = missionStatusRepository.findByMemberId(memberId);
 
         if (missionStatus.isPresent()) {
             MissionStatus missionStatus1 = missionStatus.get();
