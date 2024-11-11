@@ -42,7 +42,7 @@ public class RollingPaperMissionService {
     }
 
     private boolean rollingPaperOne(Long memberId) {
-        Long count = missionStatusRepository.countRolllingPaper(memberId);
+        Long count = missionStatusRepository.countRollingPaper(memberId);
 
         return count == 1;
     }

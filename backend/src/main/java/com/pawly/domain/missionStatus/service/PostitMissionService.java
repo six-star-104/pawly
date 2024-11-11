@@ -42,7 +42,7 @@ public class PostitMissionService {
     }
 
     private boolean postitThree(Long memberId) {
-        Long count = missionStatusRepository.countRolllingPaper(memberId);
+        Long count = missionStatusRepository.countPostit(memberId);
 
         return count == 3;
     }
