@@ -12,7 +12,7 @@ export const flaskAxiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = sessionStorage.getItem("accessToken");
     if (accessToken) {
       config.headers["Authorization"] = accessToken;
     }
@@ -55,7 +55,7 @@ export const getRefreshToken = async () => {
     console.log("getRefreshToken", response);
     if (response.data.data) {
       const accessToken = response.data.data.accessToken;
-      localStorage.setItem("accessToken", accessToken);
+      sessionStorage.setItem("accessToken", accessToken);
       axiosInstance.defaults.headers["Authorization"] = accessToken;
       return accessToken;
     }

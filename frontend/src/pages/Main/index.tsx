@@ -32,7 +32,7 @@ export const Main = () => {
 
   const handleLogout = async () => {
     await logout();
-    localStorage.removeItem("accessToken");
+    sessionStorage.removeItem("accessToken");
     navigateTo("/login");
   };
   return (
