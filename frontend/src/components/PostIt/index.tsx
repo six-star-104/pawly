@@ -7,7 +7,6 @@ import PostItForm from "../PostItForm";
 import { PostItProps } from "./PostIt.type";
 import { useReport } from "@/hooks/useReport";
 import { useDeletePostit } from "@/hooks/useDeletePostit";
-import useFetchRollingpaper from "@/hooks/useFetchRollingpaper";
 export const PostIt: React.FC<PostItProps> = ({
   props,
   isPreview,
@@ -20,7 +19,7 @@ export const PostIt: React.FC<PostItProps> = ({
     setRandomArrow(randomDir[Math.floor(Math.random() * 4)]);
   }, []);
 
-  const speechBubbleSize = ["mini", "", "medium"];
+  const speechBubbleSize = ["","mini", "medium"];
 
   // 나중에 색 정해지면 다 바꿔주기
   // const randomTextColor = ["black", "white", "blue", "red", "yellow"];
@@ -35,9 +34,7 @@ export const PostIt: React.FC<PostItProps> = ({
   const timerRef = useRef<number | null>(null);
   const [reportContent, setReportContent] = useState("");
   const { reportPostit } = useReport();
-  // const { deletePostit } = useDeletePostit();
-  const {deletePostit, createPostit} = useFetchRollingpaper();
-
+  const { deletePostit } = useDeletePostit();
   const handleMouseDown = () => {
     // 미리보기면 no 클릭 이벤트
     if (isPreview) {
@@ -65,10 +62,11 @@ export const PostIt: React.FC<PostItProps> = ({
           // 배경이 있으면 => 남은 자투리 배경색이 테두리색 따라가게
           props.image ? props.borderColor : props.backgroundColor,
           props.image!,
-          isPreview
+          isPreview,
+          props.font,
         )}
         className={`bubble ${isPreview ? "" : randomArrow} ${
-          speechBubbleSize[props.speechBubbleSize]
+          speechBubbleSize[props.speechBubbleSize - 1]
         } 
       `}
         // 모바일용

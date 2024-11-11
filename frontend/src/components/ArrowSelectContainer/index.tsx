@@ -1,72 +1,52 @@
 import React from "react";
 import { ArrowSelectContainerProps } from "./ArrowSelectContainer.type";
-import { ArrowContainer, ArrowButton } from "./ArrowSelectContainer.style";
-import { PostIt } from "../PostIt";
+import {
+  ArrowContainer,
+  ArrowButton,
+  FontSelector,
+} from "./ArrowSelectContainer.style";
+import { PreviewPostIt } from "../PreviewPostit";
+import { useRollingpaperStore } from "@/stores/rollingpaperStore";
 const ArrowSelectContainer: React.FC<ArrowSelectContainerProps> = ({
   preViewPostIt,
   setPreviewPostIt,
   forWhat,
+  themes,
 }) => {
-  // const [nowIndex, setNowIndex] = useState(0);
-
-  // 여기서 기본값들 셋팅해주기....?? 나중엔 api로 받아오는걸로 처리
-  const sizeArray = ["작게", "보통", "크게"];
-  const fontArray = ["기본", "다른거", "또다른거"];
-  const themeArray = [
-    {
-      backgroundColor: "#ffffff",
-      fontColor: "#000000",
-      borderColor: "#000000",
-      image: "",
-      themeName: "기본",
-      base: true,
-    },
-    {
-      backgroundColor: "red",
-      fontColor: "#ffffff",
-      borderColor: "red",
-      image: "",
-      themeName: "레드",
-      base: true,
-    },
-    // {
-    //   backgroundColor: "#000000",
-    //   fontColor: "#ffffff",
-    //   borderColor: "#000000",
-    //   image: "",
-    //   themeName: "다크",
-    //   base: true,
-    // },
-    // {
-    //   backgroundColor: "#000000",
-    //   fontColor: "#ffffff",
-    //   borderColor: "#000000",
-    //   image:
-    //     "https://st2.depositphotos.com/46898394/50276/v/380/depositphotos_502768918-stock-illustration-pixel-art-halloween-seamless-pattern.jpg",
-    //   themeName: "할로윈",
-    //   base: true,
-    // },
+  const sizeArray = ["보통", "작게", "크게"];
+  const fontArray = [
+    { name: "갈무리", font: "Galmuri9" },
+    { name: "스타더스트", font: "PFStardust" },
+    { name: "둥근모", font: "DGM" },
   ];
+
+  const { setIsAbleTheme } = useRollingpaperStore();
 
   const decreaseIndex = () => {
     switch (forWhat) {
       case "themeId":
         setPreviewPostIt((prev) => ({
           ...prev,
-          themeId: (prev.themeId + themeArray.length - 1) % themeArray.length,
+          themeId: ((prev.themeId + themes!.length - 2) % themes!.length) + 1,
         }));
+        setIsAbleTheme(
+          themes![(preViewPostIt.themeId + themes!.length - 2) % themes!.length]
+            ?.flag
+        );
         break;
       case "font":
         setPreviewPostIt((prev) => ({
           ...prev,
-          font: (prev.font + fontArray.length - 1) % fontArray.length,
+          font: ((prev.font + fontArray.length - 2) % fontArray.length) + 1,
         }));
         break;
       case "speechBubbleSize":
         setPreviewPostIt((prev) => ({
           ...prev,
           speechBubbleSize:
-            (prev.speechBubbleSize + sizeArray.length - 1) % sizeArray.length,
+            ((prev.speechBubbleSize + sizeArray.length - 2) %
+              sizeArray.length) +
+            1,
         }));
         break;
     }
@@ -76,71 +56,48 @@ const ArrowSelectContainer: React.FC<ArrowSelectContainerProps> = ({
       case "themeId":
         setPreviewPostIt((prev) => ({
           ...prev,
-          themeId: (prev.themeId + 1) % themeArray.length,
+          themeId: (prev.themeId % themes!.length) + 1,
         }));
+        setIsAbleTheme(themes![preViewPostIt.themeId % themes!.length]?.flag);
         break;
       case "font":
         setPreviewPostIt((prev) => ({
           ...prev,
-          font: (prev.font + 1) % fontArray.length,
+          font: (prev.font % fontArray.length) + 1,
         }));
         break;
       case "speechBubbleSize":
         setPreviewPostIt((prev) => ({
           ...prev,
-          speechBubbleSize: (prev.speechBubbleSize + 1) % sizeArray.length,
+          speechBubbleSize: (prev.speechBubbleSize % sizeArray.length) + 1,
         }));
         break;
     }
   };
 
   return (
-    <div css={ArrowContainer}>
+    <div css={ArrowContainer(forWhat)}>
       <button css={ArrowButton} onClick={() => decreaseIndex()}>
         ◀️
       </button>
       {forWhat === "themeId" ? (
         <div>
           {/* 미리보기용 포스트잇 */}
-          <PostIt
-            setRefetchKey={()=>""}
+          <PreviewPostIt
             // 미리보기용 임시 id
-            postitId={0}
-            props={{
-              ...themeArray[
-                (preViewPostIt.themeId - 1 + themeArray.length) %
-                  themeArray.length
-              ],
-              themeId: preViewPostIt.themeId,
-              font: preViewPostIt.font,
-              content:
-                themeArray[
-                  (preViewPostIt.themeId - 1 + themeArray.length) %
-                    themeArray.length
-                ].themeName,
-              // 디폴트 사이즈로 줄까?
-              speechBubbleSize: 0,
-            }}
-            isPreview={true}
+            themeName={themes![preViewPostIt.themeId - 1]?.themeName}
+            background={themes![preViewPostIt.themeId - 1]?.background}
+            fontColor={themes![preViewPostIt.themeId - 1]?.fontColor}
+            borderColor={themes![preViewPostIt.themeId - 1]?.borderColor}
+            flag={themes![preViewPostIt.themeId - 1]?.flag}
           />
         </div>
       ) : forWhat === "font" ? (
-        <div>
-          {
-            fontArray[
-              (preViewPostIt.font - 1 + fontArray.length) % fontArray.length
-            ]
-          }
+        <div css={FontSelector(fontArray[preViewPostIt.font - 1].font)}>
+          {fontArray[preViewPostIt.font - 1].name}
         </div>
       ) : (
-        <div>
-          {
-            sizeArray[
-              (preViewPostIt.speechBubbleSize - 1 + sizeArray.length) %
-                sizeArray.length
-            ]
-          }
-        </div>
+        <div>{sizeArray[preViewPostIt.speechBubbleSize - 1]}</div>
       )}
 
       <button css={ArrowButton} onClick={() => increaseIndex()}>

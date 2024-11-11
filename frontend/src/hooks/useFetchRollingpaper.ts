@@ -1,89 +1,50 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { axiosInstance } from "../apis/axiosInstance";
-import { IRollingPaper } from "@/types/rollingPaperTypes";
-import { IPostIt } from "@/types/rollingPaperTypes";
-const useFetchRollingpaper = (
-  rollingpaperId: string,
-  page: number,
-  pageSize: number
-) => {
-  const [singleRollingpaper, setSingleRollingpaper] = useState<IRollingPaper>();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+import { IRollingPaper, IPostIt } from "@/types/rollingPaperTypes";
+import { useRollingpaperStore } from "@/stores/rollingpaperStore";
 
-  // useEffect(() => {
-  const fetchRollingPaper = useCallback(async () => {
+const useFetchRollingpaper = () => {
+  const [singleRollingpaper, setSingleRollingpaper] = useState<IRollingPaper>();
+  const [postits, setPostits] = useState<IPostIt[]>([])
+  const [loading, setLoading] = useState(false);
+  const [maxPageError, setMaxPageError] = useState<boolean>(false);
+
+  const { setIsPostItChanged } = useRollingpaperStore();
+
+  const fetchRollingPaper = async (
+    rollingpaperId: string,
+    page: number,
+    pageSize: number
+  ) => {
+    if(maxPageError) return
     setLoading(true);
-    setError(null);
+    console.log(page);
     try {
       const res = await axiosInstance.get(
-        `rollingpaper/${rollingpaperId}?page=${page}&pageSize=${pageSize}`
+        `rollingpaper/${rollingpaperId}?pageNumber=${page}&pageSize=${pageSize}`
       );
+      setLoading(false);
       setSingleRollingpaper(res.data.data);
+      console.log(res.data.data)
+      if(res.data.data.content.length===0){
+        setMaxPageError(true)
+      }
+      setPostits(prev => [...prev, ...res.data.data.content])
+      setIsPostItChanged(false);
     } catch (err) {
-      setError("Failed to fetch rolling papers.");
+      // setError("Failed to fetch rolling papers.");
     } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  // fetchRollingPaper(rollingpaperId, page, pageSize);
-  // }, []);
-
-  const createPostit = async (postitData: IPostIt, rollingPaperId: string) => {
-    setLoading(true);
-    try {
-      await axiosInstance.post(`/postit`, {
-        ...postitData,
-        rollingPaperId: rollingPaperId,
-      });
-      setLoading(false);
-      setError(null);
-      console.log("생성완료");
-      await fetchRollingPaper();
-      // setSingleRollingpaper((prev) => ({
-      //   ...prev,
-      //   content: [...(prev?.content || []), postitData],
-      // }));
-    } catch (err) {
-      setLoading(false);
-      setError("포스트잇 생성 중 오류가 발생했습니다.");
-      console.error("포스트잇 생성 오류:", err);
+      console.log("로딩완료" + `${loading}`);
     }
   };
-
-  const deletePostit = async (postitId: number) => {
-    setLoading(true);
-    try {
-      await axiosInstance.delete(`/postit/${postitId}`);
-      setLoading(false);
-      setError(null);
-      console.log("삭제완료");
-      // setSingleRollingpaper((prev) => ({
-      //   ...prev,
-      //   content: prev?.content?.filter(
-      //     (data: IPostIt) => data.postItId != postitId
-      //   ),
-      // }));
-      await fetchRollingPaper();
-    } catch (err) {
-      setLoading(false);
-      setError("포스트잇 삭제 중 오류가 발생했습니다.");
-      console.error("포스트잇 삭제 오류:", err);
-    }
-  };
-
-  useEffect(() => {
-    fetchRollingPaper();
-  }, []);
 
   return {
     singleRollingpaper,
     fetchRollingPaper,
+    postits,
     loading,
-    error,
-    createPostit,
-    deletePostit,
+    setLoading,
+    maxPageError
   };
 };
 export default useFetchRollingpaper;

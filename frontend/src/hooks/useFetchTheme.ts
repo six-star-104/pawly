@@ -9,12 +9,14 @@ export const useFetchThemes = () => {
 
   useEffect(() => {
     const fetchThemes = async () => {
+      console.log('테마 조회 시작')
       setLoading(true);
       setError(null);
       try {
         // 테마 조회 API 나오면 수정하기
-        const res = await axiosInstance.get(`rollingpaper`);
+        const res = await axiosInstance.get(`theme`);
         setThemes(res.data.data);
+        console.log(res.data.data)
       } catch (err) {
         setError("Failed to fetch themes.");
       } finally {

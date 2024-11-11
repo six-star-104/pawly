@@ -22,7 +22,6 @@ const modalOverlayStyle = (isOpen: boolean) => css`
   left: 0;
   z-index: 2000;
 
-
   background-color: rgba(0, 0, 0, 0.5);
   animation: ${isOpen ? fadeIn : fadeOut} 0.2s
     ${isOpen ? "ease-out" : "ease-in"} forwards;
@@ -37,6 +36,7 @@ const modalContentStyle = (isOpen: boolean) => css`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   animation: ${isOpen ? fadeIn : fadeOut} 0.2s
     ${isOpen ? "ease-out" : "ease-in"} forwards;
+  padding: 16px;
 `;
 
 const modalHeaderStyle = css`
