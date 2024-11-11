@@ -11,7 +11,7 @@ public interface MissionStatusRepository extends JpaRepository<MissionStatus, Lo
 
     @Query("SELECT m.rollingPaper FROM MissionStatus m " +
             "WHERE m.memberId =:memberId ")
-    Long countRolllingPaper(@Param("memberId") Long memberId);
+    Long countRollingPaper(@Param("memberId") Long memberId);
 
     @Query("SELECT m.sendLetter FROM MissionStatus m " +
             "WHERE m.memberId =:memberId ")
@@ -24,6 +24,10 @@ public interface MissionStatusRepository extends JpaRepository<MissionStatus, Lo
     @Query("SELECT m.collection FROM MissionStatus m " +
             "WHERE m.memberId =:memberId ")
     Long countCollection(@Param("memberId") Long memberId);
+
+    @Query("SELECT m.postit FROM MissionStatus m " +
+            "WHERE m.memberId =:memberId ")
+    Long countPostit(@Param("memberId") Long memberId);
 
     Optional<MissionStatus> findByMemberId(@Param("memberId") Long memberId);
 }
