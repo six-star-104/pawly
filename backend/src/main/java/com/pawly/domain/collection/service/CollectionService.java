@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -62,13 +63,15 @@ public class CollectionService {
 
     @Transactional
     public void collectionAdd(Member member, Member friend) {
-        Optional<Collection> collectionOptional = collectionRepository.findByMemberId1AndMemberId2(member, friend);
+        if(!Objects.equals(member.getMemberId(), friend.getMemberId())) {
+            Optional<Collection> collectionOptional = collectionRepository.findByMemberId1AndMemberId2(member, friend);
 
-        if(collectionOptional.isEmpty()) {
-            Collection collection = new Collection(member, friend);
-            collectionRepository.save(collection);
+            if(collectionOptional.isEmpty()) {
+                Collection collection = new Collection(member, friend);
+                collectionRepository.save(collection);
 
-            collectionMissionService.collectionMission(member.getMemberId());
+                collectionMissionService.collectionMission(member.getMemberId());
+            }
         }
     }
 }
