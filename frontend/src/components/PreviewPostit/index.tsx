@@ -34,7 +34,10 @@ export const PreviewPostIt: React.FC<PreviewPostItProps> = ({
         {flag ? themeName : " "}
       </div>
       <div id="lockimg">
-        <NewLock width="36" height="36" fill={fontColor} // 여기서 원하는 색깔 동적으로 할당해주면 됨
+        <NewLock
+          width="36"
+          height="36"
+          fill={fontColor} // 여기서 원하는 색깔 동적으로 할당해주면 됨
         />
       </div>
     </div>
