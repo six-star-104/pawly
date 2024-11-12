@@ -21,13 +21,15 @@ const shadow = `rgba(0, 0, 0, 0.2)`;
 //   ${px}px ${px}px ${borderColor}
 // `;
 
+const fonts = ["Galmuri9", "PFStardust", "DGM"];
 // 최종 말풍선 스타일
 export const bubbleStyle = (
   textColor: string,
   borderColor: string,
   bgColor: string | null,
   bgImg: string | null,
-  isPreview: boolean | undefined
+  isPreview: boolean | undefined,
+  font: number
 ) => css`
   position: relative;
   display: inline-block;
@@ -36,11 +38,14 @@ export const bubbleStyle = (
   font-size: 16px;
   line-height: 1.3em;
   white-space: pre-wrap;
-
+  
+  font-family: ${fonts[font - 1]};
   // 이미지 있으면 배경이 이미지 되도록
-  ${bgImg
-    ? ` background-image: url(${bgImg}); background-position: center; background-repeat: repeat; background-size: contatin;`
-    : `  background-color: ${bgColor}; `}
+  ${
+    bgImg
+      ? ` background-image: url(${bgImg}); background-position: center; background-repeat: repeat; background-size: contatin;`
+      : `  background-color: ${bgColor}; `
+  }
 
   color: ${textColor};
   padding: ${4 * px}px;
