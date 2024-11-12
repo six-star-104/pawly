@@ -25,20 +25,9 @@ export const BtnContainer = css`
 export const HamBtnCss = css`
   display: flex;
   margin: 0.25rem;
-  background: none;
-  border: none;
+  // background: none;
+  // border: none;
   padding: 0;
-  cursor: pointer;
-  transition: transform 0.1s ease;
-
-  &:active {
-    transform: scale(0.95);
-  }
-`;
-
-export const userBtnCss = css`
-  display: flex;
-  border: 1px solid black;
   cursor: pointer;
   transition: transform 0.1s ease;
 
