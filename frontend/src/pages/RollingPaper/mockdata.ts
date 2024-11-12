@@ -34,3 +34,15 @@ export const data = {
   totalPage: 10,
   totalElements: 99,
 };
+
+export const sampleData = {
+  // 미리보기용 기본 셋팅 값들
+  themeId: 1,
+  content: "",
+  backgroundColor: "#000000",
+  image: "",
+  font: 1,
+  fontColor: "#FFFFFF",
+  borderColor: "#FFFFFF",
+  speechBubbleSize: 1,
+};
