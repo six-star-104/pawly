@@ -11,7 +11,7 @@ import { Hamberger } from "../Hamberger";
 import NavButton from "../../assets/icons/hamburgerBtn.png";
 import { logout } from "@/apis/userService";
 import { useNavigate } from "react-router-dom";
-import { useUserInfoStore } from "@/stores/mypageStore"; // 스토어 가져오기
+import  useUserInfoStore from "@/stores/userInfoStore"; // 스토어 가져오기
 import { getMyInfo } from "@/apis/myPageService"; // 사용자 정보 API 가져오기
 
 export const Main = () => {
@@ -26,8 +26,8 @@ export const Main = () => {
         const data = await getMyInfo();
         setUserInfo({
           isInitialized: true,
-          memberId: data.memberId,
-          username: data.name,
+          userId: data.memberId,
+          name: data.name,
           email: data.email,
           provider: data.provider,
           providerId: data.providerId,
