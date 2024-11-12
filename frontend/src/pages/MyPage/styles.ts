@@ -29,13 +29,13 @@ export const contents = css`
   align-items: center;
   width: 100%;
   max-width: 500px;
-  margin-bottom: 30%;
+  margin-bottom: 10%;
 `;
 
 export const MyInfo = css`
   display: inline-block;
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: bold;
   padding-bottom: 0.2rem;
   margin-top: 1.5rem;
@@ -56,7 +56,7 @@ export const InfoSection = css`
 
   div:first-of-type {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.5rem; /* 이미지와 텍스트 사이의 간격 설정 */
   }
 
@@ -66,23 +66,37 @@ export const InfoSection = css`
   }
 `;
 
+
+
+// 닉네임과 유저네임 각각의 스타일을 따로 정의
+export const NicknameStyle = css`
+  font-size: 1rem;
+  margin: 0;
+  white-space: nowrap; /* 한 줄로 고정 */
+  overflow: hidden; /* 넘치는 텍스트 숨김 */
+  text-overflow: ellipsis; /* 넘치는 텍스트에 '...' 추가 */
+  max-width: 110px; /* 닉네임 최대 너비 설정 */
+`;
+
+
+export const UsernameStyle = css`
+  font-size: 0.9rem;
+  margin: 0;
+  color: #333;
+  align-self: flex-start; /* 유저네임을 왼쪽에 고정 */
+`;
+
+// VerticalTextSection 스타일은 컨테이너 역할만 담당
 export const VerticalTextSection = css`
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 0.2rem; /* 닉네임과 유저네임 사이의 간격 설정 */
-
-  h3 {
-    font-size: 1.2rem;
-    margin: 0;
-  }
-
-  h4 {
-    font-size: 1rem;
-    margin: 0;
-    color: #333;
-  }
+  text-align: left; /* 텍스트를 왼쪽에 정렬 */
 `;
+
+
+
 
 export const StatsSection = css`
   display: flex;
@@ -107,38 +121,77 @@ export const StatsSection = css`
 `;
 
 export const CollectionSection = css`
-  padding: 1rem 0;
-  text-align: left;
+  position: relative;
+  padding: 0.5rem 0;
   font-size: 1rem;
-  line-height: 1.5;
   width: 90%;
-  gap: 0.5rem;
+  min-height: 160px;
+  text-align: center;
 
   h3 {
     font-weight: bold;
     margin-bottom: 0.5rem;
   }
 
+  .items-container-wrapper {
+    display: flex;
+    justify-content: center; /* 화살표와 아이템 사이 간격을 균등하게 */
+    align-items: center;
+    width: 90%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
   .items-container {
     display: flex;
-    justify-content: space-between;
+    gap: 1rem;
+    justify-content: center;
     align-items: center;
-    font-size: 1.2rem;
-    margin-top: 0.5rem;
+  }
 
-    .arrow {
-      font-size: 1.5rem;
-      cursor: pointer;
+  .arrow-left, .arrow-right {
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+  }
+
+  .arrow-left {
+    /* margin-right: 0rem; */
+  }
+
+  .arrow-right {
+    /* margin-left: 0.5rem; */
+  }
+
+  .arrow-left:active, .arrow-right:active {
+    transform: scale(0.9);
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    width: 80px;
+    height: 100px;
+    overflow: hidden;
+
+    img {
+      width: 50px;
+      height: 60px;
+      object-fit: contain;
     }
 
-    .item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.25rem;
+    p {
+      font-size: 0.9rem;
+      text-align: center;
+      height: 20px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 `;
+
 
 export const closeButtonStyle = css`
   width: 3rem;
@@ -292,4 +345,47 @@ export const modalHeaderStyle = css`
     font-size: 1.5rem;
     cursor: pointer;
   }
+`;
+
+export const ArrowContainer = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  
+  span {
+    font-size: 1rem;
+  }
+`;
+
+export const ArrowButton = css`
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+  &:active {
+    transform: scale(0.9);
+  }
+`;
+
+export const CollectionWrapper = css`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+`;
+
+export const CollectionContainer = css`
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  justify-content: center;
+`;
+
+export const CollectionItem = css`
+  text-align: center;
+  flex-shrink: 0;
 `;
