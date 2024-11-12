@@ -1,37 +1,55 @@
 /** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
-export const contentContainer = css`
+import { css, keyframes } from "@emotion/react";
+
+const shake = keyframes`
+  from {
+      opacity: 1;
+      transform: translateX(
+        3px
+      ); 
+    }
+    to {
+      opacity: 3;
+      transform: translateX(
+        -3px
+      );
+    }
+`;
+
+export const contentContainer = (isAlert: boolean) => css`
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
   width: 80vw;
+  p {
+    margin-bottom: 0;
+  }
   #textareacontainer {
     display: flex;
     justify-content: center;
     width: 90%;
     flex-direction: column;
+    text-align: center;
+    margin-bottom: 20px;
   }
   #content {
     height: 122px;
     width: 100%;
     position: relative;
     left: -4px;
+    margin-top: 15px;
     resize: none;
     overflow: hidden;
     line-height: 24px;
-  }
-  div #alert {
-    text-align: center;
-    color: red;
-  }
-  p {
-    margin-bottom: 0px;
-    margin-top: 8px;
-    text-align: center;
+    ${isAlert
+      ? css`
+          animation: ${shake} 0.1s 3;
+          -webkit-animation: ${shake} 0.1s 3;
+        `
+      : ""}
   }
 `;
-
 
 export const CreateButton = css`
   width: 100%;

@@ -5,7 +5,7 @@ export const searchUserByNickname = async (
   nickname: string
 ): Promise<UserSearchResponse["data"]> => {
   try {
-    // sessionStorage에서 토큰을 가져옵니다.
+    // localStorage에서 토큰을 가져옵니다.
     const token = localStorage.getItem("accessToken");
 
     // 토큰이 없는 경우 예외를 발생시킵니다.

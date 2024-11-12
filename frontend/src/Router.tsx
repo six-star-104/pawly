@@ -11,13 +11,14 @@ import { RollingPaper } from "@/pages/RollingPaper";
 import { RollingPaperList } from "./pages/RollingPaperList";
 import { Letter } from "@/pages/Letter";
 import { EasterEgg } from "@/pages/EasterEgg";
+import { Admin } from "@/pages/Admin";
 
 function Router() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/tmpsignup" element={<SignUp />} />
-
+      <Route path="/admin" element={<Admin />} />
       <Route element={<PrivateRoute />}>
         <Route path="/" element={<Main />} />
         <Route path="/mypage" element={<MyPage />} />
