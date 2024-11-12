@@ -26,7 +26,6 @@ import {
   ArrowButton,
 } from './styles';
 import PixelContainer from '../../components/PixelContainer';
-import PixelPuppy from '../../assets/icons/PixelPuppy.png';
 import NavButton from '../../assets/icons/NavButton.png';
 import BackButton from '../../assets/icons/BackButton.png';
 import { Button } from '@/components/Button';
@@ -156,7 +155,7 @@ export const MyPage = () => {
 
               <div css={StatsSection}>
                 <div>
-                  <img src="https://unpkg.com/pixelarticons@1.8.1/svg/reciept.svg" alt="롤링페이퍼 아이콘" width="20" height="20" />
+                  <img src="https://unpkg.com/pixelarticons@1.8.1/svg/script-text.svg" alt="롤링페이퍼 아이콘" width="20" height="20" />
                   작성한 롤링페이퍼: n개
                 </div>
                 <div>
@@ -164,7 +163,7 @@ export const MyPage = () => {
                   달성한 도전과제: {completedChallengesCount}개
                 </div>
                 <div>
-                  <img src={PixelPuppy} alt="동물 도감 아이콘" width={20} height={20} />
+                  <img src="https://unpkg.com/pixelarticons@1.8.1/svg/mood-happy.svg" alt="도감 아이콘" width="20" height="20" />
                   저장된 동물 도감: {totalCollections}개
                 </div>
               </div>

@@ -29,13 +29,13 @@ export const contents = css`
   align-items: center;
   width: 100%;
   max-width: 500px;
-  margin-bottom: 30%;
+  margin-bottom: 10%;
 `;
 
 export const MyInfo = css`
   display: inline-block;
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: bold;
   padding-bottom: 0.2rem;
   margin-top: 1.5rem;
@@ -144,23 +144,23 @@ export const CollectionSection = css`
 
   .items-container {
     display: flex;
-    gap: 1.5rem;
+    gap: 1rem;
     justify-content: center;
     align-items: center;
   }
 
   .arrow-left, .arrow-right {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     cursor: pointer;
     transition: transform 0.1s ease;
   }
 
   .arrow-left {
-    margin-right: 0.5rem;
+    /* margin-right: 0rem; */
   }
 
   .arrow-right {
-    margin-left: 0.5rem;
+    /* margin-left: 0.5rem; */
   }
 
   .arrow-left:active, .arrow-right:active {
@@ -177,7 +177,7 @@ export const CollectionSection = css`
     overflow: hidden;
 
     img {
-      width: 60px;
+      width: 50px;
       height: 60px;
       object-fit: contain;
     }
@@ -185,17 +185,12 @@ export const CollectionSection = css`
     p {
       font-size: 0.9rem;
       text-align: center;
-      height: 25px;
+      height: 20px;
       overflow: hidden;
       text-overflow: ellipsis;
     }
   }
 `;
-
-
-
-
-
 
 
 export const closeButtonStyle = css`
