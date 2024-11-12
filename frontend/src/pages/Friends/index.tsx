@@ -497,7 +497,7 @@ export const Friends = () => {
             ) : (
               <p>회원 정보를 불러오는 중입니다...</p>
             )}
-            <button css={sendButtonStyle} onClick={closeDetailModal}>닫기</button>
+            <button className="nes-btn is-success" onClick={closeDetailModal}>닫기</button>
           </div>
         </div>
       </Modal>
