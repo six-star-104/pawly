@@ -10,13 +10,12 @@ import PostItForm from "@/components/PostItForm";
 import { useParams } from "react-router-dom";
 import { IPostIt } from "@/types/rollingPaperTypes";
 import useFetchRollingpaper from "@/hooks/useFetchRollingpaper";
-import { useRollingpaperStore } from "@/stores/rollingpaperStore";
+import { sampleData } from "./mockdata";
 
 // 특정 하나의 롤링 페이퍼만 볼 수 있는 페이지
 export const RollingPaper = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { rollingpaperid } = useParams();
-  const { isPostItChanged } = useRollingpaperStore();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -24,24 +23,14 @@ export const RollingPaper = () => {
   // 페이지네이션
   const [pageNum, setPageNum] = useState(0);
 
-  const sampleData = {
-    // 미리보기라서 적당히 포스트잇 id 없음
-    // 얘 둘은 가변으로 받아오기
-    // memberId: Number(signUpState),?
-    // memberNickname: nickname,
-
-    // 아래애들은 기본 셋팅 값들
-    themeId: 1,
-    content: "",
-    backgroundColor: "#000000",
-    image: "",
-    font: 1,
-    fontColor: "#FFFFFF",
-    borderColor: "#FFFFFF",
-    speechBubbleSize: 1,
-  };
-  const { singleRollingpaper, fetchRollingPaper, postits } =
-    useFetchRollingpaper();
+  const {
+    singleRollingpaper,
+    fetchRollingPaper,
+    postits,
+    createPostit,
+    editPostit,
+    deletePostit,
+  } = useFetchRollingpaper();
 
   const handleObserver = async (entries: IntersectionObserverEntry[]) => {
     const target = entries[0];
@@ -53,31 +42,27 @@ export const RollingPaper = () => {
   };
 
   useEffect(() => {
+    console.log("옵저버 시작");
     const observer = new IntersectionObserver(handleObserver, {
-      threshold: 0,
+      threshold: 1,
     });
     const observerTarget = document.getElementById("observer");
     if (observerTarget) {
-      // 첫 로딩때 바로 다음페이지로 안가게
-      setTimeout(() => observer.observe(observerTarget), 50);
+      // 연속 호출 안되게
+      setTimeout(() => observer.observe(observerTarget), 100);
     }
     return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
+    console.log("이펙트 시작");
+    // 페이지 넘버 변경사항 생기면 다시 로딩
     if (!isLoading) {
-      setIsLoading(true);
-      fetchRollingPaper(String(rollingpaperid), pageNum, 10)
+      fetchRollingPaper(String(rollingpaperid), pageNum, 14)
         .then(() => setIsLoading(false))
         .catch(() => setIsLoading(false));
     }
-  }, [pageNum, isPostItChanged]);
-
-  // useEffect(() => {
-  //   if (isLoading) return;
-  //   fetchRollingPaper(String(rollingpaperid), pageNum, 10);
-  //   setIsLoading(false);
-  // }, [isPostItChanged]);
+  }, [pageNum]);
 
   return (
     <div css={container}>
@@ -96,6 +81,8 @@ export const RollingPaper = () => {
             key={index}
             props={postit}
             isPreview={false}
+            deletePostit={deletePostit}
+            editPostit={editPostit}
           />
         ))}
         <div id="observer" style={{ height: "10px" }}></div>
@@ -120,6 +107,7 @@ export const RollingPaper = () => {
           onClose={() => setIsOpen(false)}
           isCreate={true}
           rollingPaperId={rollingpaperid}
+          createPostit={createPostit}
         />
       </Modal>
     </div>

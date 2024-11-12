@@ -5,25 +5,30 @@ import { useState } from "react";
 // import SelectOptions from "../SelectOptions";
 import { IPostIt } from "@/types/rollingPaperTypes";
 import { FormProps } from "./PostItForm.type";
-import { useCreatePostit } from "@/hooks/useCreatePostit";
-import { useEditPostit } from "@/hooks/useEditPostit";
+// import { useCreatePostit } from "@/hooks/useCreatePostit";
+// import { useEditPostit } from "@/hooks/useEditPostit";
 import ArrowSelectContainer from "../ArrowSelectContainer";
 import { useRollingpaperStore } from "@/stores/rollingpaperStore";
 import { useFetchThemes } from "@/hooks/useFetchTheme";
+// import useFetchRollingpaper from "@/hooks/useFetchRollingpaper";
 const PostItForm: React.FC<FormProps> = ({
   props,
   onClose,
   isCreate,
   rollingPaperId,
+  createPostit,
+  editPostit,
 }) => {
   const [isMaxLength, setIsMaxLength] = useState(false);
-  const [noTextAlert, setNoTextAlert] = useState(false)
+  const [noTextAlert, setNoTextAlert] = useState(false);
 
   const [previewPostIt, setPreviewPostIt] = useState<IPostIt>(props);
   const { ableTheme, setIsAlert } = useRollingpaperStore();
-  const { createPostit } = useCreatePostit();
-  const { editPostit } = useEditPostit();
+  // const { createPostit } = useCreatePostit();
+  // const { editPostit } = useEditPostit();
   const { themes } = useFetchThemes();
+
+  // const { createPostit, editPostit } = useFetchRollingpaper();
 
   // 내용 입력칸 4줄 이상시 경고 + 글자 제한
   const handleChangeOptionValues = (
@@ -41,29 +46,44 @@ const PostItForm: React.FC<FormProps> = ({
   };
 
   const submitPostIt = () => {
-    if (!ableTheme) {
-      // 선택 불가능한 테마면 경고
-      setIsAlert(true);
-      setTimeout(() => setIsAlert(false), 1000);
-      return;
-    }
     if (!previewPostIt.content) {
       // 텍스트 내용 없을 경우 경고
       setNoTextAlert(true);
       setTimeout(() => setNoTextAlert(false), 1000);
       return;
     }
+    if (!ableTheme) {
+      // 선택 불가능한 테마면 경고
+      setIsAlert(true);
+      setTimeout(() => setIsAlert(false), 1000);
+      return;
+    }
 
     if (isCreate) {
       // 생성
-      createPostit(previewPostIt, rollingPaperId!);
+
+      try {
+        createPostit && createPostit(previewPostIt, rollingPaperId!);
+      } catch {
+        ("");
+      } finally {
+        console.log("화면단 생성완료");
+        onClose();
+      }
       // setIsPostItChanged(true);
     } else {
       // 수정
-      editPostit(previewPostIt);
+      try {
+        editPostit && editPostit(previewPostIt);
+      } catch {
+        ("");
+      } finally {
+        console.log("화면단 수정완료");
+        onClose();
+      }
+
       // setIsPostItChanged(true);
     }
-    onClose();
   };
 
   return (

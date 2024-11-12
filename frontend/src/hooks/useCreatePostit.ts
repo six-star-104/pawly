@@ -1,28 +1,28 @@
-import { useState } from "react";
-import { axiosInstance } from "../apis/axiosInstance";
-import { IPostIt } from "@/types/rollingPaperTypes";
-import { useRollingpaperStore } from "@/stores/rollingpaperStore";
-export const useCreatePostit = () => {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const {setIsPostItChanged} = useRollingpaperStore()
+// import { useState } from "react";
+// import { axiosInstance } from "../apis/axiosInstance";
+// import { IPostIt } from "@/types/rollingPaperTypes";
+// import { useRollingpaperStore } from "@/stores/rollingpaperStore";
+// export const useCreatePostit = () => {
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState<string | null>(null);
+//   const {setIsPostItChanged} = useRollingpaperStore()
 
-  const createPostit = async (postitData: IPostIt, rollingPaperId: string) => {
-    setLoading(true);
-    try {
-      await axiosInstance.post(`/postit`, {
-        ...postitData,
-        rollingPaperId: rollingPaperId,
-      });
-      setLoading(false);
-      setError(null);
-      setIsPostItChanged(true);
-    } catch (err) {
-      setLoading(false);
-      setError("포스트잇 생성 중 오류가 발생했습니다.");
-      console.error("포스트잇 생성 오류:", err);
-    }
-  };
+//   const createPostit = async (postitData: IPostIt, rollingPaperId: string) => {
+//     setLoading(true);
+//     try {
+//       await axiosInstance.post(`/postit`, {
+//         ...postitData,
+//         rollingPaperId: rollingPaperId,
+//       });
+//       setLoading(false);
+//       setError(null);
+//       setIsPostItChanged(true);
+//     } catch (err) {
+//       setLoading(false);
+//       setError("포스트잇 생성 중 오류가 발생했습니다.");
+//       console.error("포스트잇 생성 오류:", err);
+//     }
+//   };
 
-  return { createPostit, loading, error };
-};
+//   return { createPostit, loading, error };
+// };

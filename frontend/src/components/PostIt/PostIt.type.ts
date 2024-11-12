@@ -7,4 +7,6 @@ export type PostItProps = {
   // nickname:string;
   props: IPostIt;
   isPreview?: boolean;
+  deletePostit: (id: number) => Promise<void>;
+  editPostit: (data: IPostIt) => Promise<void>;
 };
