@@ -1,7 +1,6 @@
 import axios from "axios";
 import { axiosInstance, flaskAxiosInstance } from "./axiosInstance";
 import { UserInfoType, LoginResponseType, SignUpType } from "@/types/UserTypes";
-import { setToken, removeToken } from "@/stores/tokenStorage";
 export const kakaoLogin = async () => {
   try {
     const response = await axios.get(`oauth/login/kakao`);
@@ -53,8 +52,7 @@ export const getOAuthAccessToken = async (
     let userInfo: UserInfoType;
     if (accessToken) {
       userInfo = await getOAuthInformation(accessToken);
-      // localStorage.setItem("accessToken", accessToken);
-      await setToken(accessToken);
+      localStorage.setItem("accessToken", accessToken);
     } else {
       console.error("No access Token received from server");
       throw new Error("No access Token received from server");
@@ -127,7 +125,6 @@ export const getUserInfo = async (): Promise<UserInfoType> => {
 export const logout = async () => {
   try {
     await axiosInstance.post(`member/logout`, "");
-    await removeToken();
   } catch (error) {
     console.error("logout failed: ", error);
     throw error;

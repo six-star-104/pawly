@@ -2,6 +2,9 @@ import { useEffect } from "react";
 import Router from "@/Router";
 import MobileLayout from "@/styles/MobileLayout";
 import "./firebase-messaging-sw.js";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 import { getEasterEggs } from "@/apis/easterEggService";
 import { getMyInfo } from "@/apis/myPageService";
 import useEasterEggStore from "@/stores/easterEggStore";
@@ -55,11 +58,15 @@ function App() {
   }, [isUserInfoInitialized, setUserInfo]);
 
   return (
-    <MobileLayout>
-      {/* <TransitionContent> */}
-      <Router />
-      {/* </TransitionContent> */}
-    </MobileLayout>
+    <>
+      <QueryClientProvider client={queryClient}>
+        <MobileLayout>
+          {/* <TransitionContent> */}
+          <Router />
+          {/* </TransitionContent> */}
+        </MobileLayout>
+      </QueryClientProvider>
+    </>
   );
 }
 

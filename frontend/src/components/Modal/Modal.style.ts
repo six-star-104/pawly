@@ -12,7 +12,7 @@ const fadeOut = keyframes`
 `;
 
 const modalOverlayStyle = (isOpen: boolean) => css`
-  display: flex;
+  display: ${isOpen ? "flex" : "none"};
   justify-content: center;
   align-items: center;
   position: fixed;
@@ -21,7 +21,6 @@ const modalOverlayStyle = (isOpen: boolean) => css`
   bottom: 0;
   left: 0;
   z-index: 2000;
-
 
   background-color: rgba(0, 0, 0, 0.5);
   animation: ${isOpen ? fadeIn : fadeOut} 0.2s
