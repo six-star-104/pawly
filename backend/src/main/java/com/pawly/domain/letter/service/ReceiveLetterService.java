@@ -20,7 +20,6 @@ import java.util.Optional;
 
 import com.pawly.global.exception.ErrorCode;
 import com.pawly.global.response.ApiResponse;
-import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -100,6 +99,10 @@ public class ReceiveLetterService {
         Letter l = letter.get();
 
         if (!m.equals(l.getRecipient())) return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
+
+        // 이미 신고 완료
+        Optional<Report> optionalReport = reportRepository.findByMemberAndCategoryAndDetailId(m, Category.LETTER, receiveLetterId);
+        if(optionalReport.isPresent()) return ApiResponse.createError(ErrorCode.ALREADY_REPORT);
 
         reportRepository.save(Report.builder()
                         .member(m)
