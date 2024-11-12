@@ -11,8 +11,7 @@ const useQuery = () => {
 const PrivateRoute = () => {
   const query = useQuery();
   const [isLoading, setIsLoading] = useState(true);
-  const { isLogin, setLogin, setLogout, accessToken, setAccessToken } =
-    useLoginStore();
+  const { isLogin, setLogin, setLogout } = useLoginStore();
   const navigateTo = useNavigate();
   const location = useLocation();
 
@@ -25,12 +24,12 @@ const PrivateRoute = () => {
           try {
             const response = await getOAuthAccessToken(queryCode);
             if (response?.accessToken) {
-              setAccessToken(response.accessToken);
               setLogin();
               navigateTo("/", { replace: true });
               setIsLoading(false);
               return;
             } else {
+              // OAuth 토큰 발급은 성공했지만 accessToken이 없는 경우
               console.error("OAuth token response missing accessToken");
               setLogout();
             }
@@ -41,7 +40,9 @@ const PrivateRoute = () => {
         }
 
         // 2. 스토어에서 accessToken 확인
-        if (accessToken) {
+        const storedToken = localStorage.getItem("accessToken");
+
+        if (storedToken) {
           setLogin();
           setIsLoading(false);
           return;
@@ -51,7 +52,7 @@ const PrivateRoute = () => {
         try {
           const newAccessToken = await getRefreshToken();
           if (newAccessToken) {
-            setAccessToken(newAccessToken); // 스토어에 accessToken 저장
+            localStorage.setItem("accessToken", newAccessToken);
             setLogin();
             setIsLoading(false);
             return;

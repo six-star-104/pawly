@@ -10,16 +10,23 @@ import { getMyInfo } from "@/apis/myPageService";
 import useEasterEggStore from "@/stores/easterEggStore";
 import { useUserInfoStore } from "@/stores/mypageStore";
 
+import { useLocation } from "react-router-dom";
+import GlobalStyles from "./styles/GlobalStyles.js";
+
 function App() {
-  const { setEasterEggs, isInitialized: isEasterEggInitialized } = useEasterEggStore();
-  const { setUserInfo, isInitialized: isUserInfoInitialized } = useUserInfoStore();
+  const location = useLocation();
+
+  const { setEasterEggs, isInitialized: isEasterEggInitialized } =
+    useEasterEggStore();
+  const { setUserInfo, isInitialized: isUserInfoInitialized } =
+    useUserInfoStore();
 
   useEffect(() => {
     const fetchEasterEggs = async () => {
       try {
         const response = await getEasterEggs();
         if (response.status === "success") {
-          setEasterEggs(response.data); 
+          setEasterEggs(response.data);
         }
       } catch (error) {
         console.error("초기 이스터에그 데이터 로드 실패:", error);
@@ -60,11 +67,14 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <MobileLayout>
-          {/* <TransitionContent> */}
+        {location.pathname !== "/admin" ? (
+          <MobileLayout>
+            <GlobalStyles />
+            <Router />
+          </MobileLayout>
+        ) : (
           <Router />
-          {/* </TransitionContent> */}
-        </MobileLayout>
+        )}
       </QueryClientProvider>
     </>
   );
