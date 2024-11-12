@@ -4,7 +4,7 @@ import { PreviewPostItProps } from "./PreviewPostit.type";
 // import { PixelLock } from "@/assets/icons/lock-padlock-privacy-svgrepo-com.svg";
 // import Lock from '@/assets/icons/lock-padlock-privacy-svgrepo-com.svg'
 // import NewLock from '@/assets/icons/lock_svg.svg'
-import NewLock from "@/assets/icons/nnnn.svg?react";
+import NewLock from "@/assets/icons/nnnn.svg";
 
 import { useRollingpaperStore } from "@/stores/rollingpaperStore";
 export const PreviewPostIt: React.FC<PreviewPostItProps> = ({
