@@ -78,9 +78,14 @@ export const Main = () => {
     navigateTo("/login");
   };
 
+  const adminMove = () => {
+    navigateTo("/admin")
+  }
+
   return (
     <div css={container}>
       <button onClick={handleLogout}>로그아웃</button>
+      <button onClick={adminMove}>Admin</button>
       <div css={BtnContainer}>
         <button css={userBtnCss} onClick={userBtn}>
           <img
