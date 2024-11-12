@@ -31,7 +31,7 @@ import BackButton from '../../assets/icons/BackButton.png';
 import { Button } from '@/components/Button';
 import Modal from '@/components/Modal';
 import { Hamberger } from '../Hamberger';
-import { useUserInfoStore } from '@/stores/mypageStore';
+import  useUserInfoStore  from '@/stores/userInfoStore';
 import useEasterEggStore from '@/stores/easterEggStore';
 import { useCollectionStore } from '@/stores/collectionStore';
 import { getMyInfo, updateNickname } from '@/apis/myPageService';
@@ -43,7 +43,7 @@ export const MyPage = () => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const navigate = useNavigate();
-  const { username, memberId, nickname, assets, isInitialized, setUserInfo } = useUserInfoStore();
+  const { name, userId, nickname, assets, isInitialized, setUserInfo } = useUserInfoStore();
   const { completedChallengesCount } = useEasterEggStore();
   const { collections, fetchCollections, totalCollections } = useCollectionStore();
 
@@ -56,8 +56,8 @@ export const MyPage = () => {
         const data = await getMyInfo();
         setUserInfo({
           isInitialized: true,
-          memberId: data.memberId,
-          username: data.name,
+          userId: data.memberId,
+          name: data.name,
           email: data.email,
           provider: data.provider,
           providerId: data.providerId,
@@ -74,10 +74,10 @@ export const MyPage = () => {
       fetchUserInfo();
     }
 
-    if (memberId) {
-      fetchCollections(Number(memberId), currentPage, itemsPerPage);
+    if (userId) {
+      fetchCollections(Number(userId), currentPage, itemsPerPage);
     }
-  }, [isInitialized, setUserInfo, memberId, currentPage, fetchCollections]);
+  }, [isInitialized, setUserInfo, userId, currentPage, fetchCollections]);
 
   const close = () => {
     navigate(-1);
@@ -142,7 +142,7 @@ export const MyPage = () => {
                   <img src={assets} width={50} height={50} alt="User Asset" />
                   <div css={VerticalTextSection}>
                     <h3 css={NicknameStyle}>{nickname}</h3>
-                    <h4 css={UsernameStyle}>{username}</h4>
+                    <h4 css={UsernameStyle}>{name}</h4>
                   </div>
                 </div>
 

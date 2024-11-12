@@ -14,6 +14,8 @@ const useUserInfoStore = create<UserInfoStore>((set) => ({
   providerId: "",
   nickname: "",
   assets: "",
+  birth: "", 
+  collections: [], 
   setUserInfo: (userInfo) => set((state) => ({ ...state, ...userInfo })),
 }));
 

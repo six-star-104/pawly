@@ -33,7 +33,7 @@ export const getFriendRequestsReceived = async (): Promise<FriendRequestResponse
     }
 
     return response.data;
-  } catch (error: any) {
+  } catch (error: any) { 
     // 네트워크 오류나 서버 오류와 같은 일반 오류 구분
     if (error.response) {
       console.error("서버 오류로 인해 친구 요청 받은 목록 조회 실패:", error.response.data.message);

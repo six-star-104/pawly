@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useUserInfoStore } from '@/stores/mypageStore';
+// import { useUserInfoStore } from '@/stores/mypageStore';
 import { Hamberger } from '../Hamberger';
 import NavButton from '../../assets/icons/NavButton.png';
 import PixelPuppy from '../../assets/icons/PixelPuppy.png';
@@ -40,6 +40,7 @@ import {
 import { searchUserByNickname } from '@/apis/userSearchService';
 import { postFriendRequest, getFriendRequestsReceived, getFriendRequestsSent, respondToFriendRequest, getFriendList, deleteFriend, getMemberInfo } from '@/apis/friendsService';
 
+import useUserInfoStore from '@/stores/userInfoStore';
 interface Member {
   nickname: string;
   name?: string;
@@ -50,7 +51,7 @@ interface Member {
 }
 
 export const Friends = () => {
-  const myMemberId = Number(useUserInfoStore().memberId); 
+  const myMemberId = Number(useUserInfoStore().userId); 
   const [mypageVisible, setMyPageVisible] = useState(false);
   const [activeTab, setActiveTab] = useState<"friends" | "requests">("friends");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -180,7 +181,7 @@ export const Friends = () => {
       } else {
         openAlertModal("친구 요청에 실패했습니다.");
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("친구 요청 오류:", error);
       openAlertModal("친구 요청 중 오류가 발생했습니다.");
     } finally {
@@ -200,7 +201,7 @@ export const Friends = () => {
       } else {
         openAlertModal("친구 삭제에 실패했습니다.");
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("친구 삭제 오류:", error);
       openAlertModal("친구 삭제 중 오류가 발생했습니다.");
     } finally {
@@ -225,7 +226,7 @@ export const Friends = () => {
       } else {
         openAlertModal("요청 처리에 실패했습니다. 다시 시도해주세요.");
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("친구 요청 처리 오류:", error);
       openAlertModal("친구 요청 처리 중 오류가 발생했습니다.");
     } finally {
