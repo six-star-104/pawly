@@ -1,14 +1,11 @@
 package com.pawly.domain.postIt.service;
 
 import com.pawly.domain.collection.service.CollectionService;
+import com.pawly.domain.postIt.dto.*;
 import com.pawly.domain.report.repository.ReportRepository;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.repository.MemberRepository;
 import com.pawly.domain.missionStatus.service.PostitMissionService;
-import com.pawly.domain.postIt.dto.PostItCreateDto;
-import com.pawly.domain.postIt.dto.PostItReadDto;
-import com.pawly.domain.postIt.dto.PostItUpdateDto;
-import com.pawly.domain.postIt.dto.PostReportCreateDto;
 import com.pawly.domain.postIt.entity.PostIt;
 import com.pawly.domain.postIt.enums.Status;
 import com.pawly.domain.postIt.repository.PostItRepository;
@@ -56,7 +53,7 @@ public class PostItService {
         Optional<Theme> theme = themeRepository.findById(dto.getThemeId());
         if (theme.isEmpty()) return ApiResponse.createError(ErrorCode.THEME_NOT_FOUND);
 
-        postItRepository.save(dto.toEntity(member, r, theme.get()));
+        PostIt postIt = postItRepository.save(dto.toEntity(member, r, theme.get()));
 
         // 도감 저장
         if(!Objects.equals(member.getMemberId(), r.getMember().getMemberId())) collectionService.collectionAdd(member, r.getMember());
@@ -68,7 +65,7 @@ public class PostItService {
         // 도전과제
         postitMissionService.postitMission(member.getMemberId());
 
-        return ApiResponse.createSuccessWithNoContent("포스트잇 생성 성공");
+        return ApiResponse.createSuccess(PostItCreatResponseDto.builder().postItId(postIt.getPostId()).build(), "포스트잇 생성 성공");
     }
 
     @Transactional
