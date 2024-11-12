@@ -1,3 +1,5 @@
+// 스타일 정의 부분 (styles.js)
+
 import { css } from '@emotion/react';
 
 export const BackBtnContainer = css`
@@ -60,26 +62,47 @@ export const PixelContainerWrapper = css`
   align-items: center;
   height: 100vh;
   width: 100%;
+  position: relative;
+`;
+
+export const Container = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 65vh;
+  width: 90%;
+  padding: 1rem;
+  box-shadow: 4px 0 0 0 black, -4px 0 0 0 black, 0 4px 0 0 black, 0 -4px 0 0 black;
+  box-sizing: border-box;
+  margin: auto; 
 `;
 
 export const IconGrid = css`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  padding: 1rem 0;
+  grid-template-columns: repeat(3, minmax(80px, 1fr));
+  grid-template-rows: repeat(3, auto);
+  gap: 2rem;
   justify-items: center;
-  margin-left: 0.8rem;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+  box-sizing: border-box;
+  place-items: center;
+  min-height: 300px;
 `;
 
 export const IconItem = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   text-align: center;
-  padding: 1rem;
+  padding: 0.5rem;
   img {
-    margin-bottom: 0.1rem;
+    margin-bottom: 0.5rem;
+    max-width: 60px;
+    height: auto;
   }
 `;
 
@@ -87,14 +110,20 @@ export const ArrowContainer = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 0;
+  padding: 0.5rem 0;
   width: 100%;
+  position: absolute;
+  bottom: 0;
+  
+  span {
+    font-size: 1rem;
+  }
 `;
 
 export const ArrowButton = css`
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1rem;
   cursor: pointer;
   padding: 0.5rem;
   transition: transform 0.1s ease;
@@ -105,12 +134,14 @@ export const ArrowButton = css`
 `;
 
 export const headerStyle = css`
-position: absolute;
-top: 4rem;
-left: 30%;
-transform: translateX(-50%);
-font-size: 1.5rem;
-font-weight: bold;
-color: #333;
-text-align: center;
+  position: absolute;
+  top: 10%; 
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  white-space: nowrap;
+  overflow: visible;
 `;

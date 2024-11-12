@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { axiosInstance } from "../apis/axiosInstance";
-
+import { useRollingpaperStore } from "@/stores/rollingpaperStore";
 export const useCreateRollingpaper = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  const {setIsRollingpaperChanged} = useRollingpaperStore()
   const createRollingpaper = async (
     title: string,
     lat: number,
@@ -19,6 +19,7 @@ export const useCreateRollingpaper = () => {
       });
       setLoading(false);
       setError(null);
+      setIsRollingpaperChanged(true)
     } catch (err) {
       setLoading(false);
       setError("롤링페이퍼 생성 중 오류가 발생했습니다.");

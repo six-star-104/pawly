@@ -4,12 +4,11 @@ import {
   container,
   BtnContainer,
   HamBtnCss,
-  userBtnCss,
   slidePanelStyle,
   panelContentStyle,
 } from "./styles";
 import { Hamberger } from "../Hamberger";
-import NavButton from "../../assets/icons/NavButton.png";
+import NavButton from "../../assets/icons/hamburgerBtn.png";
 import { logout } from "@/apis/userService";
 import { useNavigate } from "react-router-dom";
 import { useUserInfoStore } from "@/stores/mypageStore"; // 스토어 가져오기
@@ -59,9 +58,9 @@ export const Main = () => {
     }
   }, [isInitialized, setUserInfo]);
 
-  const userBtn = () => {
-    console.log("유저페이지 클릭");
-  };
+  // const userBtn = () => {
+  //   console.log("유저페이지 클릭");
+  // };
 
   const Hambtn = () => {
     console.log("햄버거 클릭");
@@ -82,16 +81,16 @@ export const Main = () => {
     <div css={container}>
       <button onClick={handleLogout}>로그아웃</button>
       <div css={BtnContainer}>
-        <button css={userBtnCss} onClick={userBtn}>
+        {/* <button css={userBtnCss} onClick={userBtn}>
           <img
             src="https://unpkg.com/pixelarticons@1.8.1/svg/user.svg"
             alt="유저 버튼"
             width="30"
             height="30"
           />
-        </button>
+        </button> */}
 
-        <button css={HamBtnCss} onClick={Hambtn}>
+        <button css={HamBtnCss} onClick={Hambtn} className="nes-btn">
           <img src={NavButton} alt="햄버거 버튼" width={40} />
         </button>
       </div>

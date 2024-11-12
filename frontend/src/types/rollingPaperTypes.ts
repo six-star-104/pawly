@@ -1,14 +1,12 @@
 // 테마 내용
 export interface ITheme {
-  backgroundColor:string;
-  fontColor: string;
-  borderColor:string;
-  image: string;
+  theme: number;
   themeName: string;
-  base: boolean;
-  status: boolean;
+  background: string;
+  fontColor: string;
+  borderColor: string;
+  flag: boolean;
 }
-
 // 상세 조회 시 하나의 포스트 잇
 export interface IPostIt {
   postItId?: number;
@@ -37,14 +35,14 @@ export interface IPostIt {
 
 // 롤링페이퍼 상세 조회
 export interface IRollingPaper {
-  ownerMemberId: number;
-  ownerMemberNickname: string;
-  rollingPaperTitle: string;
-  content: IPostIt[];
-  pageNumber: number;
-  pageSize: number;
-  totalPage: number;
-  totalElements: number;
+  ownerMemberId?: number;
+  ownerMemberNickname?: string;
+  rollingPaperTitle?: string;
+  content?: IPostIt[];
+  pageNumber?: number;
+  pageSize?: number;
+  totalPage?: number;
+  totalElements?: number;
 }
 
 // 롤링페이퍼 전체 조회

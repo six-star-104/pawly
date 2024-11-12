@@ -157,9 +157,9 @@ export const modalOverlayStyle = css`
 `;
 
 export const modalContentStyle = css`
-  background: #ecf5ff;
+  background: #d3e6ff;
   border-radius: 10px;
-  padding: 20px;
+  padding: 50px;
   width: 70%;
   max-width: 500px;
   height: 50vh;
@@ -167,6 +167,7 @@ export const modalContentStyle = css`
   display: flex;
   flex-direction: column;
   align-items: center;
+  
 `;
 
 export const modalHeaderStyle = css`
