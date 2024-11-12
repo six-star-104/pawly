@@ -12,7 +12,7 @@ const fadeOut = keyframes`
 `;
 
 const modalOverlayStyle = (isOpen: boolean) => css`
-  display: flex;
+  display: ${isOpen ? "flex" : "none"};
   justify-content: center;
   align-items: center;
   position: fixed;

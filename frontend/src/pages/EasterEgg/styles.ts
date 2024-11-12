@@ -67,7 +67,7 @@ export const panelContentStyle = css`
 
 export const challengeWrapper = css`
   width: 90%;
-  margin-top: 40%;
+  margin-top: 20%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -220,7 +220,7 @@ export const warningIconStyle = css`
 export const progressContainer = css`
   width: 85%;
   height: 9vh;
-  margin: 2rem auto;
+  margin: 1rem auto;
   display: flex;
   flex-direction: column;
   align-items: center;

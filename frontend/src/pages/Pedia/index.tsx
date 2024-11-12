@@ -1,15 +1,10 @@
 /** @jsxImportSource @emotion/react */
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import NavButton from '../../assets/icons/NavButton.png';
-import BackButton from '../../assets/icons/BackButton.png';
-import PixelPuppy from '@/assets/icons/PixelPuppy.png';
-import Puppy2 from '@/assets/icons/Puppy2.png';
-import Cat from '@/assets/icons/Cat.png';
-import Wolf from '@/assets/icons/Wolf.png';
-import PixelContainer from '@/components/PixelContainer';
-import { pediaIcon } from '@/types/pediaTypes';
-
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import NavButton from "../../assets/icons/NavButton.png";
+import BackButton from "../../assets/icons/BackButton.png";
+import { useUserInfoStore } from "@/stores/mypageStore";
+import { useCollectionStore } from "@/stores/collectionStore";
 import { 
   BackBtnContainer,
   HamBtnContainer,
@@ -18,37 +13,43 @@ import {
   slidePanelStyle,
   panelContentStyle,
   PixelContainerWrapper,
+  Container,
   IconGrid,
   IconItem,
   ArrowContainer,
   ArrowButton,
-  headerStyle
-} from './styles';
-import { Hamberger } from '../Hamberger';
+  headerStyle,
+} from "./styles";
+import { Hamberger } from "../Hamberger";
 
 export const Pedia = () => {
   const [mypageVisible, setMyPageVisible] = useState(false);
-  const [icons, setIcons] = useState<pediaIcon[]>([]);
-  const [username, setUsername] = useState("사용자"); // 로그인한 사용자 이름 설정
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const { nickname, memberId } = useUserInfoStore();
+  const { collections, fetchCollections, totalCollections } = useCollectionStore();
 
   const navigate = useNavigate();
+  const itemsPerPage = 9;
+  const totalPages = Math.ceil(totalCollections / itemsPerPage);
 
-  // 임시 사용자 이름 설정 및 아이콘 데이터 설정
   useEffect(() => {
-    // 사용자 이름 설정
-    setUsername("홍길동"); // 임시 사용자 이름 설정, 실제로는 API 호출로 대체 예정
+    if (memberId) {
+      fetchCollections(Number(memberId), currentPage, itemsPerPage);
+    }
+  }, [memberId, currentPage, fetchCollections]);
 
-    // 임시 아이콘 데이터
-    const mockIcons: pediaIcon[] = [
-      { imageUrl: PixelPuppy, label: '누구개' },
-      { imageUrl: Cat, label: '누구세요' },
-      { imageUrl: Puppy2, label: '친구의친' },
-      { imageUrl: Wolf, label: '누구개개' },
-      { imageUrl: Cat, label: '고양친구' },
-      { imageUrl: PixelPuppy, label: '강한친구' },
-    ];
-    setIcons(mockIcons);
-  }, []);
+  const handleNextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   const close = () => {
     navigate(-1);
@@ -63,7 +64,7 @@ export const Pedia = () => {
   };
 
   return (
-    <div>
+    <div css={PixelContainerWrapper}> {/* PixelContainerWrapper로 감싸기 */}
       <div css={BackBtnContainer}>
         <button css={BackBtnCss} onClick={close}>
           <img src={BackButton} alt="뒤로가기 버튼" width={35} height={35} />
@@ -76,38 +77,38 @@ export const Pedia = () => {
         </button>
       </div>
 
-      <div css={[slidePanelStyle, mypageVisible && { transform: 'translateX(0)' }]}>
+      <div css={[slidePanelStyle, mypageVisible && { transform: "translateX(0)" }]}>
         <div css={panelContentStyle}>
           {/* 슬라이딩 메뉴 내용 */}
         </div>
       </div>
 
-      <div css={PixelContainerWrapper}>
-        <h2 css={headerStyle}>{username}님의 도감</h2> {/* 사용자 이름을 포함한 제목 */}
-        <PixelContainer
-          width="90%"
-          height="70vh"
-          children={
-            <div>
-              <div css={IconGrid}>
-                {icons.map((icon, index) => (
-                  <div css={IconItem} key={index}>
-                    <img src={icon.imageUrl} alt={icon.label} width={60} />
-                    <p>{icon.label}</p>
-                  </div>
-                ))}
-              </div>
-              <div css={ArrowContainer}>
-                <button css={ArrowButton}>◀️</button>
-                <button css={ArrowButton}>▶️</button>
-              </div>
+      <div css={Container}> {/* Container 적용 */}
+        <h2 css={headerStyle}>{nickname ? `${nickname}님의 도감` : "사용자의 도감"}</h2>
+        
+        <div css={IconGrid}>
+          {collections.map((collection) => (
+            <div css={IconItem} key={collection.collectionId}>
+              <img src={collection.assets} alt={collection.nickname} width={60} />
+              <p>{collection.nickname}</p>
             </div>
-          }
-        />
-        <div css={[slidePanelStyle, mypageVisible && { transform: 'translateX(0)' }]}>
-          <div css={panelContentStyle}>
-            <Hamberger closeMyPage={closeMyPage} />
-          </div>
+          ))}
+        </div>
+        
+        <div css={ArrowContainer}>
+          <button css={ArrowButton} onClick={handlePreviousPage} disabled={currentPage === 0}>
+            ◀️ 이전
+          </button>
+          <span>{currentPage + 1} / {totalPages}</span>
+          <button css={ArrowButton} onClick={handleNextPage} disabled={currentPage === totalPages - 1}>
+            다음 ▶️
+          </button>
+        </div>
+      </div>
+
+      <div css={[slidePanelStyle, mypageVisible && { transform: "translateX(0)" }]}>
+        <div css={panelContentStyle}>
+          <Hamberger closeMyPage={closeMyPage} />
         </div>
       </div>
     </div>

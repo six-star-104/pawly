@@ -12,6 +12,7 @@ export const CreateAssets: React.FC<{
   const [showButtons, setShowButtons] = useState(false);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [isRegeneration, setIsRegeneration] = useState(false);
+  const [regenerateCount, setRegenerateCount] = useState(2); // 초기 값 2로 설정
 
   const { setAsset } = useSignUpStore();
 
@@ -63,25 +64,28 @@ export const CreateAssets: React.FC<{
         setAsset(imageFile);
         setShowButtons(true);
         setIsRegeneration(false);
-        onImageGenerated?.(true); // 이미지 생성 성공 알림
+        onImageGenerated?.(true);
       } else {
         throw new Error("이미지 생성에 실패했습니다.");
       }
     } catch (error) {
       console.error("이미지 생성 실패:", error);
       setError("이미지를 생성하는 중 오류가 발생했습니다.");
-      onImageGenerated?.(false); // 이미지 생성 실패 알림
+      onImageGenerated?.(false);
     } finally {
       setIsGenerating(false);
     }
   };
 
   const handleRegenerateClick = () => {
-    setIsRegeneration(true);
-    setShowButtons(false);
-    setGeneratedImage(null);
-    setError(null);
-    onImageGenerated?.(false); // 다시 생성하기 클릭 시 false로 설정
+    if (regenerateCount > 0) {
+      setIsRegeneration(true);
+      setShowButtons(false);
+      setGeneratedImage(null);
+      setError(null);
+      setRegenerateCount((prev) => prev - 1);
+      onImageGenerated?.(false);
+    }
   };
 
   return (
@@ -120,8 +124,11 @@ export const CreateAssets: React.FC<{
         </style.imageContainer>
         {showButtons && !isRegeneration && (
           <style.buttonContainer>
-            <style.regenerateButton onClick={handleRegenerateClick}>
-              다시 생성하기
+            <style.regenerateButton
+              onClick={handleRegenerateClick}
+              disabled={regenerateCount === 0}
+            >
+              다시 생성하기 ({regenerateCount}/2)
             </style.regenerateButton>
           </style.buttonContainer>
         )}

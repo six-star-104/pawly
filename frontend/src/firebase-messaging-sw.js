@@ -1,7 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
-
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FB_API_KEY,
   authDomain: import.meta.env.VITE_FB_AUTH_DOMAIN,
@@ -27,8 +26,7 @@ async function requestPermission() {
   console.log("알림 권한이 허용됨");
 
   const token = await getToken(messaging, {
-    vapidKey:
-     import.meta.env.VITE_VAPID_KEY
+    vapidKey: import.meta.env.VITE_VAPID_KEY,
   });
 
   if (token) console.log("token: ", token);

@@ -20,7 +20,6 @@
     "axios": "^1.7.7",
     "firebase": "^11.0.1",
     "galmuri": "^2.39.6",
-    "idb": "^8.0.0",
     "nes.css": "^2.3.0",
     "openai": "^4.69.0",
     "pixelarticons": "^1.8.1",
@@ -32,6 +31,7 @@
     "zustand": "^5.0.0"
   },
   "devDependencies": {
+    "@emotion/babel-plugin": "^11.12.0",
     "@types/node": "^22.8.1",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.0",
