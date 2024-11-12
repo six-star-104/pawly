@@ -9,21 +9,26 @@ import { getEasterEggs } from "@/apis/easterEggService";
 
 import useEasterEggStore from "@/stores/easterEggStore";
 
+import { useLocation } from "react-router-dom";
+import GlobalStyles from "./styles/GlobalStyles.js";
 // import { getMyInfo } from "@/apis/myPageService";
 // import  useUserInfoStore  from "@/stores/userInfoStore.js";
 
 // 이 페이지 주석친 부분들이, 어짜피 로그인 로직인데 소셜쪽에서 한꺼번에 처리하는게 안 낫나 싶어서
 // 없어도 작동 이상 없어보이는데
+
 function App() {
-  const { setEasterEggs, isInitialized: isEasterEggInitialized } = useEasterEggStore();
-  // const { setUserInfo, isInitialized: isUserInfoInitialized } = useUserInfoStore();
+  const location = useLocation();
+
+  const { setEasterEggs, isInitialized: isEasterEggInitialized } =
+    useEasterEggStore();
 
   useEffect(() => {
     const fetchEasterEggs = async () => {
       try {
         const response = await getEasterEggs();
         if (response.status === "success") {
-          setEasterEggs(response.data); 
+          setEasterEggs(response.data);
         }
       } catch (error) {
         console.error("초기 이스터에그 데이터 로드 실패:", error);
@@ -64,11 +69,14 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <MobileLayout>
-          {/* <TransitionContent> */}
+        {location.pathname !== "/admin" ? (
+          <MobileLayout>
+            <GlobalStyles />
+            <Router />
+          </MobileLayout>
+        ) : (
           <Router />
-          {/* </TransitionContent> */}
-        </MobileLayout>
+        )}
       </QueryClientProvider>
     </>
   );

@@ -13,7 +13,7 @@ export const getCollection = async (memberId: number, pageNumber: number, pageSi
 
     console.log("API 도감 조회 데이터:", response.data);
 
-    return response.data;
+    return response.data; 
   } catch (error: any) {
     if (error.response) {
       console.error("서버 오류로 인해 도감 조회 실패:", error.response.data.message);
