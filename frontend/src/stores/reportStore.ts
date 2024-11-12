@@ -37,7 +37,6 @@ export const useReportStore = create<ReportStore>((set) => ({
   ) => {
     try {
       const response = await getReportList(category, pageNumber, pageSize, sortType, sortBy);
-      console.log("스토어에 리스폰스 콘솔", response);
 
       // response가 유효한지 확인 후 상태 업데이트
       if (response && response.content) {
