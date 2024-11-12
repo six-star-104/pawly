@@ -1,44 +1,22 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useUserInfoStore } from '@/stores/mypageStore';
-import { Hamberger } from '../Hamberger';
-import NavButton from '../../assets/icons/NavButton.png';
-import PixelPuppy from '../../assets/icons/PixelPuppy.png';
-import CancelButton from '../../assets/icons/CancelButton.png';
-import Warning from '../../assets/icons/Warning.png';
-import BackButton from '../../assets/icons/BackButton.png';
-import Modal from '@/components/Modal';
+import { useState, useEffect } from "react";
+import { useUserInfoStore } from "@/stores/mypageStore";
+import { Hamberger } from "../Hamberger";
+import PixelPuppy from "../../assets/icons/PixelPuppy.png";
+import CancelButton from "../../assets/icons/CancelButton.png";
+import Warning from "../../assets/icons/Warning.png";
+import Modal from "@/components/Modal";
+import * as style from "./styles";
+import { searchUserByNickname } from "@/apis/userSearchService";
 import {
-  Container,
-  BackBtnContainer,
-  HamBtnContainer,
-  HamBtnCss,
-  BackBtnCss,
-  slidePanelStyle,
-  panelContentStyle,
-  searchPixelContainerWrapper,
-  searchContainer,
-  tabContainer,
-  friendListContainer,
-  friendItem,
-  friendName,
-  friendActionIcons,
-  modalOverlayStyle,
-  modalContentStyle,
-  modalHeaderStyle,
-  modalInputStyle,
-  sendButtonStyle,
-  closeButtonStyle,
-  searchResultsContainer,
-  searchResultItem,
-  searchResultText,
-  searchResultActions,
-  deleteModalOverlayStyle,
-  deleteModalContentStyle,
-  warningIconStyle,
-} from './styles';
-import { searchUserByNickname } from '@/apis/userSearchService';
-import { postFriendRequest, getFriendRequestsReceived, getFriendRequestsSent, respondToFriendRequest, getFriendList, deleteFriend, getMemberInfo } from '@/apis/friendsService';
+  postFriendRequest,
+  getFriendRequestsReceived,
+  getFriendRequestsSent,
+  responseToFriendRequest,
+  getFriendList,
+  deleteFriend,
+  getMemberInfo,
+} from "@/apis/friendsService";
+import { Header } from "@/components/Header";
 
 interface Member {
   nickname: string;
@@ -50,7 +28,7 @@ interface Member {
 }
 
 export const Friends = () => {
-  const myMemberId = Number(useUserInfoStore().memberId); 
+  const myMemberId = Number(useUserInfoStore().memberId);
   const [mypageVisible, setMyPageVisible] = useState(false);
   const [activeTab, setActiveTab] = useState<"friends" | "requests">("friends");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -68,16 +46,6 @@ export const Friends = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
-
-  const navigate = useNavigate();
-
-  const backBtn = () => {
-    navigate(-1);
-  };
-
-  const Hambtn = () => {
-    setMyPageVisible(true);
-  };
 
   const closeMyPage = () => {
     setMyPageVisible(false);
@@ -176,7 +144,9 @@ export const Friends = () => {
       const response = await postFriendRequest(memberId);
       if (response.status === "success") {
         openAlertModal("친구 요청을 보냈습니다.");
-        setSearchResults(prev => prev.filter(user => user.memberId !== memberId));
+        setSearchResults((prev) =>
+          prev.filter((user) => user.memberId !== memberId)
+        );
       } else {
         openAlertModal("친구 요청에 실패했습니다.");
       }
@@ -196,7 +166,9 @@ export const Friends = () => {
       const response = await deleteFriend(memberId);
       if (response.status === "success") {
         openAlertModal("친구를 삭제했습니다.");
-        setFriends(prev => prev.filter(friend => friend.memberId !== memberId));
+        setFriends((prev) =>
+          prev.filter((friend) => friend.memberId !== memberId)
+        );
       } else {
         openAlertModal("친구 삭제에 실패했습니다.");
       }
@@ -208,19 +180,24 @@ export const Friends = () => {
     }
   };
 
-  const handleResponseToFriendRequest = async (friendId: number, isAccepted: boolean) => {
+  const handleResponseToFriendRequest = async (
+    friendId: number,
+    isAccepted: boolean
+  ) => {
     if (isProcessing) return;
 
     setIsProcessing(true);
     try {
-      const response = await respondToFriendRequest(friendId, isAccepted);
+      const response = await responseToFriendRequest(friendId, isAccepted);
 
       if (response.status === "success") {
-        setReceivedRequests(prevRequests =>
-          prevRequests.filter(request => request.friendId !== friendId)
+        setReceivedRequests((prevRequests) =>
+          prevRequests.filter((request) => request.friendId !== friendId)
         );
 
-        openAlertModal(isAccepted ? "친구 요청을 수락했습니다." : "친구 요청을 거절했습니다.");
+        openAlertModal(
+          isAccepted ? "친구 요청을 수락했습니다." : "친구 요청을 거절했습니다."
+        );
         setErrorMessage(null);
       } else {
         openAlertModal("요청 처리에 실패했습니다. 다시 시도해주세요.");
@@ -257,7 +234,10 @@ export const Friends = () => {
         const receivedResponse = await getFriendRequestsReceived();
         const sentResponse = await getFriendRequestsSent();
 
-        if (receivedResponse.status === "success" && sentResponse.status === "success") {
+        if (
+          receivedResponse.status === "success" &&
+          sentResponse.status === "success"
+        ) {
           setReceivedRequests(receivedResponse.data);
           setSentRequests(sentResponse.data);
         } else {
@@ -279,24 +259,13 @@ export const Friends = () => {
   }, [activeTab]);
 
   //빌드 오류 제거
-  console.log(isLoading)
+  console.log(isLoading);
 
   return (
-    <div css={Container}>
-      <div css={BackBtnContainer}>
-        <button css={BackBtnCss} onClick={backBtn}>
-          <img src={BackButton} alt="뒤로가기 버튼" width={35} height={35} />
-        </button>
-      </div>
-
-      <div css={HamBtnContainer}>
-        <button css={HamBtnCss} onClick={Hambtn}>
-          <img src={NavButton} alt="햄버거 버튼" width={40} />
-        </button>
-      </div>
-
-      <div css={searchPixelContainerWrapper}>
-        <div css={searchContainer}>
+    <>
+      <Header />
+      <div css={style.Container}>
+        <div css={style.searchContainer}>
           <input
             type="text"
             placeholder="닉네임 or 이름으로 검색"
@@ -304,203 +273,352 @@ export const Friends = () => {
             onChange={handleInputChange}
           />
           <button onClick={handleSearch} disabled={isProcessing}>
-            <img src="https://unpkg.com/pixelarticons@1.8.1/svg/search.svg" alt="검색 아이콘" width={20} height={20} />
+            <img
+              src="https://unpkg.com/pixelarticons@1.8.1/svg/search.svg"
+              alt="검색 아이콘"
+              width={20}
+              height={20}
+            />
           </button>
         </div>
-      </div>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+        <div css={style.tabContainer(activeTab)}>
+          <button
+            onClick={() => setActiveTab("friends")}
+            className={activeTab === "friends" ? "active" : ""}
+          >
+            친구 목록
+          </button>
+          <button
+            onClick={() => setActiveTab("requests")}
+            className={activeTab === "requests" ? "active" : ""}
+          >
+            친구 요청
+          </button>
+        </div>
 
-      <div css={tabContainer(activeTab)}>
-        <button onClick={() => setActiveTab("friends")} className={activeTab === "friends" ? "active" : ""}>친구 목록</button>
-        <button onClick={() => setActiveTab("requests")} className={activeTab === "requests" ? "active" : ""}>친구 요청</button>
-      </div>
-
-      <div css={friendListContainer}>
-        {activeTab === "friends" && (
-          friends.map(friend => (
-            <div css={friendItem} key={friend.friendId}>
-              <img src={friend.assets || PixelPuppy} alt={`${friend.nickname} 아바타`} width={40} height={40} onClick={() => openDetailModal(friend.memberId)} />
-              <div css={friendName} onClick={() => openDetailModal(friend.memberId)}>
-                <p>{friend.nickname}</p>
-                <span>{friend.name}</span>
-              </div>
-              <div css={friendActionIcons}>
-                <button onClick={openMessageModal}>
-                  <img src="https://unpkg.com/pixelarticons@1.8.1/svg/mail.svg" alt="메일 아이콘" width={20} height={20} />
-                </button>
-                <button onClick={() => handleDeleteFriend(friend.memberId)}>
-                  <img src="https://unpkg.com/pixelarticons@1.8.1/svg/close.svg" alt="삭제 아이콘" width={20} height={20} />
-                </button>
-              </div>
-            </div>
-          ))
-        )}
-
-        {activeTab === "requests" && (
-          <>
-            {errorMessage && (
-              <div style={{ color: 'red', textAlign: 'center', marginTop: '10px' }}>
-                {errorMessage}
-              </div>
-            )}
-            {receivedRequests.length === 0 && sentRequests.length === 0 && (
-              <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                요청 항목이 없습니다.
-              </div>
-            )}
-            {receivedRequests.length > 0 && receivedRequests.map((request) => (
-              <div css={friendItem} key={request.friendId}>
-                <img src={request.assets || PixelPuppy} alt={`${request.nickname} 아바타`} width={40} height={40} onClick={() => openDetailModal(request.memberId)} />
-                <div css={friendName} onClick={() => openDetailModal(request.memberId)}>
-                  <p>{request.nickname}</p>
-                  <span>{request.name}</span>
+        <div css={style.friendListContainer}>
+          {activeTab === "friends" &&
+            friends.map((friend) => (
+              <div css={style.friendItem} key={friend.friendId}>
+                <img
+                  src={friend.assets || PixelPuppy}
+                  alt={`${friend.nickname} 아바타`}
+                  width={40}
+                  height={40}
+                  onClick={() => openDetailModal(friend.memberId)}
+                />
+                <div
+                  css={style.friendName}
+                  onClick={() => openDetailModal(friend.memberId)}
+                >
+                  <p>{friend.nickname}</p>
+                  <span>{friend.name}</span>
                 </div>
-                <div css={friendActionIcons}>
-                  <button 
-                    onClick={() => handleResponseToFriendRequest(request.friendId!, true)}
-                    disabled={isProcessing}
-                  >
-                    <img src="https://unpkg.com/pixelarticons@1.8.1/svg/check.svg" alt="수락 아이콘" width={20} height={20} />
+                <div css={style.friendActionIcons}>
+                  <button onClick={openMessageModal}>
+                    <img
+                      src="https://unpkg.com/pixelarticons@1.8.1/svg/mail.svg"
+                      alt="메일 아이콘"
+                      width={20}
+                      height={20}
+                    />
                   </button>
-                  <button 
-                    onClick={() => handleResponseToFriendRequest(request.friendId!, false)}
-                    disabled={isProcessing}
-                  >
-                    <img src="https://unpkg.com/pixelarticons@1.8.1/svg/close.svg" alt="거절 아이콘" width={20} height={20} />
+                  <button onClick={() => handleDeleteFriend(friend.memberId)}>
+                    <img
+                      src="https://unpkg.com/pixelarticons@1.8.1/svg/close.svg"
+                      alt="삭제 아이콘"
+                      width={20}
+                      height={20}
+                    />
                   </button>
                 </div>
               </div>
             ))}
-            {sentRequests.length > 0 && sentRequests.map((request) => (
-              <div css={friendItem} key={request.friendId}>
-                <img src={request.assets || PixelPuppy} alt={`${request.nickname} 아바타`} width={40} height={40} onClick={() => openDetailModal(request.memberId)} />
-                <div css={friendName} onClick={() => openDetailModal(request.memberId)}>
-                  <p>{request.nickname}</p>
-                  <span>{request.name}</span>
-                </div>
-                <div css={friendActionIcons}>
-                  <span style={{ color: '#888' }}>수락 대기중...</span>
-                </div>
-              </div>
-            ))}
-          </>
-        )}
-      </div>
 
-      {searchResults && searchResults.length > 0 && (
-        <div css={searchResultsContainer}>
-          <h3>검색 결과</h3>
-          {searchResults.map((result) => {
-            const isFriend = friends.some(friend => friend.memberId === result.memberId);
-            const isSentRequest = sentRequests.some(request => request.memberId === result.memberId);
-            const isReceivedRequest = receivedRequests.some(request => request.memberId === result.memberId);
-
-            return (
-              <div css={searchResultItem} key={result.memberId}>
-                <img src={result.assets || PixelPuppy} alt={`${result.nickname} 아바타`} width={50} height={50} onClick={() => openDetailModal(result.memberId)} />
-                <div css={searchResultText} onClick={() => openDetailModal(result.memberId)}>
-                  <h3>{result.nickname}</h3>
-                  <p>{result.name}</p>
+          {activeTab === "requests" && (
+            <>
+              {errorMessage && (
+                <div
+                  style={{
+                    color: "red",
+                    textAlign: "center",
+                    marginTop: "10px",
+                  }}
+                >
+                  {errorMessage}
                 </div>
-                <div css={searchResultActions}>
-                  {isFriend ? (
-                    <>
-                      <button onClick={openMessageModal}>
-                        <img src="https://unpkg.com/pixelarticons@1.8.1/svg/mail.svg" alt="메일 아이콘" width={20} height={20} />
-                      </button>
-                      <button onClick={() => handleDeleteFriend(result.memberId)}>
-                        <img src="https://unpkg.com/pixelarticons@1.8.1/svg/close.svg" alt="삭제 아이콘" width={20} height={20} />
-                      </button>
-                    </>
-                  ) : isSentRequest ? (
-                    <span style={{ color: '#888' }}>수락 대기중...</span>
-                  ) : isReceivedRequest ? (
-                    <>
-                      <button 
-                        onClick={() => handleResponseToFriendRequest(result.memberId!, true)}
-                        disabled={isProcessing}
-                      >
-                        <img src="https://unpkg.com/pixelarticons@1.8.1/svg/check.svg" alt="수락 아이콘" width={20} height={20} />
-                      </button>
-                      <button 
-                        onClick={() => handleResponseToFriendRequest(result.memberId!, false)}
-                        disabled={isProcessing}
-                      >
-                        <img src="https://unpkg.com/pixelarticons@1.8.1/svg/close.svg" alt="거절 아이콘" width={20} height={20} />
-                      </button>
-                    </>
-                  ) : (
-                    <button 
-                      onClick={() => handleFriendRequest(result.memberId)}
-                      disabled={isProcessing}
+              )}
+              {receivedRequests.length === 0 && sentRequests.length === 0 && (
+                <div style={{ textAlign: "center", marginTop: "20px" }}>
+                  요청 항목이 없습니다.
+                </div>
+              )}
+              {receivedRequests.length > 0 &&
+                receivedRequests.map((request) => (
+                  <div css={style.friendItem} key={request.friendId}>
+                    <img
+                      src={request.assets || PixelPuppy}
+                      alt={`${request.nickname} 아바타`}
+                      width={40}
+                      height={40}
+                      onClick={() => openDetailModal(request.memberId)}
+                    />
+                    <div
+                      css={style.friendName}
+                      onClick={() => openDetailModal(request.memberId)}
                     >
-                      <img src="https://unpkg.com/pixelarticons@1.8.1/svg/user-plus.svg" alt="친구 추가 아이콘" width={20} height={20} />
-                    </button>
-                  )}
+                      <p>{request.nickname}</p>
+                      <span>{request.name}</span>
+                    </div>
+                    <div css={style.friendActionIcons}>
+                      <button
+                        onClick={() =>
+                          handleResponseToFriendRequest(request.friendId!, true)
+                        }
+                        disabled={isProcessing}
+                      >
+                        <img
+                          src="https://unpkg.com/pixelarticons@1.8.1/svg/check.svg"
+                          alt="수락 아이콘"
+                          width={20}
+                          height={20}
+                        />
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleResponseToFriendRequest(
+                            request.friendId!,
+                            false
+                          )
+                        }
+                        disabled={isProcessing}
+                      >
+                        <img
+                          src="https://unpkg.com/pixelarticons@1.8.1/svg/close.svg"
+                          alt="거절 아이콘"
+                          width={20}
+                          height={20}
+                        />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              {sentRequests.length > 0 &&
+                sentRequests.map((request) => (
+                  <div css={style.friendItem} key={request.friendId}>
+                    <img
+                      src={request.assets || PixelPuppy}
+                      alt={`${request.nickname} 아바타`}
+                      width={40}
+                      height={40}
+                      onClick={() => openDetailModal(request.memberId)}
+                    />
+                    <div
+                      css={style.friendName}
+                      onClick={() => openDetailModal(request.memberId)}
+                    >
+                      <p>{request.nickname}</p>
+                      <span>{request.name}</span>
+                    </div>
+                    <div css={style.friendActionIcons}>
+                      <span style={{ color: "#888" }}>수락 대기중...</span>
+                    </div>
+                  </div>
+                ))}
+            </>
+          )}
+        </div>
+
+        {searchResults && searchResults.length > 0 && (
+          <div css={style.searchResultsContainer}>
+            <h3>검색 결과</h3>
+            {searchResults.map((result) => {
+              const isFriend = friends.some(
+                (friend) => friend.memberId === result.memberId
+              );
+              const isSentRequest = sentRequests.some(
+                (request) => request.memberId === result.memberId
+              );
+              const isReceivedRequest = receivedRequests.some(
+                (request) => request.memberId === result.memberId
+              );
+
+              return (
+                <div css={style.searchResultItem} key={result.memberId}>
+                  <img
+                    src={result.assets || PixelPuppy}
+                    alt={`${result.nickname} 아바타`}
+                    width={50}
+                    height={50}
+                    onClick={() => openDetailModal(result.memberId)}
+                  />
+                  <div
+                    css={style.searchResultText}
+                    onClick={() => openDetailModal(result.memberId)}
+                  >
+                    <h3>{result.nickname}</h3>
+                    <p>{result.name}</p>
+                  </div>
+                  <div css={style.searchResultActions}>
+                    {isFriend ? (
+                      <>
+                        <button onClick={openMessageModal}>
+                          <img
+                            src="https://unpkg.com/pixelarticons@1.8.1/svg/mail.svg"
+                            alt="메일 아이콘"
+                            width={20}
+                            height={20}
+                          />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteFriend(result.memberId)}
+                        >
+                          <img
+                            src="https://unpkg.com/pixelarticons@1.8.1/svg/close.svg"
+                            alt="삭제 아이콘"
+                            width={20}
+                            height={20}
+                          />
+                        </button>
+                      </>
+                    ) : isSentRequest ? (
+                      <span style={{ color: "#888" }}>수락 대기중...</span>
+                    ) : isReceivedRequest ? (
+                      <>
+                        <button
+                          onClick={() =>
+                            handleResponseToFriendRequest(
+                              result.memberId!,
+                              true
+                            )
+                          }
+                          disabled={isProcessing}
+                        >
+                          <img
+                            src="https://unpkg.com/pixelarticons@1.8.1/svg/check.svg"
+                            alt="수락 아이콘"
+                            width={20}
+                            height={20}
+                          />
+                        </button>
+                        <button
+                          onClick={() =>
+                            handleResponseToFriendRequest(
+                              result.memberId!,
+                              false
+                            )
+                          }
+                          disabled={isProcessing}
+                        >
+                          <img
+                            src="https://unpkg.com/pixelarticons@1.8.1/svg/close.svg"
+                            alt="거절 아이콘"
+                            width={20}
+                            height={20}
+                          />
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        onClick={() => handleFriendRequest(result.memberId)}
+                        disabled={isProcessing}
+                      >
+                        <img
+                          src="https://unpkg.com/pixelarticons@1.8.1/svg/user-plus.svg"
+                          alt="친구 추가 아이콘"
+                          width={20}
+                          height={20}
+                        />
+                      </button>
+                    )}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+              );
+            })}
+          </div>
+        )}
 
-      <div css={[slidePanelStyle, mypageVisible && { transform: 'translateX(0)' }]}>
-        <div css={panelContentStyle}>
-          <Hamberger closeMyPage={closeMyPage} />
-        </div>
-      </div>
-
-      {/* Alert Modal for friend actions */}
-      <Modal isOpen={alertModalOpen} onClose={closeAlertModal} title="">
-        <div css={deleteModalOverlayStyle}>
-          <div css={deleteModalContentStyle}>
-            <img src={Warning} alt="경고 아이콘" css={warningIconStyle} />
-            <p>{alertMessage}</p>
-            <button css={sendButtonStyle} onClick={closeAlertModal}>확인</button>
+        <div
+          css={[
+            style.slidePanelStyle,
+            mypageVisible && { transform: "translateX(0)" },
+          ]}
+        >
+          <div css={style.panelContentStyle}>
+            <Hamberger closeMyPage={closeMyPage} />
           </div>
         </div>
-      </Modal>
 
-      {/* Message Modal for friend message */}
-      <Modal isOpen={isModalOpen} onClose={closeMessageModal} title="">
-        <div css={modalOverlayStyle}>
-          <div css={modalContentStyle}>
-            <div css={modalHeaderStyle}>
-              <span>To. 친구</span>
-              <button css={closeButtonStyle} onClick={closeMessageModal}>
-                <img src={CancelButton} alt="Cancel Button" width={25} />
+        {/* Alert Modal for friend actions */}
+        <Modal isOpen={alertModalOpen} onClose={closeAlertModal} title="">
+          <div css={style.deleteModalOverlayStyle}>
+            <div css={style.deleteModalContentStyle}>
+              <img
+                src={Warning}
+                alt="경고 아이콘"
+                css={style.warningIconStyle}
+              />
+              <p>{alertMessage}</p>
+              <button css={style.sendButtonStyle} onClick={closeAlertModal}>
+                확인
               </button>
             </div>
-            <textarea
-              css={modalInputStyle}
-              placeholder="메시지를 입력하세요..."
-              rows={15}
-              value={message}
-              onChange={handleChange}
-            />
-            <button css={sendButtonStyle} onClick={handleSend}>메시지 전송</button>
           </div>
-        </div>
-      </Modal>
+        </Modal>
 
-      {/* 상세 정보 모달 */}
-      <Modal isOpen={isDetailModalOpen} onClose={closeDetailModal} title="">
-        <div css={modalOverlayStyle}>
-          <div css={modalContentStyle}>
-            {selectedMember ? (
-              <>
-                <h2>{selectedMember.nickname}</h2>
-                <h3>주인: {selectedMember.name}</h3>
-                <p><img src={selectedMember.assets} alt={`${selectedMember.nickname} 이미지`} /></p>
-              </>
-            ) : (
-              <p>회원 정보를 불러오는 중입니다...</p>
-            )}
-            <button css={sendButtonStyle} onClick={closeDetailModal}>닫기</button>
+        {/* Message Modal for friend message */}
+        <Modal isOpen={isModalOpen} onClose={closeMessageModal} title="">
+          <div css={style.modalOverlayStyle}>
+            <div css={style.modalContentStyle}>
+              <div css={style.modalHeaderStyle}>
+                <span>To. 친구</span>
+                <button
+                  css={style.closeButtonStyle}
+                  onClick={closeMessageModal}
+                >
+                  <img src={CancelButton} alt="Cancel Button" width={25} />
+                </button>
+              </div>
+              <textarea
+                css={style.modalInputStyle}
+                placeholder="메시지를 입력하세요..."
+                rows={15}
+                value={message}
+                onChange={handleChange}
+              />
+              <button css={style.sendButtonStyle} onClick={handleSend}>
+                메시지 전송
+              </button>
+            </div>
           </div>
-        </div>
-      </Modal>
-    </div>
+        </Modal>
+
+        {/* 상세 정보 모달 */}
+        <Modal isOpen={isDetailModalOpen} onClose={closeDetailModal} title="">
+          <div css={style.modalOverlayStyle}>
+            <div css={style.modalContentStyle}>
+              {selectedMember ? (
+                <>
+                  <h2>{selectedMember.nickname}</h2>
+                  <h3>주인: {selectedMember.name}</h3>
+                  <p>
+                    <img
+                      src={selectedMember.assets}
+                      alt={`${selectedMember.nickname} 이미지`}
+                    />
+                  </p>
+                </>
+              ) : (
+                <p>회원 정보를 불러오는 중입니다...</p>
+              )}
+              <button css={style.sendButtonStyle} onClick={closeDetailModal}>
+                닫기
+              </button>
+            </div>
+          </div>
+        </Modal>
+      </div>
+    </>
   );
 };

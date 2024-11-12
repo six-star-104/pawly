@@ -5,58 +5,24 @@ export const Container = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1rem;
   position: relative;
   box-sizing: border-box;
-`;
-
-export const BackBtnContainer = css`
-  position: absolute;
-  top: 0;
-  left: 0;
-  margin: 1.45rem 1rem;
-  display: flex;
-  align-items: center;
-`;
-
-export const HamBtnContainer = css`
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-`;
-
-export const HamBtnCss = css`
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-`;
-
-export const BackBtnCss = css`
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
+  height: 100vh;
+  overflow-y: auto;
 `;
 
 export const searchPixelContainerWrapper = css`
   display: flex;
   justify-content: center;
-  width: 100%;
-  margin-top: 45%;
+  padding: 0 1rem;
 `;
 
 export const searchContainer = css`
   display: flex;
   align-items: center;
-  width: 100%;
   background-color: #fff;
   padding: 0.5rem;
-  border-radius: 8px;
+  width: 100%;
   border: 2px solid black;
 
   input {
@@ -64,7 +30,6 @@ export const searchContainer = css`
     border: none;
     outline: none;
     font-size: 1rem;
-    font-family: "Galmuri9";
   }
 
   button {
@@ -77,29 +42,28 @@ export const searchContainer = css`
 
 export const tabContainer = (activeTab: "friends" | "requests") => css`
   display: flex;
-  width: 90%;
+  width: 100%;
   max-width: 500px;
   margin-top: 1rem;
-
+  padding: 0 1rem;
   button {
     flex: 1;
     background: #fff;
     padding: 0.5rem 1rem;
     cursor: pointer;
     font-weight: bold;
-    font-family: "Galmuri9";
-    border-top: 2px solid black;
+    border-top: 3px solid black;
     border-bottom: none;
-    border-right: 2px solid black;
+    border-right: 3px solid black;
 
     &:nth-of-type(1) {
-      border-left: 2px solid black;
-      border-bottom: ${activeTab === "requests" ? "2px solid black" : "none"};
+      border-left: 3px solid black;
+      border-bottom: ${activeTab === "requests" ? "3px solid black" : "none"};
     }
 
     &:nth-of-type(2) {
       border-left: none;
-      border-bottom: ${activeTab === "friends" ? "2px solid black" : "none"};
+      border-bottom: ${activeTab === "friends" ? "3px solid black" : "none"};
     }
   }
 
@@ -278,7 +242,7 @@ export const deleteModalContentStyle = css`
   padding: 20px;
   width: 85%;
   text-align: center;
-  font-family: 'Galmuri9';
+  font-family: "Galmuri9";
   color: #333;
   display: flex;
   flex-direction: column;
