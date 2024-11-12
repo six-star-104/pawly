@@ -20,6 +20,7 @@ export const letterListContainer = css`
 export const letterItem = css`
   display: flex;
   align-items: center;
+  justify-content: space-around;
   background-color: #fff;
   padding: 0.7rem;
   border-left: 3px solid black;
