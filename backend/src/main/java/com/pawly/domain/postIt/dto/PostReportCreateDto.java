@@ -9,7 +9,6 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -18,9 +17,10 @@ public class PostReportCreateDto {
     private Long postId;
     private String content;
 
-    public Report toEntity(Member member, Long postId){
+    public Report toEntity(Member member, Member member2, Long postId){
         return Report.builder()
                 .member(member)
+                .member2(member2)
                 .category(Category.ROLLING_PAPER)
                 .detailId(postId)
                 .content(this.content)

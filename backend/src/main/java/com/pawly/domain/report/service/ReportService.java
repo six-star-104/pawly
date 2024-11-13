@@ -54,7 +54,7 @@ public class ReportService {
     public void confirmReport(Long reportId, Status confirmStatus) {
 
         Report report = reportRepository.findByReportId(reportId);
-        Member member = report.getMember();
+        Member member = report.getMember2();
 
         if (confirmStatus.equals(Status.COMPLETE)) {
             report.setStatus(Status.COMPLETE);
