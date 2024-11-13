@@ -92,6 +92,7 @@ public enum ErrorCode {
 
     // Theme Error
     THEME_NOT_FOUND("H001", HttpStatus.NOT_FOUND, "테마를 찾을 수 없습니다."),
+    THEME_NAME_OVERLAP("H002", HttpStatus.BAD_REQUEST, "다른 테마이름을 넣어주세요."),
 
     // report
     ALREADY_REPORT("R001", HttpStatus.BAD_REQUEST, "이미 신고하였습니다."),
