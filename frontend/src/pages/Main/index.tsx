@@ -63,7 +63,7 @@ export const Main = () => {
   // };
 
   const Hambtn = () => {
-    console.log("햄버거 클릭");
+    // console.log("햄버거 클릭");
     setMyPageVisible(true); // 슬라이딩 패널을 보이게
   };
 

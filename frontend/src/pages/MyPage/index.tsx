@@ -54,6 +54,7 @@ export const MyPage = () => {
     const fetchUserInfo = async () => {
       try {
         const data = await getMyInfo();
+        if(!data) return
         setUserInfo({
           isInitialized: true,
           userId: data.memberId,
@@ -66,7 +67,7 @@ export const MyPage = () => {
           birth: data.birth,
         });
       } catch (error) {
-        console.error("Failed to fetch user info:", error);
+        // console.error("Failed to fetch user info:", error);
       }
     };
 
@@ -101,9 +102,9 @@ export const MyPage = () => {
       await updateNickname(newNickname);
       setUserInfo({ nickname: newNickname });
       setIsEditing(false);
-      console.log("닉네임 업데이트 성공:", newNickname);
+      // console.log("닉네임 업데이트 성공:", newNickname);
     } catch (error) {
-      console.error("닉네임 업데이트 중 오류 발생:", error);
+      // console.error("닉네임 업데이트 중 오류 발생:", error);
     }
   };
 

@@ -23,13 +23,13 @@ export const Login = () => {
           const response = await getRefreshToken();
           if (response) {
             setLogin();
-            console.log("refreshToken 유효, 토큰 재발급");
+            // console.log("refreshToken 유효, 토큰 재발급");
             navigateTo(from, { replace: true });
           } else {
-            console.log("refreshToken 만료, 다시 로그인하세요.");
+            // console.log("refreshToken 만료, 다시 로그인하세요.");
           }
         } catch {
-          console.log("refreshToken 만료, 다시 로그인하세요.");
+          // console.log("refreshToken 만료, 다시 로그인하세요.");
         }
       };
 

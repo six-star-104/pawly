@@ -19,7 +19,7 @@ axiosInstance.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.log("Request interceptor error:", error);
+    // console.log("Request interceptor error:", error);
     return Promise.reject(error);
   }
 );
@@ -34,9 +34,9 @@ axiosInstance.interceptors.response.use(
     if (status === "A004" && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
-        console.log("check refreshToken");
+        // console.log("check refreshToken");
         const newToken = await getRefreshToken();
-        console.log(newToken);
+        // console.log(newToken);
         // getRefreshToken에서 axiosInstance.defaults.headers['Authorization']을 바꿔주는데 굳이?
         originalRequest.headers["Authorization"] = newToken;
         return axiosInstance(originalRequest);
@@ -52,7 +52,7 @@ axiosInstance.interceptors.response.use(
 export const getRefreshToken = async () => {
   try {
     const response = await axios.post(`/member/refresh-token`, {});
-    console.log("getRefreshToken", response);
+    // console.log("getRefreshToken", response);
     if (response.data.data) {
       const accessToken = response.data.data.accessToken;
       localStorage.setItem("accessToken", accessToken);
@@ -61,7 +61,7 @@ export const getRefreshToken = async () => {
     }
     return null;
   } catch (error) {
-    console.error(error);
-    throw error;
+    // console.error(error);
+    // throw error;
   }
 };

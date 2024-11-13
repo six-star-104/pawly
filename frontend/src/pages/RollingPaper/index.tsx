@@ -42,7 +42,7 @@ export const RollingPaper = () => {
   };
 
   useEffect(() => {
-    console.log("옵저버 시작");
+    // console.log("옵저버 시작");
     const observer = new IntersectionObserver(handleObserver, {
       threshold: 1,
     });
@@ -55,7 +55,7 @@ export const RollingPaper = () => {
   }, []);
 
   useEffect(() => {
-    console.log("이펙트 시작");
+    // console.log("이펙트 시작");
     // 페이지 넘버 변경사항 생기면 다시 로딩
     if (!isLoading) {
       fetchRollingPaper(String(rollingpaperid), pageNum, 14)
