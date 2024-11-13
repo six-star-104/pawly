@@ -1,12 +1,12 @@
 import { css } from "@emotion/react";
-import background from "../../assets/images/background.png";
+import resizeBg from "@/assets/images/resize_bg.jpg";
 
 export const container = css`
-  width: 100%;
-  // 2.14배 높이 쳐야됨
-  height: 214vw;
-  max-height: 881px;
-  background-image: url(${background});
+  // width: 100%;
+  // // 2.14배 높이 쳐야됨
+  // height: 214vw;
+  // max-height: 881px;
+  background-image: url(${resizeBg});
   background-size: cover;
   background-repeat: no-repeat;
   margin: 0;
