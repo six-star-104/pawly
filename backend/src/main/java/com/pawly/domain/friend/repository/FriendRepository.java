@@ -28,4 +28,10 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
             "       OR f.memberId2.memberId = :memberId AND f.memberId1.memberId = :memberId2) " +
             "AND f.deleteFlag = false")
     Optional<Friend> findByMemberAndTargetMember(@Param("memberId") Long memberId, @Param("memberId2") Long memberId2);
+
+    @Query("SELECT f FROM Friend f " +
+            "WHERE (f.memberId1.memberId = :memberId AND f.memberId2.memberId = :memberId2 " +
+            "       OR f.memberId2.memberId = :memberId AND f.memberId1.memberId = :memberId2) " +
+            "AND f.deleteFlag = true")
+    Optional<Friend> findByFriend(@Param("memberId") Long memberId, @Param("memberId2") Long memberId2);
 }
