@@ -37,6 +37,9 @@ public class ThemeAdminService {
 
         if (m.getRole() != Role.ADMIN) return ApiResponse.createError(ErrorCode.NOT_ADMIN_FAILED);
 
+        Optional<Theme> theme = themeRepository.findByThemeName(dto.getThemeName());
+        if (!theme.isEmpty()) return ApiResponse.createError(ErrorCode.THEME_NAME_OVERLAP);
+
         themeRepository.save(dto.toEntity());
         return ApiResponse.createSuccessWithNoContent("테마 생성 완료");
     }
