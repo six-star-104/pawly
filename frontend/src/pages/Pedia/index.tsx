@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NavButton from "../../assets/icons/NavButton.png";
 import BackButton from "../../assets/icons/BackButton.png";
-import  useUserInfoStore  from "@/stores/userInfoStore";
+import { useUserInfoStore } from "@/stores/userInfoStore";
 import { useCollectionStore } from "@/stores/collectionStore";
 import { 
   BackBtnContainer,

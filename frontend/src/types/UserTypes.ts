@@ -18,11 +18,10 @@ export type UserInfoType = {
   provider: string;
   providerId: string;
 
-  nickname: string;
-  assets: string;
-
   birth: string | null | undefined;
   collections: string[];
+  nickname: string;
+  assets: string;
 };
 
 export type SignUpType = {
@@ -72,21 +71,20 @@ export interface ProfileData {
   collections: string[];
 }
 
-// MypageType 정의  -> 이제 안쓸 예정
-
-// export interface MypageType {
-//   isInitialized: boolean;
-//   memberId: string;
-//   userId: string;
-//   username: string; // 앱 내부에서 사용하는 필드명으로 username 추가
-//   email: string;
-//   provider: string;
-//   providerId: string;
-//   nickname: string;
-//   assets: string;
-//   birth: string | null | undefined;
-//   collections: string[];
-// }
+// MypageType 정의
+export interface MypageType {
+  isInitialized: boolean;
+  memberId: string;
+  userId: string;
+  username: string; // 앱 내부에서 사용하는 필드명으로 username 추가
+  email: string;
+  provider: string;
+  providerId: string;
+  nickname: string;
+  assets: string;
+  birth: string | null | undefined;
+  collections: string[];
+}
 export interface GetMyInfoResponse {
   status: string;
   data: ProfileData;

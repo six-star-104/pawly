@@ -1,7 +1,7 @@
 // import { create } from "zustand";
 // import { MypageType } from "@/types/UserTypes";
 
-// UserInfoStore 타입 정의
+// // UserInfoStore 타입 정의
 // export interface UserInfoStore extends MypageType {
 //   setUserInfo: (userInfo: Partial<MypageType>) => void;
 // }

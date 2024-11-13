@@ -57,13 +57,15 @@ export const Admin = () => {
       const response = await updateReportStatus(reportId, confirmType);
       setActionMessage(`신고 ID ${reportId} 처리 결과: ${response.message}`);
 
-      const updatedReports = reports.filter((report) => report.reportId !== reportId);
+      // const updatedReports = reports.filter((report) => report.reportId !== reportId);
       if (confirmType === "COMPLETE") {
         const completedReport = reports.find((report) => report.reportId === reportId);
         if (completedReport) setCompletedReports((prev) => [...prev, completedReport]);
+        console.log(completedReports)
       } else if (confirmType === "DENIED") {
         const deniedReport = reports.find((report) => report.reportId === reportId);
         if (deniedReport) setDeniedReports((prev) => [...prev, deniedReport]);
+        console.log(deniedReports)
       }
       await fetchReports(category, currentPage, pageSize);
     } catch (error) {

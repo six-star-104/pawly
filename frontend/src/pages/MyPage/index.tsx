@@ -31,7 +31,7 @@ import BackButton from '../../assets/icons/BackButton.png';
 import { Button } from '@/components/Button';
 import Modal from '@/components/Modal';
 import { Hamberger } from '../Hamberger';
-import  useUserInfoStore  from '@/stores/userInfoStore';
+import { useUserInfoStore } from '@/stores/userInfoStore';
 import useEasterEggStore from '@/stores/easterEggStore';
 import { useCollectionStore } from '@/stores/collectionStore';
 import { getMyInfo, updateNickname } from '@/apis/myPageService';
