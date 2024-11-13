@@ -17,6 +17,8 @@ const ReportList: React.FC<ReportListProps> = ({
   handleReportAction,
   actionMessage
 }) => {
+  const filteredReports = reports.filter(report => report.status === "STANDBY");
+
   return (
     <section>
       <h2>신고 내역 조회</h2>
@@ -26,8 +28,8 @@ const ReportList: React.FC<ReportListProps> = ({
         <p>{error}</p>
       ) : (
         <ul css={reportList}>
-          {reports.length > 0 ? (
-            reports.map((report) => (
+          {filteredReports.length > 0 ? (
+            filteredReports.map((report) => (
               <li key={report.reportId}>
                 <p><strong>Report ID:</strong> {report.reportId}</p>
                 <p><strong>Member ID:</strong> {report.memberId}</p>
