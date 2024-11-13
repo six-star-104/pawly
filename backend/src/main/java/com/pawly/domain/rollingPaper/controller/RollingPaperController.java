@@ -1,6 +1,5 @@
 package com.pawly.domain.rollingPaper.controller;
 
-import com.pawly.domain.member.service.MemberService;
 import com.pawly.domain.rollingPaper.controller.dto.RollingPaperCreateRequest;
 import com.pawly.domain.rollingPaper.service.RollingPaperService;
 import com.pawly.global.response.ApiResponse;
@@ -16,7 +15,6 @@ import jakarta.validation.Valid;
 @RequiredArgsConstructor
 public class RollingPaperController {
     private final RollingPaperService rollingPaperService;
-    private final MemberService memberService;
 
     @PostMapping
     public ApiResponse<?> createRollingPaper(Authentication authentication, @Valid @RequestBody RollingPaperCreateRequest rollingPaperCreateRequest) {
@@ -34,12 +32,17 @@ public class RollingPaperController {
                                               @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
                                               @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
                                               @RequestParam(name = "sortType", defaultValue = "desc") String sortType,
-                                              @RequestParam(name = "sortBy", required = false, defaultValue = "createdAt") String sortBy) throws Exception {
+                                              @RequestParam(name = "sortBy", required = false, defaultValue = "createdAt") String sortBy) {
         return rollingPaperService.readRollingPaper(authentication.getName(), rollingPaperId, pageNumber, pageSize, sortType, sortBy);
     }
 
     @DeleteMapping("/{rollingPaperId}")
     public ApiResponse<?> deleteRollingPaper(Authentication authentication, @PathVariable Long rollingPaperId) {
         return rollingPaperService.deleteRollingPaper(authentication.getName(), rollingPaperId);
+    }
+
+    @PatchMapping("/{rollingPaperId}")
+    public ApiResponse<?> completeRollingPaper(Authentication authentication, @PathVariable Long rollingPaperId) {
+        return rollingPaperService.completeRollingPaper(authentication.getName(),rollingPaperId);
     }
 }
