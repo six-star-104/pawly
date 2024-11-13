@@ -12,6 +12,7 @@ import lombok.Getter;
 public class ReportResponseDTO {
 
     private Long reportId;
+    private Long reportedByID;
     private Long memberId;
     private Category category;
     private Long detailId;
@@ -21,13 +22,14 @@ public class ReportResponseDTO {
 
     public static ReportResponseDTO toDTO(Report report) {
         return ReportResponseDTO.builder()
-            .reportId(report.getReportId())
-            .memberId(report.getMember2().getMemberId())
-            .category(report.getCategory())
-            .detailId(report.getDetailId())
-            .content(report.getContent())
-            .status(report.getStatus())
-            .createdAt(report.getCreatedAt())
-            .build();
+                .reportId(report.getReportId())
+                .reportedByID(report.getMember().getMemberId())
+                .memberId(report.getMember2().getMemberId())
+                .category(report.getCategory())
+                .detailId(report.getDetailId())
+                .content(report.getContent())
+                .status(report.getStatus())
+                .createdAt(report.getCreatedAt())
+                .build();
     }
 }
