@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { axiosInstance } from "../apis/axiosInstance";
 import { IRollingPaper, IPostIt } from "@/types/rollingPaperTypes";
-import useUserInfoStore from "@/stores/userInfoStore";
+import { useUserInfoStore } from "@/stores/userInfoStore";
 
 const useFetchRollingpaper = () => {
   const [singleRollingpaper, setSingleRollingpaper] = useState<IRollingPaper>();

@@ -3,7 +3,43 @@ import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { getOAuthAccessToken } from "@/apis/userService";
 import { getRefreshToken } from "@/apis/axiosInstance";
 import useLoginStore from "@/stores/loginStore";
+import { getMyInfo } from "@/apis/myPageService"; // 사용자 정보 API 가져오기
+import { useUserInfoStore } from "./stores/userInfoStore";
 
+ 
+
+  // 사용자가 메인 페이지에 들어오면 사용자 정보를 스토어에 저장
+  // useEffect(() => {
+  //   const fetchUserInfo = async () => {
+  //     try {
+  //       const data = await getMyInfo();
+  //       setUserInfo({
+  //         isInitialized: true,
+  //         userId: data.memberId,
+  //         name: data.name,
+  //         email: data.email,
+  //         provider: data.provider,
+  //         providerId: data.providerId,
+  //         nickname: data.nickname,
+  //         assets: data.assets,
+  //         birth: data.birth,
+  //         collections: data.collections || [],
+  //       });
+  //       console.log("User Info:", {
+  //         memberId: data.memberId,
+  //         username: data.name,
+  //         email: data.email,
+  //         provider: data.provider,
+  //         providerId: data.providerId,
+  //         nickname: data.nickname,
+  //         assets: data.assets,
+  //         birth: data.birth,
+  //         collections: data.collections || [],
+  //       });
+  //     } catch (error) {
+  //       console.error("Failed to fetch user info:", error);
+  //     }
+  //   };
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
 };
@@ -14,17 +50,52 @@ const PrivateRoute = () => {
   const { isLogin, setLogin, setLogout } = useLoginStore();
   const navigateTo = useNavigate();
   const location = useLocation();
+  const { setUserInfo } = useUserInfoStore(); // 스토어에서 상태와 함수 가져오기
+
+  const fetchUserInfo = async () => {
+        try {
+          const data = await getMyInfo();
+          setUserInfo({
+            isInitialized: true,
+            userId: data.memberId,
+            name: data.name,
+            email: data.email,
+            provider: data.provider,
+            providerId: data.providerId,
+            nickname: data.nickname,
+            assets: data.assets,
+            birth: data.birth,
+            collections: data.collections || [],
+          });
+          console.log("User Info:", {
+            memberId: data.memberId,
+            username: data.name,
+            email: data.email,
+            provider: data.provider,
+            providerId: data.providerId,
+            nickname: data.nickname,
+            assets: data.assets,
+            birth: data.birth,
+            collections: data.collections || [],
+          });
+        } catch (error) {
+          console.error("Failed to fetch user info:", error);
+        }
+      };
 
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
         // 1. URL에서 인증 코드 확인
+        console.log("쿼리코드로 시작");
         const queryCode = query.get("code");
         if (queryCode) {
           try {
+            console.log("쿼리코드 내부", queryCode);
             const response = await getOAuthAccessToken(queryCode);
             if (response?.accessToken) {
               setLogin();
+              fetchUserInfo()
               navigateTo("/", { replace: true });
               setIsLoading(false);
               return;
@@ -43,17 +114,21 @@ const PrivateRoute = () => {
         const storedToken = localStorage.getItem("accessToken");
 
         if (storedToken) {
+          console.log("로컬 토큰으로 시작");
           setLogin();
+          fetchUserInfo()
           setIsLoading(false);
           return;
         }
 
         // 3. refreshToken으로 accessToken 재발급 시도
         try {
+          console.log("리프레시 토큰으로 시작");
           const newAccessToken = await getRefreshToken();
           if (newAccessToken) {
             localStorage.setItem("accessToken", newAccessToken);
             setLogin();
+            fetchUserInfo()
             setIsLoading(false);
             return;
           } else {
