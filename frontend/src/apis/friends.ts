@@ -1,13 +1,11 @@
 import axios from "axios";
 import { FriendRequestResponse } from "@/types/FriendsTypes"; // 새로운 타입 정의 필요
 
-export const sendFriendRequest = async (
-  memberId: number
-): Promise<FriendRequestResponse> => {
+export const sendFriendRequest = async (memberId: number) => {
   try {
     // localStorage에서 토큰을 가져옵니다.
     const token = localStorage.getItem("accessToken");
-    console.log("토큰 확인:", token); // 디버깅용 로그
+    // console.log("토큰 확인:", token); // 디버깅용 로그
 
     // 토큰이 없는 경우 예외를 발생시킵니다.
     if (!token) {
@@ -27,14 +25,14 @@ export const sendFriendRequest = async (
     );
 
     if (response.data.status === "success") {
-      console.log("친구 신청 성공:", response.data.message);
+      // console.log("친구 신청 성공:", response.data.message);
       return response.data;
     } else {
-      console.error("친구 신청 실패:", response.data.message);
+      // console.error("친구 신청 실패:", response.data.message);
       throw new Error(response.data.message || "친구 신청에 실패했습니다.");
     }
   } catch (error) {
-    console.error("sendFriendRequest 요청 실패:", error);
-    throw error;
+    // console.error("sendFriendRequest 요청 실패:", error);
+    // throw error;
   }
 };

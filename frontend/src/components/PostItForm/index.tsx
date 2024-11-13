@@ -67,7 +67,7 @@ const PostItForm: React.FC<FormProps> = ({
       } catch {
         ("");
       } finally {
-        console.log("화면단 생성완료");
+        // console.log("화면단 생성완료");
         onClose();
       }
       // setIsPostItChanged(true);
@@ -78,7 +78,7 @@ const PostItForm: React.FC<FormProps> = ({
       } catch {
         ("");
       } finally {
-        console.log("화면단 수정완료");
+        // console.log("화면단 수정완료");
         onClose();
       }
 

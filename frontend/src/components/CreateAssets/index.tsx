@@ -69,7 +69,7 @@ export const CreateAssets: React.FC<{
         throw new Error("이미지 생성에 실패했습니다.");
       }
     } catch (error) {
-      console.error("이미지 생성 실패:", error);
+      // console.error("이미지 생성 실패:", error);
       setError("이미지를 생성하는 중 오류가 발생했습니다.");
       onImageGenerated?.(false);
     } finally {

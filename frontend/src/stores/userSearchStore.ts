@@ -28,7 +28,7 @@ export const useUserSearchStore = create<UserSearchStore>((set) => ({
         searchResults: Array.isArray(data.data) ? data.data : null,
       }));
     } catch (error) {
-      console.error("검색 중 오류 발생:", error);
+      // console.error("검색 중 오류 발생:", error);
       set(() => ({ searchResults: null }));
     }
   },
