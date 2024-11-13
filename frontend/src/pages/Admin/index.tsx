@@ -9,8 +9,8 @@ import { useReportStore } from '@/stores/reportStore';
 import { useEffect, useState } from 'react';
 import { updateReportStatus } from '@/apis/reportService';
 import ReportList from '@/components/ReportList';
-import CompletedReports from '@/components/CompletedReports';
-import DeniedReports from '@/components/DeniedReports';
+// import CompletedReports from '@/components/CompletedReports';
+// import DeniedReports from '@/components/DeniedReports';
 import Pagination from '@/components/ReportPagination';
 
 export const Admin = () => {
@@ -100,9 +100,9 @@ export const Admin = () => {
           hasReports={reports.length > 0}
         />
         
-        <CompletedReports completedReports={completedReports} />
+        {/* <CompletedReports completedReports={completedReports} /> */}
         
-        <DeniedReports deniedReports={deniedReports} />
+        {/* <DeniedReports deniedReports={deniedReports} /> */}
 
         <section>
           <h2>테마 생성/수정/삭제</h2>
@@ -110,8 +110,8 @@ export const Admin = () => {
         </section>
       </main>
       <div css={adminBtnContainer}>
-        <button>저장</button>
-        <button>취소</button>
+        {/* <button>저장</button>
+        <button>취소</button> */}
       </div>
     </div>
   );
