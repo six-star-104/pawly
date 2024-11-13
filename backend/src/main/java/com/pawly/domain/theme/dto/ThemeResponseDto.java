@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ThemeResponseDto {
 
-    private Long theme;
+    private Long themeId;
     private String themeName;
 
     @Setter
@@ -21,7 +21,7 @@ public class ThemeResponseDto {
     private boolean flag;
 
     public ThemeResponseDto(Theme theme) {
-        this.theme = theme.getThemeId();
+        this.themeId = theme.getThemeId();
         this.themeName = theme.getThemeName();
         this.fontColor = theme.getFontColor();
         this.borderColor = theme.getBorderColor();
