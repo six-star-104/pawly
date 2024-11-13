@@ -5,6 +5,7 @@ import com.pawly.domain.friend.entity.FriendRequest;
 import com.pawly.domain.friend.repository.FriendRepository;
 import com.pawly.domain.friend.repository.FriendRequestRepository;
 import com.pawly.domain.member.entity.Member;
+import com.pawly.domain.member.repository.MemberRepository;
 import com.pawly.domain.member.service.MemberServiceImpl;
 import com.pawly.global.exception.ErrorCode;
 import com.pawly.global.response.ApiResponse;
@@ -24,6 +25,7 @@ public class FriendStatusService {
     private final FriendRequestRepository friendRequestRepository;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
     private final MemberServiceImpl memberService;
+    private final MemberRepository memberRepository;
 
     @Transactional
     public ApiResponse<?> updateFriend(String email, Long friendId, Boolean status) {
@@ -64,5 +66,24 @@ public class FriendStatusService {
 
     private boolean checkIfFriendExists(Long memberId, Long memberId2) {
         return friendRepository.existsByMemberAndTargetMember(memberId, memberId2);
+    }
+
+    @Transactional
+    public ApiResponse<?> requestFriend(String email, Long memberId) {
+        Member member = memberService.findByEmail2(email);
+        if (member == null) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+
+        Optional<Member> member2 = memberRepository.findById(memberId);
+        if(member2.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+
+        Member receive = member2.get();
+
+        Optional<FriendRequest> optionalFriendRequest = friendRequestRepository.findByReceiverIdAndSenderId(receive, member);
+        if (optionalFriendRequest.isEmpty()) return ApiResponse.createError(ErrorCode.FRIEND_NOT_REQUEST);
+
+        FriendRequest friendRequest = optionalFriendRequest.get();
+        friendRequestRepository.delete(friendRequest);
+
+        return ApiResponse.createSuccessWithNoContent("친구 신청 삭제 성공");
     }
 }

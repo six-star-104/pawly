@@ -49,4 +49,9 @@ public class FriendController {
     public ApiResponse<?> updateFriend(Authentication authentication, @RequestBody FriendStatusDto friendStatusDto) {
         return friendStatusService.updateFriend(authentication.getName(), friendStatusDto.getFriendId(), friendStatusDto.getStatus());
     }
+
+    @DeleteMapping("/request")
+    public ApiResponse<?> requestFriend(Authentication authentication, @RequestBody FriendRequestDto requestDto) {
+        return friendStatusService.requestFriend(authentication.getName(), requestDto.getMemberId());
+    }
 }
