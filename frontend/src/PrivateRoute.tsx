@@ -6,40 +6,38 @@ import useLoginStore from "@/stores/loginStore";
 import { getMyInfo } from "@/apis/myPageService"; // 사용자 정보 API 가져오기
 import { useUserInfoStore } from "./stores/userInfoStore";
 
- 
-
-  // 사용자가 메인 페이지에 들어오면 사용자 정보를 스토어에 저장
-  // useEffect(() => {
-  //   const fetchUserInfo = async () => {
-  //     try {
-  //       const data = await getMyInfo();
-  //       setUserInfo({
-  //         isInitialized: true,
-  //         userId: data.memberId,
-  //         name: data.name,
-  //         email: data.email,
-  //         provider: data.provider,
-  //         providerId: data.providerId,
-  //         nickname: data.nickname,
-  //         assets: data.assets,
-  //         birth: data.birth,
-  //         collections: data.collections || [],
-  //       });
-  //       console.log("User Info:", {
-  //         memberId: data.memberId,
-  //         username: data.name,
-  //         email: data.email,
-  //         provider: data.provider,
-  //         providerId: data.providerId,
-  //         nickname: data.nickname,
-  //         assets: data.assets,
-  //         birth: data.birth,
-  //         collections: data.collections || [],
-  //       });
-  //     } catch (error) {
-  //       console.error("Failed to fetch user info:", error);
-  //     }
-  //   };
+// 사용자가 메인 페이지에 들어오면 사용자 정보를 스토어에 저장
+// useEffect(() => {
+//   const fetchUserInfo = async () => {
+//     try {
+//       const data = await getMyInfo();
+//       setUserInfo({
+//         isInitialized: true,
+//         userId: data.memberId,
+//         name: data.name,
+//         email: data.email,
+//         provider: data.provider,
+//         providerId: data.providerId,
+//         nickname: data.nickname,
+//         assets: data.assets,
+//         birth: data.birth,
+//         collections: data.collections || [],
+//       });
+//       console.log("User Info:", {
+//         memberId: data.memberId,
+//         username: data.name,
+//         email: data.email,
+//         provider: data.provider,
+//         providerId: data.providerId,
+//         nickname: data.nickname,
+//         assets: data.assets,
+//         birth: data.birth,
+//         collections: data.collections || [],
+//       });
+//     } catch (error) {
+//       console.error("Failed to fetch user info:", error);
+//     }
+//   };
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
 };
@@ -47,41 +45,41 @@ const useQuery = () => {
 const PrivateRoute = () => {
   const query = useQuery();
   const [isLoading, setIsLoading] = useState(true);
-  const { isLogin, setLogin, setLogout } = useLoginStore();
+  const { isLogin, setLogin, setLogout, setAccessToken } = useLoginStore();
   const navigateTo = useNavigate();
   const location = useLocation();
   const { setUserInfo } = useUserInfoStore(); // 스토어에서 상태와 함수 가져오기
 
   const fetchUserInfo = async () => {
-        try {
-          const data = await getMyInfo();
-          setUserInfo({
-            isInitialized: true,
-            userId: data.memberId,
-            name: data.name,
-            email: data.email,
-            provider: data.provider,
-            providerId: data.providerId,
-            nickname: data.nickname,
-            assets: data.assets,
-            birth: data.birth,
-            collections: data.collections || [],
-          });
-          console.log("User Info:", {
-            memberId: data.memberId,
-            username: data.name,
-            email: data.email,
-            provider: data.provider,
-            providerId: data.providerId,
-            nickname: data.nickname,
-            assets: data.assets,
-            birth: data.birth,
-            collections: data.collections || [],
-          });
-        } catch (error) {
-          console.error("Failed to fetch user info:", error);
-        }
-      };
+    try {
+      const data = await getMyInfo();
+      setUserInfo({
+        isInitialized: true,
+        userId: data.memberId,
+        name: data.name,
+        email: data.email,
+        provider: data.provider,
+        providerId: data.providerId,
+        nickname: data.nickname,
+        assets: data.assets,
+        birth: data.birth,
+        collections: data.collections || [],
+      });
+      console.log("User Info:", {
+        memberId: data.memberId,
+        username: data.name,
+        email: data.email,
+        provider: data.provider,
+        providerId: data.providerId,
+        nickname: data.nickname,
+        assets: data.assets,
+        birth: data.birth,
+        collections: data.collections || [],
+      });
+    } catch (error) {
+      console.error("Failed to fetch user info:", error);
+    }
+  };
 
   useEffect(() => {
     const checkAuthentication = async () => {
@@ -94,8 +92,9 @@ const PrivateRoute = () => {
             console.log("쿼리코드 내부", queryCode);
             const response = await getOAuthAccessToken(queryCode);
             if (response?.accessToken) {
+              // setAccessToken(response.accessToken)
               setLogin();
-              fetchUserInfo()
+              fetchUserInfo();
               navigateTo("/", { replace: true });
               setIsLoading(false);
               return;
@@ -116,7 +115,8 @@ const PrivateRoute = () => {
         if (storedToken) {
           console.log("로컬 토큰으로 시작");
           setLogin();
-          fetchUserInfo()
+          fetchUserInfo();
+          navigateTo("/", { replace: true });
           setIsLoading(false);
           return;
         }
@@ -128,7 +128,8 @@ const PrivateRoute = () => {
           if (newAccessToken) {
             localStorage.setItem("accessToken", newAccessToken);
             setLogin();
-            fetchUserInfo()
+            fetchUserInfo();
+            navigateTo("/", { replace: true });
             setIsLoading(false);
             return;
           } else {
