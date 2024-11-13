@@ -45,10 +45,10 @@ export const useReportStore = create<ReportStore>((set) => ({
           totalReports: response.totalElements,
         }));
       } else {
-        console.warn("신고 내역을 불러오지 못했습니다: 응답 데이터가 올바르지 않습니다.");
+        // console.warn("신고 내역을 불러오지 못했습니다: 응답 데이터가 올바르지 않습니다.");
       }
     } catch (error) {
-      console.error("신고 내역을 불러오는 중 오류:", error);
+      // console.error("신고 내역을 불러오는 중 오류:", error);
     }
   },
 }));

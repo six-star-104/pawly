@@ -33,7 +33,7 @@ export const SignUp = () => {
           providerId: response.providerId,
         });
       } catch (error) {
-        console.error(error);
+        // console.error(error);
       }
     };
 
@@ -69,12 +69,12 @@ export const SignUp = () => {
         await kakaoLogin();
       }
       if (signUpState.provider === "google") {
-        console.log("구글로그인");
+        // console.log("구글로그인");
         await googleLogin();
       }
       navigateTo("/");
     } catch (error) {
-      console.error("Sign up failed:", error);
+      // console.error("Sign up failed:", error);
     }
   };
 

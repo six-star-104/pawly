@@ -51,7 +51,7 @@ const useEasterEggStore = create<EasterEggStore>((set) => ({
         };
       });
     } catch (error) {
-      console.error("도전과제 완료 중 오류:", error);
+      // console.error("도전과제 완료 중 오류:", error);
     }
   },
 

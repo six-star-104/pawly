@@ -1,12 +1,12 @@
 import { axiosInstance } from "./axiosInstance";
-import { IReceiveLetterList, ISendLetterList } from "@/types/letterTypes";
+// import { IReceiveLetterList, ISendLetterList } from "@/types/letterTypes";
 
 export const getReceiveLetterList = async (
   pageNumber: number,
   pageSize: number,
   sortType: string,
   sortBy: string
-): Promise<IReceiveLetterList> => {
+) => {
   try {
     const response = await axiosInstance.get(`receiveLetter`, {
       params: {
@@ -18,8 +18,8 @@ export const getReceiveLetterList = async (
     });
     return response.data.data;
   } catch (error) {
-    console.error("get receive letter list failed: ", error);
-    throw error;
+    // console.error("get receive letter list failed: ", error);
+    // throw error;
   }
 };
 
@@ -30,8 +30,8 @@ export const getReceiveLetterDetail = async (receiveLetterId: number) => {
     );
     return response.data.data;
   } catch (error) {
-    console.error("get receive letter detail failed", error);
-    throw error;
+  //   console.error("get receive letter detail failed", error);
+  //   throw error;
   }
 };
 
@@ -42,8 +42,8 @@ export const deleteReveiveLetter = async (receiveLetterId: number) => {
     );
     return response.data;
   } catch (error) {
-    console.error("delete receive letter failed", error);
-    throw error;
+  //   console.error("delete receive letter failed", error);
+  //   throw error;
   }
 };
 
@@ -58,8 +58,8 @@ export const reactToReceiveLetter = async (
     );
     return response.data;
   } catch (error) {
-    console.error("react to receive letter detail failed", error);
-    throw error;
+    // console.error("react to receive letter detail failed", error);
+    // throw error;
   }
 };
 
@@ -70,8 +70,8 @@ export const reportReveiveLetter = async (receiveLetterId: number) => {
     );
     return response.data;
   } catch (error) {
-    console.error("report letter failed", error);
-    throw error;
+    // console.error("report letter failed", error);
+    // throw error;
   }
 };
 
@@ -79,7 +79,7 @@ export const getSendLetterList = async (
   pageNumber: number,
   pageSize: number,
   sortType: string
-): Promise<ISendLetterList> => {
+) => {
   try {
     const response = await axiosInstance.get(`sendLetter`, {
       params: {
@@ -90,8 +90,8 @@ export const getSendLetterList = async (
     });
     return response.data.data;
   } catch (error) {
-    console.error("get send letter list failed: ", error);
-    throw error;
+    // console.error("get send letter list failed: ", error);
+    // throw error;
   }
 };
 
@@ -100,8 +100,8 @@ export const getSendLetterDetail = async (sendLetterId: number) => {
     const response = await axiosInstance.get(`sendLetter/${sendLetterId}`);
     return response.data.data;
   } catch (error) {
-    console.error("get send letter detail failed", error);
-    throw error;
+    // console.error("get send letter detail failed", error);
+    // throw error;
   }
 };
 
@@ -133,11 +133,11 @@ export const postLetter = async (
         "Content-Type": "multipart/form-data",
       },
     });
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
-    console.log("post letter failed", error);
-    throw error;
+    // console.log("post letter failed", error);
+    // throw error;
   }
 };
 
@@ -146,7 +146,7 @@ export const deleteSendLetter = async (sendLetterId: number) => {
     const response = await axiosInstance.delete(`sendLetter/${sendLetterId}`);
     return response.data;
   } catch (error) {
-    console.error("delete send letter failed", error);
-    throw error;
+    // console.error("delete send letter failed", error);
+    // throw error;
   }
 };

@@ -32,7 +32,7 @@ const useFetchRollingpaper = () => {
       }
       setPostits([...postits, ...res.data.data.content]);
     } catch (err) {
-      console.error("포스트잇 조회 오류:", err);
+      // console.error("포스트잇 조회 오류:", err);
     }
   };
 
@@ -58,7 +58,7 @@ const useFetchRollingpaper = () => {
       setLoading(false);
     } catch (err) {
       setLoading(false);
-      console.error("포스트잇 생성 오류:", err);
+      // console.error("포스트잇 생성 오류:", err);
     }
   };
 
@@ -70,7 +70,7 @@ const useFetchRollingpaper = () => {
       setPostits(postits.filter((p) => p.postItId !== postitId));
     } catch (err) {
       setLoading(false);
-      console.error("포스트잇 삭제 오류:", err);
+      // console.error("포스트잇 삭제 오류:", err);
     }
   };
 
@@ -86,7 +86,7 @@ const useFetchRollingpaper = () => {
       );
     } catch (err) {
       setLoading(false);
-      console.error("포스트잇 수정 오류:", err);
+      // console.error("포스트잇 수정 오류:", err);
     }
   };
 

@@ -53,6 +53,7 @@ const PrivateRoute = () => {
   const fetchUserInfo = async () => {
     try {
       const data = await getMyInfo();
+      if (!data) return;
       setUserInfo({
         isInitialized: true,
         userId: data.memberId,
@@ -65,19 +66,8 @@ const PrivateRoute = () => {
         birth: data.birth,
         collections: data.collections || [],
       });
-      console.log("User Info:", {
-        memberId: data.memberId,
-        username: data.name,
-        email: data.email,
-        provider: data.provider,
-        providerId: data.providerId,
-        nickname: data.nickname,
-        assets: data.assets,
-        birth: data.birth,
-        collections: data.collections || [],
-      });
     } catch (error) {
-      console.error("Failed to fetch user info:", error);
+      // console.error("Failed to fetch user info:", error);
     }
   };
 
@@ -85,14 +75,14 @@ const PrivateRoute = () => {
     const checkAuthentication = async () => {
       try {
         // 1. URL에서 인증 코드 확인
-        console.log("쿼리코드로 시작");
+        // console.log("쿼리코드로 시작");
         const queryCode = query.get("code");
         if (queryCode) {
           try {
-            console.log("쿼리코드 내부", queryCode);
+            // console.log("쿼리코드 내부", queryCode);
             const response = await getOAuthAccessToken(queryCode);
             if (response?.accessToken) {
-              // setAccessToken(response.accessToken)
+              setAccessToken(response.accessToken);
               setLogin();
               fetchUserInfo();
               navigateTo("/", { replace: true });
@@ -100,11 +90,11 @@ const PrivateRoute = () => {
               return;
             } else {
               // OAuth 토큰 발급은 성공했지만 accessToken이 없는 경우
-              console.error("OAuth token response missing accessToken");
+              // console.error("OAuth token response missing accessToken");
               setLogout();
             }
           } catch (error) {
-            console.error("OAuth token error:", error);
+            // console.error("OAuth token error:", error);
             setLogout();
           }
         }
@@ -113,7 +103,8 @@ const PrivateRoute = () => {
         const storedToken = localStorage.getItem("accessToken");
 
         if (storedToken) {
-          console.log("로컬 토큰으로 시작");
+          // console.log("로컬 토큰으로 시작");
+          setAccessToken(storedToken);
           setLogin();
           fetchUserInfo();
           navigateTo("/", { replace: true });
@@ -123,27 +114,28 @@ const PrivateRoute = () => {
 
         // 3. refreshToken으로 accessToken 재발급 시도
         try {
-          console.log("리프레시 토큰으로 시작");
+          // console.log("리프레시 토큰으로 시작");
           const newAccessToken = await getRefreshToken();
           if (newAccessToken) {
             localStorage.setItem("accessToken", newAccessToken);
+            setAccessToken(newAccessToken);
             setLogin();
             fetchUserInfo();
             navigateTo("/", { replace: true });
             setIsLoading(false);
             return;
           } else {
-            console.error("Failed to get new access token");
+            // console.error("Failed to get new access token");
             setLogout();
           }
         } catch (error) {
-          console.error("Refresh token error:", error);
+          // console.error("Refresh token error:", error);
           setLogout();
         }
 
         navigateTo("/login", { replace: true, state: { from: location } });
       } catch (error) {
-        console.error("Authentication check failed:", error);
+        // console.error("Authentication check failed:", error);
         setLogout();
         setIsLoading(false);
         navigateTo("/login", { replace: true, state: { from: location } });

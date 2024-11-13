@@ -38,8 +38,8 @@ export const LetterWrite: React.FC<LetterWriteProps> = ({
         onClose();
       }, 1500);
     } catch (error) {
-      console.error("Failed to send the letter", error);
-      throw error;
+      // console.error("Failed to send the letter", error);
+      // throw error;
     }
   };
 

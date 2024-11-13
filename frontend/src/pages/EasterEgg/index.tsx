@@ -50,12 +50,12 @@ export const EasterEgg = () => {
     const fetchEasterEggs = async () => {
       try {
         const response = await getEasterEggs(); // 실제 조회 API 호출 함수
-        if (response.status === 'success') {
-          setEasterEggs(response.data); // 스토어에 원본 데이터를 저장
-          console.log("조회된 과제들:", response.data); // 콘솔에 과제 데이터 출력
+        if (response?.status === 'success') {
+          setEasterEggs(response?.data); // 스토어에 원본 데이터를 저장
+          // console.log("조회된 과제들:", response.data); // 콘솔에 과제 데이터 출력
         }
       } catch (error) {
-        console.error("도전과제 데이터 조회 실패:", error);
+        // console.error("도전과제 데이터 조회 실패:", error);
       }
     };
   
@@ -71,7 +71,7 @@ export const EasterEgg = () => {
     setProgress(progressPercentage);
   
     // 콘솔에 현재 challenges 상태 출력
-    console.log("현재 저장된 과제들 (challenges):", challenges);
+    // console.log("현재 저장된 과제들 (challenges):", challenges);
   }, [challenges]);
   
   const close = () => {
@@ -103,9 +103,9 @@ export const EasterEgg = () => {
       // 도전과제 완료 API 호출 및 상태 업데이트
       await markEasterEggComplete(selectedChallenge.easterEggId);
       closeCompleteModal();
-      console.log(`도전과제 ${selectedChallenge.easterEggId} 완료 처리되었습니다.`);
+      // console.log(`도전과제 ${selectedChallenge.easterEggId} 완료 처리되었습니다.`);
     } catch (error) {
-      console.error("도전과제 완료 중 오류 발생:", error);
+      // console.error("도전과제 완료 중 오류 발생:", error);
     }
   };
 

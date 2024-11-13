@@ -62,7 +62,7 @@ export const Friends = () => {
   const [receivedRequests, setReceivedRequests] = useState<Member[]>([]);
   const [sentRequests, setSentRequests] = useState<Member[]>([]);
   const [friends, setFriends] = useState<Member[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -105,8 +105,8 @@ export const Friends = () => {
     try {
       const response = await getMemberInfo(memberId);
 
-      console.log("회원 정보 응답 데이터:", response.data);
-
+      // console.log("회원 정보 응답 데이터:", response.data);
+      if(!response) return
       if (response.status === "success" && response.data) {
         const memberData: Member = {
           nickname: response.data.nickname,
@@ -118,10 +118,10 @@ export const Friends = () => {
         setSelectedMember(memberData);
         setIsDetailModalOpen(true);
       } else {
-        console.error("회원 정보가 비어 있거나 잘못된 응답입니다.");
+        // console.error("회원 정보가 비어 있거나 잘못된 응답입니다.");
       }
     } catch (error) {
-      console.error("회원 정보 조회 중 오류가 발생했습니다:", error);
+      // console.error("회원 정보 조회 중 오류가 발생했습니다:", error);
     }
   };
 
@@ -131,7 +131,7 @@ export const Friends = () => {
   };
 
   const handleSend = () => {
-    console.log("전송된 메시지:", message);
+    // console.log("전송된 메시지:", message);
     setMessage("");
     closeMessageModal();
   };
@@ -150,21 +150,22 @@ export const Friends = () => {
       return;
     }
 
-    setIsLoading(true);
+    // setIsLoading(true);
     setError(null);
     setSearchResults([]);
 
     try {
       const results = await searchUserByNickname(searchTerm);
+      if(!results) return
       const modifiedResults = results
         .filter((user: Member) => user.memberId !== myMemberId)
         .map((user: Member) => ({ ...user, friendId: undefined }));
       setSearchResults(modifiedResults);
     } catch (error) {
       setError("검색에 실패했습니다. 다시 시도해 주세요.");
-      console.error("검색 오류:", error);
+      // console.error("검색 오류:", error);
     } finally {
-      setIsLoading(false);
+      // setIsLoading(false);
     }
   };
 
@@ -180,8 +181,8 @@ export const Friends = () => {
       } else {
         openAlertModal("친구 요청에 실패했습니다.");
       }
-    } catch (error: any) {
-      console.error("친구 요청 오류:", error);
+    } catch (error) {
+      // console.error("친구 요청 오류:", error);
       openAlertModal("친구 요청 중 오류가 발생했습니다.");
     } finally {
       setIsProcessing(false);
@@ -194,14 +195,14 @@ export const Friends = () => {
     setIsProcessing(true);
     try {
       const response = await deleteFriend(memberId);
-      if (response.status === "success") {
+      if (response?.status === "success") {
         openAlertModal("친구를 삭제했습니다.");
         setFriends(prev => prev.filter(friend => friend.memberId !== memberId));
       } else {
         openAlertModal("친구 삭제에 실패했습니다.");
       }
-    } catch (error: any) {
-      console.error("친구 삭제 오류:", error);
+    } catch (error) {
+      // console.error("친구 삭제 오류:", error);
       openAlertModal("친구 삭제 중 오류가 발생했습니다.");
     } finally {
       setIsProcessing(false);
@@ -215,7 +216,7 @@ export const Friends = () => {
     try {
       const response = await respondToFriendRequest(friendId, isAccepted);
 
-      if (response.status === "success") {
+      if (response?.status === "success") {
         setReceivedRequests(prevRequests =>
           prevRequests.filter(request => request.friendId !== friendId)
         );
@@ -225,8 +226,8 @@ export const Friends = () => {
       } else {
         openAlertModal("요청 처리에 실패했습니다. 다시 시도해주세요.");
       }
-    } catch (error: any) {
-      console.error("친구 요청 처리 오류:", error);
+    } catch (error) {
+      // console.error("친구 요청 처리 오류:", error);
       openAlertModal("친구 요청 처리 중 오류가 발생했습니다.");
     } finally {
       setIsProcessing(false);
@@ -235,28 +236,29 @@ export const Friends = () => {
 
   useEffect(() => {
     const fetchFriends = async () => {
-      setIsLoading(true);
+      // setIsLoading(true);
       try {
         const response = await getFriendList();
+        if(!response) return
         if (response.status === "success") {
           setFriends(response.data);
         } else {
           setError("친구 목록을 불러오는 데 실패했습니다.");
         }
       } catch (error) {
-        console.error("친구 목록 조회 오류:", error);
+        // console.error("친구 목록 조회 오류:", error);
         setError("친구 목록을 불러오는 데 실패했습니다.");
       } finally {
-        setIsLoading(false);
+        // setIsLoading(false);
       }
     };
 
     const fetchFriendRequests = async () => {
-      setIsLoading(true);
+      // setIsLoading(true);
       try {
         const receivedResponse = await getFriendRequestsReceived();
         const sentResponse = await getFriendRequestsSent();
-
+        if(!receivedResponse||!sentResponse) return
         if (receivedResponse.status === "success" && sentResponse.status === "success") {
           setReceivedRequests(receivedResponse.data);
           setSentRequests(sentResponse.data);
@@ -264,10 +266,10 @@ export const Friends = () => {
           setError("친구 요청 목록을 불러오는 데 실패했습니다.");
         }
       } catch (error) {
-        console.error("친구 요청 목록 조회 오류:", error);
+        // console.error("친구 요청 목록 조회 오류:", error);
         setError("친구 요청 목록을 불러오는 데 실패했습니다.");
       } finally {
-        setIsLoading(false);
+        // setIsLoading(false);
       }
     };
 
@@ -279,7 +281,7 @@ export const Friends = () => {
   }, [activeTab]);
 
   //빌드 오류 제거
-  console.log(isLoading)
+  // console.log(isLoading)
 
   return (
     <div css={Container}>
