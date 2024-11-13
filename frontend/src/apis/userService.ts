@@ -1,15 +1,15 @@
 import axios from "axios";
 import { axiosInstance, flaskAxiosInstance } from "./axiosInstance";
-import { UserInfoType, LoginResponseType, SignUpType } from "@/types/UserTypes";
+import { UserInfoType, SignUpType } from "@/types/UserTypes";
 export const kakaoLogin = async () => {
   try {
     const response = await axios.get(`oauth/login/kakao`);
-    console.log(response.data);
+    // console.log(response.data);
     window.location.replace(response.data.url);
     return response.data;
   } catch (error) {
-    console.error("kakao Login failed:", error);
-    throw error;
+    // console.error("kakao Login failed:", error);
+    // throw error;
   }
 };
 
@@ -18,14 +18,14 @@ export const googleLogin = async () => {
     const response = await axios.get(`oauth/login/google`);
     window.location.replace(response.data.url);
   } catch (error) {
-    console.error("Google Login failed:", error);
-    throw error;
+    // console.error("Google Login failed:", error);
+    // throw error;
   }
 };
 
 export const getOAuthInformation = async (
   token: string
-): Promise<UserInfoType> => {
+) => {
   try {
     const response = await axios.get(`oauth/get-oauth-info`, {
       params: {
@@ -34,14 +34,14 @@ export const getOAuthInformation = async (
     });
     return response.data.data;
   } catch (error) {
-    console.error("getOAuthInformation failed:", error);
-    throw error;
+    // console.error("getOAuthInformation failed:", error);
+    // throw error;
   }
 };
 
 export const getOAuthAccessToken = async (
   code: string
-): Promise<LoginResponseType> => {
+) => {
   try {
     const response = await axios.get(`oauth/get-member-token`, {
       params: {
@@ -51,16 +51,18 @@ export const getOAuthAccessToken = async (
     const accessToken = response.data.data.accessToken;
     let userInfo: UserInfoType;
     if (accessToken) {
+      
       userInfo = await getOAuthInformation(accessToken);
+      // console.log("우저정보"+userInfo)
       localStorage.setItem("accessToken", accessToken);
     } else {
-      console.error("No access Token received from server");
+      // console.error("No access Token received from server");
       throw new Error("No access Token received from server");
     }
     return { accessToken, userInfo };
   } catch (error) {
-    console.error(error);
-    throw error;
+    // console.error(error);
+    // throw error;
   }
 };
 
@@ -95,30 +97,30 @@ export const signUp = async (signUpForm: SignUpType) => {
       },
     });
   } catch (error) {
-    console.log(error);
-    throw error;
+    // console.log(error);
+    // throw error;
   }
 };
 
-export const isNicknameDup = async (nickname: string): Promise<boolean> => {
+export const isNicknameDup = async (nickname: string) => {
   try {
     const response = await axios.post(`member/check/exist-nickname`, {
       nickname: nickname,
     });
     return response.data.data;
   } catch (error) {
-    console.error(error);
-    throw error;
+    // console.error(error);
+    // throw error;
   }
 };
 
-export const getUserInfo = async (): Promise<UserInfoType> => {
+export const getUserInfo = async ()=> {
   try {
     const response = await axiosInstance.get(`member/profile`);
     return response.data.data;
   } catch (error) {
-    console.error("get user info failed: ", error);
-    throw error;
+    // console.error("get user info failed: ", error);
+    // throw error;
   }
 };
 
@@ -126,8 +128,8 @@ export const logout = async () => {
   try {
     await axiosInstance.post(`member/logout`, "");
   } catch (error) {
-    console.error("logout failed: ", error);
-    throw error;
+    // console.error("logout failed: ", error);
+    // throw error;
   }
 };
 
@@ -140,7 +142,7 @@ export const makeAsset = async (word: string) => {
     });
     return response.data;
   } catch (error) {
-    console.error("translate failed", error);
-    throw error;
+    // console.error("translate failed", error);
+    // throw error;
   }
 };

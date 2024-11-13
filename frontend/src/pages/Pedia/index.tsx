@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NavButton from "../../assets/icons/NavButton.png";
 import BackButton from "../../assets/icons/BackButton.png";
-import { useUserInfoStore } from "@/stores/mypageStore";
+import { useUserInfoStore } from "@/stores/userInfoStore";
 import { useCollectionStore } from "@/stores/collectionStore";
 import { 
   BackBtnContainer,
@@ -26,7 +26,7 @@ export const Pedia = () => {
   const [mypageVisible, setMyPageVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
 
-  const { nickname, memberId } = useUserInfoStore();
+  const { nickname, userId } = useUserInfoStore();
   const { collections, fetchCollections, totalCollections } = useCollectionStore();
 
   const navigate = useNavigate();
@@ -34,10 +34,10 @@ export const Pedia = () => {
   const totalPages = Math.ceil(totalCollections / itemsPerPage);
 
   useEffect(() => {
-    if (memberId) {
-      fetchCollections(Number(memberId), currentPage, itemsPerPage);
+    if (userId) {
+      fetchCollections(Number(userId), currentPage, itemsPerPage);
     }
-  }, [memberId, currentPage, fetchCollections]);
+  }, [userId, currentPage, fetchCollections]);
 
   const handleNextPage = () => {
     if (currentPage < totalPages - 1) {

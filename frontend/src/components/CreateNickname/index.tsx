@@ -57,7 +57,7 @@ export const CreateNickname: React.FC<SignupNicknameProps> = ({
       // 부모 컴포넌트로 유효성 전달
       onValidationChange?.(!isDup && !validationError && nickname.length >= 2);
     } catch (error) {
-      console.error("닉네임 중복 체크 실패:", error);
+      // console.error("닉네임 중복 체크 실패:", error);
       onValidationChange?.(false);
     } finally {
       setIsChecking(false);

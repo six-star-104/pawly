@@ -23,7 +23,7 @@ export const useCreateRollingpaper = () => {
     } catch (err) {
       setLoading(false);
       setError("롤링페이퍼 생성 중 오류가 발생했습니다.");
-      console.error("롤링페이퍼 생성 오류:", err);
+      // console.error("롤링페이퍼 생성 오류:", err);
     }
   };
 

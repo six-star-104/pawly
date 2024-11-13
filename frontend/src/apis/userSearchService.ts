@@ -3,7 +3,7 @@ import { UserSearchResponse } from "@/types/UserSearchTypes"; // 새로운 타�
 
 export const searchUserByNickname = async (
   nickname: string
-): Promise<UserSearchResponse["data"]> => {
+) => {
   try {
     // localStorage에서 토큰을 가져옵니다.
     const token = localStorage.getItem("accessToken");
@@ -28,11 +28,11 @@ export const searchUserByNickname = async (
       // console.log("유저 검색 성공:", response.data.data);
       return response.data.data;
     } else {
-      console.error("유저 검색 실패:", response.data.message);
-      throw new Error(response.data.message || "유저 검색에 실패했습니다.");
+      // console.error("유저 검색 실패:", response.data.message);
+  //     throw new Error(response.data.message || "유저 검색에 실패했습니다.");
     }
   } catch (error) {
-    console.error("searchUserByNickname 요청 실패:", error);
-    throw error;
+    // console.error("searchUserByNickname 요청 실패:", error);
+    // throw error;
   }
 };

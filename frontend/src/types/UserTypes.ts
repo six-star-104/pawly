@@ -18,6 +18,8 @@ export type UserInfoType = {
   provider: string;
   providerId: string;
 
+  birth: string | null | undefined;
+  collections: string[];
   nickname: string;
   assets: string;
 };
@@ -52,7 +54,6 @@ export interface MemberInfo {
   assets: string;
 }
 
-
 export interface CollectionInfo {
   collections: string[];
 }
@@ -85,9 +86,9 @@ export interface MypageType {
   collections: string[];
 }
 export interface GetMyInfoResponse {
-  status: string;           
-  data: ProfileData;         
-  message: string;          
+  status: string;
+  data: ProfileData;
+  message: string;
 }
 
 export interface UpdateNicknameResponse {
@@ -98,17 +99,17 @@ export interface UpdateNicknameResponse {
 }
 
 export interface GetFriendInfoResponse {
-  status: string; 
+  status: string;
   data: {
     member: {
-      nickname: string; 
-      birth: string; 
-      assets: string; 
+      nickname: string;
+      birth: string;
+      assets: string;
     };
     collection: {
-      collections: any[];  
+      collections: any[];
     };
   };
-  code: null | string; 
-  message: string; 
+  code: null | string;
+  message: string;
 }

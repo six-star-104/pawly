@@ -5,7 +5,7 @@ type UserInfoStore = UserInfoType & {
   setUserInfo: (userInfo: Partial<UserInfoType>) => void;
 };
 
-const useUserInfoStore = create<UserInfoStore>((set) => ({
+export const useUserInfoStore = create<UserInfoStore>((set) => ({
   isInitialized: false,
   userId: "",
   name: "",
@@ -14,7 +14,9 @@ const useUserInfoStore = create<UserInfoStore>((set) => ({
   providerId: "",
   nickname: "",
   assets: "",
+  birth: "",
+  collections: [],
   setUserInfo: (userInfo) => set((state) => ({ ...state, ...userInfo })),
 }));
 
-export default useUserInfoStore;
+// export default useUserInfoStore;

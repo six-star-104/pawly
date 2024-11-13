@@ -5,7 +5,7 @@ import { containerStyle, headerStyle, closeButtonStyle, menuListStyle, menuItemS
 import { FaStickyNote, FaEnvelope, FaTasks, FaGraduationCap, FaPaw, FaUser } from 'react-icons/fa';
 import CancelButton from '../../assets/icons/CancelButton.png';
 import { IHamberger } from '../../types/hambergerTypes'
-import { useUserInfoStore } from '@/stores/mypageStore';
+import { useUserInfoStore } from '@/stores/userInfoStore';
 
 export const Hamberger: React.FC<IHamberger> = ({ closeMyPage }) => { 
   
