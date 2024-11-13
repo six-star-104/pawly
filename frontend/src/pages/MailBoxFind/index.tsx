@@ -8,7 +8,7 @@ export const MailBoxFind = () => {
   const navigate = useNavigate()
   return (
     <>
-      <button css={backButton} onClick={() => navigate(-1)}>
+      <button css={backButton} onClick={() => navigate('/')}>
         <img src={backButtonImg} alt="" />
       </button>
 
