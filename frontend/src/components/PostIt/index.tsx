@@ -18,12 +18,12 @@ export const PostIt: React.FC<PostItProps> = ({
   const randomDir = ["top", "right", "left", "bottom"];
   // 이러면 너무 랜더 될때마다 자꾸 반복돼서, 그냥 말풍선id넘버로 해줄까...?
   const [randomArrow, setRandomArrow] = useState("bottom");
-  const themeStyle = findTheme(props.themeId)
+  const themeStyle = findTheme(props.themeId);
   useEffect(() => {
     setRandomArrow(randomDir[Math.floor(Math.random() * 4)]);
   }, []);
 
-  const speechBubbleSize = ["","mini", "medium"];
+  const speechBubbleSize = ["", "mini", "medium"];
 
   // 나중에 색 정해지면 다 바꿔주기
   // const randomTextColor = ["black", "white", "blue", "red", "yellow"];
@@ -68,7 +68,7 @@ export const PostIt: React.FC<PostItProps> = ({
           props.image ? themeStyle!.borderColor : themeStyle!.background,
           props.image!,
           isPreview,
-          props.font,
+          props.font
         )}
         className={`bubble ${isPreview ? "" : randomArrow} ${
           speechBubbleSize[props.speechBubbleSize - 1]
