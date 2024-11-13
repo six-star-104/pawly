@@ -36,9 +36,20 @@ public class FriendStatusService {
         FriendRequest friendRequest = friendRequestOptional.get();
         Member sender = friendRequest.getSenderId();
 
+        // 이미 친구
+        if(!checkIfFriendExists(member.getMemberId(), sender.getMemberId())) return ApiResponse.createError(ErrorCode.ALREADY_FRIEND);
+
         if (status) {
-            Friend friend = new Friend(sender, member);
-            friendRepository.save(friend);
+            Optional<Friend> optionalFriend = friendRepository.findByFriend(member.getMemberId(), sender.getMemberId());
+            if(optionalFriend.isEmpty()) {
+                Friend friend = new Friend(sender, member);
+                friendRepository.save(friend);
+            }
+            else {
+                Friend friend = optionalFriend.get();
+                friend.changeStatus();;
+            }
+
             friendRequestRepository.delete(friendRequest);
 
             FcmMessageRequestDto request = new FcmMessageRequestDto(sender.getMemberId(), "친구가 추가되었습니다!", "함께 소중한 추억을 만들어가세요!");
@@ -49,5 +60,9 @@ public class FriendStatusService {
 
         friendRequestRepository.delete(friendRequest);
         return ApiResponse.createSuccessWithNoContent("친구 거절 성공");
+    }
+
+    private boolean checkIfFriendExists(Long memberId, Long memberId2) {
+        return friendRepository.existsByMemberAndTargetMember(memberId, memberId2);
     }
 }
