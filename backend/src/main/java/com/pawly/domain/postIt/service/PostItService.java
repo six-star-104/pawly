@@ -2,6 +2,8 @@ package com.pawly.domain.postIt.service;
 
 import com.pawly.domain.collection.service.CollectionService;
 import com.pawly.domain.postIt.dto.*;
+import com.pawly.domain.report.entity.Report;
+import com.pawly.domain.report.enums.Category;
 import com.pawly.domain.report.repository.ReportRepository;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.repository.MemberRepository;
@@ -134,16 +136,20 @@ public class PostItService {
         Optional<Member> requestMember = memberRepository.findByEmail(dto.getMemberName());
         if (requestMember.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
-        Optional<PostIt> postIt = postItRepository.findById(dto.getPostId());
-        if (postIt.isEmpty() || postIt.get().getStatus() == Status.DELETE) {
+        // 포스트잇 없을 때
+        Optional<PostIt> optionalPostIt = postItRepository.findById(dto.getPostId());
+        if (optionalPostIt.isEmpty() || optionalPostIt.get().getStatus() == Status.DELETE)
             return ApiResponse.createError(ErrorCode.POST_IT_NOTFOUND);
-        }
 
-        if (!postIt.get().getRollingPaper().getMember().equals(requestMember.get())) {
-            return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
-        }
+        // 본인 신고 불가능
+        if(Objects.equals(requestMember.get().getMemberId(), optionalPostIt.get().getMember().getMemberId()))
+            return ApiResponse.createError(ErrorCode.BAD_REPORT);
 
-        reportRepository.save(dto.toEntity(requestMember.get(), dto.getPostId()));
+        // 이미 신고 완료
+        Optional<Report> optionalReport = reportRepository.findByMemberAndCategoryAndDetailId(requestMember.get(), Category.ROLLING_PAPER, dto.getPostId());
+        if(optionalReport.isPresent()) return ApiResponse.createError(ErrorCode.ALREADY_REPORT);
+
+        reportRepository.save(dto.toEntity(requestMember.get(), optionalPostIt.get().getMember(), dto.getPostId()));
         return ApiResponse.createSuccessWithNoContent("포스트잇 신고 성공");
     }
 }
