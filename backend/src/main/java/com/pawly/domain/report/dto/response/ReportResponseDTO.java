@@ -19,11 +19,10 @@ public class ReportResponseDTO {
     private Status status;
     private LocalDateTime createdAt;
 
-
     public static ReportResponseDTO toDTO(Report report) {
         return ReportResponseDTO.builder()
             .reportId(report.getReportId())
-            .memberId(report.getMember().getMemberId())
+            .memberId(report.getMember2().getMemberId())
             .category(report.getCategory())
             .detailId(report.getDetailId())
             .content(report.getContent())
