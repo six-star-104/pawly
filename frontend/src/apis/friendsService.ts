@@ -1,5 +1,6 @@
 import { axiosInstance } from "./axiosInstance";
 
+// 친구 신청
 export const postFriendRequest = async (memberId: number) => {
   try {
     await axiosInstance.post(`friend`, memberId);
@@ -9,6 +10,7 @@ export const postFriendRequest = async (memberId: number) => {
   }
 };
 
+// 친구 요청 받은 목록 조회
 export const getFriendRequestsReceived = async () => {
   try {
     const response = await axiosInstance.get("friend/response");
@@ -25,7 +27,7 @@ export const responseToFriendRequest = async (
   status: boolean
 ) => {
   try {
-    const response = await axiosInstance.patch("/friend", {
+    const response = await axiosInstance.patch("friend", {
       friendId,
       status,
     });
@@ -39,8 +41,8 @@ export const responseToFriendRequest = async (
 // 친구 목록 조회 함수
 export const getFriendList = async () => {
   try {
-    const response = await axiosInstance.get("/friend");
-    return response.data;
+    const response = await axiosInstance.get("friend");
+    return response.data.data;
   } catch (error) {
     console.log("get friend list failed", error);
     throw error;
@@ -50,7 +52,7 @@ export const getFriendList = async () => {
 // 친구 신청한 목록 조회 함수
 export const getFriendRequestsSent = async () => {
   try {
-    const response = await axiosInstance.get("/friend/request");
+    const response = await axiosInstance.get("friend/request");
     return response.data.data;
   } catch (error) {
     console.log("get friend request sent failed", error);
@@ -61,20 +63,35 @@ export const getFriendRequestsSent = async () => {
 //친구 삭제
 export const deleteFriend = async (memberId: number) => {
   try {
-    const response = await axiosInstance.delete("friend", memberId);
+    const response = await axiosInstance.delete("friend", {
+      data: { memberId },
+    });
     return response.data;
   } catch (error) {
     console.log("friend delete failed", error);
   }
 };
 
-// 친구 정보 조회 함수
+// 친구 정보 조회
 export const getMemberInfo = async (memberId: number) => {
   try {
     const response = await axiosInstance.get(`/member/${memberId}`);
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.log("get member info failed", error);
+    throw error;
+  }
+};
+
+// 친구 신청 취소
+export const deleteMyRequest = async (memberId: number) => {
+  try {
+    const response = await axiosInstance.delete("friend/request", {
+      data: { memberId },
+    });
+    return response.data.data;
+  } catch (error) {
+    console.log("delete my friend request failed", error);
     throw error;
   }
 };

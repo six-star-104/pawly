@@ -5,7 +5,7 @@ import { Main } from "@/pages/Main";
 import { MailBoxFind } from "./pages/MailBoxFind";
 import { SignUp } from "@/pages/Signup";
 import { MyPage } from "@/pages/MyPage";
-import { Friends } from "./pages/Friends";
+import { Friends } from "@/pages/Friends";
 import { Pedia } from "@/pages/Pedia";
 import { RollingPaper } from "@/pages/RollingPaper";
 import { RollingPaperList } from "./pages/RollingPaperList";
