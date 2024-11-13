@@ -1,6 +1,7 @@
 package com.pawly.domain.rollingPaper.entity;
 
 import com.pawly.domain.member.entity.Member;
+import com.pawly.domain.rollingPaper.enums.Status;
 import com.pawly.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,14 +25,18 @@ public class RollingPaper extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column(name = "delete_flag")
-    private boolean deleteFlag;
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     private int category;
 
     @Column(nullable = false)
     private String title;
 
     public void delete(){
-        this.deleteFlag = true;
+        this.status = Status.DELETE;
     }
+
+    public void close(){ this.status = Status.CLOSE;}
 }

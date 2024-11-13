@@ -137,26 +137,26 @@ public class RollingPaperService {
 
     @Transactional
     public ApiResponse<?> readRollingPaper(String memberName, Long rollingPaperId, int pageNumber, int pageSize, String sortType, String sortBy) {
-        Optional<Member> optionalMember = memberRepository.findByEmail(memberName);
-        if (optionalMember.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+        Optional<Member> member = memberRepository.findByEmail(memberName);
+        if (member.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
-        Member member = optionalMember.get();
+        Member m = member.get();
 
-        Optional<RollingPaper> optionalRollingPaper = rollingPaperRepository.findById(rollingPaperId);
-        if (optionalRollingPaper.isEmpty() || optionalRollingPaper.get().isDeleteFlag()) return ApiResponse.createError(ErrorCode.ROLLING_PAPER_NOTFOUND);
+        Optional<RollingPaper> rollingPaper = rollingPaperRepository.findByRollingPaperId(rollingPaperId);
+        if (rollingPaper.isEmpty()) return ApiResponse.createError(ErrorCode.ROLLING_PAPER_NOTFOUND);
 
-        RollingPaper rollingPaper = optionalRollingPaper.get();
+        RollingPaper r = rollingPaper.get();
 
-        if (!rollingPaper.getMember().equals(member)) return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
+        if (!r.getMember().equals(m)) return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
 
-        if (rollingPaper.getCategory() == 2 && member.getBirth() != null)
-            if(!rollingPaper.getCreatedAt().plusDays(4).isBefore(LocalDateTime.now())) return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
+        if (r.getCategory() == 2 && m.getBirth() != null)
+            if(!r.getCreatedAt().plusDays(4).isBefore(LocalDateTime.now())) return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
 
         Sort sort = sortType.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending()
                 : Sort.by(sortBy).ascending();
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-        Page<PostIt> postIts = postItRepository.findByRollingPaper(rollingPaper, pageable);
+        Page<PostIt> postIts = postItRepository.findByRollingPaper(r, pageable);
 
         List<PostItReadDto> postItReadDtos = new ArrayList<>();
         for (PostIt postIt : postIts) {
@@ -169,7 +169,7 @@ public class RollingPaperService {
             postItReadDtos.add(PostItReadDto.of(postItMember.get(), postIt, theme.get()));
         }
 
-        RollingPaperReadAllDto rollingPaperReadAllDto = RollingPaperReadAllDto.toDto(postItReadDtos, rollingPaper, pageNumber, pageSize, (long) Math.ceil((double) postIts.getTotalElements() / pageSize),postIts.getTotalElements());
+        RollingPaperReadAllDto rollingPaperReadAllDto = RollingPaperReadAllDto.toDto(postItReadDtos, r, pageNumber, pageSize, (long) Math.ceil((double) postIts.getTotalElements() / pageSize),postIts.getTotalElements());
         return ApiResponse.createSuccess(rollingPaperReadAllDto,"롤링페이퍼 상세 조회 성공");
     }
 
@@ -178,7 +178,7 @@ public class RollingPaperService {
         Optional<RollingPaper> rollingPaper = rollingPaperRepository.findById(rollingPaperId);
         if (rollingPaper.isEmpty()) return ApiResponse.createError(ErrorCode.ROLLING_PAPER_NOTFOUND);
         RollingPaper r = rollingPaper.get();
-        if (r.isDeleteFlag()) return ApiResponse.createError(ErrorCode.ROLLING_PAPER_NOTFOUND);
+        if (!r.getStatus().equals(com.pawly.domain.rollingPaper.enums.Status.NOT_DELETE)) return ApiResponse.createError(ErrorCode.ROLLING_PAPER_NOTFOUND);
 
         Member member = r.getMember();
 
@@ -187,7 +187,7 @@ public class RollingPaperService {
 
         if (!member.equals(requestMember.get())) return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
 
-        Optional<Postbox> postbox = Optional.ofNullable(postboxRepository.findByRollingpaper(r));
+        Optional<Postbox> postbox = postboxRepository.findByRollingpaper(r);
         if (postbox.isEmpty()) return ApiResponse.createError(ErrorCode.POSTBOX_NOT_FOUND);
 
         List<PostIt> postIts = postItRepository.findByRollingPaper(r);
@@ -199,5 +199,29 @@ public class RollingPaperService {
         postbox.get().deletePostbox();
 
         return ApiResponse.createSuccessWithNoContent("RollingPaper 삭제 성공");
+    }
+
+    @Transactional
+    public ApiResponse<?> completeRollingPaper(String memberName, Long rollingPaperId) {
+        Optional<Member> member =memberRepository.findByEmail(memberName);
+        if (member.isEmpty()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+
+        Optional<RollingPaper> rollingPaper = rollingPaperRepository.findById(rollingPaperId);
+        if (rollingPaper.isEmpty()) return ApiResponse.createError(ErrorCode.ROLLING_PAPER_NOTFOUND);
+
+        Member m = member.get();
+        RollingPaper r = rollingPaper.get();
+
+        if (r.getMember() != m) return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
+
+        if (!r.getStatus().equals(com.pawly.domain.rollingPaper.enums.Status.NOT_DELETE)) return ApiResponse.createError(ErrorCode.ROLLING_PAPER_NOTFOUND);
+
+        Optional<Postbox> postbox = postboxRepository.findByRollingpaper(r);
+        if (postbox.isEmpty()) return ApiResponse.createError(ErrorCode.POSTBOX_NOT_FOUND);
+
+        postbox.get().deletePostbox();
+        r.close();
+
+        return ApiResponse.createSuccessWithNoContent("RollingPaper 종료 성공");
     }
 }

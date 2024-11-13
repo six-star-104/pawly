@@ -48,7 +48,7 @@ public class PostItService {
 
         RollingPaper r = rollingPaper.get();
 
-        if (r.isDeleteFlag()) return ApiResponse.createError(ErrorCode.ROLLING_PAPER_NOTFOUND);
+        if (!r.getStatus().equals(com.pawly.domain.rollingPaper.enums.Status.NOT_DELETE)) return ApiResponse.createError(ErrorCode.ROLLING_PAPER_NOTFOUND);
 
         Optional<Theme> theme = themeRepository.findById(dto.getThemeId());
         if (theme.isEmpty()) return ApiResponse.createError(ErrorCode.THEME_NOT_FOUND);
