@@ -78,13 +78,17 @@ export const Main = () => {
   };
 
   const adminMove = () => {
-    navigateTo("/admin")
-  }
+    navigateTo("/admin");
+  };
 
+  const arMove = () => {
+    navigateTo("/ar");
+  };
   return (
     <div css={container}>
       <button onClick={handleLogout}>로그아웃</button>
       <button onClick={adminMove}>Admin</button>
+      <button onClick={arMove}>AR 페이지로 이동</button>
       <div css={BtnContainer}>
         {/* <button css={userBtnCss} onClick={userBtn}>
           <img
