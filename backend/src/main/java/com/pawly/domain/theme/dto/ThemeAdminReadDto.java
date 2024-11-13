@@ -9,6 +9,7 @@ import lombok.*;
 @Builder
 public class ThemeAdminReadDto {
 
+    private Long themeId;
     private String themeName;
     private String backgroundColor;
     private String fontColor;
@@ -19,10 +20,12 @@ public class ThemeAdminReadDto {
 
     public static ThemeAdminReadDto of(Theme theme) {
         return ThemeAdminReadDto.builder()
+                .themeId(theme.getThemeId())
                 .themeName(theme.getThemeName())
                 .backgroundColor(theme.getBackgroundColor())
                 .fontColor(theme.getFontColor())
                 .image(theme.getImage())
+                .borderColor(theme.getBorderColor())
                 .base(theme.getBase())
                 .deleteFlag(theme.getDeleteFlag())
                 .build();
