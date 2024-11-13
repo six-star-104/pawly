@@ -13,6 +13,7 @@ import {
   previewContainerStyle,
   themeListStyle,
   themeItemStyle,
+  paginationStyle,
 } from './Theme.styles';
 
 export const Theme = () => {
@@ -23,19 +24,18 @@ export const Theme = () => {
   const [image, setImage] = useState('');
   const [base, setBase] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
-
-  // State for edit mode and selected theme for editing
   const [editMode, setEditMode] = useState(false);
   const [editingThemeId, setEditingThemeId] = useState<number | null>(null);
 
-  // Add fetchThemesFromAPI function from the store
   const { themes, fetchThemesFromAPI, addTheme, updateThemeInStore } = useThemeStore();
 
-  // Fetch all themes on component mount
+  const itemsPerPage = 6; 
+  const [currentPage, setCurrentPage] = useState(1);
+
   useEffect(() => {
     const fetchAllThemes = async () => {
       try {
-        await fetchThemesFromAPI(); // API에서 모든 테마 조회 후 상태 업데이트
+        await fetchThemesFromAPI(); 
       } catch (error) {
         console.error("테마 조회 중 오류:", error);
       }
@@ -43,17 +43,14 @@ export const Theme = () => {
     fetchAllThemes();
   }, []);
 
-  // Handle create or update theme
   const handleCreateOrUpdateTheme = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       if (editMode && editingThemeId !== null) {
-        // Update theme
         const response = await updateTheme(editingThemeId, themeName, backgroundColor, fontColor, borderColor, image, base);
         setMessage(`테마 수정 성공: ${response.message}`);
         updateThemeInStore({ themeId: editingThemeId, themeName, backgroundColor, fontColor, borderColor, image, base, deleteFlag: false });
       } else {
-        // Create theme
         const response = await createTheme(themeName, backgroundColor, fontColor, borderColor, image, base);
         setMessage(`테마 생성 성공: ${response.message}`);
         const newTheme = {
@@ -74,7 +71,6 @@ export const Theme = () => {
     }
   };
 
-  // Reset form fields and exit edit mode
   const resetForm = () => {
     setThemeName('');
     setBackgroundColor('#ffffff');
@@ -86,7 +82,6 @@ export const Theme = () => {
     setEditingThemeId(null);
   };
 
-  // Enter edit mode and populate form with selected theme data
   const handleEditTheme = (theme: any) => {
     setThemeName(theme.themeName);
     setBackgroundColor(theme.backgroundColor);
@@ -98,7 +93,6 @@ export const Theme = () => {
     setEditingThemeId(theme.themeId);
   };
 
-  // Color picker states and handlers
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
   const [currentColorPickerField, setCurrentColorPickerField] = useState<string | null>(null);
 
@@ -115,6 +109,18 @@ export const Theme = () => {
     } else if (currentColorPickerField === 'borderColor') {
       setBorderColor(color.hex);
     }
+  };
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentThemes = themes.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePreviousPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, Math.ceil(themes.length / itemsPerPage)));
   };
 
   return (
@@ -156,24 +162,6 @@ export const Theme = () => {
         {message && <p css={messageStyle}>{message}</p>}
       </form>
 
-      {isColorPickerOpen && (
-        <div style={{ position: 'absolute', top: '60%', left: '10%', zIndex: 1000 }}>
-          <SketchPicker
-            color={
-              currentColorPickerField === 'backgroundColor'
-                ? backgroundColor
-                : currentColorPickerField === 'fontColor'
-                ? fontColor
-                : borderColor
-            }
-            onChange={handleColorChange}
-          />
-          <button onClick={() => setIsColorPickerOpen(false)} css={buttonStyle} style={{ marginTop: '10px' }}>
-            완료
-          </button>
-        </div>
-      )}
-
       <div css={previewContainerStyle}>
         <h3>미리보기</h3>
         <PreviewPostIt
@@ -183,22 +171,44 @@ export const Theme = () => {
           borderColor={borderColor || '#000'}
           flag={true}
         />
+        {isColorPickerOpen && (
+          <div style={{ marginTop: '10px' }}>
+            <SketchPicker
+              color={
+                currentColorPickerField === 'backgroundColor'
+                  ? backgroundColor
+                  : currentColorPickerField === 'fontColor'
+                  ? fontColor
+                  : borderColor
+              }
+              onChange={handleColorChange}
+            />
+            <button onClick={() => setIsColorPickerOpen(false)} css={buttonStyle} style={{ marginTop: '10px' }}>
+              완료
+            </button>
+          </div>
+        )}
       </div>
 
       <ul css={themeListStyle}>
-        {themes.map((theme, index) => (
+        {currentThemes.map((theme, index) => (
           <li key={index} css={themeItemStyle}>
             <PreviewPostIt
               themeName={theme.themeName}
               background={theme.image || theme.backgroundColor || '#fff'}
               fontColor={theme.fontColor || '#000'}
-              borderColor={theme.borderColor || '#ea23ea'}
+              borderColor={theme.borderColor || '#000000'}
               flag={true}
             />
             <p><strong>테마 이름:</strong> {theme.themeName}</p>
             <button onClick={() => handleEditTheme(theme)}>수정</button>
           </li>
         ))}
+          <div css={paginationStyle}>
+            <button onClick={handlePreviousPage} disabled={currentPage === 1}>이전</button>
+            <span>{currentPage} / {Math.ceil(themes.length / itemsPerPage)}</span>
+            <button onClick={handleNextPage} disabled={currentPage === Math.ceil(themes.length / itemsPerPage)}>다음</button>
+          </div>
       </ul>
     </div>
   );

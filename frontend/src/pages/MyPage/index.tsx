@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -41,6 +40,8 @@ export const MyPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [newNickname, setNewNickname] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
+  const [message, setMessage] = useState<string | null>(null);  // 메시지 상태 추가
+  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false); // 메시지 모달 상태 추가
 
   const navigate = useNavigate();
   const { name, userId, nickname, assets, isInitialized, setUserInfo } = useUserInfoStore();
@@ -101,8 +102,11 @@ export const MyPage = () => {
       await updateNickname(newNickname);
       setUserInfo({ nickname: newNickname });
       setIsEditing(false);
-      console.log("닉네임 업데이트 성공:", newNickname);
-    } catch (error) {
+      setMessage("닉네임이 성공적으로 업데이트되었습니다."); 
+      setIsMessageModalOpen(true); 
+    } catch (error: any) {
+      setMessage(error.message); 
+      setIsMessageModalOpen(true); 
       console.error("닉네임 업데이트 중 오류 발생:", error);
     }
   };
@@ -113,6 +117,11 @@ export const MyPage = () => {
 
   const handlePreviousPage = () => {
     if (currentPage > 0) setCurrentPage(currentPage - 1);
+  };
+
+  const closeMessageModal = () => {
+    setIsMessageModalOpen(false);
+    setMessage(null); 
   };
 
   return (
@@ -188,8 +197,6 @@ export const MyPage = () => {
                 </div>
               </div>
 
-
-
               <div css={CollectionSection}>
                 <h3>{nickname}님의 보상목록</h3>
                 <div>◀️ 할 지 말 지 고민 ▶️</div>
@@ -235,6 +242,24 @@ export const MyPage = () => {
                 width='30%'
                 handler={() => setIsEditing(false)}>
                 취소
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal isOpen={isMessageModalOpen} onClose={closeMessageModal} title="알림">
+        <div css={modalOverlayStyle}>
+          <div css={modalContentStyle}>
+            <p>{message}</p>
+            <div css={modalActionsStyle}>
+              <Button
+                backgroundColor='#4CAF50'
+                color='#000'
+                variant="outlined"
+                width='30%'
+                handler={closeMessageModal}>
+                닫기
               </Button>
             </div>
           </div>

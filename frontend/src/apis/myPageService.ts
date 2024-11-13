@@ -45,19 +45,14 @@ export const updateNickname = async (
   nickname: string
 ): Promise<UpdateNicknameResponse> => {
   try {
-    // localStorage에서 토큰을 가져옵니다.
     const token = localStorage.getItem("accessToken");
-    console.log("토큰 확인:", token); // 디버깅용 로그
-
-    // 토큰이 없는 경우 예외를 발생시킵니다.
     if (!token) {
       throw new Error("토큰이 없습니다. 로그인 후 다시 시도해 주세요.");
     }
 
-    // 닉네임 업데이트 요청
     const response = await axios.patch<UpdateNicknameResponse>(
-      "https://k11d104.p.ssafy.io/api/member/update-nickname", // API URL
-      { nickname }, // 요청 바디에 닉네임 포함
+      "https://k11d104.p.ssafy.io/api/member/update-nickname",
+      { nickname },
       {
         headers: {
           Authorization: token.startsWith("Bearer") ? token : `Bearer ${token}`,
@@ -75,11 +70,17 @@ export const updateNickname = async (
         response.data.message || "닉네임 업데이트에 실패했습니다."
       );
     }
-  } catch (error) {
-    console.error("updateNickname 요청 실패:", error);
-    throw error;
+  } catch (error: any) {
+    if (error.response && error.response.data && error.response.data.message.includes("중복")) {
+      // console.error("중복된 닉네임입니다:", error.response.data.message);
+      throw new Error("이미 사용 중인 닉네임입니다.");
+    } else {
+      console.error("updateNickname 요청 실패:", error);
+      throw error;
+    }
   }
 };
+
 
 export const getFriendInfo = async (
   memberId: number

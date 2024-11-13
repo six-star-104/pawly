@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 
 export const containerStyle = css`
   /* max-width: 600px; */
-  margin: 0 auto;
+  /* margin: 0 auto; */
   padding: 2rem;
   background-color: #f8f9fa;
   border-radius: 8px;
@@ -74,10 +74,6 @@ export const themeListContainerStyle = css`
   margin-top: 2rem;
 `;
 
-export const themeListStyle = css`
-  list-style: none;
-  padding: 0;
-`;
 
 export const themeItemStyle = css`
   margin-bottom: 1.5rem;
@@ -92,5 +88,37 @@ export const themeItemStyle = css`
 
   p {
     margin: 0.5rem 0;
+  }
+`;
+export const themeListStyle = css`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개씩 배치 */
+  grid-template-rows: repeat(2, auto); /* 두 줄로 배치 */
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+`;
+
+export const paginationStyle = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+
+  button {
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    &:hover {
+      background-color: #0056b3;
+    }
+    &:disabled {
+      background-color: #d3d3d3;
+      cursor: not-allowed;
+    }
   }
 `;
