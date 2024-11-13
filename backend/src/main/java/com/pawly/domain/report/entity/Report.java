@@ -25,6 +25,10 @@ public class Report extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id2")
+    private Member member2;
+
     @Enumerated(EnumType.STRING)
     private Category category;
 

@@ -149,7 +149,7 @@ public class PostItService {
         Optional<Report> optionalReport = reportRepository.findByMemberAndCategoryAndDetailId(requestMember.get(), Category.ROLLING_PAPER, dto.getPostId());
         if(optionalReport.isPresent()) return ApiResponse.createError(ErrorCode.ALREADY_REPORT);
 
-        reportRepository.save(dto.toEntity(requestMember.get(), dto.getPostId()));
+        reportRepository.save(dto.toEntity(requestMember.get(), optionalPostIt.get().getMember(), dto.getPostId()));
         return ApiResponse.createSuccessWithNoContent("포스트잇 신고 성공");
     }
 }

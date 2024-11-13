@@ -106,6 +106,7 @@ public class ReceiveLetterService {
 
         reportRepository.save(Report.builder()
                         .member(m)
+                        .member2(l.getSender())
                         .category(Category.LETTER)
                         .detailId(receiveLetterId)
                         .content(dto.getContent())
