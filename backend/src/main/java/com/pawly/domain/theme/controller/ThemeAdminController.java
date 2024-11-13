@@ -30,4 +30,9 @@ public class ThemeAdminController {
     public ApiResponse<?> deleteTheme(Authentication authentication, @PathVariable Long themeId) {
         return themeAdminService.deleteTheme(authentication.getName(), themeId);
     }
+
+    @GetMapping
+    public ApiResponse<?> readTheme(Authentication authentication) {
+        return themeAdminService.readTheme(authentication.getName());
+    }
 }
