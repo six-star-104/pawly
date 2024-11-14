@@ -47,8 +47,8 @@ export const checkboxGroupStyle = css`
 
 export const buttonStyle = css`
   padding: 0.75rem;
-  background-color: #007bff;
-  color: white;
+  background-color: #fff;
+  color: #000;
   font-weight: bold;
   border: none;
   border-radius: 4px;
@@ -92,7 +92,7 @@ export const themeItemStyle = css`
 `;
 export const themeListStyle = css`
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개씩 배치 */
+  grid-template-columns: repeat(2, 1fr); /* 한 줄에 3개씩 배치 */
   grid-template-rows: repeat(2, auto); /* 두 줄로 배치 */
   gap: 1rem;
   list-style: none;
@@ -107,9 +107,9 @@ export const paginationStyle = css`
   margin-top: 1rem;
 
   button {
-    padding: 0.5rem 1rem;
-    background-color: #007bff;
-    color: white;
+    /* padding: 0.5rem 1rem; */
+    background-color: #d3d3d3;
+    color: #000;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -117,7 +117,7 @@ export const paginationStyle = css`
       background-color: #0056b3;
     }
     &:disabled {
-      background-color: #d3d3d3;
+      background-color: #fff;
       cursor: not-allowed;
     }
   }

@@ -2,7 +2,6 @@ import {
   adminContainer,
   adminHeader,
   adminContent,
-  adminBtnContainer,
 } from './styles';
 import { useReportStore } from '@/stores/reportStore';
 import { useEffect, useState } from 'react';
@@ -99,10 +98,7 @@ export const Admin = () => {
           <Theme></Theme>
         </section>
       </main>
-      <div css={adminBtnContainer}>
-        <button>저장</button>
-        <button>취소</button>
-      </div>
+    
     </div>
   );
 };

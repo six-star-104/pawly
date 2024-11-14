@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { createTheme, updateTheme, getThemes } from '@/apis/themeService';
+import { createTheme, updateTheme } from '@/apis/themeService';
 import { PreviewPostIt } from '../PreviewPostit';
 import useThemeStore from '@/stores/themeStore';
 import { SketchPicker } from 'react-color';
@@ -27,7 +27,7 @@ export const Theme = () => {
   const [editMode, setEditMode] = useState(false);
   const [editingThemeId, setEditingThemeId] = useState<number | null>(null);
 
-  const { themes, fetchThemesFromAPI, addTheme, updateThemeInStore } = useThemeStore();
+  const { themes, fetchThemesFromAPI, addTheme, updateThemeInStore, deleteTheme } = useThemeStore();
 
   const itemsPerPage = 6; 
   const [currentPage, setCurrentPage] = useState(1);
@@ -41,7 +41,7 @@ export const Theme = () => {
       }
     };
     fetchAllThemes();
-  }, []);
+  }, [fetchThemesFromAPI]);
 
   const handleCreateOrUpdateTheme = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,6 +92,22 @@ export const Theme = () => {
     setEditMode(true);
     setEditingThemeId(theme.themeId);
   };
+
+  const handleDeleteTheme = async (themeId?: number) => {
+    if (themeId !== undefined) {
+      try {
+        await deleteTheme(themeId); 
+        setMessage(`테마 삭제 성공`);
+        await fetchThemesFromAPI(); 
+      } catch (error) {
+        setMessage('테마 삭제 실패. 다시 시도해 주세요.');
+      }
+    } else {
+      console.error("삭제할 테마의 ID가 없습니다.");
+    }
+  };
+  
+  
 
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
   const [currentColorPickerField, setCurrentColorPickerField] = useState<string | null>(null);
@@ -202,13 +218,14 @@ export const Theme = () => {
             />
             <p><strong>테마 이름:</strong> {theme.themeName}</p>
             <button onClick={() => handleEditTheme(theme)}>수정</button>
+            <button onClick={() => handleDeleteTheme(theme.themeId)}>삭제</button>
           </li>
         ))}
-          <div css={paginationStyle}>
-            <button onClick={handlePreviousPage} disabled={currentPage === 1}>이전</button>
-            <span>{currentPage} / {Math.ceil(themes.length / itemsPerPage)}</span>
-            <button onClick={handleNextPage} disabled={currentPage === Math.ceil(themes.length / itemsPerPage)}>다음</button>
-          </div>
+        <div css={paginationStyle}>
+          <button onClick={handlePreviousPage} disabled={currentPage === 1}>이전</button>
+          <span>{currentPage} / {Math.ceil(themes.length / itemsPerPage)}</span>
+          <button onClick={handleNextPage} disabled={currentPage === Math.ceil(themes.length / itemsPerPage)}>다음</button>
+        </div>
       </ul>
     </div>
   );
