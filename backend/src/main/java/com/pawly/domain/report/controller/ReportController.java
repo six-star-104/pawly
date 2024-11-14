@@ -39,9 +39,9 @@ public class ReportController {
             return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
         }
 
-//        if (!Objects.requireNonNull(member).getRole().equals(Role.ADMIN)) {
-//            return ApiResponse.createError(ErrorCode.NOT_ADMIN_FAILED);
-//        }
+        if (!Objects.requireNonNull(member).getRole().equals(Role.ADMIN)) {
+            return ApiResponse.createError(ErrorCode.NOT_ADMIN_FAILED);
+        }
 
         return ApiResponse.createSuccess(reportService.getReports(Category.valueOf(category), pageNumber, pageSize, sortType, sortBy),"성공");
     }
@@ -55,9 +55,9 @@ public class ReportController {
             return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
         }
 
-//        if (!Objects.requireNonNull(member).getRole().equals(Role.ADMIN)) {
-//            return ApiResponse.createError(ErrorCode.NOT_ADMIN_FAILED);
-//        }
+        if (!Objects.requireNonNull(member).getRole().equals(Role.ADMIN)) {
+            return ApiResponse.createError(ErrorCode.NOT_ADMIN_FAILED);
+        }
         reportService.confirmReport(reportId, Status.valueOf(confirmType));
 
         return ApiResponse.createSuccessWithNoContent("신고 내용 반영 성공");
