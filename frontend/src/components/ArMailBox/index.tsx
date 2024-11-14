@@ -3,15 +3,14 @@ import { MailBoxProps } from "./ArMailBox.types";
 import { useState } from "react";
 import Modal from "../Modal";
 
-const ArMailBox: React.FC<MailBoxProps> = ({ lat, lng, userLng, userLat,children }) => {
-
+const ArMailBox: React.FC<MailBoxProps> = ({
+  lat,
+  lng,
+  userId,
+  title
+}) => {
   const [modalOpen, setModalOpen] = useState(false);
-  const mailBoxContent = (
-    <div>
-      {" "}
-      <p>{children}</p>
-    </div>
-  );
+  
 
   return (
     <>
@@ -21,9 +20,7 @@ const ArMailBox: React.FC<MailBoxProps> = ({ lat, lng, userLng, userLat,children
         font="./assets/neodgm-msdf.json"
         font-image="./assets/neodgm.png"
         scale="3 3 1"
-        gps-entity-place={`latitude: ${userLat + 0.00001 * lat}; longitude: ${
-          userLng + 0.00001 * lng
-        };`}
+        gps-entity-place={`latitude: ${lat}; longitude: ${lng};`}
         position="-0.5 0 0"
         // negate="false"
         // animation="property: rotation; to: 0 180 0; loop: true; dur: 3000"
@@ -37,9 +34,7 @@ const ArMailBox: React.FC<MailBoxProps> = ({ lat, lng, userLng, userLat,children
         position="0 -3 0"
         // animation="property: rotation; to: 90 450 90; loop: true;  dur: 6000"
         // 0.00001이 대략 1m 정도
-        gps-entity-place={`latitude: ${userLat + 0.00001 * lat}; longitude: ${
-          userLng + 0.00001 * lng
-        };`}
+        gps-entity-place={`latitude: ${lat}; longitude: ${lng};`}
         // look-at="[gps-camera]"
         onClick={() => setModalOpen(true)}
       ></a-entity>
@@ -47,8 +42,10 @@ const ArMailBox: React.FC<MailBoxProps> = ({ lat, lng, userLng, userLat,children
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         title="우체통 정보"
-        children={mailBoxContent}
-      />
+
+      >
+        {userId}멤버의 {title}
+      </Modal>
     </>
   );
 };
