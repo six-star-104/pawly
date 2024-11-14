@@ -2,7 +2,6 @@
 import { MailBoxProps } from "./ArMailBox.types";
 import { useState } from "react";
 import Modal from "../Modal";
-import { useNavigate } from "react-router-dom";
 import { singleBtn } from "./ArMailBox.style";
 const ArMailBox: React.FC<MailBoxProps> = ({
   lat,
@@ -12,7 +11,6 @@ const ArMailBox: React.FC<MailBoxProps> = ({
   postboxOwner,
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
-  const navigate = useNavigate();
   return (
     <>
       {/* 우체통 글자 */}
@@ -48,7 +46,9 @@ const ArMailBox: React.FC<MailBoxProps> = ({
         <div>
           {postboxOwner}의 {title} <br />
           <button
-            onClick={() => window.location.replace(`/rollingpaper/${postboxId}`)}
+            onClick={() =>
+              window.location.replace(`/rollingpaper/${postboxId}`)
+            }
             className="nes-btn"
             css={singleBtn}
           >
