@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { axiosInstance } from "../apis/axiosInstance";
 import { IRollingPaper, IPostIt } from "@/types/rollingPaperTypes";
-import useUserInfoStore from "@/stores/userInfoStore";
+import { useUserInfoStore } from "@/stores/userInfoStore";
+import { useHeaderStore } from "@/stores/headerStore";
 
 const useFetchRollingpaper = () => {
   const [singleRollingpaper, setSingleRollingpaper] = useState<IRollingPaper>();
@@ -9,6 +10,7 @@ const useFetchRollingpaper = () => {
   const [loading, setLoading] = useState(false);
   const [maxPageError, setMaxPageError] = useState<boolean>(false);
   const { nickname } = useUserInfoStore();
+  const { setTitleContent } = useHeaderStore();
   // const { setIsPostItChanged, isPostItChanged } = useRollingpaperStore();
 
   const fetchRollingPaper = async (
@@ -30,9 +32,10 @@ const useFetchRollingpaper = () => {
         setMaxPageError(true);
         return;
       }
+      setTitleContent(res.data.data.rollingPaperTitle)
       setPostits([...postits, ...res.data.data.content]);
     } catch (err) {
-      console.error("포스트잇 조회 오류:", err);
+      // console.error("포스트잇 조회 오류:", err);
     }
   };
 
@@ -58,7 +61,7 @@ const useFetchRollingpaper = () => {
       setLoading(false);
     } catch (err) {
       setLoading(false);
-      console.error("포스트잇 생성 오류:", err);
+      // console.error("포스트잇 생성 오류:", err);
     }
   };
 
@@ -70,7 +73,7 @@ const useFetchRollingpaper = () => {
       setPostits(postits.filter((p) => p.postItId !== postitId));
     } catch (err) {
       setLoading(false);
-      console.error("포스트잇 삭제 오류:", err);
+      // console.error("포스트잇 삭제 오류:", err);
     }
   };
 
@@ -86,7 +89,7 @@ const useFetchRollingpaper = () => {
       );
     } catch (err) {
       setLoading(false);
-      console.error("포스트잇 수정 오류:", err);
+      // console.error("포스트잇 수정 오류:", err);
     }
   };
 

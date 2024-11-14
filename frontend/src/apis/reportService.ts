@@ -17,14 +17,14 @@ export const getReportList = async (
       },
     });
     return response.data.data;
-  } catch (error: any) {
-    if (error.response && error.response.status === 401) {
-      console.error("인증에 실패했습니다. 다시 로그인해 주세요.");
+  } catch (error) {
+    // if (error.response && error.response.status === 401) {
+      // console.error("인증에 실패했습니다. 다시 로그인해 주세요.");
       // 필요 시 로그아웃 처리 또는 로그인 페이지로 리다이렉트
-    } else {
-      console.error("Failed to fetch report list: ", error);
-    }
-    throw error;
+    // } else {
+      // console.error("Failed to fetch report list: ", error);
+    // }
+    // throw error;
   }
 };
 
@@ -36,15 +36,15 @@ export const updateReportStatus = async (reportId: number, confirmType: "COMPLET
         confirmType,
       },
     });
-    console.log("신고 유저 처리 결과:", response.data);
+    // console.log("신고 유저 처리 결과:", response.data);
     return response.data;
-  } catch (error: any) {
-    if (error.response && error.response.status === 401) {
-      console.error("인증에 실패했습니다. 다시 로그인해 주세요.");
+  } catch (error) {
+    // if (error.response && error.response.status === 401) {
+      // console.error("인증에 실패했습니다. 다시 로그인해 주세요.");
       // 필요 시 로그아웃 처리 또는 로그인 페이지로 리다이렉트
-    } else {
-      console.error("Failed to update report status: ", error);
-    }
-    throw error;
+    // } else {
+      // console.error("Failed to update report status: ", error);
+    // }
+    // throw error;
   }
 };

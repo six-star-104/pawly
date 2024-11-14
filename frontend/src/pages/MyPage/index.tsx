@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import {
   Container,
-  BackBtnContainer,
-  HamBtnContainer,
+  // BackBtnContainer,
+  // HamBtnContainer,
   MyInfo,
   InfoSection,
   StatsSection,
   CollectionSection,
   closeButtonStyle,
   contents,
-  HamBtnCss,
-  BackBtnCss,
-  slidePanelStyle,
-  panelContentStyle,
+  // HamBtnCss,
+  // BackBtnCss,
+  // slidePanelStyle,
+  // panelContentStyle,
   VerticalTextSection,
   modalOverlayStyle,
   modalContentStyle,
@@ -25,25 +25,25 @@ import {
   ArrowButton,
 } from './styles';
 import PixelContainer from '../../components/PixelContainer';
-import NavButton from '../../assets/icons/NavButton.png';
-import BackButton from '../../assets/icons/BackButton.png';
+// import NavButton from '../../assets/icons/NavButton.png';
+// import BackButton from '../../assets/icons/BackButton.png';
 import { Button } from '@/components/Button';
 import Modal from '@/components/Modal';
-import { Hamberger } from '../Hamberger';
-import  useUserInfoStore  from '@/stores/userInfoStore';
+// import { Hamberger } from '../Hamberger';
+import { useUserInfoStore } from '@/stores/userInfoStore';
 import useEasterEggStore from '@/stores/easterEggStore';
 import { useCollectionStore } from '@/stores/collectionStore';
 import { getMyInfo, updateNickname } from '@/apis/myPageService';
-
+// import { Header } from '@/components/Header';
 export const MyPage = () => {
-  const [mypageVisible, setMyPageVisible] = useState(false);
+  // const [mypageVisible, setMyPageVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [newNickname, setNewNickname] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [message, setMessage] = useState<string | null>(null);  // 메시지 상태 추가
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false); // 메시지 모달 상태 추가
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { name, userId, nickname, assets, isInitialized, setUserInfo } = useUserInfoStore();
   const { completedChallengesCount } = useEasterEggStore();
   const { collections, fetchCollections, totalCollections } = useCollectionStore();
@@ -55,6 +55,7 @@ export const MyPage = () => {
     const fetchUserInfo = async () => {
       try {
         const data = await getMyInfo();
+        if(!data) return
         setUserInfo({
           isInitialized: true,
           userId: data.memberId,
@@ -67,7 +68,7 @@ export const MyPage = () => {
           birth: data.birth,
         });
       } catch (error) {
-        console.error("Failed to fetch user info:", error);
+        // console.error("Failed to fetch user info:", error);
       }
     };
 
@@ -80,17 +81,17 @@ export const MyPage = () => {
     }
   }, [isInitialized, setUserInfo, userId, currentPage, fetchCollections]);
 
-  const close = () => {
-    navigate(-1);
-  };
+  // const close = () => {
+  //   navigate(-1);
+  // };
 
-  const openMenu = () => {
-    setMyPageVisible(true);
-  };
+  // const openMenu = () => {
+  //   setMyPageVisible(true);
+  // };
 
-  const closeMyPage = () => {
-    setMyPageVisible(false);
-  };
+  // const closeMyPage = () => {
+  //   setMyPageVisible(false);
+  // };
 
   const handleEditNickname = () => {
     setIsEditing(true);
@@ -102,12 +103,9 @@ export const MyPage = () => {
       await updateNickname(newNickname);
       setUserInfo({ nickname: newNickname });
       setIsEditing(false);
-      setMessage("닉네임이 성공적으로 업데이트되었습니다."); 
-      setIsMessageModalOpen(true); 
-    } catch (error: any) {
-      setMessage(error.message); 
-      setIsMessageModalOpen(true); 
-      console.error("닉네임 업데이트 중 오류 발생:", error);
+      // console.log("닉네임 업데이트 성공:", newNickname);
+    } catch (error) {
+      // console.error("닉네임 업데이트 중 오류 발생:", error);
     }
   };
 
@@ -127,7 +125,7 @@ export const MyPage = () => {
   return (
     <div>
       <div css={Container}>
-        <div css={BackBtnContainer}>
+        {/* <div css={BackBtnContainer}>
           <button css={BackBtnCss} onClick={close}>
             <img src={BackButton} alt="뒤로가기 버튼" width={35} height={35} />
           </button>
@@ -137,7 +135,7 @@ export const MyPage = () => {
           <button css={HamBtnCss} onClick={openMenu}>
             <img src={NavButton} alt="햄버거 버튼" width={40} />
           </button>
-        </div>
+        </div> */}
 
         <PixelContainer
           width="90%"
@@ -205,13 +203,13 @@ export const MyPage = () => {
           }
         />
       </div>
-      <div css={[slidePanelStyle, mypageVisible && { transform: 'translateX(0)' }]}>
+      {/* <div css={[slidePanelStyle, mypageVisible && { transform: 'translateX(0)' }]}>
         <div css={panelContentStyle}>
           <Hamberger closeMyPage={closeMyPage} />
         </div>
-      </div>
+      </div> */}
 
-      <Modal isOpen={isEditing} onClose={closeMyPage} title="닉네임 수정">
+      <Modal isOpen={isEditing} onClose={()=>setIsEditing(false)} title="닉네임 수정">
         <div css={modalOverlayStyle}>
           <div css={modalContentStyle}>
             <div css={modalHeaderStyle}>

@@ -3,14 +3,14 @@ import { useState } from "react";
 import * as style from "./styles";
 import { LetterReceiveList } from "@/components/LetterReceiveList";
 import { LetterSendList } from "@/components/LetterSendList";
-import { Header } from "@/components/Header";
+// import { Header } from "@/components/Header";
 
 export const Letter = () => {
   const [activeTab, setActiveTab] = useState<"received" | "sent">("received");
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <div css={style.Container}>
         <div css={style.tabContainer(activeTab)}>
           <button

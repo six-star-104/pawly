@@ -38,14 +38,14 @@ export const bubbleStyle = (
   font-size: 16px;
   line-height: 1.3em;
   white-space: pre-wrap;
-  
+ word-wrap: break-word;
+
+
   font-family: ${fonts[font - 1]};
   // 이미지 있으면 배경이 이미지 되도록
-  ${
-    bgImg
-      ? ` background-image: url(${bgImg}); background-position: center; background-repeat: repeat; background-size: contatin;`
-      : `  background-color: ${bgColor}; `
-  }
+  ${bgImg
+    ? ` background-image: url(${bgImg}); background-position: center; background-repeat: repeat; background-size: contatin;`
+    : `  background-color: ${bgColor}; `}
 
   color: ${textColor};
   padding: ${4 * px}px;
@@ -153,6 +153,7 @@ export const fromWho = css`
   display: flex;
   justify-content: end;
   padding-right: 8%;
+  margin-top:12px;
 `;
 
 export const menuStyle = css`

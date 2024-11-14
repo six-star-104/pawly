@@ -1,17 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import PixelContainer from "@/components/PixelContainer";
-// import { data } from "./mockdata";
 import useFetchUserRollingpaper from "../../hooks/useFetchUserRollingpaper";
 import {
   ListContainer,
   ContentContainer,
-  backButton,
   container,
   modalStyle,
   tempBtn,
 } from "./styles";
 import { useNavigate } from "react-router-dom";
-import backButtonImg from "@/assets/images/back_button.png";
 import { useRef, useState } from "react";
 import Modal from "@/components/Modal";
 import { useDeleteRollingpaper } from "@/hooks/useDeleteRollingpaper";
@@ -25,7 +22,6 @@ export const RollingPaperList = () => {
 
   // 스토어
   const { isRollingpaperChanged } = useRollingpaperStore();
-
   // 커스텀 훅
   const { createRollingpaper } = useCreateRollingpaper();
   const { userRollingpapers, fetchRollingPapers } = useFetchUserRollingpaper();
@@ -59,12 +55,10 @@ export const RollingPaperList = () => {
 
   return (
     <div css={container}>
-      <button css={backButton} onClick={() => navigate(-1)}>
+      {/* <button css={backButton} onClick={() => navigate(-1)}>
         <img src={backButtonImg} alt="" />
-      </button>
-      <div id="title">
-        <h2>나의 롤링페이퍼들</h2>
-      </div>
+      </button> */}
+
       <div css={ListContainer}>
         {userRollingpapers &&
           userRollingpapers.content.map((rollingpaper) => (
