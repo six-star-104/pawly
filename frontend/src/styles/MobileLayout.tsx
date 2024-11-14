@@ -13,7 +13,7 @@ const MobileContainer = styled.div<{ hasBackground: boolean }>`
   // 모바일 말고 모든 사이즈단에서 배경 비율을 위해 높이 너비 비율 고정
 
   // 노트북 & 테블릿 가로 (해상도 1024px ~ )
-  @media all and (min-width: 1024px)  {
+  @media all and (min-width: 1024px) {
     width: 46.7vh;
   }
 
@@ -62,6 +62,7 @@ const MobileContainer = styled.div<{ hasBackground: boolean }>`
 
 const SafeArea = styled.div`
   height: 100%;
+  width: 100%;
   position: relative;
   z-index: 2;
 `;

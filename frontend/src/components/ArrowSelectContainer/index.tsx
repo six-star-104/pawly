@@ -78,7 +78,7 @@ const ArrowSelectContainer: React.FC<ArrowSelectContainerProps> = ({
   return (
     <div css={ArrowContainer(forWhat)}>
       <button css={ArrowButton} onClick={() => decreaseIndex()}>
-        ◀️
+        ◀
       </button>
       {forWhat === "themeId" ? (
         <div>
@@ -101,7 +101,7 @@ const ArrowSelectContainer: React.FC<ArrowSelectContainerProps> = ({
       )}
 
       <button css={ArrowButton} onClick={() => increaseIndex()}>
-        ▶️
+        ▶
       </button>
     </div>
   );

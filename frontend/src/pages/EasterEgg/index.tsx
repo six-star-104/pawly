@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import {
   Container,
-  BackBtnContainer,
-  BackBtnCss,
-  HamBtnContainer,
-  HamBtnCss,
-  slidePanelStyle,
-  panelContentStyle,
+  // BackBtnContainer,
+  // BackBtnCss,
+  // HamBtnContainer,
+  // HamBtnCss,
+  // slidePanelStyle,
+  // panelContentStyle,
   tabContainer,
   challengeWrapper,
   challengeListContainer,
@@ -23,10 +23,9 @@ import {
   rewardTitleStyle,
   congratsContainerStyle,
 } from './styles';
-import NavButton from '../../assets/icons/NavButton.png';
-import BackButton from '../../assets/icons/BackButton.png';
+// import NavButton from '../../assets/icons/NavButton.png';
+// import BackButton from '../../assets/icons/BackButton.png';
 import cheer from '../../assets/icons/cheer.png';
-import { Hamberger } from '../Hamberger';
 import Modal from '@/components/Modal';
 import { Button } from '@/components/Button';
 import useEasterEggStore from '@/stores/easterEggStore';
@@ -34,8 +33,8 @@ import { EasterEggData } from '@/types/questTypes';
 import { getEasterEggs } from '@/apis/easterEggService';
 
 export const EasterEgg = () => {
-  const navigate = useNavigate();
-  const [mypageVisible, setMyPageVisible] = useState(false);
+  // const navigate = useNavigate();
+  // const [mypageVisible, setMyPageVisible] = useState(false);
   const [activeTab, setActiveTab] = useState<'inProgress' | 'completed'>('inProgress');
   const [progress, setProgress] = useState<number>(0);
   const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false);
@@ -74,17 +73,17 @@ export const EasterEgg = () => {
     // console.log("현재 저장된 과제들 (challenges):", challenges);
   }, [challenges]);
   
-  const close = () => {
-    navigate(-1);
-  };
+  // const close = () => {
+  //   navigate(-1);
+  // };
 
-  const openMenu = () => {
-    setMyPageVisible(true);
-  };
+  // const openMenu = () => {
+  //   setMyPageVisible(true);
+  // };
 
-  const closeMyPage = () => {
-    setMyPageVisible(false);
-  };
+  // const closeMyPage = () => {
+  //   setMyPageVisible(false);
+  // };
 
   const openCompleteModal = (challenge: EasterEggData) => {
     setSelectedChallenge(challenge);
@@ -111,7 +110,7 @@ export const EasterEgg = () => {
 
   return (
     <div css={Container}>
-      <div css={BackBtnContainer}>
+      {/* <div css={BackBtnContainer}>
         <button css={BackBtnCss} onClick={close}>
           <img src={BackButton} alt="뒤로가기 버튼" width={35} height={35} />
         </button>
@@ -127,7 +126,7 @@ export const EasterEgg = () => {
         <div css={panelContentStyle}>
           <Hamberger closeMyPage={closeMyPage} />
         </div>
-      </div>
+      </div> */}
 
       <div css={challengeWrapper}>
         <div css={tabContainer(activeTab)}>

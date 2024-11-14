@@ -107,7 +107,7 @@ const PrivateRoute = () => {
           setAccessToken(storedToken);
           setLogin();
           fetchUserInfo();
-          navigateTo("/", { replace: true });
+          // navigateTo("/", { replace: true });
           setIsLoading(false);
           return;
         }
@@ -121,7 +121,7 @@ const PrivateRoute = () => {
             setAccessToken(newAccessToken);
             setLogin();
             fetchUserInfo();
-            navigateTo("/", { replace: true });
+            // navigateTo("/", { replace: true });
             setIsLoading(false);
             return;
           } else {

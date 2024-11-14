@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Header } from "@/components/Header";
 import { FriendList } from "@/components/FriendList";
 import { FriendRequest } from "@/components/FriendRequest";
 import * as style from "./styles";
@@ -9,7 +8,6 @@ export const Friends = () => {
 
   return (
     <>
-      <Header />
       <div css={style.Container}>
         <div css={style.tabContainer(activeTab)}>
           <button
