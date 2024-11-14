@@ -113,6 +113,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             .queryParam("error", errorMessage)
             .build().toUriString();
 
-        response.sendRedirect(loginRedirectUrl);
+        getRedirectStrategy().sendRedirect(request, response, loginRedirectUrl);
     }
 }
