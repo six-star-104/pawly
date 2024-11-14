@@ -43,7 +43,7 @@ export const getMyInfo = async () => {
 // 닉네임 업데이트 함수
 export const updateNickname = async (
   nickname: string
-)=> {
+) => {
   try {
     const token = localStorage.getItem("accessToken");
     if (!token) {
@@ -62,19 +62,19 @@ export const updateNickname = async (
     );
 
     if (response.data.status === "success") {
-      // console.log("닉네임 업데이트 성공:", response.data.message);
       return response.data;
     } else {
-      // console.error("닉네임 업데이트 실패:", response.data.message);
-      // throw new Error(
-      //   response.data.message || "닉네임 업데이트에 실패했습니다."
-      // );
+      if (response.data.message === "중복된 닉네임입니다.") {
+        throw new Error("이미 사용 중인 닉네임입니다. 다른 닉네임을 선택해 주세요.");
+      }
+      throw new Error(response.data.message || "닉네임 업데이트에 실패했습니다.");
     }
-  } catch (error) {
-    // console.error("updateNickname 요청 실패:", error);
-    // throw error;
+  } catch (error: any) {
+    console.error("updateNickname 요청 실패:", error.message);
+    throw error;
   }
 };
+
 
 
 export const getFriendInfo = async (

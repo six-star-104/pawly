@@ -1,19 +1,12 @@
 import { useEffect, useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
 import {
   Container,
-  // BackBtnContainer,
-  // HamBtnContainer,
   MyInfo,
   InfoSection,
   StatsSection,
   CollectionSection,
   closeButtonStyle,
   contents,
-  // HamBtnCss,
-  // BackBtnCss,
-  // slidePanelStyle,
-  // panelContentStyle,
   VerticalTextSection,
   modalOverlayStyle,
   modalContentStyle,
@@ -24,33 +17,26 @@ import {
   UsernameStyle,
   ArrowButton,
 } from './styles';
+import Warning from '@/assets/icons/Warning.png'
 import PixelContainer from '../../components/PixelContainer';
-// import NavButton from '../../assets/icons/NavButton.png';
-// import BackButton from '../../assets/icons/BackButton.png';
 import { Button } from '@/components/Button';
 import Modal from '@/components/Modal';
-// import { Hamberger } from '../Hamberger';
 import { useUserInfoStore } from '@/stores/userInfoStore';
 import useEasterEggStore from '@/stores/easterEggStore';
 import { useCollectionStore } from '@/stores/collectionStore';
 import { getMyInfo, updateNickname } from '@/apis/myPageService';
-// import { Header } from '@/components/Header';
 export const MyPage = () => {
-  // const [mypageVisible, setMyPageVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [newNickname, setNewNickname] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [message, setMessage] = useState<string | null>(null);  // 메시지 상태 추가
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false); // 메시지 모달 상태 추가
-
-  // const navigate = useNavigate();
   const { name, userId, nickname, assets, isInitialized, setUserInfo } = useUserInfoStore();
   const { completedChallengesCount } = useEasterEggStore();
   const { collections, fetchCollections, totalCollections } = useCollectionStore();
 
   const itemsPerPage = 3;
   const totalPages = Math.ceil(totalCollections / itemsPerPage);
-
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
@@ -68,7 +54,6 @@ export const MyPage = () => {
           birth: data.birth,
         });
       } catch (error) {
-        // console.error("Failed to fetch user info:", error);
       }
     };
 
@@ -81,17 +66,6 @@ export const MyPage = () => {
     }
   }, [isInitialized, setUserInfo, userId, currentPage, fetchCollections]);
 
-  // const close = () => {
-  //   navigate(-1);
-  // };
-
-  // const openMenu = () => {
-  //   setMyPageVisible(true);
-  // };
-
-  // const closeMyPage = () => {
-  //   setMyPageVisible(false);
-  // };
 
   const handleEditNickname = () => {
     setIsEditing(true);
@@ -103,11 +77,17 @@ export const MyPage = () => {
       await updateNickname(newNickname);
       setUserInfo({ nickname: newNickname });
       setIsEditing(false);
-      // console.log("닉네임 업데이트 성공:", newNickname);
-    } catch (error) {
-      // console.error("닉네임 업데이트 중 오류 발생:", error);
+    } catch (error: any) {
+      if (error.message === "이미 사용 중인 닉네임입니다. 다른 닉네임을 선택해 주세요.") {
+        setMessage("이미 사용 중인 닉네임입니다.");
+        setIsMessageModalOpen(true);
+      } else {
+        setMessage("이미 사용 중인 닉네임입니다.");
+        setIsMessageModalOpen(true);
+      }
     }
   };
+  
 
   const handleNextPage = () => {
     if (currentPage < totalPages - 1) setCurrentPage(currentPage + 1);
@@ -122,21 +102,10 @@ export const MyPage = () => {
     setMessage(null); 
   };
 
+
   return (
     <div>
       <div css={Container}>
-        {/* <div css={BackBtnContainer}>
-          <button css={BackBtnCss} onClick={close}>
-            <img src={BackButton} alt="뒤로가기 버튼" width={35} height={35} />
-          </button>
-        </div>
-
-        <div css={HamBtnContainer}>
-          <button css={HamBtnCss} onClick={openMenu}>
-            <img src={NavButton} alt="햄버거 버튼" width={40} />
-          </button>
-        </div> */}
-
         <PixelContainer
           width="90%"
           height="80vh"
@@ -194,20 +163,11 @@ export const MyPage = () => {
                   </button>
                 </div>
               </div>
-
-              <div css={CollectionSection}>
-                <h3>{nickname}님의 보상목록</h3>
-                <div>◀️ 할 지 말 지 고민 ▶️</div>
-              </div>
             </div>
           }
         />
       </div>
-      {/* <div css={[slidePanelStyle, mypageVisible && { transform: 'translateX(0)' }]}>
-        <div css={panelContentStyle}>
-          <Hamberger closeMyPage={closeMyPage} />
-        </div>
-      </div> */}
+
 
       <Modal isOpen={isEditing} onClose={()=>setIsEditing(false)} title="닉네임 수정">
         <div css={modalOverlayStyle}>
@@ -249,6 +209,7 @@ export const MyPage = () => {
       <Modal isOpen={isMessageModalOpen} onClose={closeMessageModal} title="알림">
         <div css={modalOverlayStyle}>
           <div css={modalContentStyle}>
+          <img src={Warning} alt="경고 아이콘" width="30" height="30" />
             <p>{message}</p>
             <div css={modalActionsStyle}>
               <Button
