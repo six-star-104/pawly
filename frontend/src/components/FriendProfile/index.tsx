@@ -11,7 +11,7 @@ interface FriendProfileProps {
   isOpen: boolean;
   onClose: () => void;
   memberId: number;
-  showActions: boolean;
+  showActions: string;
 }
 
 export const FriendProfile = ({
@@ -76,7 +76,7 @@ export const FriendProfile = ({
           ) : (
             <p>회원 정보를 불러오는 중입니다...</p>
           )}
-          {showActions && (
+          {showActions === "list" && (
             <div css={style.buttonContainer}>
               <style.deleteButton onClick={handleDeleteFriend}>
                 친구 삭제
