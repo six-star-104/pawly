@@ -76,9 +76,13 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                         .build().toUriString();
                 } else if (member.getStatus() == Status.SUSPENDED){
                     // 사용자가 활성화 상태가 아닌 경우 로그인 페이지로 리다이렉트와 함께 에러 메시지 전달
-                    sendErrorResponseAndRedirect(request, response, "Account is suspended. Please contact support.");
+                    targetUrl = UriComponentsBuilder.fromUriString("https://pawly.o-r.kr/login")
+                        .queryParam("error", "Account is suspended. Please contact support.")
+                        .build().toUriString();
                 } else {
-                    sendErrorResponseAndRedirect(request, response, "Account is not activate. Please contact support.");
+                    targetUrl = UriComponentsBuilder.fromUriString("https://pawly.o-r.kr/login")
+                        .queryParam("error", "Account is not activate. Please contact support.")
+                        .build().toUriString();
                 }
             }
         }
@@ -105,14 +109,5 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         } else {
             return null;
         }
-    }
-
-    private void sendErrorResponseAndRedirect(HttpServletRequest request, HttpServletResponse response, String errorMessage) throws IOException {
-        // 로그인 페이지 URL에 에러 메시지를 쿼리 파라미터로 추가하여 리다이렉트
-        String loginRedirectUrl = UriComponentsBuilder.fromUriString("https://pawly.o-r.kr/login")
-            .queryParam("error", errorMessage)
-            .build().toUriString();
-
-        getRedirectStrategy().sendRedirect(request, response, loginRedirectUrl);
     }
 }
