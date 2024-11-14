@@ -1,6 +1,6 @@
 // 스타일 정의 부분 (styles.js)
 
-import { css } from '@emotion/react';
+import { css } from "@emotion/react";
 
 export const BackBtnContainer = css`
   position: absolute;
@@ -73,12 +73,15 @@ export const Container = css`
   height: 65vh;
   width: 90%;
   padding: 1rem;
-  box-shadow: 4px 0 0 0 black, -4px 0 0 0 black, 0 4px 0 0 black, 0 -4px 0 0 black;
+  box-shadow: 4px 0 0 0 black, -4px 0 0 0 black, 0 4px 0 0 black,
+    0 -4px 0 0 black;
   box-sizing: border-box;
-  margin: auto; 
+  margin: auto;
 `;
 
 export const IconGrid = css`
+  width: 100%;
+  height: 100%;
   display: grid;
   grid-template-columns: repeat(3, minmax(80px, 1fr));
   grid-template-rows: repeat(3, auto);
@@ -114,7 +117,7 @@ export const ArrowContainer = css`
   width: 100%;
   position: absolute;
   bottom: 0;
-  
+
   span {
     font-size: 1rem;
   }
@@ -135,7 +138,7 @@ export const ArrowButton = css`
 
 export const headerStyle = css`
   position: absolute;
-  top: 10%; 
+  top: 10%;
   left: 50%;
   transform: translateX(-50%);
   font-size: 1.5rem;

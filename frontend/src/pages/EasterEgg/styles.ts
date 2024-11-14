@@ -1,4 +1,4 @@
-import { css } from '@emotion/react';
+import { css } from "@emotion/react";
 
 export const Container = css`
   width: 100%;
@@ -67,6 +67,7 @@ export const panelContentStyle = css`
 
 export const challengeWrapper = css`
   width: 90%;
+  height: 80%;
   margin-top: 20%;
   display: flex;
   flex-direction: column;
@@ -77,6 +78,8 @@ export const challengeListContainer = css`
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 100%;
+  overflow-y: scroll;
 `;
 
 export const challengeItem = css`
@@ -111,6 +114,7 @@ export const tabContainer = (activeTab: "inProgress" | "completed") => css`
   display: flex;
   width: 100%;
   justify-content: center;
+  height: 40px;
 
   button {
     flex: 1;
@@ -118,7 +122,7 @@ export const tabContainer = (activeTab: "inProgress" | "completed") => css`
     padding: 0.5rem 1rem;
     cursor: pointer;
     font-weight: bold;
-    font-family: 'Galmuri9';
+    font-family: "Galmuri9";
     font-size: 0.8rem;
     border-top: 2px solid black;
     border-bottom: none;
@@ -165,7 +169,7 @@ export const deleteModalContentStyle = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #F5EFFF;
+  background-color: #f5efff;
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
@@ -210,8 +214,6 @@ export const congratsContainerStyle = css`
   gap: 0.5rem;
 `;
 
-
-
 export const warningIconStyle = css`
   width: 3rem;
   height: 3rem;
@@ -220,7 +222,7 @@ export const warningIconStyle = css`
 export const progressContainer = css`
   width: 85%;
   height: 9vh;
-  margin: 1rem auto;
+  margin: 18px auto 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -241,4 +243,3 @@ export const iconTextContainer = css`
   /* align-items: center; */
   gap: 0.5rem; /* 이미지와 텍스트 사이의 간격 설정 */
 `;
-
