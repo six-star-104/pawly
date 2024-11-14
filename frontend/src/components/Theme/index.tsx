@@ -5,7 +5,6 @@ import useThemeStore from '@/stores/themeStore';
 import { SketchPicker } from 'react-color';
 import { PreviewPostIt } from '@/components/PreviewPostit';
 import {
-  // containerStyle,
   formStyle,
   inputGroupStyle,
   checkboxGroupStyle,
@@ -14,7 +13,6 @@ import {
   previewContainerStyle,
   paletteContainerStyle,
   mainContainerStyle, 
-  // leftContainerStyle, 
   rightContainerStyle,
   prevpaleteContainer
 } from './Theme.styles';

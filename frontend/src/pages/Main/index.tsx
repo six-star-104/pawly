@@ -14,9 +14,6 @@ export const Main = () => {
     navigateTo("/login");
   };
 
-  const adminMove = () => {
-    navigateTo("/admin");
-  };
 
   const arMove = () => {
     navigateTo("/ar");
@@ -25,7 +22,6 @@ export const Main = () => {
     <div css={container}>
       <div css={content}>
         <button onClick={handleLogout}>로그아웃</button>
-        <button onClick={adminMove}>Admin</button>
         <button onClick={arMove}>AR 페이지로 이동</button>
       </div>
     </div>
