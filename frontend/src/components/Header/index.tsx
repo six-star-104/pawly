@@ -13,7 +13,7 @@ export const Header = () => {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const { titleContent } = useHeaderStore();
   const backBtn = () => {
-    navigate("/");
+    navigate(-1);
   };
 
   const Hambtn = () => {
@@ -21,7 +21,6 @@ export const Header = () => {
   };
 
   const closeMyPage = () => {
-    console.log("사이드 닫기");
     setIsSideMenuOpen(false);
   };
 
