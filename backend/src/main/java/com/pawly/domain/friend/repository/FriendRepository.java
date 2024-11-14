@@ -1,6 +1,7 @@
 package com.pawly.domain.friend.repository;
 
 import com.pawly.domain.friend.entity.Friend;
+import com.pawly.domain.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -34,4 +35,6 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
             "       OR f.memberId2.memberId = :memberId AND f.memberId1.memberId = :memberId2) " +
             "AND f.deleteFlag = true")
     Optional<Friend> findByFriend(@Param("memberId") Long memberId, @Param("memberId2") Long memberId2);
+
+    List<Friend> findByMemberId1OrMemberId2(Member member, Member member2);
 }
