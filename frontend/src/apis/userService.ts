@@ -1,6 +1,6 @@
 import axios from "axios";
 import { axiosInstance, flaskAxiosInstance } from "./axiosInstance";
-import { UserInfoType, SignUpType } from "@/types/UserTypes";
+import {  SignUpType } from "@/types/UserTypes";
 export const kakaoLogin = async () => {
   try {
     const response = await axios.get(`oauth/login/kakao`);
@@ -38,7 +38,7 @@ export const getOAuthInformation = async (
     // throw error;
   }
 };
-
+1
 export const getOAuthAccessToken = async (
   code: string
 ) => {
@@ -49,17 +49,17 @@ export const getOAuthAccessToken = async (
       },
     });
     const accessToken = response.data.data.accessToken;
-    let userInfo: UserInfoType;
+    // let userInfo: UserInfoType;
     if (accessToken) {
       
-      userInfo = await getOAuthInformation(accessToken);
+      // userInfo = await getOAuthInformation(accessToken);
       // console.log("우저정보"+userInfo)
       localStorage.setItem("accessToken", accessToken);
     } else {
       // console.error("No access Token received from server");
       throw new Error("No access Token received from server");
     }
-    return { accessToken, userInfo };
+    return { accessToken };
   } catch (error) {
     // console.error(error);
     // throw error;
