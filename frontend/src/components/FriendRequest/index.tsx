@@ -138,7 +138,7 @@ export const FriendRequest = () => {
           isOpen={isDetailModalOpen}
           onClose={closeDetailModal}
           memberId={selectedMemberId}
-          showActions={false}
+          showActions="request"
         />
       )}
     </>
