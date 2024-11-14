@@ -5,6 +5,7 @@ export const useCreateRollingpaper = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const {setIsRollingpaperChanged} = useRollingpaperStore()
+  
   const createRollingpaper = async (
     title: string,
     lat: number,

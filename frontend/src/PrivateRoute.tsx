@@ -83,6 +83,7 @@ const PrivateRoute = () => {
             const response = await getOAuthAccessToken(queryCode);
             if (response?.accessToken) {
               setAccessToken(response.accessToken);
+              localStorage.setItem("accessToken", response.accessToken);
               setLogin();
               fetchUserInfo();
               // 나중에 마지막에 주석 풀고 code 안나오게 하기

@@ -1,7 +1,6 @@
 export type MailBoxProps = {
-  userLng: number;
-  userLat: number;
-  children?: React.ReactNode;
-  lng:number;
-  lat:number;
+  userId: number;
+  lng: number;
+  lat: number;
+  title: string;
 };
