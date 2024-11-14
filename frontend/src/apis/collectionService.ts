@@ -17,7 +17,7 @@ export const getCollection = async (
         params: { pageNumber: pageNumber, pageSize: pageSize }, // 파라미터 이름을 서버에서 기대하는 대로 변경
       }
     );
-
+    console.log(response)
     // console.log("API 도감 조회 데이터:", response.data);
 
     return response.data;
