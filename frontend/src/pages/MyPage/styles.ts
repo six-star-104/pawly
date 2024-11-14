@@ -389,3 +389,4 @@ export const CollectionItem = css`
   text-align: center;
   flex-shrink: 0;
 `;
+

@@ -80,12 +80,12 @@ export const Container = css`
 `;
 
 export const IconGrid = css`
-  width: 100%;
+  width: 110%;
   height: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 29.2%);
-  gap: 2rem;
+  gap: 1.5rem;
   justify-items: center;
   align-items: center;
   text-align: center;
