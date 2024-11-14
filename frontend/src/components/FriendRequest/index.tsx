@@ -58,89 +58,105 @@ export const FriendRequest = () => {
       console.log("Failed to cancel friend request", error);
     },
   });
+
   return (
     <>
       <div css={style.Container}>
         <div css={style.friendRequestContainer}>
-          {receivedRequest?.length > 0 &&
-            receivedRequest.map((request) => (
-              <div
-                css={style.receiveRequestItem}
-                key={request.friendId}
-                onClick={() => openDetailModal(request.memberId)}
-              >
-                <div css={style.contentContainer}>
-                  <img src={request.assets} css={style.asset} />
-                  <div css={style.nicknameWrapper}>
-                    <div css={style.nicknameContainer}>
-                      <div css={style.nickname}>{request.nickname}</div>
-                    </div>
-                    <div css={style.responseIconContainer}>
-                      {/* prettier-ignore */}
-                      <button
-                        css={style.responseIcon}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          respondToRequest({ friendId: request.friendId, status: true });
-                        }}
-                      >
-                        <img src="https://unpkg.com/pixelarticons@1.8.1/svg/check.svg" alt="수락"/>
-                      </button>
-                      {/* prettier-ignore */}
-                      <button 
-                        css={style.responseIcon}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          respondToRequest({ friendId: request.friendId, status: false });
-                        }}
-                      >
-                        <img src="https://unpkg.com/pixelarticons@1.8.1/svg/close.svg" alt="거절"/>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          {sentRequest?.length > 0 ? (
-            sentRequest.map((request) => (
-              <div
-                css={style.sentRequestItem}
-                key={request.friendId}
-                onClick={() => openDetailModal(request.memberId)}
-              >
-                <div css={style.contentContainer}>
-                  <img src={request.assets} css={style.asset} />
-                  <div css={style.nicknameWrapper}>
-                    <div css={style.nicknameContainer}>
-                      <div>
+          {receivedRequest.length > 0
+            ? receivedRequest.map((request) => (
+                <div
+                  css={style.receiveRequestItem}
+                  key={request.friendId}
+                  onClick={() => openDetailModal(request.memberId)}
+                >
+                  <div css={style.contentContainer}>
+                    <img src={request.assets} css={style.asset} />
+                    <div css={style.nicknameWrapper}>
+                      <div css={style.nicknameContainer}>
                         <div css={style.nickname}>{request.nickname}</div>
-                        <div css={style.name}>{request.name}</div>
                       </div>
-                      <div css={style.waitingContainer}>
-                        <div css={style.waiting}>수락 대기</div>
-                        {/* prettier-ignore */}
-                        <button 
+                      <div css={style.responseIconContainer}>
+                        <button
                           css={style.responseIcon}
                           onClick={(e) => {
                             e.stopPropagation();
-                            cancelFriendRequest(request.memberId);
+                            respondToRequest({
+                              friendId: request.friendId,
+                              status: true,
+                            });
                           }}
                         >
-                        <img src="https://unpkg.com/pixelarticons@1.8.1/svg/close.svg" alt="친구요청취소"/>
-                      </button>
+                          <img
+                            src="https://unpkg.com/pixelarticons@1.8.1/svg/check.svg"
+                            alt="수락"
+                          />
+                        </button>
+                        <button
+                          css={style.responseIcon}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            respondToRequest({
+                              friendId: request.friendId,
+                              status: false,
+                            });
+                          }}
+                        >
+                          <img
+                            src="https://unpkg.com/pixelarticons@1.8.1/svg/close.svg"
+                            alt="거절"
+                          />
+                        </button>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))
-          ) : (
-            <div css={style.sentRequestItem}>
-              <div css={style.noRequest}>친구 요청이 없습니다.</div>
-            </div>
+              ))
+            : null}
+
+          {sentRequest.length > 0
+            ? sentRequest.map((request) => (
+                <div
+                  css={style.sentRequestItem}
+                  key={request.friendId}
+                  onClick={() => openDetailModal(request.memberId)}
+                >
+                  <div css={style.contentContainer}>
+                    <img src={request.assets} css={style.asset} />
+                    <div css={style.nicknameWrapper}>
+                      <div css={style.nicknameContainer}>
+                        <div>
+                          <div css={style.nickname}>{request.nickname}</div>
+                          <div css={style.name}>{request.name}</div>
+                        </div>
+                        <div css={style.waitingContainer}>
+                          <div css={style.waiting}>수락 대기</div>
+                          <button
+                            css={style.responseIcon}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              cancelFriendRequest(request.memberId);
+                            }}
+                          >
+                            <img
+                              src="https://unpkg.com/pixelarticons@1.8.1/svg/close.svg"
+                              alt="친구요청취소"
+                            />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            : null}
+
+          {receivedRequest.length === 0 && sentRequest.length === 0 && (
+            <div css={style.noRequest}>친구 요청이 없습니다.</div>
           )}
         </div>
       </div>
+
       {selectedMemberId && (
         <FriendProfile
           isOpen={isDetailModalOpen}
