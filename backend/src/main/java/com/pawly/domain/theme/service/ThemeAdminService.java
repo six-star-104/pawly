@@ -1,11 +1,8 @@
 package com.pawly.domain.theme.service;
 
-import com.pawly.domain.easterEgg.repository.CompleteEasterEggRepository;
-import com.pawly.domain.easterEgg.repository.EasterEggRepository;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.entity.Role;
 import com.pawly.domain.member.repository.MemberRepository;
-import com.pawly.domain.member.service.MemberService;
 import com.pawly.domain.theme.dto.ThemeAdminReadDto;
 import com.pawly.domain.theme.dto.ThemeCreateDto;
 import com.pawly.domain.theme.dto.ThemeUpdateDto;
@@ -14,7 +11,6 @@ import com.pawly.domain.theme.repository.ThemeRepository;
 import com.pawly.global.exception.ErrorCode;
 import com.pawly.global.response.ApiResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
