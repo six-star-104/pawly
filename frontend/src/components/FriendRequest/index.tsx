@@ -114,7 +114,7 @@ export const FriendRequest = () => {
                     <div css={style.nicknameContainer}>
                       <div css={style.nickname}>{request.nickname}</div>
                       <div css={style.waitingContainer}>
-                        <div css={style.waiting}>수락 대기 중</div>
+                        <div css={style.waiting}>수락 대기</div>
                         {/* prettier-ignore */}
                         <button 
                           css={style.responseIcon}
@@ -138,7 +138,7 @@ export const FriendRequest = () => {
           isOpen={isDetailModalOpen}
           onClose={closeDetailModal}
           memberId={selectedMemberId}
-          showActions={false}
+          showActions="request"
         />
       )}
     </>

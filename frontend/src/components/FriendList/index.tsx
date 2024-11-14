@@ -57,7 +57,7 @@ export const FriendList = () => {
           isOpen={isDetailModalOpen}
           onClose={closeDetailModal}
           memberId={selectedMemberId}
-          showActions={true}
+          showActions="list"
         />
       )}
     </>

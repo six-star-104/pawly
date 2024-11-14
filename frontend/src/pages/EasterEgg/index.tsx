@@ -110,23 +110,6 @@ export const EasterEgg = () => {
 
   return (
     <div css={Container}>
-      {/* <div css={BackBtnContainer}>
-        <button css={BackBtnCss} onClick={close}>
-          <img src={BackButton} alt="뒤로가기 버튼" width={35} height={35} />
-        </button>
-      </div>
-
-      <div css={HamBtnContainer}>
-        <button css={HamBtnCss} onClick={openMenu}>
-          <img src={NavButton} alt="햄버거 버튼" width={40} />
-        </button>
-      </div>
-
-      <div css={[slidePanelStyle, mypageVisible && { transform: 'translateX(0)' }]}>
-        <div css={panelContentStyle}>
-          <Hamberger closeMyPage={closeMyPage} />
-        </div>
-      </div> */}
 
       <div css={challengeWrapper}>
         <div css={tabContainer(activeTab)}>
@@ -145,7 +128,7 @@ export const EasterEgg = () => {
             .map((challenge) => (
               <div key={challenge.easterEggId} css={challengeItem}>
                 <div css={challengeTitle}>{challenge.content}</div>
-                <div css={challengeReward}>{challenge.reward || '???'}</div>
+                <div css={challengeReward}>보상: {challenge.reward || '???'}</div>
                 <div css={challengeStatus}>
                   {challenge.status === '완료하기' && (
                     <button type="button" className="nes-btn is-success" onClick={() => openCompleteModal(challenge)}>완료하기</button>
@@ -154,7 +137,7 @@ export const EasterEgg = () => {
                     <button type="button" className="nes-btn is-primary">진행중</button>
                   )}
                   {challenge.status === '완료됨' && (
-                    <button type="button" className="nes-btn">완료됨</button>
+                    <button type="button" className="nes-btn is-disabled">완료됨</button>
                   )}
                 </div>
               </div>

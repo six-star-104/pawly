@@ -76,7 +76,7 @@ export const asset = css`
 
 export const nickname = css`
   font-weight: 500;
-  font-size: 1.1rem;
+  font-size: 1rem;
 `;
 
 export const name = css`
