@@ -1,50 +1,58 @@
 import * as style from "./Header.style";
-import NavButton from "@/assets/icons/NavButton.png";
-import BackButton from "@/assets/icons/BackButton.png";
-import { useNavigate } from "react-router-dom";
-import { Hamberger } from "@/pages/Hamberger";
+import HamburgerBtn from "@/assets/icons/hamburgerBtn.svg";
+// import BackButton from "@/assets/icons/BackButton.png";
+import BackButton from "@/assets/icons/back_button.png";
+import { useNavigate, useLocation } from "react-router-dom";
+import { SideMenu } from "../SideMenu";
 import { useState } from "react";
+import { useHeaderStore } from "@/stores/headerStore";
+
 export const Header = () => {
   const navigate = useNavigate();
-  const [mypageVisible, setMyPageVisible] = useState(false);
-
+  const location = useLocation();
+  const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
+  const { titleContent } = useHeaderStore();
   const backBtn = () => {
     navigate("/");
   };
 
   const Hambtn = () => {
-    setMyPageVisible(true);
+    setIsSideMenuOpen(true);
   };
 
   const closeMyPage = () => {
-    setMyPageVisible(false);
+    console.log("사이드 닫기");
+    setIsSideMenuOpen(false);
   };
 
+  const isRollingpaper = location.pathname.includes("rollingpaper");
+
+  if (location.pathname.startsWith("/ar")) return;
+  
   return (
-    <div css={style.Container}>
-      {/* 뒤로가기 버튼 */}
-      <div css={style.BackBtnContainer}>
-        <button css={style.BackBtnCss} onClick={backBtn}>
-          <img src={BackButton} alt="뒤로가기 버튼" width={35} height={35} />
-        </button>
-      </div>
+    <div css={style.Container(isRollingpaper)}>
+      {/* 롤링페이퍼 페이지만 있는 뒤로가기 버튼 */}
+      {location.pathname !== "/" && (
+        <div css={style.BackBtnContainer}>
+          <button css={style.BackBtnCss} onClick={backBtn}>
+            <img src={BackButton} alt="뒤로가기 버튼" width={35} height={35} />
+          </button>
+        </div>
+      )}
+      {isRollingpaper && <div id="title">{titleContent}</div>}
+
       {/* 햄버거 메뉴 버튼 */}
       <div css={style.HamBtnContainer}>
-        <button css={style.HamBtnCss} onClick={Hambtn}>
-          <img src={NavButton} alt="햄버거 버튼" width={40} />
+        <button className="nes-btn" onClick={Hambtn}>
+          <img src={HamburgerBtn} alt="햄버거 버튼" width={32} />
         </button>
       </div>
 
-      <div
-        css={[
-          style.slidePanelStyle,
-          mypageVisible && { transform: "translateX(0)" },
-        ]}
-      >
-        <div css={style.panelContentStyle}>
-          <Hamberger closeMyPage={closeMyPage} />
-        </div>
-      </div>
+      {/* 사이드 메뉴바 */}
+
+      {/* <div css={style.panelContentStyle}> */}
+      <SideMenu isOpen={isSideMenuOpen} onClose={closeMyPage} />
+      {/* </div> */}
     </div>
   );
 };
