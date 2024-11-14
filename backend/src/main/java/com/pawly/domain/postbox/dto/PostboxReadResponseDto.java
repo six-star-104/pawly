@@ -8,17 +8,19 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PostboxReadResponse {
+public class PostboxReadResponseDto {
     private Long postboxId;
     private Long memberId;
+    private String postboxOwner;
     private String title;
     private double latitude;
     private double longitude;
 
-    public static PostboxReadResponse from(Postbox postbox) {
-        return PostboxReadResponse.builder()
+    public static PostboxReadResponseDto from(Postbox postbox) {
+        return PostboxReadResponseDto.builder()
                 .postboxId(postbox.getPostboxId())
                 .memberId(postbox.getMember().getMemberId())
+                .postboxOwner(postbox.getMember().getNickname())
                 .title(postbox.getTitle())
                 .latitude(postbox.getLatitude())
                 .longitude(postbox.getLongitude())
