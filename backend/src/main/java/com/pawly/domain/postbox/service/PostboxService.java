@@ -3,7 +3,7 @@ package com.pawly.domain.postbox.service;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.repository.MemberRepository;
 import com.pawly.domain.postbox.dto.PostboxCreateDto;
-import com.pawly.domain.postbox.dto.PostboxReadResponse;
+import com.pawly.domain.postbox.dto.PostboxReadResponseDto;
 import com.pawly.domain.postbox.entity.Postbox;
 import com.pawly.domain.postbox.repository.PostboxRepository;
 import com.pawly.domain.rollingPaper.repository.RollingPaperRepository;
@@ -40,8 +40,8 @@ public class PostboxService {
         Optional<Member> member = memberRepository.findByEmail(name);
         if (!member.isPresent()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
-        List<PostboxReadResponse> postboxReadResponsesList = postboxRepository.findPostboxesWithinRadius(latitude, longitude, 10.0).stream()
-                .map(PostboxReadResponse::from)
+        List<PostboxReadResponseDto> postboxReadResponsesList = postboxRepository.findPostboxesWithinRadius(latitude, longitude, 10.0).stream()
+                .map(PostboxReadResponseDto::from)
                 .toList();
         return ApiResponse.createSuccess(postboxReadResponsesList,"AR 우체통 조회 성공");
     }
@@ -51,8 +51,8 @@ public class PostboxService {
         Optional<Member> member = memberRepository.findByEmail(name);
         if (!member.isPresent()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
-        List<PostboxReadResponse> postboxReadResponsesList = postboxRepository.findPostboxesWithinRadius(latitude, longitude, 1000.0).stream()
-                .map(PostboxReadResponse::from)
+        List<PostboxReadResponseDto> postboxReadResponsesList = postboxRepository.findPostboxesWithinRadius(latitude, longitude, 1000.0).stream()
+                .map(PostboxReadResponseDto::from)
                 .toList();
         return ApiResponse.createSuccess(postboxReadResponsesList, "우체통맵 조회 성공");
     }
