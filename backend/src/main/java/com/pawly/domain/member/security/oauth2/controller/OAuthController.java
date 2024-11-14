@@ -97,19 +97,19 @@ public class OAuthController {
                 .domain(".pawly.o-r.kr")
                 .build();
 
-//            // k11d104.p.ssafy.io 도메인용 쿠키
-//            ResponseCookie responseCookieForOldDomain = ResponseCookie.from("refreshToken", refreshToken)
-//                .httpOnly(true)
-//                .secure(true)
-//                .maxAge(60*60*24*14)
-//                .path("/")
-//                .sameSite("None")
-//                .domain("k11d104.p.ssafy.io")
-//                .build();
+            // k11d104.p.ssafy.io 도메인용 쿠키
+            ResponseCookie responseCookieForOldDomain = ResponseCookie.from("refreshToken", refreshToken)
+                .httpOnly(true)
+                .secure(true)
+                .maxAge(60*60*24*14)
+                .path("/")
+                .sameSite("None")
+                .domain("k11d104.p.ssafy.io")
+                .build();
 
             // 두 개의 쿠키를 응답 헤더에 추가
             response.addHeader(HttpHeaders.SET_COOKIE, responseCookieForPawly.toString());
-//            response.addHeader(HttpHeaders.SET_COOKIE, responseCookieForOldDomain.toString());
+            response.addHeader(HttpHeaders.SET_COOKIE, responseCookieForOldDomain.toString());
 
             accessToken = "Bearer " + accessToken;
             LoginResponseDTO loginResponseDTO = new LoginResponseDTO();
