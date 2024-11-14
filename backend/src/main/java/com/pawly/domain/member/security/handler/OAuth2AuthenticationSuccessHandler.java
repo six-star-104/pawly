@@ -1,10 +1,13 @@
 package com.pawly.domain.member.security.handler;
 
 import com.pawly.domain.member.entity.Member;
+import com.pawly.domain.member.entity.Status;
 import com.pawly.domain.member.repository.MemberRepository;
 import com.pawly.domain.member.security.jwt.JwtTokenProvider;
 import com.pawly.domain.member.security.oauth2.model.OAuthCodeToken;
 import com.pawly.domain.member.security.oauth2.repository.OAuthCodeTokenRepository;
+import com.pawly.global.exception.ErrorCode;
+import com.pawly.global.response.ApiResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -54,21 +57,26 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             if (memberOptional.isPresent()) {
                 Member member = memberOptional.get();
 
-                String tempCode = UUID.randomUUID().toString();
-                String accessToken = jwtTokenProvider.generateAccessToken(member.getEmail());
-                String refreshToken = jwtTokenProvider.generateRefreshToken(member.getEmail());
+                if (member.getStatus() == Status.ACTIVATED) {
 
-                OAuthCodeToken oAuthCodeToken = OAuthCodeToken.builder()
-                    .code(tempCode)
-                    .accessToken(accessToken)
-                    .refreshToken(refreshToken)
-                    .userEmail(email)
-                    .build();
-                oAuthCodeTokenRepository.save(oAuthCodeToken);
+                    String tempCode = UUID.randomUUID().toString();
+                    String accessToken = jwtTokenProvider.generateAccessToken(member.getEmail());
+                    String refreshToken = jwtTokenProvider.generateRefreshToken(member.getEmail());
 
-                targetUrl = UriComponentsBuilder.fromUriString(frontendUrl)
-                    .queryParam("code", tempCode)
-                    .build().toUriString();
+                    OAuthCodeToken oAuthCodeToken = OAuthCodeToken.builder()
+                        .code(tempCode)
+                        .accessToken(accessToken)
+                        .refreshToken(refreshToken)
+                        .userEmail(email)
+                        .build();
+                    oAuthCodeTokenRepository.save(oAuthCodeToken);
+
+                    targetUrl = UriComponentsBuilder.fromUriString(frontendUrl)
+                        .queryParam("code", tempCode)
+                        .build().toUriString();
+                } else {
+                    ApiResponse.createError(ErrorCode.ACCESS_DENIED);
+                }
             }
         }
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
