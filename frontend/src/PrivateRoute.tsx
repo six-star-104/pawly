@@ -75,15 +75,14 @@ const PrivateRoute = () => {
     const checkAuthentication = async () => {
       try {
         // 1. URL에서 인증 코드 확인
-        // console.log("쿼리코드로 시작");
+        console.log("쿼리코드로 시작");
         const queryCode = query.get("code");
         if (queryCode) {
           try {
-            // console.log("쿼리코드 내부", queryCode);
+            console.log("쿼리코드 내부", queryCode);
             const response = await getOAuthAccessToken(queryCode);
             if (response?.accessToken) {
               setAccessToken(response.accessToken);
-              localStorage.setItem("accessToken", response.accessToken);
               setLogin();
               fetchUserInfo();
               // 나중에 마지막에 주석 풀고 code 안나오게 하기
