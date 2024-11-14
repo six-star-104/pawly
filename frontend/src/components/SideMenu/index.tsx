@@ -11,6 +11,7 @@ import {
   menuItemStyle,
   footerStyle,
 } from "./SideMenu.style";
+import { IoLogOutSharp } from "react-icons/io5";
 import {
   FaStickyNote,
   FaEnvelope,
@@ -23,12 +24,20 @@ import {
 import { ISideMenu } from "../../types/sideMenuTypes";
 import { useUserInfoStore } from "@/stores/userInfoStore";
 import { useState, useEffect } from "react";
+import { logout } from "@/apis/userService";
+
 export const SideMenu: React.FC<ISideMenu> = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const { nickname } = useUserInfoStore();
   const overlayRef = useRef<HTMLDivElement | null>(null);
 
   const [isAnimating, setIsAnimating] = useState(false);
+
+  const handleLogout = async () => {
+    await logout();
+    localStorage.removeItem("accessToken");
+    navigate("/login");
+  };
 
   // 슬라이드 애니메이션 동작시간용
   useEffect(() => {
@@ -78,6 +87,7 @@ export const SideMenu: React.FC<ISideMenu> = ({ isOpen, onClose }) => {
     onClose();
     navigate("/easteregg");
   };
+ 
 
   if (!isOpen && !isAnimating) return null;
 
@@ -114,6 +124,9 @@ export const SideMenu: React.FC<ISideMenu> = ({ isOpen, onClose }) => {
           </li>
           <li onClick={mypageMove} css={menuItemStyle}>
             <FaUser /> 마이페이지
+          </li>
+          <li onClick={handleLogout} css={menuItemStyle}>
+            <IoLogOutSharp /> 로그아웃
           </li>
         </ul>
         <div css={footerStyle}><p>ⓒCOPYRIGHT. SSAFY D104</p></div>

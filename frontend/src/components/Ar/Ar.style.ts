@@ -7,7 +7,7 @@ export const container = css`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  
+
   background-color: transparent;
   background-image: none;
   button {
@@ -23,4 +23,15 @@ export const container = css`
   button:hover {
     cursor: pointer;
   }
+`;
+
+export const confirmBtn = css`
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 16px;
+`;
+
+export const singleBtn = css`
+  margin-left: 80%;
+  margin-top: 16px;
 `;

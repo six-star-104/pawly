@@ -59,7 +59,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
       onMouseLeave={handleMouseUp}
     >
       <div css={modalStyles.modalContentStyle(isOpen)}>
-        <div css={modalStyles.modalHeaderStyle}>
+        <div css={modalStyles.modalHeaderStyle(title)}>
           {title && <div css={modalStyles.modalTitleStyle}>{title}</div>}
           <button css={modalStyles.closeButtonStyle} onClick={onClose}>
             &times;

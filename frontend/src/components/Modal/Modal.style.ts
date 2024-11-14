@@ -29,9 +29,28 @@ const modalOverlayStyle = (isOpen: boolean) => css`
 
 const modalContentStyle = (isOpen: boolean) => css`
   position: relative;
-  width: auto;
-  min-width: 300px;
-  max-width: 90%;
+
+  // 노트북 & 테블릿 가로 (해상도 1024px ~ )
+  @media all and (min-width: 1024px) {
+    width: 42vh;
+  }
+
+  // 테블릿 가로 (해상도 768px ~ 1023px)
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    width: 42vh;
+  }
+
+  // 모바일 가로 & 테블릿 세로 (해상도 480px ~ 767px)
+  @media all and (min-width: 480px) and (max-width: 767px) {
+    width: 42vh;
+  }
+
+  // 모바일 세로 (해상도 ~ 479px)
+  @media all and (max-width: 479px) {
+    width: 90%;
+  }
+
+  
   background-color: white;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   animation: ${isOpen ? fadeIn : fadeOut} 0.2s
@@ -39,11 +58,11 @@ const modalContentStyle = (isOpen: boolean) => css`
   padding: 16px;
 `;
 
-const modalHeaderStyle = css`
+const modalHeaderStyle = (title:string | undefined)=>css`
   display: flex;
-  justify-content: space-between;
-  align-items: start;
-  margin-bottom: 1.5rem;
+  justify-content: ${title? "space-between" : "end"};
+  align-items: center;
+  margin-bottom: 12px;
 `;
 
 const modalTitleStyle = css`
@@ -51,7 +70,7 @@ const modalTitleStyle = css`
   font-weight: bold;
 `;
 
-const closeButtonStyle = css`
+const closeButtonStyle =  css`
   background: none;
   border: none;
   font-size: 1.75rem;

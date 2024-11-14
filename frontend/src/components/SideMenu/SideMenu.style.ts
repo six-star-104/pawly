@@ -58,7 +58,7 @@ export const containerStyle = css`
 
 export const headerStyle = css`
   background-color: #d1b3ff;
-  padding: 0.5rem;
+  padding: 12px 20px;
   display: flex; /* Flexbox 사용 */
   justify-content: space-between; /* 좌우 끝으로 정렬 */
   align-items: center; /* 세로 가운데 정렬 */

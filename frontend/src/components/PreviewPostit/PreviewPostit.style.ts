@@ -59,7 +59,7 @@ export const bubbleStyle = (
   padding: ${4 * px}px;
 
   box-sizing: border-box;
-  width: 150px;
+  width: 120px;
 
   text-align: center;
   box-shadow: 0 -${px}px ${bgColor}, 0 -${2 * px}px ${borderColor},
@@ -71,23 +71,7 @@ export const bubbleStyle = (
     ${px}px ${3 * px}px ${shadow}, ${3 * px}px ${px}px ${shadow},
     ${2 * px}px ${2 * px}px ${shadow};
 
-  &.mini {
-    width: 120px;
-    // font-size: 16px;
-    padding: 4px;
-  }
-
-  &.medium {
-    width: 350px;
-  }
-
-  &.large {
-    width: 560px;
-    font-size: 24px;
-    text-align: left;
-    text-transform: uppercase;
-  }
-
+  
   &::after {
     content: "";
     display: block;
@@ -107,8 +91,7 @@ export const pixelLock = (flag: boolean, isAlert: boolean) => css`
       width: 40px;
       height: 40px;
       position: absolute;
-
-      left: 78px;
+      left: 64px;
     }
 
   filter: ${flag ? "" : "grayscale(80%)"};
