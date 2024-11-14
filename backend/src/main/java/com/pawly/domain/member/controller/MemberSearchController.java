@@ -20,9 +20,7 @@ public class MemberSearchController {
 
     @GetMapping("/{nickname}")
     public ApiResponse<?> findMember(Authentication authentication, @PathVariable String nickname) throws Exception{
-
         Member member = memberService.findByEmail(authentication.getName());
-
-        return memberSearchService.memberSearch(nickname, member.getMemberId());
+        return memberSearchService.memberSearch(nickname, member);
     }
 }
