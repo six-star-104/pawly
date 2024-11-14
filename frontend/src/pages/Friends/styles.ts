@@ -17,7 +17,7 @@ export const tabContainer = (activeTab: "friends" | "requests") => css`
   display: flex;
   width: 100%;
   max-width: 500px;
-  margin-top: 1rem;
+  margin-top: 24px;
   padding: 0 1rem;
   button {
     flex: 1;
@@ -54,4 +54,28 @@ export const FriendtContainer = css`
   overflow-y: auto;
   padding: 0 1rem;
   overflow: unset;
+`;
+
+export const searchContainer = css`
+  display: flex;
+  align-items: center;
+  width: 90%;
+  background-color: #fff;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 2px solid black;
+  margin-top: 80px;
+  input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+  }
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
 `;
