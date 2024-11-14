@@ -55,11 +55,11 @@ public class MemberController {
             System.out.println(refreshToken);
             if (refreshToken != null && jwtTokenProvider.validateToken(refreshToken)) {
                 tokenService.blacklistRefreshToken(refreshToken);
-                Cookie cookie = new Cookie("refreshToken", null);
-                cookie.setMaxAge(0);
-                cookie.setPath("/"); // 생성 시와 동일한 경로 설정
-                cookie.setDomain(".pawly.o-r.kr"); // 생성 시와 동일한 도메인 설정
-                response.addCookie(cookie);
+//                Cookie cookie = new Cookie("refreshToken", null);
+//                cookie.setMaxAge(0);
+//                cookie.setPath("/"); // 생성 시와 동일한 경로 설정
+//                cookie.setDomain(".pawly.o-r.kr"); // 생성 시와 동일한 도메인 설정
+//                response.addCookie(cookie);
 
                 Cookie oldCookie = new Cookie("refreshToken", null);
                 oldCookie.setMaxAge(0);
@@ -104,14 +104,14 @@ public class MemberController {
             String newAccessToken = responseDTO.getAccessToken();;
             String newRefreshToken = responseDTO.getRefreshToken();
 
-            ResponseCookie responseCookie = ResponseCookie.from("refreshToken", newRefreshToken)
-                .httpOnly(true)
-                .secure(true)
-                .maxAge(60*60*24*14)
-                .path("/")
-                .sameSite("None")
-                .domain(".pawly.o-r.kr")
-                .build();
+//            ResponseCookie responseCookie = ResponseCookie.from("refreshToken", newRefreshToken)
+//                .httpOnly(true)
+//                .secure(true)
+//                .maxAge(60*60*24*14)
+//                .path("/")
+//                .sameSite("None")
+//                .domain(".pawly.o-r.kr")
+//                .build();
 
             // k11d104.p.ssafy.io 도메인용 쿠키
             ResponseCookie responseCookieForOldDomain = ResponseCookie.from("refreshToken", newRefreshToken)
@@ -125,7 +125,7 @@ public class MemberController {
 
 
             response.addHeader(HttpHeaders.SET_COOKIE, responseCookieForOldDomain.toString());
-            response.setHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
+//            response.setHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
 
             newAccessToken = "Bearer " + newAccessToken;
             LoginResponseDTO loginResponseDTO = new LoginResponseDTO();
@@ -232,11 +232,11 @@ public class MemberController {
 
                 tokenService.blacklistRefreshToken(refreshToken);
 
-                Cookie cookie = new Cookie("refreshToken", null);
-                cookie.setMaxAge(0);
-                cookie.setPath("/"); // 생성 시와 동일한 경로 설정
-                cookie.setDomain(".pawly.o-r.kr"); // 생성 시와 동일한 도메인 설정
-                response.addCookie(cookie);
+//                Cookie cookie = new Cookie("refreshToken", null);
+//                cookie.setMaxAge(0);
+//                cookie.setPath("/"); // 생성 시와 동일한 경로 설정
+//                cookie.setDomain(".pawly.o-r.kr"); // 생성 시와 동일한 도메인 설정
+//                response.addCookie(cookie);
 
                 Cookie oldCookie = new Cookie("refreshToken", null);
                 oldCookie.setMaxAge(0);
