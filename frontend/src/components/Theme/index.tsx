@@ -41,7 +41,7 @@ export const Theme = () => {
     setCurrentColorPickerField(field);
     setIsColorPickerOpen(true);
   };
-
+  
   useEffect(() => {
     const fetchAllThemes = async () => {
       try {
@@ -142,7 +142,9 @@ export const Theme = () => {
       setBorderColor(color.hex);
     }
   };
-
+  
+  //빌드오류
+  console.log(isColorPickerOpen)
   return (
     <div css={mainContainerStyle}>
       <div >
