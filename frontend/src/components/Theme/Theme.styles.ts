@@ -74,7 +74,7 @@ export const previewContainerStyle = css`
 `;
 
 export const paletteContainerStyle = css`
-  /* margin-top: 10px; */
+  margin-top: 10%;
   width: 100%;
   /* height: 60vh; */
   margin-right: 1rem;
