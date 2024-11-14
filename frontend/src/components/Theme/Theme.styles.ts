@@ -1,27 +1,18 @@
-import { css } from "@emotion/react";
+// Theme.styles.ts
+import { css } from '@emotion/react';
 
 export const containerStyle = css`
-  /* max-width: 600px; */
-  /* margin: 0 auto; */
-  padding: 2rem;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
-  flex-direction: row;
-  gap: 2rem;
-`;
-
-export const headerStyle = css`
-  font-size: 1.5rem;
-  color: #333;
-  text-align: center;
-  margin-bottom: 1.5rem;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
 `;
 
 export const formStyle = css`
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  width: 80%;
   gap: 1rem;
 `;
 
@@ -29,13 +20,14 @@ export const inputGroupStyle = css`
   display: flex;
   flex-direction: column;
   label {
-    font-weight: bold;
     margin-bottom: 0.5rem;
+    font-weight: bold;
   }
   input {
     padding: 0.5rem;
     border: 1px solid #ddd;
     border-radius: 4px;
+    width: 100%;
   }
 `;
 
@@ -46,9 +38,9 @@ export const checkboxGroupStyle = css`
 `;
 
 export const buttonStyle = css`
-  padding: 0.75rem;
-  background-color: #fff;
-  color: #000;
+  padding: 0.5rem;
+  background-color: #007bff;
+  color: #fff;
   font-weight: bold;
   border: none;
   border-radius: 4px;
@@ -65,60 +57,45 @@ export const messageStyle = css`
   text-align: center;
 `;
 
-export const previewContainerStyle = css`
-  margin-top: 1.5rem;
-  text-align: center;
-`;
-
-export const themeListContainerStyle = css`
-  margin-top: 2rem;
-`;
-
-
-export const themeItemStyle = css`
-  margin-bottom: 1.5rem;
-  padding: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  text-align: center; 
-  align-items: center;
-  justify-content: center;
-
-  p {
-    margin: 0.5rem 0;
-  }
-`;
-export const themeListStyle = css`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 한 줄에 3개씩 배치 */
-  grid-template-rows: repeat(2, auto); /* 두 줄로 배치 */
-  gap: 1rem;
-  list-style: none;
-  padding: 0;
-`;
-
-export const paginationStyle = css`
+export const prevpaleteContainer = css`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 1rem;
+  flex-direction: column;
+  width: 30%;
+  margin-right: 5%;
 
-  button {
-    /* padding: 0.5rem 1rem; */
-    background-color: #d3d3d3;
-    color: #000;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    &:hover {
-      background-color: #0056b3;
-    }
-    &:disabled {
-      background-color: #fff;
-      cursor: not-allowed;
-    }
-  }
+`
+export const previewContainerStyle = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 10vh;
+  margin-bottom: 0px;
+`;
+
+export const paletteContainerStyle = css`
+  /* margin-top: 10px; */
+  width: 100%;
+  /* height: 60vh; */
+  margin-right: 1rem;
+  display: flex;
+  /* flex-direction: column;
+  align-items: center;
+  justify-content: center; */
+`;
+
+export const mainContainerStyle = css`
+  display: flex;
+  /* justify-content: space-between; */
+  gap: 1rem; 
+`;
+
+export const leftContainerStyle = css`
+  flex: 1;
+`;
+
+export const rightContainerStyle = css`
+  flex: 2;
+  display: flex;
+  flex-direction: row;
 `;

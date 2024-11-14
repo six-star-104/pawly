@@ -1,19 +1,22 @@
 import { useState, useEffect } from 'react';
 import { createTheme, updateTheme } from '@/apis/themeService';
-import { PreviewPostIt } from '../PreviewPostit';
+import { ThemeList } from '@/components/ThemeList';
 import useThemeStore from '@/stores/themeStore';
 import { SketchPicker } from 'react-color';
+import { PreviewPostIt } from '@/components/PreviewPostit';
 import {
-  containerStyle,
+  // containerStyle,
   formStyle,
   inputGroupStyle,
   checkboxGroupStyle,
   buttonStyle,
   messageStyle,
   previewContainerStyle,
-  themeListStyle,
-  themeItemStyle,
-  paginationStyle,
+  paletteContainerStyle,
+  mainContainerStyle, 
+  // leftContainerStyle, 
+  rightContainerStyle,
+  prevpaleteContainer
 } from './Theme.styles';
 
 export const Theme = () => {
@@ -26,22 +29,36 @@ export const Theme = () => {
   const [message, setMessage] = useState<string | null>(null);
   const [editMode, setEditMode] = useState(false);
   const [editingThemeId, setEditingThemeId] = useState<number | null>(null);
+  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
+  const [currentColorPickerField, setCurrentColorPickerField] = useState<string | null>(null);
 
   const { themes, fetchThemesFromAPI, addTheme, updateThemeInStore, deleteTheme } = useThemeStore();
 
-  const itemsPerPage = 6; 
+  const itemsPerPage = 6;
   const [currentPage, setCurrentPage] = useState(1);
+
+  const openColorPicker = (field: string) => {
+    setCurrentColorPickerField(field);
+    setIsColorPickerOpen(true);
+  };
 
   useEffect(() => {
     const fetchAllThemes = async () => {
       try {
-        await fetchThemesFromAPI(); 
+        await fetchThemesFromAPI();
       } catch (error) {
         console.error("테마 조회 중 오류:", error);
       }
     };
     fetchAllThemes();
   }, [fetchThemesFromAPI]);
+
+  useEffect(() => {
+    const maxPage = Math.max(1, Math.ceil(themes.filter((theme) => theme.deleteFlag === false).length / itemsPerPage));
+    if (currentPage > maxPage) {
+      setCurrentPage(maxPage);
+    }
+  }, [themes, itemsPerPage, currentPage]);
 
   const handleCreateOrUpdateTheme = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,9 +113,9 @@ export const Theme = () => {
   const handleDeleteTheme = async (themeId?: number) => {
     if (themeId !== undefined) {
       try {
-        await deleteTheme(themeId); 
+        await deleteTheme(themeId);
         setMessage(`테마 삭제 성공`);
-        await fetchThemesFromAPI(); 
+        await fetchThemesFromAPI();
       } catch (error) {
         setMessage('테마 삭제 실패. 다시 시도해 주세요.');
       }
@@ -106,15 +123,14 @@ export const Theme = () => {
       console.error("삭제할 테마의 ID가 없습니다.");
     }
   };
-  
-  
 
-  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
-  const [currentColorPickerField, setCurrentColorPickerField] = useState<string | null>(null);
+  const handlePreviousPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
 
-  const openColorPicker = (field: string) => {
-    setCurrentColorPickerField(field);
-    setIsColorPickerOpen(true);
+  const handleNextPage = () => {
+    const maxPage = Math.ceil(themes.filter((theme) => theme.deleteFlag === false).length / itemsPerPage);
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, maxPage));
   };
 
   const handleColorChange = (color: any) => {
@@ -127,106 +143,85 @@ export const Theme = () => {
     }
   };
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentThemes = themes.slice(indexOfFirstItem, indexOfLastItem);
-
-  const handlePreviousPage = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
-  };
-
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) => Math.min(prevPage + 1, Math.ceil(themes.length / itemsPerPage)));
-  };
-
   return (
-    <div css={containerStyle}>
-      <form onSubmit={handleCreateOrUpdateTheme} css={formStyle}>
-        <div css={inputGroupStyle}>
-          <label>테마 이름:</label>
-          <input type="text" value={themeName} onChange={(e) => setThemeName(e.target.value)} required />
-        </div>
-
-        <div css={inputGroupStyle}>
-          <label>배경 색상:</label>
-          <input type="text" value={backgroundColor} onClick={() => openColorPicker('backgroundColor')} readOnly />
-        </div>
-
-        <div css={inputGroupStyle}>
-          <label>폰트 색상:</label>
-          <input type="text" value={fontColor} onClick={() => openColorPicker('fontColor')} readOnly />
-        </div>
-
-        <div css={inputGroupStyle}>
-          <label>테두리 색상:</label>
-          <input type="text" value={borderColor} onClick={() => openColorPicker('borderColor')} readOnly />
-        </div>
-
-        <div css={inputGroupStyle}>
-          <label>이미지 URL:</label>
-          <input type="text" value={image} onChange={(e) => setImage(e.target.value)} />
-        </div>
-
-        <div css={checkboxGroupStyle}>
-          <label>기본 테마로 설정:</label>
-          <input type="checkbox" checked={base} onChange={(e) => setBase(e.target.checked)} />
-        </div>
-
-        <button type="submit" css={buttonStyle}>
-          {editMode ? '테마 수정' : '테마 생성'}
-        </button>
-        {message && <p css={messageStyle}>{message}</p>}
-      </form>
-
-      <div css={previewContainerStyle}>
-        <h3>미리보기</h3>
-        <PreviewPostIt
-          themeName={themeName || '미리보기'}
-          background={image || backgroundColor || '#fff'}
-          fontColor={fontColor || '#000'}
-          borderColor={borderColor || '#000'}
-          flag={true}
-        />
-        {isColorPickerOpen && (
-          <div style={{ marginTop: '10px' }}>
-            <SketchPicker
-              color={
-                currentColorPickerField === 'backgroundColor'
-                  ? backgroundColor
-                  : currentColorPickerField === 'fontColor'
-                  ? fontColor
-                  : borderColor
-              }
-              onChange={handleColorChange}
-            />
-            <button onClick={() => setIsColorPickerOpen(false)} css={buttonStyle} style={{ marginTop: '10px' }}>
-              완료
-            </button>
+    <div css={mainContainerStyle}>
+      <div >
+        <form onSubmit={handleCreateOrUpdateTheme} css={formStyle}>
+          {/* 테마 생성 폼 */}
+          <div css={inputGroupStyle}>
+            <label>테마 이름:</label>
+            <input type="text" value={themeName} onChange={(e) => setThemeName(e.target.value)} required />
           </div>
-        )}
+
+          <div css={inputGroupStyle}>
+            <label>배경 색상:</label>
+            <input type="text" value={backgroundColor} onClick={() => openColorPicker('backgroundColor')} readOnly />
+          </div>
+
+          <div css={inputGroupStyle}>
+            <label>폰트 색상:</label>
+            <input type="text" value={fontColor} onClick={() => openColorPicker('fontColor')} readOnly />
+          </div>
+
+          <div css={inputGroupStyle}>
+            <label>테두리 색상:</label>
+            <input type="text" value={borderColor} onClick={() => openColorPicker('borderColor')} readOnly />
+          </div>
+
+          <div css={inputGroupStyle}>
+            <label>이미지 URL:</label>
+            <input type="text" value={image} onChange={(e) => setImage(e.target.value)} />
+          </div>
+
+          <div css={checkboxGroupStyle}>
+            <label>기본 테마로 설정:</label>
+            <input type="checkbox" checked={base} onChange={(e) => setBase(e.target.checked)} />
+          </div>
+
+          <button type="submit" css={buttonStyle}>
+            {editMode ? '테마 수정' : '테마 생성'}
+          </button>
+          {message && <p css={messageStyle}>{message}</p>}
+        </form>
       </div>
 
-      <ul css={themeListStyle}>
-        {currentThemes.map((theme, index) => (
-          <li key={index} css={themeItemStyle}>
-            <PreviewPostIt
-              themeName={theme.themeName}
-              background={theme.image || theme.backgroundColor || '#fff'}
-              fontColor={theme.fontColor || '#000'}
-              borderColor={theme.borderColor || '#000000'}
-              flag={true}
-            />
-            <p><strong>테마 이름:</strong> {theme.themeName}</p>
-            <button onClick={() => handleEditTheme(theme)}>수정</button>
-            <button onClick={() => handleDeleteTheme(theme.themeId)}>삭제</button>
-          </li>
-        ))}
-        <div css={paginationStyle}>
-          <button onClick={handlePreviousPage} disabled={currentPage === 1}>이전</button>
-          <span>{currentPage} / {Math.ceil(themes.length / itemsPerPage)}</span>
-          <button onClick={handleNextPage} disabled={currentPage === Math.ceil(themes.length / itemsPerPage)}>다음</button>
+      <div css={rightContainerStyle}>
+        <div css={prevpaleteContainer}>
+        <div css={previewContainerStyle}>
+          <PreviewPostIt
+            themeName={themeName || '미리보기'}
+            background={image || backgroundColor || '#fff'}
+            fontColor={fontColor || '#000'}
+            borderColor={borderColor || '#000'}
+            flag={true}
+          />
         </div>
-      </ul>
+
+        <div css={paletteContainerStyle}>
+          <SketchPicker
+            color={
+              currentColorPickerField === 'backgroundColor'
+                ? backgroundColor
+                : currentColorPickerField === 'fontColor'
+                ? fontColor
+                : borderColor
+            }
+            onChange={handleColorChange}
+            width="100%"
+          />
+        </div>
+        </div>
+
+        <ThemeList
+          themes={themes}
+          itemsPerPage={itemsPerPage}
+          currentPage={currentPage}
+          onEdit={handleEditTheme}
+          onDelete={handleDeleteTheme}
+          onPreviousPage={handlePreviousPage}
+          onNextPage={handleNextPage}
+        />
+      </div>
     </div>
   );
 };

@@ -35,13 +35,12 @@ export const createTheme = async (
       image,
       base,
     });
-    console.log("테마 생성 결과:", response.data);
     return response.data;
   } catch (error: any) {
     if (error.response && error.response.status === 401) {
-      console.error("인증에 실패했습니다. 다시 로그인해 주세요.");
+      // console.error("인증에 실패했습니다. 다시 로그인해 주세요.");
     } else {
-      console.error("Failed to create theme: ", error);
+      // console.error("Failed to create theme: ", error);
     }
     throw error;
   }
@@ -65,7 +64,6 @@ export const updateTheme = async (
       image,
       base,
     });
-    console.log("테마 수정 결과:", response.data);
     return response.data;
   } catch (error: any) {
     if (error.response && error.response.status === 401) {
@@ -81,7 +79,6 @@ export const updateTheme = async (
 export const deleteTheme = async (themeId: number) => {
   try {
     const response = await axiosInstance.delete(`/admin/theme/${themeId}`);
-    console.log("테마 삭제 결과:", response.data);
     return response.data;
   } catch (error: any) {
     if (error.response && error.response.status === 401) {
