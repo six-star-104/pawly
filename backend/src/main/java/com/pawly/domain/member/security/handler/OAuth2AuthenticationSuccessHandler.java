@@ -7,8 +7,6 @@ import com.pawly.domain.member.repository.MemberRepository;
 import com.pawly.domain.member.security.jwt.JwtTokenProvider;
 import com.pawly.domain.member.security.oauth2.model.OAuthCodeToken;
 import com.pawly.domain.member.security.oauth2.repository.OAuthCodeTokenRepository;
-import com.pawly.global.exception.ErrorCode;
-import com.pawly.global.response.ApiResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -113,9 +111,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         errorResponse.put("status", "error");
         errorResponse.put("message", errorMessage);
 
-        // JSON 응답 설정
-        response.setContentType("application/json;charset=UTF-8");
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write(new ObjectMapper().writeValueAsString(errorResponse));
+        response.flushBuffer(); // 응답을 클라이언트로 전송
+
+        // 로그인 페이지로 리다이렉트
+        String loginRedirectUrl = "https://pawly.o-r.kr/login";
+        response.sendRedirect(loginRedirectUrl);
     }
 }
