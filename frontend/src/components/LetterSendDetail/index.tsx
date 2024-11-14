@@ -3,6 +3,9 @@ import { ISendLetter } from "@/types/letterTypes";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getSendLetterDetail, deleteSendLetter } from "@/apis/letterService";
+import replyHeart from "@/assets/icons/replyHeart.svg";
+import replyLike from "@/assets/icons/replyLike.svg";
+import replyStar from "@/assets/icons/replyStar.svg";
 import ModalConfirm from "@/components/ModalConfirm";
 
 interface LetterSendDetailProps {
@@ -37,7 +40,16 @@ export const LetterSendDetail: React.FC<LetterSendDetailProps> = ({
     <>
       <style.modalHeader>
         <span>To. {letterDetail?.recipientName}</span>
-        <div>
+        <div css={style.iconContainer}>
+          <div>
+            {letterDetail?.reaction === 1 ? (
+              <img src={replyHeart} css={style.replyIcon} />
+            ) : letterDetail?.reaction === 2 ? (
+              <img src={replyLike} css={style.replyIcon} />
+            ) : (
+              <img src={replyStar} css={style.replyIcon} />
+            )}
+          </div>
           <button css={style.deleteIcon} onClick={handleDelete}>
             <img
               src="https://unpkg.com/pixelarticons@1.8.1/svg/trash.svg"

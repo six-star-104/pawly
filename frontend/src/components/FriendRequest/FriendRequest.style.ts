@@ -40,7 +40,7 @@ export const contentContainer = css`
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 0 0.5rem;
+  padding-left: 0.5rem;
 `;
 
 export const asset = css`
@@ -66,7 +66,7 @@ export const nicknameContainer = css`
 
 export const nickname = css`
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 0.9rem;
 `;
 
 export const waitingContainer = css`
@@ -82,7 +82,7 @@ export const waiting = css`
 `;
 
 export const name = css`
-  font-size: 0.8rem;
+  font-size: 0.6rem;
 `;
 
 export const responseIconContainer = css`
@@ -95,6 +95,10 @@ export const responseIcon = css`
   height: 36px;
   border: none;
   background: none;
+`;
+
+export const noRequest = css`
+  margin: 0 auto;
 `;
 
 export const modalHeader = styled.div`

@@ -42,6 +42,17 @@ export const modalHeader = styled.div`
   z-index: 1;
 `;
 
+export const iconContainer = css`
+  display: flex;
+  align-items: center;
+`;
+
+export const replyIcon = css`
+  width: 20px;
+  height: 20px;
+  margin-right: 0.5rem;
+`;
+
 export const closeButtonStyle = css`
   background: none;
   border: none;

@@ -101,7 +101,7 @@ export const FriendRequest = () => {
                 </div>
               </div>
             ))}
-          {sentRequest?.length > 0 &&
+          {sentRequest?.length > 0 ? (
             sentRequest.map((request) => (
               <div
                 css={style.sentRequestItem}
@@ -112,7 +112,10 @@ export const FriendRequest = () => {
                   <img src={request.assets} css={style.asset} />
                   <div css={style.nicknameWrapper}>
                     <div css={style.nicknameContainer}>
-                      <div css={style.nickname}>{request.nickname}</div>
+                      <div>
+                        <div css={style.nickname}>{request.nickname}</div>
+                        <div css={style.name}>{request.name}</div>
+                      </div>
                       <div css={style.waitingContainer}>
                         <div css={style.waiting}>수락 대기</div>
                         {/* prettier-ignore */}
@@ -130,7 +133,12 @@ export const FriendRequest = () => {
                   </div>
                 </div>
               </div>
-            ))}
+            ))
+          ) : (
+            <div css={style.sentRequestItem}>
+              <div css={style.noRequest}>친구 요청이 없습니다.</div>
+            </div>
+          )}
         </div>
       </div>
       {selectedMemberId && (
