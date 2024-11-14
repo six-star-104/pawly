@@ -1,9 +1,9 @@
 import { axiosInstance } from "./axiosInstance";
-
 // 친구 신청
 export const postFriendRequest = async (memberId: number) => {
   try {
-    await axiosInstance.post(`friend`, memberId);
+    const response = await axiosInstance.post(`friend`, { memberId: memberId });
+    return response.data;
   } catch (error) {
     console.error("친구 신청 실패: ", error);
     throw error;
@@ -93,5 +93,19 @@ export const deleteMyRequest = async (memberId: number) => {
   } catch (error) {
     console.log("delete my friend request failed", error);
     throw error;
+  }
+};
+
+// 이름으로 유저 검색
+export const searchUserByNickname = async (nickname: string) => {
+  try {
+    // API 요청을 보내고, Authorization 헤더에 'Bearer '를 추가하여 토큰을 포함합니다.
+    const response = await axiosInstance.get(
+      `search/${nickname}` // 닉네임을 경로 파라미터로 설정
+    );
+    return response.data;
+  } catch (error) {
+    // console.error("searchUserByNickname 요청 실패:", error);
+    // throw error;
   }
 };

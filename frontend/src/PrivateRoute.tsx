@@ -85,7 +85,8 @@ const PrivateRoute = () => {
               setAccessToken(response.accessToken);
               setLogin();
               fetchUserInfo();
-              navigateTo("/", { replace: true });
+              // 나중에 마지막에 주석 풀고 code 안나오게 하기
+              // navigateTo("/", { replace: true });
               setIsLoading(false);
               return;
             } else {
@@ -107,7 +108,7 @@ const PrivateRoute = () => {
           setAccessToken(storedToken);
           setLogin();
           fetchUserInfo();
-          navigateTo("/", { replace: true });
+          // navigateTo("/", { replace: true });
           setIsLoading(false);
           return;
         }
@@ -121,7 +122,7 @@ const PrivateRoute = () => {
             setAccessToken(newAccessToken);
             setLogin();
             fetchUserInfo();
-            navigateTo("/", { replace: true });
+            // navigateTo("/", { replace: true });
             setIsLoading(false);
             return;
           } else {

@@ -15,7 +15,7 @@ export const tabContainer = (activeTab: "received" | "sent") => css`
   display: flex;
   width: 100%;
   max-width: 500px;
-  margin-top: 1rem;
+  margin-top: 80px;
   padding: 0 1rem;
   button {
     flex: 1;
