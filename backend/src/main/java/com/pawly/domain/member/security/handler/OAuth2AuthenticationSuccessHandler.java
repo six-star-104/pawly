@@ -75,7 +75,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                         .queryParam("code", tempCode)
                         .build().toUriString();
                 } else {
-                    ApiResponse.createError(ErrorCode.ACCESS_DENIED);
+                    // 사용자가 ACTIVATED 상태가 아닌 경우
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    response.setContentType("application/json;charset=UTF-8");
+                    response.getWriter().write("{\"error\": \"ACCESS_DENIED\", \"message\": \"User access denied\"}");
+                    return;
                 }
             }
         }
