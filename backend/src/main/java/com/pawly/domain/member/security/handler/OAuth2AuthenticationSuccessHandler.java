@@ -74,9 +74,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                     targetUrl = UriComponentsBuilder.fromUriString(frontendUrl)
                         .queryParam("code", tempCode)
                         .build().toUriString();
+                } else if (member.getStatus() == Status.SUSPENDED){
+                    // 사용자가 활성화 상태가 아닌 경우 로그인 페이지로 리다이렉트와 함께 에러 메시지 전달
+                    sendErrorResponseAndRedirect(request, response, "Account is suspended. Please contact support.");
                 } else {
-                    // 사용자가 활성화 상태가 아닌 경우 에러 메시지 응답 및 로그인 페이지로 리다이렉트
-                    sendErrorResponse(response, "Account is not activated. Please contact support.");
+                    sendErrorResponseAndRedirect(request, response, "Account is not activate. Please contact support.");
                 }
             }
         }
@@ -105,17 +107,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
     }
 
-    private void sendErrorResponse(HttpServletResponse response, String errorMessage) throws IOException {
-        // JSON 응답 생성
-        Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("status", "error");
-        errorResponse.put("message", errorMessage);
+    private void sendErrorResponseAndRedirect(HttpServletRequest request, HttpServletResponse response, String errorMessage) throws IOException {
+        // 로그인 페이지 URL에 에러 메시지를 쿼리 파라미터로 추가하여 리다이렉트
+        String loginRedirectUrl = UriComponentsBuilder.fromUriString("https://pawly.o-r.kr/login")
+            .queryParam("error", errorMessage)
+            .build().toUriString();
 
-        response.getWriter().write(new ObjectMapper().writeValueAsString(errorResponse));
-        response.flushBuffer(); // 응답을 클라이언트로 전송
-
-        // 로그인 페이지로 리다이렉트
-        String loginRedirectUrl = "https://pawly.o-r.kr/login";
         response.sendRedirect(loginRedirectUrl);
     }
 }
