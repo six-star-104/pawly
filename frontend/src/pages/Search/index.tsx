@@ -38,21 +38,18 @@ export const Search = () => {
     }
   }, [searchParams]);
 
-  // Fetch search results
   const { data: searchResults = [], isLoading } = useQuery<SearchResult[]>({
     queryKey: ["searchResults", searchQuery],
     queryFn: () => searchUser(searchQuery),
   });
 
-  // Mutation for sending friend requests
   const mutation = useMutation({
     mutationFn: (memberId: number) => postFriendRequest(memberId),
-
     onSuccess: (_, memberId) => {
       setSentRequests((prev) => [...prev, memberId]);
       queryClient.invalidateQueries({ queryKey: ["friendList"] });
-      setIsAlertOpen(true); // Show ModalAlert on success
-      setTimeout(() => setIsAlertOpen(false), 1500); // Hide after 1.5 seconds
+      setIsAlertOpen(true);
+      setTimeout(() => setIsAlertOpen(false), 1500);
     },
     onError: (error) => {
       console.error("친구 요청 실패:", error);

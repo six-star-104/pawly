@@ -56,7 +56,7 @@ export const searchResultItem = css`
 export const messageContainer = css`
   text-align: center;
   padding: 20px;
-  color: #666;
+  color: black;
 `;
 
 export const resultsList = css`
@@ -108,5 +108,7 @@ export const buttonContainer = css`
 `;
 
 export const backToFriend = css`
+  padding: 0.5rem 1rem;
   background: white;
+  border: 3px solid black;
 `;
