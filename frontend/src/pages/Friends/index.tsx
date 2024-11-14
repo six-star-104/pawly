@@ -309,7 +309,6 @@ export const Friends = () => {
             <img src="https://unpkg.com/pixelarticons@1.8.1/svg/search.svg" alt="검색 아이콘" width={20} height={20} />
           </button>
         </div>
-      </div>
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
