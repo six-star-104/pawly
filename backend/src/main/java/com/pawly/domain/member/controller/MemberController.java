@@ -58,7 +58,7 @@ public class MemberController {
                 Cookie cookie = new Cookie("refreshToken", null);
                 cookie.setMaxAge(0);
                 cookie.setPath("/"); // 생성 시와 동일한 경로 설정
-                cookie.setDomain("pawly.o-r.kr"); // 생성 시와 동일한 도메인 설정
+                cookie.setDomain(".pawly.o-r.kr"); // 생성 시와 동일한 도메인 설정
                 response.addCookie(cookie);
 
 //                Cookie oldCookie = new Cookie("refreshToken", null);
@@ -110,7 +110,7 @@ public class MemberController {
                 .maxAge(60*60*24*14)
                 .path("/")
                 .sameSite("None")
-                .domain("pawly.o-r.kr")
+                .domain(".pawly.o-r.kr")
                 .build();
 
 //            // k11d104.p.ssafy.io 도메인용 쿠키
@@ -235,7 +235,7 @@ public class MemberController {
                 Cookie cookie = new Cookie("refreshToken", null);
                 cookie.setMaxAge(0);
                 cookie.setPath("/"); // 생성 시와 동일한 경로 설정
-                cookie.setDomain("pawly.o-r.kr"); // 생성 시와 동일한 도메인 설정
+                cookie.setDomain(".pawly.o-r.kr"); // 생성 시와 동일한 도메인 설정
                 response.addCookie(cookie);
 
 //                Cookie oldCookie = new Cookie("refreshToken", null);

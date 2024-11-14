@@ -94,7 +94,7 @@ public class OAuthController {
                 .maxAge(60*60*24*14)
                 .path("/")
                 .sameSite("None")
-                .domain("pawly.o-r.kr")
+                .domain(".pawly.o-r.kr")
                 .build();
 
 //            // k11d104.p.ssafy.io 도메인용 쿠키
