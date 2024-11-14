@@ -8,7 +8,7 @@ interface PaginationProps {
   hasReports: boolean;
 }
 
-const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange, hasReports }) => (
+const ReportPagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange, hasReports }) => (
   <div css={paginationContainer}>
     <button
       css={paginationButton}
@@ -30,4 +30,4 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
   </div>
 );
 
-export default Pagination;
+export default ReportPagination;

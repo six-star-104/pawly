@@ -1,29 +1,23 @@
-import { ReportType } from '@/types/ReportTypes';
 import {
   adminContainer,
   adminHeader,
   adminContent,
-  adminBtnContainer,
 } from './styles';
 import { useReportStore } from '@/stores/reportStore';
 import { useEffect, useState } from 'react';
 import { updateReportStatus } from '@/apis/reportService';
 import ReportList from '@/components/ReportList';
-// import CompletedReports from '@/components/CompletedReports';
-// import DeniedReports from '@/components/DeniedReports';
-import Pagination from '@/components/ReportPagination';
+import ReportPagination from '@/components/ReportPagination';
+import { Theme } from '@/components/Theme';
 
 export const Admin = () => {
-  const { reports, totalReports, fetchReports } = useReportStore();
+  const { reports, fetchReports } = useReportStore();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [category, setCategory] = useState("ROLLING_PAPER");
   const [actionMessage, setActionMessage] = useState<string | null>(null);
-  const [completedReports, setCompletedReports] = useState<ReportType[]>([]);
-  const [deniedReports, setDeniedReports] = useState<ReportType[]>([]);
-  const pageSize = 1;
-  const totalPages = totalReports > 0 ? Math.ceil(totalReports / pageSize) : 1;
+  const pageSize = 1; 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +26,7 @@ export const Admin = () => {
       setActionMessage(null);
 
       try {
-        await fetchReports(category, currentPage, pageSize);
+        await fetchReports(category, 0, 1000); // 일단 한번에 다 가져오기
       } catch (err) {
         setError("신고 내역을 불러오는 중 오류가 발생했습니다.");
       } finally {
@@ -41,7 +35,10 @@ export const Admin = () => {
     };
 
     fetchData();
-  }, [fetchReports, category, currentPage]);
+  }, [fetchReports, category]);
+
+  const filteredReports = reports.filter(report => report.status === "STANDBY");
+  const totalPages = Math.ceil(filteredReports.length / pageSize);
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
@@ -49,29 +46,24 @@ export const Admin = () => {
 
   const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setCategory(event.target.value);
-    setCurrentPage(0);
+    setCurrentPage(0); 
   };
 
   const handleReportAction = async (reportId: number, confirmType: "COMPLETE" | "DENIED") => {
     try {
       const response = await updateReportStatus(reportId, confirmType);
       setActionMessage(`신고 ID ${reportId} 처리 결과: ${response.message}`);
-
-      // const updatedReports = reports.filter((report) => report.reportId !== reportId);
-      if (confirmType === "COMPLETE") {
-        const completedReport = reports.find((report) => report.reportId === reportId);
-        if (completedReport) setCompletedReports((prev) => [...prev, completedReport]);
-        console.log(completedReports)
-      } else if (confirmType === "DENIED") {
-        const deniedReport = reports.find((report) => report.reportId === reportId);
-        if (deniedReport) setDeniedReports((prev) => [...prev, deniedReport]);
-        console.log(deniedReports)
-      }
-      await fetchReports(category, currentPage, pageSize);
+      await fetchReports(category, 0, 1000);
     } catch (error) {
       setError(`신고 ID ${reportId} 처리 중 오류가 발생했습니다.`);
     }
   };
+
+  // 현재 페이지에 해당하는 항목 가져오기
+  const paginatedReports = filteredReports.slice(
+    currentPage * pageSize,
+    currentPage * pageSize + pageSize
+  );
 
   return (
     <div css={adminContainer}>
@@ -88,33 +80,25 @@ export const Admin = () => {
         </div>
         
         <ReportList
-          reports={reports}
+          reports={paginatedReports} // 스탠바이만 전달하기
           isLoading={isLoading}
           error={error}
           handleReportAction={handleReportAction}
           actionMessage={actionMessage}
         />
         
-        <Pagination
+        <ReportPagination
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={handlePageChange}
-          hasReports={reports.length > 0}
+          hasReports={paginatedReports.length > 0}
         />
         
-        {/* <CompletedReports completedReports={completedReports} /> */}
-        
-        {/* <DeniedReports deniedReports={deniedReports} /> */}
-
         <section>
-          <h2>테마 생성/수정/삭제</h2>
-          <p>테마 생성/수정/삭제</p>
+          <Theme></Theme>
         </section>
       </main>
-      <div css={adminBtnContainer}>
-        {/* <button>저장</button>
-        <button>취소</button> */}
-      </div>
+    
     </div>
   );
 };
