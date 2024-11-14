@@ -42,7 +42,6 @@ export const Search = () => {
   const { data: searchResults = [], isLoading } = useQuery<SearchResult[]>({
     queryKey: ["searchResults", searchQuery],
     queryFn: () => searchUser(searchQuery),
-    enabled: searchQuery.trim() !== "",
   });
 
   // Mutation for sending friend requests

@@ -30,8 +30,10 @@ export const sideBarOverlay = (isOpen: boolean) => css`
   // transform: translateX(100%);
   // transition: transform 0.3s ease;
   // z-index: 10;
-  animation: ${isOpen ? fadeIn : fadeOut} ${isOpen ? "0.2s" : "0.1s"}
-    ${isOpen ? "ease-out" : "ease-in"};
+  /* prettier-ignore */
+  animation: ${isOpen ? fadeIn : fadeOut} ${isOpen ? "0.2s" : "0.1s"} ${isOpen
+    ? "ease-out"
+    : "ease-in"};
   justify-content: center;
   align-items: center;
 
@@ -74,7 +76,7 @@ export const menuListStyle = css`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
 `;
 
 export const menuItemStyle = css`
@@ -83,20 +85,30 @@ export const menuItemStyle = css`
   gap: 16px;
 `;
 
+export const logoutButton = css`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 1rem;
+  border: none;
+  background: none;
+  outline: none;
+`;
+
 export const footerStyle = css`
   text-align: center;
-  font-size: 0.75rem;
   color: #333;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: end;
-  align-items: center;
+  gap: 1rem;
   // margin-bottom: 24px;
 
   p {
     width: 100%;
     padding-top: 16px;
+    font-size: 0.75rem;
     // padding-bottom: 8px;
     border-top: 1px solid black;
   }

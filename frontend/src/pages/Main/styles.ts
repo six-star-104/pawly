@@ -37,8 +37,6 @@ export const content = css`
   }
   justify-content: center;
 
-  position: fixed;
-  bottom: 24%;
   overflow-y: hidden;
 
   button {
@@ -48,4 +46,17 @@ export const content = css`
     align-items: center;
     justify-content: center;
   }
+`;
+
+export const assetStyle = css`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+`;
+
+// 오른쪽 아래에 위치한 postbox 이미지 스타일
+export const postboxStyle = css`
+  position: absolute;
+  bottom: 20px;
+  right: 58px;
 `;

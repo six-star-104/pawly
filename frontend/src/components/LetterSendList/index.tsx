@@ -59,13 +59,13 @@ export const LetterSendList = () => {
           </div>
         )}
       </div>
-
-      <Pagination
-        totalPages={letterList?.totalPage || 0}
-        currentPage={currentPage}
-        onPageChange={handlePageChange}
-      />
-
+      {letterList && letterList.totalPage > 1 && (
+        <Pagination
+          totalPages={letterList?.totalPage || 0}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+        />
+      )}
       {isModalOpen && selectedLetterId && (
         <ModalLetter isOpen={isModalOpen} onClose={closeModal}>
           {selectedLetterId && (

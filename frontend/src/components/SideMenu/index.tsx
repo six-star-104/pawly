@@ -10,6 +10,7 @@ import {
   menuListStyle,
   menuItemStyle,
   footerStyle,
+  logoutButton,
 } from "./SideMenu.style";
 import { IoLogOutSharp } from "react-icons/io5";
 import {
@@ -87,7 +88,6 @@ export const SideMenu: React.FC<ISideMenu> = ({ isOpen, onClose }) => {
     onClose();
     navigate("/easteregg");
   };
- 
 
   if (!isOpen && !isAnimating) return null;
 
@@ -100,9 +100,7 @@ export const SideMenu: React.FC<ISideMenu> = ({ isOpen, onClose }) => {
       onMouseDown={handleMouseDown}
     >
       <div css={containerStyle}>
-        <div css={headerStyle}>
-          {nickname}님 환영합니다!
-        </div>
+        <div css={headerStyle}>{nickname} 님 환영합니다!</div>
         <ul css={menuListStyle}>
           <li onClick={homeMove} css={menuItemStyle}>
             <FaHome /> 홈
@@ -125,11 +123,14 @@ export const SideMenu: React.FC<ISideMenu> = ({ isOpen, onClose }) => {
           <li onClick={mypageMove} css={menuItemStyle}>
             <FaUser /> 마이페이지
           </li>
-          <li onClick={handleLogout} css={menuItemStyle}>
-            <IoLogOutSharp /> 로그아웃
-          </li>
         </ul>
-        <div css={footerStyle}><p>ⓒCOPYRIGHT. SSAFY D104</p></div>
+
+        <div css={footerStyle}>
+          <button onClick={handleLogout} css={logoutButton}>
+            <IoLogOutSharp /> 로그아웃
+          </button>
+          <p>ⓒCOPYRIGHT. SSAFY D104</p>
+        </div>
       </div>
     </div>,
     document.body
