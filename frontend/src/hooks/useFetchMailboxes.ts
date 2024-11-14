@@ -7,6 +7,7 @@ interface Mailbox {
   title: string;
   latitude: number;
   longtitude: number;
+  postboxOwner: string;
 }
 
 // method 는  ar 또는 map
@@ -15,20 +16,18 @@ export const useFetchMailBoxes = (method: string) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // useEffect(() => {
-  const fetchMailBoxes = async (
-    latitude: number, // 현재 위도
-    longitude: number
-  ) => {
+  const fetchMailBoxes = async (latitude: number, longitude: number) => {
     setLoading(true);
     setError(null);
+    console.log("조회 시작");
     try {
       const res = await axiosInstance.get(
-        `postbox/${method}?latitude=${latitude}&longitude=${longitude}`
+        `postbox/${method}/${latitude}/${longitude}`
       );
-      console.log("위치조회성공", res.data);
+      console.log("위치조회성공", res);
       setMailBoxes(res.data.data);
     } catch (err) {
+      console.log("조회 실패", err);
       setError("Failed to fetch mailboxes.");
     } finally {
       setLoading(false);

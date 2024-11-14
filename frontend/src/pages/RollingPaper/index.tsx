@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { useEffect, useState } from "react";
 import { PostIt } from "@/components/PostIt";
-import {  container, plusButton, ListContainer } from "./styles";
+import { container, plusButton, ListContainer } from "./styles";
 import PlusButton from "@/assets/icons/PlusButton.png";
 import Modal from "@/components/Modal";
 // import { useNavigate } from "react-router-dom";
@@ -23,13 +23,8 @@ export const RollingPaper = () => {
   // 페이지네이션
   const [pageNum, setPageNum] = useState(0);
 
-  const {
-    fetchRollingPaper,
-    postits,
-    createPostit,
-    editPostit,
-    deletePostit,
-  } = useFetchRollingpaper();
+  const { fetchRollingPaper, postits, createPostit, editPostit, deletePostit } =
+    useFetchRollingpaper();
 
   const handleObserver = async (entries: IntersectionObserverEntry[]) => {
     const target = entries[0];
@@ -86,14 +81,15 @@ export const RollingPaper = () => {
         ))}
         <div id="observer" style={{ height: "10px" }}></div>
       </div>
-      <button
-        css={plusButton}
-        type="button"
-        className="nes-btn"
-        onClick={() => setIsOpen(true)}
-      >
-        <img src={PlusButton} alt="" />
-      </button>
+      <div css={plusButton}>
+        <button
+          type="button"
+          className="nes-btn"
+          onClick={() => setIsOpen(true)}
+        >
+          <img src={PlusButton} alt="" />
+        </button>
+      </div>
 
       <Modal
         isOpen={isOpen}

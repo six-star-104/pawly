@@ -33,7 +33,6 @@ export const ListContainer = css`
   padding-top: 40px;
   padding-bottom: 40px;
   gap: 40px;
-
 `;
 
 export const backButton = css`
@@ -76,12 +75,31 @@ export const modalStyle = css`
 `;
 export const tempBtn = css`
   position: fixed;
-  right: 3%;
+
   bottom: 3%;
-  width: 30%;
-  height: 10%;
+
+  // 노트북 & 테블릿 가로 (해상도 1024px ~ )
+  @media all and (min-width: 1024px) {
+    width: 46.7vh;
+  }
+
+  // 테블릿 가로 (해상도 768px ~ 1023px)
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    width: 46.7vh;
+  }
+
+  // 모바일 가로 & 테블릿 세로 (해상도 480px ~ 767px)
+  @media all and (min-width: 480px) and (max-width: 767px) {
+    width: 46.7vh;
+  }
+
+  // 모바일 세로 (해상도 ~ 479px)
+  @media all and (max-width: 479px) {
+    width: 100%;
+  }
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: end;
+  padding-right: 24px;
   z-index: 3;
 `;

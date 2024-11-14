@@ -2,16 +2,17 @@
 import { MailBoxProps } from "./ArMailBox.types";
 import { useState } from "react";
 import Modal from "../Modal";
-
+import { useNavigate } from "react-router-dom";
+import { singleBtn } from "./ArMailBox.style";
 const ArMailBox: React.FC<MailBoxProps> = ({
   lat,
   lng,
-  userId,
-  title
+  postboxId,
+  title,
+  postboxOwner,
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
-  
-
+  const navigate = useNavigate();
   return (
     <>
       {/* 우체통 글자 */}
@@ -38,13 +39,22 @@ const ArMailBox: React.FC<MailBoxProps> = ({
         // look-at="[gps-camera]"
         onClick={() => setModalOpen(true)}
       ></a-entity>
+
       <Modal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         title="우체통 정보"
-
       >
-        {userId}멤버의 {title}
+        <div>
+          {postboxOwner}의 {title} <br />
+          <button
+            onClick={() => window.location.replace(`/rollingpaper/${postboxId}`)}
+            className="nes-btn"
+            css={singleBtn}
+          >
+            이동
+          </button>
+        </div>
       </Modal>
     </>
   );

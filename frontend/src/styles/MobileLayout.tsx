@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import backgroundImage from "@/assets/images/background.png";
+import backgroundImage from "@/assets/images/resize_bg.jpg";
 import { useLocation } from "react-router-dom";
 
 interface MobileLayoutProps {

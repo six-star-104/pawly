@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { useEffect, useState } from "react";
 import ArMailBox from "../ArMailBox";
-import { container } from "./Ar.style";
+import { container, confirmBtn, singleBtn } from "./Ar.style";
 import Modal from "@/components/Modal";
 import { useFetchMailBoxes } from "@/hooks/useFetchMailboxes";
 import { useCreateRollingpaper } from "@/hooks/useCreateRollingpaper";
@@ -12,10 +12,24 @@ const Ar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { mailBoxes, fetchMailBoxes } = useFetchMailBoxes("ar");
+  const [newTitle, setNewTitle] = useState("");
+
+  const [confirmContent, setConfirmContent] = useState("");
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("에러 발생");
+
+  const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewTitle(e.target.value);
+  };
   // const [mailBoxes, setMailBoxes] = useState<IMailBox[]>([]);
   const { createRollingpaper } = useCreateRollingpaper();
 
+  // const getMailBox = () => {
+  //   fetchMailBoxes(userLat, userLng);
+  // };
+
   useEffect(() => {
+    console.log("effect 터짐");
     if (navigator.geolocation) {
       // GeoLocation을 이용해서 접속 위치를 얻어옵니다
       navigator.geolocation.getCurrentPosition(function (position) {
@@ -23,27 +37,38 @@ const Ar = () => {
         const lng = position.coords.longitude; // 경도
         setUserLat(lat);
         setUserLng(lng);
-        console.log('위치 조회 성공')
+        console.log("위치 조회 성공", lat, lng);
         fetchMailBoxes(lat, lng);
       });
     } else {
       // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
       return;
     }
-  },[isOpen]);
+  }, []);
 
-  const createMailBox = () => {
-    // 주변에 우체통 존재 로직 판단을 백에서 하는 방법도 가능
-    // axios 요청보내서 error뜨면 에러메세지 띄워주는식으로
-    // if (userLat == 0) {
-      createRollingpaper("임시제목", userLat, userLng);
-      setIsOpen(false);
-    // } else {
-      //주변에 우체통 존재할때
-      // setModalContent();
-      // setIsOpen(false);
+  const createMailBox = async () => {
+    try {
+      const res = await createRollingpaper(newTitle, userLat, userLng);
+      if (res === "sucess") {
+        setConfirmContent("success");
+        setIsOpen(false);
+        return;
+      }
+      // 여기서 부터 에러단
+      if (res === "B002") {
+        setIsConfirmModalOpen(true);
+        setConfirmContent("error");
+        setErrorMessage("최대 3개까지 롤링페이퍼를 가질 수 있습니다");
+      } else if (res === "B003") {
+        setIsConfirmModalOpen(true);
+        setConfirmContent("error");
+        setErrorMessage("너무 가까이에 우체통이 존재합니다");
+      }
+    } catch (error) {
+      // 에러상황 발생
     }
-  
+    setIsOpen(false);
+  };
 
   return (
     <>
@@ -60,10 +85,11 @@ const Ar = () => {
           {mailBoxes.map((mailBox, index) => (
             <ArMailBox
               key={index}
-              userId={mailBox.postboxId}
+              postboxId={mailBox.postboxId}
               title={mailBox.title}
               lng={mailBox.longtitude}
               lat={mailBox.latitude}
+              postboxOwner={mailBox.postboxOwner}
               // 여기에 상세정보 적기
               // children={modalContent}
             />
@@ -77,8 +103,15 @@ const Ar = () => {
             wasd-controls="acceleration: 100"
           ></a-camera>
         </a-scene>
-
-        <button className="nes-btn" onClick={() => setIsOpen(true)}>
+        <p>
+          현재 {userLat} {userLng}
+        </p>
+        <button
+          className="nes-btn"
+          onClick={() => {
+            setIsOpen(true);
+          }}
+        >
           +
         </button>
       </div>
@@ -88,20 +121,59 @@ const Ar = () => {
         title="우체통 생성"
       >
         <div>
-          <p>현재 위치({userLat} | {userLng})에 우체통을 생성하시겠습니까?</p>
-          <button className="nes-btn" onClick={() => createMailBox()}>
-            예
-          </button>
-          <button className="nes-btn" onClick={() => setIsOpen(false)}>
-            아니오
-          </button>
+          <p>현재 위치에 생성하시겠습니까?</p>
+          <label htmlFor="">롤링페이퍼 제목</label> <br />
+          <input
+            type="text"
+            value={newTitle}
+            onChange={handleTitle}
+            className="nes-input"
+          />
+          <div css={confirmBtn}>
+            <button
+              className={
+                (newTitle.length === 0 ? "is-disabled" : "") + " nes-btn"
+              }
+              onClick={() => createMailBox()}
+            >
+              예
+            </button>
+            <button className="nes-btn" onClick={() => setIsOpen(false)}>
+              아니오
+            </button>
+          </div>
           {/* </div>
         <div> */}
-          {/* <p>근처에 다른 우체통이 존재합니다! 다른 곳에서 시도해주세요</p>
-          <button className="nes-btn" onClick={() => setIsOpen(false)}>
-            확인
-          </button> */}
         </div>
+      </Modal>
+      <Modal
+        isOpen={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        title="경고"
+      >
+        {confirmContent === "error" ? (
+          <>
+            <p>{errorMessage}</p>
+            <button
+              className="nes-btn"
+              css={singleBtn}
+              onClick={() => setIsConfirmModalOpen(false)}
+            >
+              확인
+            </button>
+          </>
+        ) : (
+          <>
+            <p>생성완료!</p>
+            <button
+              className="nes-btn"
+              css={singleBtn}
+              onClick={() => setIsConfirmModalOpen(false)}
+            >
+              확인
+            </button>
+          </>
+        )}
       </Modal>
     </>
   );

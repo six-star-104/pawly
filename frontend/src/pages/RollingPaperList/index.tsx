@@ -6,15 +6,15 @@ import {
   ContentContainer,
   container,
   modalStyle,
-  tempBtn,
+  tempBtn
 } from "./styles";
 import { useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
 import Modal from "@/components/Modal";
 import { useDeleteRollingpaper } from "@/hooks/useDeleteRollingpaper";
-import { useCreateRollingpaper } from "@/hooks/useCreateRollingpaper";
 import { useEffect } from "react";
 import { useRollingpaperStore } from "@/stores/rollingpaperStore";
+import { useCreateRollingpaper } from "@/hooks/useCreateRollingpaper";
 // 내가 받은 롤링페이퍼들 모아볼 수 있는 페이지
 export const RollingPaperList = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -55,10 +55,6 @@ export const RollingPaperList = () => {
 
   return (
     <div css={container}>
-      {/* <button css={backButton} onClick={() => navigate(-1)}>
-        <img src={backButtonImg} alt="" />
-      </button> */}
-
       <div css={ListContainer}>
         {userRollingpapers &&
           userRollingpapers.content.map((rollingpaper) => (
@@ -106,15 +102,16 @@ export const RollingPaperList = () => {
           ))}
       </div>
 
-      <button
-        onClick={() => {
-          createRollingpaper("임시 롤링페이퍼", randomX, randomY);
-        }}
-        className="nes-btn"
-        css={tempBtn}
-      >
-        임시 롤링페이퍼 생성버튼
-      </button>
+      <div css={tempBtn}>
+        <button
+          onClick={() => {
+            createRollingpaper("임시 롤링페이퍼", randomX, randomY);
+          }}
+          className="nes-btn"
+        >
+          임시 롤링페이퍼 생성버튼
+        </button>
+      </div>
     </div>
   );
 };

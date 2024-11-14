@@ -46,11 +46,7 @@ export const getOAuthAccessToken = async (code: string) => {
     });
     const accessToken = response.data.data.accessToken;
     // let userInfo: UserInfoType;
-    if (accessToken) {
-      
-      // userInfo = await getOAuthInformation(accessToken);
-      // console.log("우저정보"+userInfo)
-      // userInfo = await getOAuthInformation(accessToken);
+    if (accessToken) {      
       localStorage.setItem("accessToken", accessToken);
     } else {
       throw new Error("No access Token received from server");

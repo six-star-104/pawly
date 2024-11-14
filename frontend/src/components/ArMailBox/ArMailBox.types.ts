@@ -1,6 +1,7 @@
 export type MailBoxProps = {
-  userId: number;
+  postboxId: number;
   lng: number;
   lat: number;
   title: string;
+  postboxOwner:string;
 };

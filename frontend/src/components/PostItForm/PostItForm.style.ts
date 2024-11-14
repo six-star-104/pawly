@@ -21,7 +21,7 @@ export const contentContainer = (isAlert: boolean) => css`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  width: 80vw;
+  width: 100%;
   p {
     margin-bottom: 0;
   }
