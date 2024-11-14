@@ -66,7 +66,7 @@ export const nicknameContainer = css`
 
 export const nickname = css`
   font-weight: 500;
-  font-size: 1.1rem;
+  font-size: 1rem;
 `;
 
 export const waitingContainer = css`
@@ -76,7 +76,8 @@ export const waitingContainer = css`
 `;
 
 export const waiting = css`
-  font-size: 0.8rem;
+  text-align: center;
+  font-size: 0.7rem;
   color: gray;
 `;
 
