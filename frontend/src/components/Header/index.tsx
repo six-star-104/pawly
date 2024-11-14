@@ -27,8 +27,8 @@ export const Header = () => {
 
   const isRollingpaper = location.pathname.includes("rollingpaper");
 
-  if (location.pathname.startsWith("/ar")) return;
-  
+  if (location.pathname.startsWith("/ar" || "/login")) return;
+
   return (
     <div css={style.Container(isRollingpaper)}>
       {/* 롤링페이퍼 페이지만 있는 뒤로가기 버튼 */}

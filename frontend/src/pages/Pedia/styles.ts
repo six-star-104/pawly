@@ -83,8 +83,8 @@ export const IconGrid = css`
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: repeat(3, minmax(80px, 1fr));
-  grid-template-rows: repeat(3, auto);
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 29.2%);
   gap: 2rem;
   justify-items: center;
   align-items: center;
