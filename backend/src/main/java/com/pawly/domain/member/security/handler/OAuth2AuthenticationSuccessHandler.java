@@ -1,5 +1,6 @@
 package com.pawly.domain.member.security.handler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.entity.Status;
 import com.pawly.domain.member.repository.MemberRepository;
@@ -12,6 +13,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -75,11 +77,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                         .queryParam("code", tempCode)
                         .build().toUriString();
                 } else {
-                    // 사용자가 ACTIVATED 상태가 아닌 경우
-                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                    response.setContentType("application/json;charset=UTF-8");
-                    response.getWriter().write("{\"error\": \"ACCESS_DENIED\", \"message\": \"User access denied\"}");
-                    return;
+                    // 사용자가 활성화 상태가 아닌 경우 에러 메시지 응답 및 로그인 페이지로 리다이렉트
+                    sendErrorResponse(response, "Account is not activated. Please contact support.");
                 }
             }
         }
@@ -108,4 +107,15 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
     }
 
+    private void sendErrorResponse(HttpServletResponse response, String errorMessage) throws IOException {
+        // JSON 응답 생성
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("status", "error");
+        errorResponse.put("message", errorMessage);
+
+        // JSON 응답 설정
+        response.setContentType("application/json;charset=UTF-8");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter().write(new ObjectMapper().writeValueAsString(errorResponse));
+    }
 }
