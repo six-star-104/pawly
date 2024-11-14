@@ -3,7 +3,7 @@ import Ar from "../../components/Ar";
 import { container } from "./styles";
 import { useNavigate } from "react-router-dom";
 import { backButton } from "./styles";
-import backButtonImg from "@/assets/images/back_button.png";
+import backButtonImg from "@/assets/icons/back_button.png";
 export const MailBoxFind = () => {
   const navigate = useNavigate()
   return (

@@ -1,21 +1,21 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useUserInfoStore } from '@/stores/userInfoStore';
-import { Hamberger } from '../Hamberger';
-import NavButton from '../../assets/icons/NavButton.png';
+// import { Hamberger } from '../Hamberger';
+// import NavButton from '../../assets/icons/NavButton.png';
 import PixelPuppy from '../../assets/icons/PixelPuppy.png';
-import CancelButton from '../../assets/icons/CancelButton.png';
+import CancelButton from '../../assets/icons/closeBtn.png';
 import Warning from '../../assets/icons/Warning.png';
-import BackButton from '../../assets/icons/BackButton.png';
+// import BackButton from '../../assets/icons/BackButton.png';
 import Modal from '@/components/Modal';
 import {
   Container,
-  BackBtnContainer,
-  HamBtnContainer,
-  HamBtnCss,
-  BackBtnCss,
-  slidePanelStyle,
-  panelContentStyle,
+  // BackBtnContainer,
+  // HamBtnContainer,
+  // HamBtnCss,
+  // BackBtnCss,
+  // slidePanelStyle,
+  // panelContentStyle,
   searchPixelContainerWrapper,
   searchContainer,
   tabContainer,
@@ -51,7 +51,7 @@ interface Member {
 
 export const Friends = () => {
   const myMemberId = Number(useUserInfoStore().userId); 
-  const [mypageVisible, setMyPageVisible] = useState(false);
+  // const [mypageVisible, setMyPageVisible] = useState(false);
   const [activeTab, setActiveTab] = useState<"friends" | "requests">("friends");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [alertModalOpen, setAlertModalOpen] = useState(false);
@@ -69,19 +69,19 @@ export const Friends = () => {
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const backBtn = () => {
-    navigate(-1);
-  };
+  // const backBtn = () => {
+  //   navigate(-1);
+  // };
 
-  const Hambtn = () => {
-    setMyPageVisible(true);
-  };
+  // const Hambtn = () => {
+  //   setMyPageVisible(true);
+  // };
 
-  const closeMyPage = () => {
-    setMyPageVisible(false);
-  };
+  // const closeMyPage = () => {
+  //   setMyPageVisible(false);
+  // };
 
   const openMessageModal = () => {
     setIsModalOpen(true);
@@ -285,7 +285,7 @@ export const Friends = () => {
 
   return (
     <div css={Container}>
-      <div css={BackBtnContainer}>
+      {/* <div css={BackBtnContainer}>
         <button css={BackBtnCss} onClick={backBtn}>
           <img src={BackButton} alt="뒤로가기 버튼" width={35} height={35} />
         </button>
@@ -295,7 +295,7 @@ export const Friends = () => {
         <button css={HamBtnCss} onClick={Hambtn}>
           <img src={NavButton} alt="햄버거 버튼" width={40} />
         </button>
-      </div>
+      </div> */}
 
       <div css={searchPixelContainerWrapper}>
         <div css={searchContainer}>
@@ -447,11 +447,11 @@ export const Friends = () => {
         </div>
       )}
 
-      <div css={[slidePanelStyle, mypageVisible && { transform: 'translateX(0)' }]}>
+      {/* <div css={[slidePanelStyle, mypageVisible && { transform: 'translateX(0)' }]}>
         <div css={panelContentStyle}>
           <Hamberger closeMyPage={closeMyPage} />
         </div>
-      </div>
+      </div> */}
 
       {/* Alert Modal for friend actions */}
       <Modal isOpen={alertModalOpen} onClose={closeAlertModal} title="">
