@@ -28,12 +28,12 @@ const useFetchRollingpaper = () => {
       );
       setLoading(false);
       setSingleRollingpaper(res.data.data);
+      setTitleContent(res.data.data.rollingPaperTitle);
+      setPostits([...postits, ...res.data.data.content]);
       if (res.data.data.content.length === 0) {
         setMaxPageError(true);
         return;
       }
-      setTitleContent(res.data.data.rollingPaperTitle)
-      setPostits([...postits, ...res.data.data.content]);
     } catch (err) {
       // console.error("포스트잇 조회 오류:", err);
     }
