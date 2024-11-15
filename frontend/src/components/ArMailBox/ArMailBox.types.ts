@@ -3,5 +3,6 @@ export type MailBoxProps = {
   lng: number;
   lat: number;
   title: string;
-  postboxOwner:string;
+  postboxOwner: string;
+  rollingPaperId: number;
 };
