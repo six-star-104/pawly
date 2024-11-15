@@ -44,7 +44,7 @@ export type SignupAssetsProps = {
 
 // 개별 항목에 대한 타입 정의
 export interface MemberInfo {
-  memberId: string;
+  memberId: number;
   name: string;
   email: string;
   provider: string;
