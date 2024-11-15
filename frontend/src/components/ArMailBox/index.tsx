@@ -6,7 +6,7 @@ import { singleBtn } from "./ArMailBox.style";
 const ArMailBox: React.FC<MailBoxProps> = ({
   lat,
   lng,
-  postboxId,
+  rollingPaperId,
   title,
   postboxOwner,
 }) => {
@@ -47,7 +47,7 @@ const ArMailBox: React.FC<MailBoxProps> = ({
           {postboxOwner}의 {title} <br />
           <button
             onClick={() =>
-              window.location.replace(`/rollingpaper/${postboxId}`)
+              window.location.replace(`/rollingpaper/${rollingPaperId}`)
             }
             className="nes-btn"
             css={singleBtn}
