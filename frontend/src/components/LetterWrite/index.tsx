@@ -2,6 +2,7 @@ import * as style from "./LetterWrite.style";
 import { postLetter } from "@/apis/letterService";
 import { useState } from "react";
 import ModalConfirm from "../ModalConfirm";
+import ModalAlert from "../ModalAlert";
 
 type LetterWriteProps = {
   recipientId: number;
@@ -115,12 +116,7 @@ export const LetterWrite: React.FC<LetterWriteProps> = ({
           보내기
         </button>
       </div>
-      {isSent && (
-        <>
-          <div css={style.overlay}></div>
-          <div css={style.sentMessage}>전송 완료</div>
-        </>
-      )}{" "}
+      <ModalAlert isOpen={isSent} message="전송 완료" />
     </>
   );
 };

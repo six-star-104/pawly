@@ -14,6 +14,7 @@ export const searchContainer = css`
   background-color: #fff;
   padding: 0.5rem;
   border: 3px solid black;
+  margin-top: 80px;
 
   input {
     flex: 1;

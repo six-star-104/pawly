@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import ModalConfirm from "../ModalConfirm";
 import replyHeart from "@/assets/icons/replyHeart.svg";
 import replyLike from "@/assets/icons/replyLike.svg";
-import replayStar from "@/assets/icons/replyStar.svg";
+import replyStar from "@/assets/icons/replyStar.svg";
 import { LetterWrite } from "../LetterWrite";
 import ModalLetter from "../ModalLetter";
 
@@ -125,7 +125,7 @@ export const LetterReceiveDetail: React.FC<LetterReceiveDetailProps> = ({
             ]}
             onClick={() => handleIconClick(3)}
           >
-            <img src={replayStar} css={style.replyIcon} />
+            <img src={replyStar} css={style.replyIcon} />
           </div>
         </div>
 

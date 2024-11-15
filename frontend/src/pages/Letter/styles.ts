@@ -40,7 +40,7 @@ export const tabContainer = (activeTab: "received" | "sent") => css`
   }
 
   .active {
-    background-color: #d1b3ff;
+    background-color: #d3e6ff;
   }
 `;
 
