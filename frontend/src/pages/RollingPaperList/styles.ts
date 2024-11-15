@@ -11,15 +11,6 @@ export const container = css`
 
   scrollbar-width: none;
 `;
-export const ContentContainer = css`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
-  font-size: 1.2rem;
-`;
 
 export const ListContainer = css`
   display: flex;
@@ -35,44 +26,6 @@ export const ListContainer = css`
   gap: 40px;
 `;
 
-export const backButton = css`
-  position: fixed;
-  left: 3%;
-  top: 3%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 3;
-  background-color: transparent;
-  border: none;
-`;
-
-export const modalStyle = css`
-  display: flex;
-  // justify-content: center;
-  flex-direction: column;
-  text-align: center;
-  #yesOrNo {
-    display: flex;
-    justify-content: space-evenly;
-    margin: 10px;
-    button {
-      width: 30%;
-    }
-  }
-  textarea {
-    width: 90%;
-    margin-left: 5%;
-    resize: none;
-  }
-  #reportButton {
-    margin: 10px;
-    left: 60%;
-    width: 30%;
-  }
-`;
 export const tempBtn = css`
   position: fixed;
 
@@ -102,4 +55,15 @@ export const tempBtn = css`
   justify-content: end;
   padding-right: 24px;
   z-index: 3;
+`;
+
+export const confirmBtn = css`
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 16px;
+`;
+
+export const singleBtn = css`
+  margin-left: 80%;
+  margin-top: 16px;
 `;
