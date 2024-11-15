@@ -50,11 +50,12 @@ export const content = css`
 
 export const assetStyle = css`
   position: absolute;
+  width: 200px;
+  height: 200px;
   bottom: 0;
-  left: 0;
+  left: 10px;
 `;
 
-// 오른쪽 아래에 위치한 postbox 이미지 스타일
 export const postboxStyle = css`
   position: absolute;
   bottom: 20px;
