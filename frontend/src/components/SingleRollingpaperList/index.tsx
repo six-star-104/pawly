@@ -7,6 +7,7 @@ import { ContentContainer, modalStyle } from "./SingleRollingpaperList.style";
 // import { useDeleteRollingpaper } from "@/hooks/useDeleteRollingpaper";
 import { IRollingPaperSum } from "@/types/rollingPaperTypes";
 import useFetchUserRollingpaper from "@/hooks/useFetchUserRollingpaper";
+// import { useRollingpaperStore } from "@/stores/rollingpaperStore";
 interface Props {
   rollingpaper: IRollingPaperSum;
 }
@@ -15,6 +16,7 @@ const SingleRollingpaperList: React.FC<Props> = ({ rollingpaper }) => {
   const navigate = useNavigate();
   // 각각의 롤링페이퍼 세부 메뉴 위한 롱 클릭 이벤트들
   const timerRef = useRef<number | null>(null);
+  // const { setIsRollingpaperChanged } = useRollingpaperStore();
   const handleMouseDown = () => {
     timerRef.current = window.setTimeout(() => {
       setIsMenuOpen(true);

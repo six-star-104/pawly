@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import {axiosInstance} from './apis/axiosInstance';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FB_API_KEY,
@@ -31,6 +32,15 @@ async function requestPermission() {
 
   if (token) {console.log("토큰 성공"); 
     // console.log(token);
+    try{
+      await axiosInstance.post('member/fcm', {
+        fcmToken:token
+      })
+    console.log("토큰 백 전송 성공")
+    } catch{
+        console.log("토큰 백 전송 실패")
+      }
+    
   }
   
   else console.log("Can not get Token");
@@ -48,5 +58,19 @@ async function requestPermission() {
     }
   });
 }
+
+self.addEventListener("push", function (e) {
+  if (!e.data.json()) return;
+
+  const resultData = e.data.json().notification;
+  const notificationTitle = resultData.title;
+  const notificationOptions = {
+    body: resultData.body,
+    // icon: resultData.image, // 웹 푸시 이미지는 icon
+    // tag: resultData.tag,
+  };
+  console.log("활성중 알람", notificationOptions.body)
+  self.registration.showNotification(notificationTitle, notificationOptions);
+});
 
 requestPermission();
