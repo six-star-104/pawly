@@ -80,6 +80,11 @@ export const challengeListContainer = css`
   width: 100%;
   height: 100%;
   overflow-y: scroll;
+  
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
 `;
 
 export const challengeItem = css`

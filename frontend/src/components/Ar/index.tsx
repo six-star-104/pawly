@@ -87,7 +87,7 @@ const Ar = () => {
               key={index}
               postboxId={mailBox.postboxId}
               title={mailBox.title}
-              lng={mailBox.longtitude}
+              lng={mailBox.longitude}
               lat={mailBox.latitude}
               postboxOwner={mailBox.postboxOwner}
               // 여기에 상세정보 적기
