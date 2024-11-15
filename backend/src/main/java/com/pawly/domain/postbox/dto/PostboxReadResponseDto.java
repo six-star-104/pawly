@@ -10,6 +10,7 @@ import lombok.*;
 @Builder
 public class PostboxReadResponseDto {
     private Long postboxId;
+    private Long rollingPaperId;
     private Long memberId;
     private String postboxOwner;
     private String title;
@@ -19,6 +20,7 @@ public class PostboxReadResponseDto {
     public static PostboxReadResponseDto from(Postbox postbox) {
         return PostboxReadResponseDto.builder()
                 .postboxId(postbox.getPostboxId())
+                .rollingPaperId(postbox.getRollingpaper().getRollingPaperId())
                 .memberId(postbox.getMember().getMemberId())
                 .postboxOwner(postbox.getMember().getNickname())
                 .title(postbox.getTitle())
