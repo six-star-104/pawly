@@ -25,18 +25,19 @@ import { useUserInfoStore } from "@/stores/userInfoStore";
 import useEasterEggStore from "@/stores/easterEggStore";
 import { useCollectionStore } from "@/stores/collectionStore";
 import { getMyInfo, updateNickname } from "@/apis/myPageService";
+import useFetchUserRollingpaper from "@/hooks/useFetchUserRollingpaper";
 export const MyPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [newNickname, setNewNickname] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const [message, setMessage] = useState<string | null>(null); // 메시지 상태 추가
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false); // 메시지 모달 상태 추가
-  const { name, memberId, nickname, assets, isInitialized, setUserInfo } =
+  const { name, userId, nickname, assets, isInitialized, setUserInfo } =
     useUserInfoStore();
   const { completedChallengesCount } = useEasterEggStore();
   const { collections, fetchCollections, totalCollections } =
     useCollectionStore();
-
+  const { userRollingpapers, fetchRollingPapers } = useFetchUserRollingpaper();
   const itemsPerPage = 3;
   const totalPages = Math.ceil(totalCollections / itemsPerPage);
   useEffect(() => {
@@ -46,7 +47,7 @@ export const MyPage = () => {
         if (!data) return;
         setUserInfo({
           isInitialized: true,
-          memberId: data.memberId,
+          userId: data.memberId,
           name: data.name,
           email: data.email,
           provider: data.provider,
@@ -56,8 +57,7 @@ export const MyPage = () => {
           birth: data.birth,
         });
       } catch (error) {
-        console.log(error);
-        throw error;
+        //
       }
     };
 
@@ -65,10 +65,14 @@ export const MyPage = () => {
       fetchUserInfo();
     }
 
-    if (memberId) {
-      fetchCollections(Number(memberId), currentPage, itemsPerPage);
+    if (userId) {
+      fetchCollections(Number(userId), currentPage, itemsPerPage);
     }
-  }, [isInitialized, setUserInfo, memberId, currentPage, fetchCollections]);
+  }, [isInitialized, setUserInfo, userId, currentPage, fetchCollections]);
+
+  useEffect(() => {
+    fetchRollingPapers();
+  }, []);
 
   const handleEditNickname = () => {
     setIsEditing(true);
@@ -80,10 +84,20 @@ export const MyPage = () => {
       await updateNickname(newNickname);
       setUserInfo({ nickname: newNickname });
       setIsEditing(false);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      if (
+        error.message ===
+        "이미 사용 중인 닉네임입니다. 다른 닉네임을 선택해 주세요."
+      ) {
+        setMessage("이미 사용 중인 닉네임입니다.");
+        setIsMessageModalOpen(true);
+      } else {
+        setMessage("이미 사용 중인 닉네임입니다.");
+        setIsMessageModalOpen(true);
+      }
     }
   };
+
   const handleNextPage = () => {
     if (currentPage < totalPages - 1) setCurrentPage(currentPage + 1);
   };
@@ -96,6 +110,7 @@ export const MyPage = () => {
     setIsMessageModalOpen(false);
     setMessage(null);
   };
+
   return (
     <div>
       <div css={Container}>
@@ -135,7 +150,7 @@ export const MyPage = () => {
                     width="20"
                     height="20"
                   />
-                  작성한 롤링페이퍼: n개
+                  작성한 롤링페이퍼: {userRollingpapers?.content.length}개
                 </div>
                 <div>
                   <img

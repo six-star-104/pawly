@@ -33,11 +33,7 @@ export const Header = () => {
 
   const isRollingpaper = location.pathname.includes("rollingpaper");
 
-  if (
-    location.pathname.startsWith("/ar") ||
-    location.pathname.startsWith("/login")
-  )
-    return;
+  if (location.pathname.startsWith("/ar")) return;
 
   return (
     <div css={style.Container(isRollingpaper)}>
