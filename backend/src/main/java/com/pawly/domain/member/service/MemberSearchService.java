@@ -37,7 +37,7 @@ public class MemberSearchService {
 
         List<FriendRequest> friendRequestsSent = friendRequestRepository.findBySenderId(member);
         List<FriendRequest> friendRequestsReceived = friendRequestRepository.findByReceiverId(member);
-        List<Friend> friends = friendRepository.findByMemberId1OrMemberId2AndDeleteFlagIsFalse(member, member);
+        List<Friend> friends = friendRepository.findByMemberId1AndDeleteFlagIsFalseOrMemberId2AndDeleteFlagIsFalse(member, member);
 
         // 친구 요청 상태 저장: 1 (자신이 요청한 경우)
         friendRequestsSent.forEach(request -> statusMap.put(request.getReceiverId().getMemberId(), 1));
