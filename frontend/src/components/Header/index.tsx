@@ -12,9 +12,15 @@ export const Header = () => {
   const location = useLocation();
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const { titleContent } = useHeaderStore();
-  
+
   const backBtn = () => {
-    navigate('/');
+    if (
+      location.pathname.startsWith("/friendsearch") ||
+      location.pathname.startsWith("/rollingpaper/")
+    ) {
+      navigate(-1);
+    }
+    navigate("/");
   };
 
   const Hambtn = () => {
