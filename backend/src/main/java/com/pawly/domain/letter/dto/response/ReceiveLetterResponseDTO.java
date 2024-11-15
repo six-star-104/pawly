@@ -13,6 +13,7 @@ public class ReceiveLetterResponseDTO {
     private Long senderId;
     private String senderName;
     private String content;
+    private Integer reaction;
     private Long letterId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -22,6 +23,7 @@ public class ReceiveLetterResponseDTO {
             .receiveLetterId(receiveLetter.getReceiveLetterId())
             .senderId(receiveLetter.getLetter().getSender().getMemberId())
             .senderName(receiveLetter.getLetter().getSender().getNickname())
+            .reaction(receiveLetter.getLetter().getReaction())
             .content(receiveLetter.getLetter().getContent())
             .letterId(receiveLetter.getLetter().getLetterId())
             .createdAt(receiveLetter.getLetter().getCreatedAt())
