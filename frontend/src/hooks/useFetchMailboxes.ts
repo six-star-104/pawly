@@ -6,8 +6,9 @@ interface Mailbox {
   memberId: number;
   title: string;
   latitude: number;
-  longtitude: number;
+  longitude: number;
   postboxOwner: string;
+  rollingPaperId: number;
 }
 
 // method 는  ar 또는 map
@@ -34,5 +35,5 @@ export const useFetchMailBoxes = (method: string) => {
     }
   };
 
-  return { mailBoxes, loading, error, fetchMailBoxes };
+  return { mailBoxes, loading, error, fetchMailBoxes,setMailBoxes };
 };
