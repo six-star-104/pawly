@@ -1,13 +1,6 @@
 import { useState, useEffect } from 'react';
-// import { useNavigate } from 'react-router-dom';
 import {
   Container,
-  // BackBtnContainer,
-  // BackBtnCss,
-  // HamBtnContainer,
-  // HamBtnCss,
-  // slidePanelStyle,
-  // panelContentStyle,
   tabContainer,
   challengeWrapper,
   challengeListContainer,
@@ -23,8 +16,6 @@ import {
   rewardTitleStyle,
   congratsContainerStyle,
 } from './styles';
-// import NavButton from '../../assets/icons/NavButton.png';
-// import BackButton from '../../assets/icons/BackButton.png';
 import cheer from '../../assets/icons/cheer.png';
 import Modal from '@/components/Modal';
 import { Button } from '@/components/Button';
@@ -33,8 +24,6 @@ import { EasterEggData } from '@/types/questTypes';
 import { getEasterEggs } from '@/apis/easterEggService';
 
 export const EasterEgg = () => {
-  // const navigate = useNavigate();
-  // const [mypageVisible, setMyPageVisible] = useState(false);
   const [activeTab, setActiveTab] = useState<'inProgress' | 'completed'>('inProgress');
   const [progress, setProgress] = useState<number>(0);
   const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false);
@@ -42,19 +31,16 @@ export const EasterEgg = () => {
 
   const { easterEggs, isInitialized, setEasterEggs, markEasterEggComplete } = useEasterEggStore();
 
-  // `easterEggs`와 `challenges` 간의 동기화
-  const challenges = easterEggs; // 스토어의 상태를 직접 사용하여 동기화
+  const challenges = easterEggs; 
 
   useEffect(() => {
     const fetchEasterEggs = async () => {
       try {
-        const response = await getEasterEggs(); // 실제 조회 API 호출 함수
+        const response = await getEasterEggs(); 
         if (response?.status === 'success') {
-          setEasterEggs(response?.data); // 스토어에 원본 데이터를 저장
-          // console.log("조회된 과제들:", response.data); // 콘솔에 과제 데이터 출력
+          setEasterEggs(response?.data); 
         }
       } catch (error) {
-        // console.error("도전과제 데이터 조회 실패:", error);
       }
     };
   
@@ -64,26 +50,12 @@ export const EasterEgg = () => {
   }, [isInitialized, setEasterEggs]);
   
   useEffect(() => {
-    // 진행률 계산
     const completedChallenges = challenges.filter((challenge) => challenge.status === '완료됨').length;
     const progressPercentage = (completedChallenges / challenges.length) * 100;
     setProgress(progressPercentage);
   
-    // 콘솔에 현재 challenges 상태 출력
-    // console.log("현재 저장된 과제들 (challenges):", challenges);
   }, [challenges]);
   
-  // const close = () => {
-  //   navigate(-1);
-  // };
-
-  // const openMenu = () => {
-  //   setMyPageVisible(true);
-  // };
-
-  // const closeMyPage = () => {
-  //   setMyPageVisible(false);
-  // };
 
   const openCompleteModal = (challenge: EasterEggData) => {
     setSelectedChallenge(challenge);
@@ -99,12 +71,9 @@ export const EasterEgg = () => {
     if (!selectedChallenge) return;
 
     try {
-      // 도전과제 완료 API 호출 및 상태 업데이트
       await markEasterEggComplete(selectedChallenge.easterEggId);
       closeCompleteModal();
-      // console.log(`도전과제 ${selectedChallenge.easterEggId} 완료 처리되었습니다.`);
     } catch (error) {
-      // console.error("도전과제 완료 중 오류 발생:", error);
     }
   };
 

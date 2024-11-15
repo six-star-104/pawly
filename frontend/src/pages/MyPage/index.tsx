@@ -16,6 +16,7 @@ import {
   NicknameStyle,
   UsernameStyle,
   ArrowButton,
+  BirthInputCss
 } from './styles';
 import Warning from '@/assets/icons/Warning.png'
 import PixelContainer from '../../components/PixelContainer';
@@ -24,19 +25,21 @@ import Modal from '@/components/Modal';
 import { useUserInfoStore } from '@/stores/userInfoStore';
 import useEasterEggStore from '@/stores/easterEggStore';
 import { useCollectionStore } from '@/stores/collectionStore';
-import { getMyInfo, updateNickname } from '@/apis/myPageService';
+import { getMyInfo, updateNickname} from '@/apis/myPageService';
+import BirthInput from '@/components/Birth';
+
 export const MyPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [newNickname, setNewNickname] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [message, setMessage] = useState<string | null>(null);  // 메시지 상태 추가
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false); // 메시지 모달 상태 추가
-  const { name, userId, nickname, assets, isInitialized, setUserInfo } = useUserInfoStore();
+  const { name, userId, nickname, birth ,assets, isInitialized, setUserInfo } = useUserInfoStore();
   const { completedChallengesCount } = useEasterEggStore();
   const { collections, fetchCollections, totalCollections } = useCollectionStore();
-
   const itemsPerPage = 3;
   const totalPages = Math.ceil(totalCollections / itemsPerPage);
+  
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
@@ -66,6 +69,7 @@ export const MyPage = () => {
     }
   }, [isInitialized, setUserInfo, userId, currentPage, fetchCollections]);
 
+  console.log('생일',birth)
 
   const handleEditNickname = () => {
     setIsEditing(true);
@@ -88,6 +92,7 @@ export const MyPage = () => {
     }
   };
   
+
 
   const handleNextPage = () => {
     if (currentPage < totalPages - 1) setCurrentPage(currentPage + 1);
@@ -117,8 +122,11 @@ export const MyPage = () => {
                 <div>
                   <img src={assets} width={50} height={50} alt="User Asset" />
                   <div css={VerticalTextSection}>
-                    <h3 css={NicknameStyle}>{nickname}</h3>
-                    <h4 css={UsernameStyle}>{name}</h4>
+                    <div>
+                      <h3 css={NicknameStyle}>{nickname}</h3>
+                      <h4 css={BirthInputCss}><BirthInput/></h4>
+                    </div>
+                      <h4 css={UsernameStyle}>{name}</h4>
                   </div>
                 </div>
 
