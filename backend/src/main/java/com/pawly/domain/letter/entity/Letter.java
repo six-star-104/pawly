@@ -5,13 +5,10 @@ import com.pawly.global.entity.BaseEntity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Setter
@@ -36,11 +33,26 @@ public class Letter extends BaseEntity {
     private String content;
     private String picture;
     private Integer reaction;
+
+    @Column(name = "sender_delete_flag")
+    private Boolean senderDeleteFlag = false;
+
+    @Column(name = "recipient_delete_flag")
+    private Boolean recipientDeleteFlag = false;
+
     @LastModifiedDate
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
     public void updatePicture(String fileUrl) {
         this.picture = fileUrl;
+    }
+
+    public void updateSenderDeleteFlag() {
+        this.senderDeleteFlag = true;
+    }
+
+    public void updateRecipientDeleteFlag() {
+        this.recipientDeleteFlag = true;
     }
 }
