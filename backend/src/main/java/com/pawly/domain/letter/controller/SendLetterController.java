@@ -49,18 +49,7 @@ public class SendLetterController {
 
     @GetMapping("/{sendLetterId}")
     public ApiResponse<?> getSendLetter(Authentication authentication, @PathVariable Long sendLetterId) {
-        try {
-            Member member = memberService.findByEmail(authentication.getName());
-
-            if (member == null) {
-                return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
-            }
-
-            return ApiResponse.createSuccess(sendLetterService.getLetter(member, sendLetterId),
-                "편지 조회 성공");
-        } catch (Exception e) {
-            return ApiResponse.createError(ErrorCode.LETTER_NOT_FOUND);
-        }
+        return sendLetterService.getLetter(authentication.getName(), sendLetterId);
     }
 
     @PostMapping()
@@ -75,18 +64,6 @@ public class SendLetterController {
 
     @DeleteMapping("/{sendLetterId}")
     public ApiResponse<?> deleteSendLetter(Authentication authentication, @PathVariable Long sendLetterId) {
-        try {
-            Member member = memberService.findByEmail(authentication.getName());
-
-            if (member == null) {
-                return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
-            }
-
-            sendLetterService.deleteLetter(member, sendLetterId);
-
-            return ApiResponse.createSuccessWithNoContent("편지 삭제 성공");
-        } catch (Exception e) {
-            return ApiResponse.createError(ErrorCode.LETTER_DELETE_FAILED);
-        }
+        return sendLetterService.deleteLetter(authentication.getName(), sendLetterId);
     }
 }

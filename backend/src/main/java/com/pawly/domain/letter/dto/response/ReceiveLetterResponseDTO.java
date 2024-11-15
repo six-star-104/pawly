@@ -10,6 +10,7 @@ import lombok.Getter;
 public class ReceiveLetterResponseDTO {
 
     private Long receiveLetterId;
+    private Long senderId;
     private String senderName;
     private String content;
     private Integer reaction;
@@ -18,6 +19,7 @@ public class ReceiveLetterResponseDTO {
     public static ReceiveLetterResponseDTO toDTO(Letter letter) {
         return ReceiveLetterResponseDTO.builder()
             .receiveLetterId(letter.getLetterId())
+            .senderId(letter.getSender().getMemberId())
             .senderName(letter.getSender().getNickname())
             .reaction(letter.getReaction())
             .content(letter.getContent())
