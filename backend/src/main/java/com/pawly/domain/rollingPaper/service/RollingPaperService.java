@@ -147,7 +147,7 @@ public class RollingPaperService {
 
         RollingPaper r = rollingPaper.get();
 
-        if (!r.getMember().equals(m)) return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
+        if (r.getStatus() == com.pawly.domain.rollingPaper.enums.Status.CLOSE && !r.getMember().equals(m)) return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
 
         if (r.getCategory() == 2 && m.getBirth() != null)
             if(!r.getCreatedAt().plusDays(4).isBefore(LocalDateTime.now())) return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
