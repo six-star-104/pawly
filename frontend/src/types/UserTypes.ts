@@ -12,7 +12,7 @@ export type LoginResponseType = {
 
 export type UserInfoType = {
   isInitialized: boolean;
-  userId: string;
+  memberId: number;
   name: string;
   email: string;
   provider: string;
@@ -44,7 +44,7 @@ export type SignupAssetsProps = {
 
 // 개별 항목에 대한 타입 정의
 export interface MemberInfo {
-  userId: string;
+  memberId: string;
   name: string;
   email: string;
   provider: string;
@@ -60,7 +60,7 @@ export interface CollectionInfo {
 
 // API 응답 데이터 타입 정의
 export interface ProfileData {
-  memberId: string;
+  memberId: number;
   name: string; // API에서 받아오는 필드
   email: string;
   provider: string;
@@ -74,8 +74,7 @@ export interface ProfileData {
 // MypageType 정의
 export interface MypageType {
   isInitialized: boolean;
-  memberId: string;
-  userId: string;
+  memberId: number;
   username: string; // 앱 내부에서 사용하는 필드명으로 username 추가
   email: string;
   provider: string;
@@ -95,21 +94,5 @@ export interface UpdateNicknameResponse {
   status: string;
   data: null;
   code: number | null;
-  message: string;
-}
-
-export interface GetFriendInfoResponse {
-  status: string;
-  data: {
-    member: {
-      nickname: string;
-      birth: string;
-      assets: string;
-    };
-    collection: {
-      collections: any[];
-    };
-  };
-  code: null | string;
   message: string;
 }

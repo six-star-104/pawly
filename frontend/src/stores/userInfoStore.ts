@@ -7,7 +7,7 @@ type UserInfoStore = UserInfoType & {
 
 export const useUserInfoStore = create<UserInfoStore>((set) => ({
   isInitialized: false,
-  userId: "",
+  memberId: 0,
   name: "",
   email: "",
   provider: "",

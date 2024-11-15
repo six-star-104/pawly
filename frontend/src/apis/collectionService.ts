@@ -1,6 +1,5 @@
 // collectionService.ts
 import { axiosInstance } from "./axiosInstance";
-import { ICollectionResponse } from "@/types/collectionTypes";
 
 // 도감 조회 API 함수
 export const getCollection = async (
@@ -11,13 +10,9 @@ export const getCollection = async (
   try {
     // console.log(`API에서 받아오는 데이터= memberId=${memberId}, pageNumber=${pageNumber}, pageSize=${pageSize}`);
 
-    const response = await axiosInstance.get<ICollectionResponse>(
-      `/collection/${memberId}`,
-      {
-        params: { pageNumber: pageNumber, pageSize: pageSize }, // 파라미터 이름을 서버에서 기대하는 대로 변경
-      }
-    );
-    console.log(response)
+    const response = await axiosInstance.get(`/collection/${memberId}`, {
+      params: { pageNumber: pageNumber, pageSize: pageSize }, // 파라미터 이름을 서버에서 기대하는 대로 변경
+    });
     // console.log("API 도감 조회 데이터:", response.data);
 
     return response.data;
@@ -32,5 +27,22 @@ export const getCollection = async (
     //   console.error("도감 조회 요청 실패:", error.message);
     //   throw new Error("예기치 못한 오류가 발생했습니다.");
     // }
+  }
+};
+
+export const getCollectionMain = async (
+  memberId: number,
+  pageNumber: number,
+  pageSize: number
+) => {
+  try {
+    const response = await axiosInstance.get(`collection/${memberId}`, {
+      params: { pageNumber: pageNumber, pageSize: pageSize },
+    });
+
+    return response.data.data.content;
+  } catch (error) {
+    console.log("get collection failed", error);
+    throw error;
   }
 };

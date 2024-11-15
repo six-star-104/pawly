@@ -56,7 +56,7 @@ const PrivateRoute = () => {
       if (!data) return;
       setUserInfo({
         isInitialized: true,
-        userId: data.memberId,
+        memberId: data.memberId,
         name: data.name,
         email: data.email,
         provider: data.provider,
