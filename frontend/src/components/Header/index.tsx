@@ -12,8 +12,9 @@ export const Header = () => {
   const location = useLocation();
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const { titleContent } = useHeaderStore();
+  
   const backBtn = () => {
-    navigate(-1);
+    navigate('/');
   };
 
   const Hambtn = () => {

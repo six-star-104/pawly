@@ -6,6 +6,7 @@ import { FriendType } from "@/types/FriendsTypes";
 import ModalConfirm from "../ModalConfirm";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { LetterWrite } from "@/components/LetterWrite";
+// import { container } from "../Ar/Ar.style";
 
 interface FriendProfileProps {
   isOpen: boolean;
@@ -56,7 +57,7 @@ export const FriendProfile = ({
 
   return (
     <>
-      <ModalLetter isOpen={isOpen} onClose={onClose}>
+      <ModalLetter isOpen={isOpen} onClose={onClose} >
         <style.modalHeader>
           <button css={style.closeButtonStyle} onClick={onClose}>
             ✖️
