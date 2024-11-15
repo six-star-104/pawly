@@ -38,10 +38,29 @@ export const modalOverlayOpen = css`
 `;
 
 export const modalContent = css`
+ // 노트북 & 테블릿 가로 (해상도 1024px ~ )
+  @media all and (min-width: 1024px) {
+    width: 40vh;
+  }
+
+  // 테블릿 가로 (해상도 768px ~ 1023px)
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    width: 40vh;
+  }
+
+  // 모바일 가로 & 테블릿 세로 (해상도 480px ~ 767px)
+  @media all and (min-width: 480px) and (max-width: 767px) {
+    width: 40vh;
+  }
+
+  // 모바일 세로 (해상도 ~ 479px)
+  @media all and (max-width: 479px) {
+    width: 80%;
+  }
   position: relative;
   background: #fefefe;
   max-width: 80%;
-  width: 100%;
+  // width: 100%;
   max-height: 60vh;
   overflow-y: auto;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);

@@ -6,7 +6,7 @@ interface Mailbox {
   memberId: number;
   title: string;
   latitude: number;
-  longtitude: number;
+  longitude: number;
   postboxOwner: string;
 }
 
