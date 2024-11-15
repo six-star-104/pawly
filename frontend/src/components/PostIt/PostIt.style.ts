@@ -5,22 +5,6 @@ import { css } from "@emotion/react";
 const px = 4;
 const shadow = `rgba(0, 0, 0, 0.2)`;
 
-// bubble 테두리 스타일 정의
-// const bubbleBorder = `
-//   0 -${px}px ${bgColor},
-//   0 -${2 * px}px ${borderColor},
-//   ${px}px 0 ${bgColor},
-//   ${px}px -${px}px ${borderColor},
-//   ${2 * px}px 0 ${borderColor},
-//   0 ${px}px ${bgColor},
-//   0 ${2 * px}px ${borderColor},
-//   -${px}px 0 ${bgColor},
-//   -${px}px ${px}px ${borderColor},
-//   -${2 * px}px 0 ${borderColor},
-//   -${px}px -${px}px ${borderColor},
-//   ${px}px ${px}px ${borderColor}
-// `;
-
 const fonts = ["Galmuri9", "PFStardust", "DGM"];
 // 최종 말풍선 스타일
 export const bubbleStyle = (
@@ -38,8 +22,7 @@ export const bubbleStyle = (
   font-size: 16px;
   line-height: 1.3em;
   white-space: pre-wrap;
- word-wrap: break-word;
-
+  word-wrap: break-word;
 
   font-family: ${fonts[font - 1]};
   // 이미지 있으면 배경이 이미지 되도록
@@ -153,7 +136,7 @@ export const fromWho = css`
   display: flex;
   justify-content: end;
   padding-right: 8%;
-  margin-top:12px;
+  margin-top: 12px;
 `;
 
 export const menuStyle = css`
@@ -184,5 +167,6 @@ export const modalStyle = css`
     margin: 10px;
     left: 60%;
     width: 30%;
+    margin-top: 28px; 
   }
 `;

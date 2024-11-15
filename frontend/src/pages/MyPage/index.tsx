@@ -40,6 +40,7 @@ export const MyPage = () => {
   const { userRollingpapers, fetchRollingPapers } = useFetchUserRollingpaper();
   const itemsPerPage = 3;
   const totalPages = Math.ceil(totalCollections / itemsPerPage);
+
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
@@ -73,7 +74,7 @@ export const MyPage = () => {
   useEffect(() => {
     fetchRollingPapers();
   }, []);
-  
+
   const handleEditNickname = () => {
     setIsEditing(true);
     setNewNickname(nickname);
@@ -150,7 +151,7 @@ export const MyPage = () => {
                     width="20"
                     height="20"
                   />
-                  작성한 롤링페이퍼: {userRollingpapers?.content.length}개
+                  작성한 롤링페이퍼: {userRollingpapers.length}개
                 </div>
                 <div>
                   <img

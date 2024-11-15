@@ -9,20 +9,20 @@ import {
 } from "./styles";
 import { useState, useEffect } from "react";
 import Modal from "@/components/Modal";
-// import { useRollingpaperStore } from "@/stores/rollingpaperStore";
+import { useRollingpaperStore } from "@/stores/rollingpaperStore";
 import SingleRollingpaperList from "@/components/SingleRollingpaperList";
 // import { useCreateRollingpaper } from "@/hooks/useCreateRollingpaper";
 // 내가 받은 롤링페이퍼들 모아볼 수 있는 페이지
 export const RollingPaperList = () => {
   // 스토어
-  // const { isRollingpaperChanged } = useRollingpaperStore();
+  const { isRollingpaperChanged } = useRollingpaperStore();
   // 커스텀 훅
-  // const { createRollingpaper } = useCreateRollingpaper();
-  const { userRollingpapers, createRollingpaper } = useFetchUserRollingpaper();
+  const { userRollingpapers, createRollingpaper, fetchRollingPapers } =
+    useFetchUserRollingpaper();
 
-  // useEffect(() => {
-  //   fetchRollingPapers();
-  // }, []);
+  useEffect(() => {
+    fetchRollingPapers();
+  }, [isRollingpaperChanged]);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -31,6 +31,7 @@ export const RollingPaperList = () => {
   const [confirmContent, setConfirmContent] = useState("");
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("에러 발생");
+
   // 임시 랜덤 생성 위치
   const [randomX, setRandomX] = useState(0);
   const [randomY, setRandomY] = useState(0);
@@ -41,7 +42,7 @@ export const RollingPaperList = () => {
 
   const createMailBox = async () => {
     try {
-      const res = await createRollingpaper("임시 롤링페이퍼", randomX, randomY);
+      const res = await createRollingpaper(`${newTitle}`, randomX, randomY);
 
       // await fetchMailBoxes(userLat, userLng);
       setNewTitle("");
@@ -74,14 +75,14 @@ export const RollingPaperList = () => {
     <div css={container}>
       <div css={ListContainer}>
         {userRollingpapers &&
-          userRollingpapers.content.map((rollingpaper) => (
-            <SingleRollingpaperList rollingpaper={rollingpaper} />
+          userRollingpapers.map((rollingpaper) => (
+            <SingleRollingpaperList rollingpaper={rollingpaper} key={rollingpaper.rollingPaperId}/>
           ))}
       </div>
 
       <div css={tempBtn}>
         <button onClick={() => setIsOpen(true)} className="nes-btn">
-          임시 롤링페이퍼 생성버튼
+          롤링페이퍼 생성
         </button>
       </div>
       <Modal

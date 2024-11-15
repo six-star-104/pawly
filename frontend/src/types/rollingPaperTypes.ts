@@ -48,6 +48,7 @@ export interface IRollingPaper {
 export interface IRollingPaperSum {
   rollingPaperId: number;
   title: string;
+  status: string;
   category: number;
   createdAt: string;
 }
