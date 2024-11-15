@@ -4,7 +4,8 @@ import ArMailBox from "../ArMailBox";
 import { container, confirmBtn, singleBtn } from "./Ar.style";
 import Modal from "@/components/Modal";
 import { useFetchMailBoxes } from "@/hooks/useFetchMailboxes";
-import { useCreateRollingpaper } from "@/hooks/useCreateRollingpaper";
+// import { useCreateRollingpaper } from "@/hooks/useCreateRollingpaper";
+import useFetchUserRollingpaper from "@/hooks/useFetchUserRollingpaper";
 const Ar = () => {
   const [userLat, setUserLat] = useState(0);
   const [userLng, setUserLng] = useState(0);
@@ -22,7 +23,7 @@ const Ar = () => {
     setNewTitle(e.target.value);
   };
   // const [mailBoxes, setMailBoxes] = useState<IMailBox[]>([]);
-  const { createRollingpaper } = useCreateRollingpaper();
+  const { createRollingpaper } = useFetchUserRollingpaper();
 
   // const getMailBox = () => {
   //   fetchMailBoxes(userLat, userLng);
