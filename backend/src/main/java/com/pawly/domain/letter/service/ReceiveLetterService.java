@@ -37,7 +37,9 @@ public class ReceiveLetterService {
     private final MemberRepository memberRepository;
     private final ReportRepository reportRepository;
 
-    public PageResponseDTO getReceiveLetters(Member member, int pageNumber, int pageSize, String sortType, String sortBy) {
+    public ApiResponse<?> getReceiveLetters(String email, int pageNumber, int pageSize, String sortType, String sortBy) {
+        Member member = memberService.findByEmail2(email);
+        if (member == null) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
         Sort sort = sortType.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending()
             : Sort.by(sortBy).ascending();
@@ -50,13 +52,15 @@ public class ReceiveLetterService {
             .map(ReceiveLetterResponseDTO::toDTO)
             .toList();
 
-        return PageResponseDTO.builder()
-            .content(receiveLetterResponseDTOS)
-            .pageSize(pageSize)
-            .pageNumber(pageNumber)
-            .totalElements(receiveLetters.getTotalElements())
-            .totalPage((long) Math.ceil((double) receiveLetters.getTotalElements() / pageSize))
-            .build();
+        PageResponseDTO page = PageResponseDTO.builder()
+                .content(receiveLetterResponseDTOS)
+                .pageSize(pageSize)
+                .pageNumber(pageNumber)
+                .totalElements(receiveLetters.getTotalElements())
+                .totalPage((long) Math.ceil((double) receiveLetters.getTotalElements() / pageSize))
+                .build();
+
+        return ApiResponse.createSuccess(page, "받은 편지함 조회 성공");
     }
 
     public ApiResponse<?> getLetter(String email, Long receiveLetterId) {

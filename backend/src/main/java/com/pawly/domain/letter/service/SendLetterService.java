@@ -44,7 +44,9 @@ public class SendLetterService {
     private final FileService fileService;
     private final CollectionService collectionService;
 
-    public PageResponseDTO getSendLetters(Member member, int pageNumber, int pageSize, String sortType, String sortBy) {
+    public ApiResponse<?> getSendLetters(String email, int pageNumber, int pageSize, String sortType, String sortBy) {
+        Member member = memberService.findByEmail2(email);
+        if (member == null) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
         Sort sort = sortType.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending()
             : Sort.by(sortBy).ascending();
@@ -57,13 +59,15 @@ public class SendLetterService {
             .map(SendLetterResponseDTO::toDTO)
             .toList();
 
-        return PageResponseDTO.builder()
-            .content(sendLetterResponseDTOS)
-            .pageSize(pageSize)
-            .pageNumber(pageNumber)
-            .totalElements(sendLetters.getTotalElements())
-            .totalPage((long) Math.ceil((double) sendLetters.getTotalElements() / pageSize))
-            .build();
+        PageResponseDTO page = PageResponseDTO.builder()
+                .content(sendLetterResponseDTOS)
+                .pageSize(pageSize)
+                .pageNumber(pageNumber)
+                .totalElements(sendLetters.getTotalElements())
+                .totalPage((long) Math.ceil((double) sendLetters.getTotalElements() / pageSize))
+                .build();
+
+        return ApiResponse.createSuccess(page, "보낸 편지함 조회 성공");
     }
 
     public ApiResponse<?> getLetter(String email, Long sendLetterId) {
