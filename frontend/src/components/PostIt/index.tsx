@@ -8,12 +8,14 @@ import { PostItProps } from "./PostIt.type";
 import { useReport } from "@/hooks/useReport";
 // import { useDeletePostit } from "@/hooks/useDeletePostit";
 // import useFetchRollingpaper from "@/hooks/useFetchRollingpaper";
+import { useUserInfoStore } from "@/stores/userInfoStore";
 import { findTheme } from "./themes";
 export const PostIt: React.FC<PostItProps> = ({
   props,
   isPreview,
   deletePostit,
   editPostit,
+  ownerId,
 }) => {
   const randomDir = ["top", "right", "left", "bottom"];
   // 이러면 너무 랜더 될때마다 자꾸 반복돼서, 그냥 말풍선id넘버로 해줄까...?
@@ -23,6 +25,7 @@ export const PostIt: React.FC<PostItProps> = ({
     setRandomArrow(randomDir[Math.floor(Math.random() * 4)]);
   }, []);
 
+  const { userId } = useUserInfoStore();
   const speechBubbleSize = ["", "mini", "medium"];
 
   // 나중에 색 정해지면 다 바꿔주기
@@ -88,25 +91,30 @@ export const PostIt: React.FC<PostItProps> = ({
       <Modal
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
-        title="세부메뉴"
+        // title="세부메뉴"
       >
         <div css={menuStyle}>
-          <p
-            onClick={() => {
-              setIsMenuOpen(false);
-              setIsEditOpen(true);
-            }}
-          >
-            수정하기
-          </p>
-          <p
-            onClick={() => {
-              setIsMenuOpen(false);
-              setIsConfirmOpen(true);
-            }}
-          >
-            삭제하기
-          </p>
+          {String(ownerId) == userId && (
+            <>
+              <p
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  setIsEditOpen(true);
+                }}
+              >
+                수정하기
+              </p>
+              <p
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  setIsConfirmOpen(true);
+                }}
+              >
+                삭제하기
+              </p>
+            </>
+          )}
+
           <p
             onClick={() => {
               setIsMenuOpen(false);
