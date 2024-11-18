@@ -26,6 +26,7 @@ const useFetchRollingpaper = () => {
       const res = await axiosInstance.get(
         `rollingpaper/${rollingpaperId}?pageNumber=${page}&pageSize=${pageSize}`
       );
+      console.log(page)
       setLoading(false);
       setSingleRollingpaper(res.data.data);
       setTitleContent(res.data.data.rollingPaperTitle);
