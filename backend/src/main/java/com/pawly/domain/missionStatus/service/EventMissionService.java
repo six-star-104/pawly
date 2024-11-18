@@ -44,7 +44,7 @@ public class EventMissionService {
                 CompleteEasterEgg completeEasterEgg = completeEasterEggOptional.get();
 
                 if (completeEasterEgg.getStatus() == Status.IN_PROGRESS) {
-                    completeEasterEgg.updateStatus();
+                    completeEasterEgg.achievedStatus();
                 }
             }
 
