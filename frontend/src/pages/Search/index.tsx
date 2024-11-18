@@ -23,7 +23,7 @@ export const Search = () => {
   const [selectedMemberId, setSelectedMemberId] = useState<number | null>(null);
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
   const [sentRequests, setSentRequests] = useState<number[]>([]);
-  const [isAlertOpen, setIsAlertOpen] = useState(false); // State for ModalAlert visibility
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
 
   const queryClient = useQueryClient();
   const navigateTo = useNavigate();
@@ -41,6 +41,7 @@ export const Search = () => {
   const { data: searchResults = [], isLoading } = useQuery<SearchResult[]>({
     queryKey: ["searchResults", searchQuery],
     queryFn: () => searchUser(searchQuery),
+    enabled: !!searchQuery,
   });
 
   const mutation = useMutation({

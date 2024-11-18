@@ -1,4 +1,4 @@
-import { css } from "@emotion/react";
+import { css, keyframes } from "@emotion/react";
 
 export const container = css`
   overflow: auto;
@@ -48,16 +48,41 @@ export const content = css`
   }
 `;
 
-export const assetStyle = css`
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  bottom: 0;
-  left: 10px;
-`;
-
 export const postboxStyle = css`
   position: absolute;
   bottom: 20px;
   right: 58px;
+`;
+
+export const collectionContainer = css`
+  position: absolute;
+  bottom: 0;
+  height: 60vh;
+  overflow: hidden;
+  padding: 100px;
+  width: 100%;
+`;
+
+// prettier-ignore
+const generateMoveAround = () => keyframes`
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(${Math.random() * 40 - 20}vw, ${Math.random() * 30 - 10}vh); }
+  40% { transform: translate(${Math.random() * 40 - 20}vw, ${Math.random() * 30 - 10}vh); }
+  60% { transform: translate(${Math.random() * 40 - 20}vw, ${Math.random() * 30 - 10}vh); }
+  80% { transform: translate(${Math.random() * 40 - 20}vw, ${Math.random() * 30 - 10}vh); }
+  100% { transform: translate(0, 0); }
+`;
+
+export const assetStyle = () => css`
+  width: 100px;
+  height: 100px;
+  animation: ${generateMoveAround()} ${5 + Math.random() * 7}s infinite linear;
+  animation-delay: ${Math.random() * 2}s;
+`;
+
+export const MyAssetStyle = () => css`
+  width: 160px;
+  height: 160px;
+  animation: ${generateMoveAround()} ${5 + Math.random() * 7}s infinite linear;
+  animation-delay: ${Math.random() * 2}s;
 `;

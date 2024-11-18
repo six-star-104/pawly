@@ -1,6 +1,6 @@
 import axios from "axios";
 import { axiosInstance, flaskAxiosInstance } from "./axiosInstance";
-import {  SignUpType } from "@/types/UserTypes";
+import { SignUpType } from "@/types/UserTypes";
 export const kakaoLogin = async () => {
   try {
     const response = await axios.get(`oauth/login/kakao`);
@@ -35,7 +35,7 @@ export const getOAuthInformation = async (token: string) => {
     throw error;
   }
 };
-1
+1;
 
 export const getOAuthAccessToken = async (code: string) => {
   try {
@@ -46,7 +46,7 @@ export const getOAuthAccessToken = async (code: string) => {
     });
     const accessToken = response.data.data.accessToken;
     // let userInfo: UserInfoType;
-    if (accessToken) {      
+    if (accessToken) {
       localStorage.setItem("accessToken", accessToken);
     } else {
       throw new Error("No access Token received from server");
@@ -142,7 +142,6 @@ export const makeAsset = async (word: string) => {
 export const searchUser = async (nickname: string) => {
   try {
     const response = await axiosInstance.get(`search/${nickname}`);
-    console.log(response.data);
     return response.data.data;
   } catch (error) {
     console.log("search user failed", error);

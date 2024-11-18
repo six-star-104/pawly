@@ -36,6 +36,7 @@ export const content = css`
 `;
 
 export const date = css`
+  display: flex;
   font-size: 0.8rem;
   color: #666;
 `;
@@ -45,10 +46,16 @@ export const nickname = css`
 `;
 
 export const contentContainer = css`
-  width: 70%;
+  width: 60%;
   padding: 0 0.5rem;
 `;
 
 export const noLetter = css`
   margin: 0 auto;
+`;
+
+export const replyIcon = css`
+  width: 20px;
+  height: 20px;
+  margin-right: 1rem;
 `;

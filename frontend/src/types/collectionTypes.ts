@@ -11,10 +11,3 @@ export interface ICollectionResponseData {
   totalPage: number;
   totalElements: number;
 }
-
-export interface ICollectionResponse {
-  status: string;
-  data: ICollectionResponseData;
-  code: string | null;
-  message: string;
-}

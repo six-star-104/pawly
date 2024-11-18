@@ -32,7 +32,7 @@ export const MyPage = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [message, setMessage] = useState<string | null>(null); // 메시지 상태 추가
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false); // 메시지 모달 상태 추가
-  const { name, userId, nickname, assets, isInitialized, setUserInfo } =
+  const { name, memberId, nickname, assets, isInitialized, setUserInfo } =
     useUserInfoStore();
   const { completedChallengesCount } = useEasterEggStore();
   const { collections, fetchCollections, totalCollections } =
@@ -48,7 +48,7 @@ export const MyPage = () => {
         if (!data) return;
         setUserInfo({
           isInitialized: true,
-          userId: data.memberId,
+          memberId: data.memberId,
           name: data.name,
           email: data.email,
           provider: data.provider,
@@ -66,10 +66,10 @@ export const MyPage = () => {
       fetchUserInfo();
     }
 
-    if (userId) {
-      fetchCollections(Number(userId), currentPage, itemsPerPage);
+    if (memberId) {
+      fetchCollections(Number(memberId), currentPage, itemsPerPage);
     }
-  }, [isInitialized, setUserInfo, userId, currentPage, fetchCollections]);
+  }, [isInitialized, setUserInfo, memberId, currentPage, fetchCollections]);
 
   useEffect(() => {
     fetchRollingPapers();

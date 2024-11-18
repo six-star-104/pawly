@@ -21,7 +21,7 @@ export const LetterWrite: React.FC<LetterWriteProps> = ({
   const [picture, setPicture] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isSent, setIsSent] = useState(false);
-
+  const [noMessage, setNoMessage] = useState(false);
   const handleCancel = () => {
     setIsConfirmOpen(true);
   };
@@ -31,6 +31,12 @@ export const LetterWrite: React.FC<LetterWriteProps> = ({
   };
 
   const handlePostLetter = async () => {
+    if (!content.trim()) {
+      setNoMessage(true);
+      setTimeout(() => setNoMessage(false), 1500);
+      return;
+    }
+
     try {
       await postLetter(picture, recipientId, content);
       setIsSent(true);
@@ -117,6 +123,7 @@ export const LetterWrite: React.FC<LetterWriteProps> = ({
         </button>
       </div>
       <ModalAlert isOpen={isSent} message="전송 완료" />
+      <ModalAlert isOpen={noMessage} message="메세지를 입력해 주세요." />
     </>
   );
 };

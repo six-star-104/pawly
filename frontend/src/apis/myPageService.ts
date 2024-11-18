@@ -1,9 +1,5 @@
 import axios from "axios";
-import {
-  GetMyInfoResponse,
-  UpdateNicknameResponse,
-  GetFriendInfoResponse,
-} from "@/types/UserTypes";
+import { GetMyInfoResponse, UpdateNicknameResponse } from "@/types/UserTypes";
 
 export const getMyInfo = async () => {
   try {
@@ -41,9 +37,7 @@ export const getMyInfo = async () => {
 };
 
 // 닉네임 업데이트 함수
-export const updateNickname = async (
-  nickname: string
-) => {
+export const updateNickname = async (nickname: string) => {
   try {
     const token = localStorage.getItem("accessToken");
     if (!token) {
@@ -65,21 +59,21 @@ export const updateNickname = async (
       return response.data;
     } else {
       if (response.data.message === "중복된 닉네임입니다.") {
-        throw new Error("이미 사용 중인 닉네임입니다. 다른 닉네임을 선택해 주세요.");
+        throw new Error(
+          "이미 사용 중인 닉네임입니다. 다른 닉네임을 선택해 주세요."
+        );
       }
-      throw new Error(response.data.message || "닉네임 업데이트에 실패했습니다.");
+      throw new Error(
+        response.data.message || "닉네임 업데이트에 실패했습니다."
+      );
     }
-  } catch (error: any) {
-    console.error("updateNickname 요청 실패:", error.message);
+  } catch (error) {
+    console.error("updateNickname 요청 실패:", error);
     throw error;
   }
 };
 
-
-
-export const getFriendInfo = async (
-  memberId: number
-)=> {
+export const getFriendInfo = async (memberId: number) => {
   try {
     // localStorage에서 토큰을 가져옵니다.
     const token = localStorage.getItem("accessToken");
@@ -91,7 +85,7 @@ export const getFriendInfo = async (
     }
 
     // API 요청을 보내고, Authorization 헤더에 'Bearer '를 추가하여 토큰을 포함합니다.
-    const response = await axios.get<GetFriendInfoResponse>(
+    const response = await axios.get(
       `https://k11d104.p.ssafy.io/api/member/${memberId}`, // memberId를 경로 파라미터로 설정
       {
         headers: {
