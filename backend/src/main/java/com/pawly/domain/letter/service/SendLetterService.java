@@ -112,8 +112,8 @@ public class SendLetterService {
 
         // 도전과제
         letterMissionService.sendLetterMission(member.getMemberId());
-        letterMissionService.receiveLetterMission(recipient.getMemberId());
-
+//        letterMissionService.receiveLetterMission(recipient.getMemberId()); // 받기 미션 잠깐 종료
+        
         // 도감 저장
         if(!Objects.equals(member.getMemberId(), recipient.getMemberId())) collectionService.collectionAdd(member, recipient);
 
