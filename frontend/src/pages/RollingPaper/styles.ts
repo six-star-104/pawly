@@ -7,7 +7,7 @@ export const plusButton = css`
   display: flex;
   align-items: center;
   justify-content: end;
-  z-index: 3;
+  z-index: 2;
   padding-right: 24px;
   img {
     width: 32px;

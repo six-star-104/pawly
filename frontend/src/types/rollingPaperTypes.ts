@@ -17,16 +17,16 @@ export interface IPostIt {
   status?: string;
 
   // 이 4개가 DTO로 받을수도 있고,
-  themeId:number;
+  themeId: number;
   backgroundColor: string;
   font: number;
   fontColor: string;
-  borderColor:  string;
+  borderColor: string;
   image: string;
   // 2개 추가로 생길 예정
   // font: number;
   themeName?: string;
-  base?:boolean; //으로 올수도??
+  base?: boolean; //으로 올수도??
   speechBubbleSize: number;
 
   createdAt?: string;
@@ -45,14 +45,16 @@ export interface IRollingPaper {
   totalElements?: number;
 }
 
+export interface IRollingPaperSum {
+  rollingPaperId: number;
+  title: string;
+  status: string;
+  category: number;
+  createdAt: string;
+}
 // 롤링페이퍼 전체 조회
 export interface IRollingPapers {
-  content: {
-    rollingPaperId: number;
-    title: string;
-    category: number;
-    createdAt: string;
-  }[];
+  content: IRollingPaperSum[];
   pageable: {
     pageNumber: number;
     pageSize: number;

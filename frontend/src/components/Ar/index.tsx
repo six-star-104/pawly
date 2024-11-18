@@ -4,7 +4,8 @@ import ArMailBox from "../ArMailBox";
 import { container, confirmBtn, singleBtn } from "./Ar.style";
 import Modal from "@/components/Modal";
 import { useFetchMailBoxes } from "@/hooks/useFetchMailboxes";
-import { useCreateRollingpaper } from "@/hooks/useCreateRollingpaper";
+// import { useCreateRollingpaper } from "@/hooks/useCreateRollingpaper";
+import useFetchUserRollingpaper from "@/hooks/useFetchUserRollingpaper";
 const Ar = () => {
   const [userLat, setUserLat] = useState(0);
   const [userLng, setUserLng] = useState(0);
@@ -22,7 +23,7 @@ const Ar = () => {
     setNewTitle(e.target.value);
   };
   // const [mailBoxes, setMailBoxes] = useState<IMailBox[]>([]);
-  const { createRollingpaper } = useCreateRollingpaper();
+  const { createRollingpaper } = useFetchUserRollingpaper();
 
   // const getMailBox = () => {
   //   fetchMailBoxes(userLat, userLng);
@@ -30,25 +31,36 @@ const Ar = () => {
 
   useEffect(() => {
     console.log("effect 터짐");
-    if (navigator.geolocation) {
-      // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-      navigator.geolocation.getCurrentPosition(function (position) {
-        const lat = position.coords.latitude; // 위도
-        const lng = position.coords.longitude; // 경도
-        setUserLat(lat);
-        setUserLng(lng);
-        console.log("위치 조회 성공", lat, lng);
-        fetchMailBoxes(lat, lng);
-      });
-    } else {
-      // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
-      return;
-    }
+    const updatePosition = () => {
+      if (navigator.geolocation) {
+        // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+        navigator.geolocation.getCurrentPosition(function (position) {
+          const lat = position.coords.latitude; // 위도
+          const lng = position.coords.longitude; // 경도
+          setUserLat(lat);
+          setUserLng(lng);
+          console.log("위치 조회 성공", lat, lng);
+          fetchMailBoxes(lat, lng);
+        });
+      }
+    };
+    updatePosition();
+
+    const intervalId = setInterval(updatePosition, 5000);
+
+    // Clear the interval on component unmount
+    return () => clearInterval(intervalId);
+
   }, []);
+
 
   const createMailBox = async () => {
     try {
       const res = await createRollingpaper(newTitle, userLat, userLng);
+      setNewTitle("");
+
+      await fetchMailBoxes(userLat, userLng);
+
       if (res === "sucess") {
         setConfirmContent("success");
         setIsOpen(false);
@@ -87,9 +99,10 @@ const Ar = () => {
               key={index}
               postboxId={mailBox.postboxId}
               title={mailBox.title}
-              lng={mailBox.longtitude}
+              lng={mailBox.longitude}
               lat={mailBox.latitude}
               postboxOwner={mailBox.postboxOwner}
+              rollingPaperId={mailBox.rollingPaperId}
               // 여기에 상세정보 적기
               // children={modalContent}
             />

@@ -5,7 +5,8 @@ import { getRefreshToken } from "@/apis/axiosInstance";
 import useLoginStore from "@/stores/loginStore";
 import { getMyInfo } from "@/apis/myPageService"; // 사용자 정보 API 가져오기
 import { useUserInfoStore } from "./stores/userInfoStore";
-
+import { Header } from "./components/Header";
+import Notification from "./components/Notification";
 // 사용자가 메인 페이지에 들어오면 사용자 정보를 스토어에 저장
 // useEffect(() => {
 //   const fetchUserInfo = async () => {
@@ -56,7 +57,7 @@ const PrivateRoute = () => {
       if (!data) return;
       setUserInfo({
         isInitialized: true,
-        userId: data.memberId,
+        memberId: data.memberId,
         name: data.name,
         email: data.email,
         provider: data.provider,
@@ -152,7 +153,11 @@ const PrivateRoute = () => {
   }
 
   return isLogin ? (
+    <>
+    <Header />
+    <Notification />
     <Outlet />
+    </>
   ) : (
     <Navigate to="/login" state={{ from: location }} />
   );

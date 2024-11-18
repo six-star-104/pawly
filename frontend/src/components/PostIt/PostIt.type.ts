@@ -9,4 +9,5 @@ export type PostItProps = {
   isPreview?: boolean;
   deletePostit: (id: number) => Promise<void>;
   editPostit: (data: IPostIt) => Promise<void>;
+  ownerId:number|undefined;
 };

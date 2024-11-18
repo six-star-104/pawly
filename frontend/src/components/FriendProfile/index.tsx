@@ -12,6 +12,7 @@ interface FriendProfileProps {
   onClose: () => void;
   memberId: number;
   showActions: string;
+  onFriendDeleted?: () => void;
 }
 
 export const FriendProfile = ({
@@ -19,6 +20,7 @@ export const FriendProfile = ({
   onClose,
   memberId,
   showActions,
+  onFriendDeleted,
 }: FriendProfileProps) => {
   const queryClient = useQueryClient();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -35,15 +37,22 @@ export const FriendProfile = ({
       refetch();
     }
   }, [isOpen, refetch]);
+
   const handleDeleteFriend = () => {
     setIsConfirmOpen(true);
   };
 
   const confirmDelete = async (memberId: number) => {
-    await deleteFriend(memberId);
-    queryClient.invalidateQueries({ queryKey: ["friendList"] });
-    setIsConfirmOpen(false);
-    onClose();
+    try {
+      await deleteFriend(memberId);
+      setIsConfirmOpen(false);
+      onClose();
+      queryClient.invalidateQueries({ queryKey: ["friendList"] });
+      queryClient.invalidateQueries({ queryKey: ["searchResults"] });
+      onFriendDeleted?.(); // 삭제 완료 후 부모 컴포넌트에 알림
+    } catch (error) {
+      console.error("친구 삭제 중 오류 발생:", error);
+    }
   };
 
   const openWriteModal = () => {

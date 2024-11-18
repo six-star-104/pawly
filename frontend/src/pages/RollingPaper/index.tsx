@@ -11,7 +11,6 @@ import { useParams } from "react-router-dom";
 import { IPostIt } from "@/types/rollingPaperTypes";
 import useFetchRollingpaper from "@/hooks/useFetchRollingpaper";
 import { sampleData } from "./mockdata";
-
 // 특정 하나의 롤링 페이퍼만 볼 수 있는 페이지
 export const RollingPaper = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +22,7 @@ export const RollingPaper = () => {
   // 페이지네이션
   const [pageNum, setPageNum] = useState(0);
 
-  const { fetchRollingPaper, postits, createPostit, editPostit, deletePostit } =
+  const { fetchRollingPaper, postits, createPostit, editPostit, deletePostit, singleRollingpaper } =
     useFetchRollingpaper();
 
   const handleObserver = async (entries: IntersectionObserverEntry[]) => {
@@ -77,6 +76,7 @@ export const RollingPaper = () => {
             isPreview={false}
             deletePostit={deletePostit}
             editPostit={editPostit}
+            ownerId={singleRollingpaper?.ownerMemberId}
           />
         ))}
         <div id="observer" style={{ height: "10px" }}></div>
