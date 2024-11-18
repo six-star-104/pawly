@@ -15,7 +15,6 @@ const BirthInput = () => {
   const { setUserInfo, birth } = useUserInfoStore();
 
   useEffect(() => {
-    // 유저 정보의 생일을 초기 값으로 설정
     if (birth) {
       setBirthInput(birth);
     }
@@ -32,21 +31,18 @@ const BirthInput = () => {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(/-/g, ''); // '-' 제거
-    value = value.replace(/\D/g, ''); // 숫자만 남기기
+    let value = e.target.value.replace(/-/g, ''); 
+    value = value.replace(/\D/g, ''); 
 
-    // 최대 길이 제한
     if (value.length > 8) {
       value = value.slice(0, 8);
     }
 
-    // 연도 입력
     let formattedValue = value;
     if (value.length >= 4) {
       formattedValue = `${value.slice(0, 4)}`;
     }
 
-    // 월 입력 및 검증
     if (value.length >= 5) {
       let month = value.slice(4, 6);
       if (parseInt(month, 10) > 12) {
@@ -55,7 +51,6 @@ const BirthInput = () => {
       formattedValue = `${value.slice(0, 4)}-${month}`;
     }
 
-    // 일 입력 및 검증
     if (value.length >= 7) {
       let day = value.slice(6, 8);
       if (parseInt(day, 10) > 31) {
@@ -64,7 +59,6 @@ const BirthInput = () => {
       formattedValue = `${value.slice(0, 4)}-${value.slice(4, 6)}-${day}`;
     }
 
-    // 미래 날짜 검증
     if (formattedValue.length === 10) {
       const inputDate = new Date(formattedValue);
       const currentDate = new Date();
@@ -102,18 +96,17 @@ const BirthInput = () => {
 
   return (
     <div>
-      {/* 유저의 생일이 없으면 생일 입력 버튼을 표시, 있으면 생일을 표시 */}
       {birth ? (
         <div css={birthCss}>{birth}</div>
       ) : (
         <button  
+          css={birthBtn}
           onClick={() => setIsBirthModalOpen(true)}>
             생일 입력
         </button>
         
       )}
 
-      {/* 생일 입력 모달 */}
       <Modal isOpen={isBirthModalOpen} onClose={() => setIsBirthModalOpen(false)} title="생일 입력">
         <div css={modalOverlayStyle}>
           <div css={modalContentStyle}>
@@ -151,7 +144,6 @@ const BirthInput = () => {
         </div>
       </Modal>
 
-      {/* 미래 날짜 경고 모달 */}
       <Modal isOpen={isMessageModalOpen} onClose={closeMessageModal} title="알림">
         <div css={modalOverlayStyle}>
           <div css={modalContentStyle}>
@@ -173,7 +165,6 @@ const BirthInput = () => {
         </div>
       </Modal>
 
-      {/* 저장 확인 모달 */}
       <Modal isOpen={isConfirmModalOpen} onClose={closeConfirmModal} title="확인">
         <div css={modalOverlayStyle}>
           <div css={modalContentStyle}>

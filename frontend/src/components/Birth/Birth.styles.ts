@@ -102,8 +102,10 @@ export const birthCss = css`
 `
 
 export const birthBtn = css`
-  /* padding: 0%; */
-  margin-bottom: 1px;
-  margin-top: 1px;
-
+  background: none;
+  cursor: pointer;
+  margin-top: -3px;
+  border: none;
+  box-shadow: 2px 0 0 0 black, -2px 0 0 0 black, 0 2px 0 0 black,
+  0 -2px 0 0 black;
 `

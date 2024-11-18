@@ -27,14 +27,13 @@ import useEasterEggStore from '@/stores/easterEggStore';
 import { useCollectionStore } from '@/stores/collectionStore';
 import { getMyInfo, updateNickname} from '@/apis/myPageService';
 import BirthInput from '@/components/Birth';
-
 export const MyPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [newNickname, setNewNickname] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [message, setMessage] = useState<string | null>(null);  // 메시지 상태 추가
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false); // 메시지 모달 상태 추가
-  const { name, userId, nickname, birth ,assets, isInitialized, setUserInfo } = useUserInfoStore();
+  const { name, userId, nickname, assets, isInitialized, setUserInfo } = useUserInfoStore();
   const { completedChallengesCount } = useEasterEggStore();
   const { collections, fetchCollections, totalCollections } = useCollectionStore();
   const itemsPerPage = 3;
@@ -69,7 +68,6 @@ export const MyPage = () => {
     }
   }, [isInitialized, setUserInfo, userId, currentPage, fetchCollections]);
 
-  console.log('생일',birth)
 
   const handleEditNickname = () => {
     setIsEditing(true);
@@ -171,6 +169,7 @@ export const MyPage = () => {
                   </button>
                 </div>
               </div>
+              
             </div>
           }
         />
