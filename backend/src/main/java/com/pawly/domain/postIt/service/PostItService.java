@@ -61,8 +61,10 @@ public class PostItService {
         if(!Objects.equals(member.getMemberId(), r.getMember().getMemberId())) collectionService.collectionAdd(member, r.getMember());
 
         // 알림
-        FcmMessageRequestDto request = new FcmMessageRequestDto(r.getMember().getMemberId(), "롤링페이퍼가 작성되었어요!", "마음을 담은 롤링페이퍼가 작성되었습니다. 지금 확인해보세요.");
-        firebaseCloudMessageService.sendMessage(request);
+        if(!Objects.equals(member.getMemberId(), r.getMember().getMemberId())) {
+            FcmMessageRequestDto request = new FcmMessageRequestDto(r.getMember().getMemberId(), "롤링페이퍼가 작성되었어요!", "마음을 담은 롤링페이퍼가 작성되었습니다. 지금 확인해보세요.");
+            firebaseCloudMessageService.sendMessage(request);
+        }
 
         // 도전과제
         postitMissionService.postitMission(member.getMemberId());
