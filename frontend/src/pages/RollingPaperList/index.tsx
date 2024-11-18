@@ -79,7 +79,7 @@ export const RollingPaperList = () => {
             <SingleRollingpaperList rollingpaper={rollingpaper} key={rollingpaper.rollingPaperId}/>
           ))}
       </div>
-
+          
       <div css={tempBtn}>
         <button onClick={() => setIsOpen(true)} className="nes-btn">
           롤링페이퍼 생성

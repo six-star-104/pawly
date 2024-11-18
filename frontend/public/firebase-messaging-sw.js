@@ -27,7 +27,7 @@ self.addEventListener("push", function (e) {
   const notificationTitle = resultData.title;
   const notificationOptions = {
     body: resultData.body,
-    icon: resultData.image, // 웹 푸시 이미지는 icon
+    icon: './pwa-192x192.png', // 웹 푸시 이미지는 icon
     tag: resultData.tag,
   };
   console.log("백그라운드 알람", notificationOptions.body)
@@ -43,6 +43,7 @@ messaging.onBackgroundMessage((payload) => {
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
     body: payload.notification.body,
+    icon:'./pwa-192x192.png'
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
