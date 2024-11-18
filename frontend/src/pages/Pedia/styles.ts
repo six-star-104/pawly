@@ -1,111 +1,51 @@
-// 스타일 정의 부분 (styles.js)
-
 import { css } from "@emotion/react";
 
-export const BackBtnContainer = css`
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  margin: 0.25rem;
-`;
-
-export const HamBtnContainer = css`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-`;
-
-export const HamBtnCss = css`
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-`;
-
-export const BackBtnCss = css`
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-`;
-
-export const slidePanelStyle = css`
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 300px;
-  height: 100vh;
-  background-color: #f9f4ff;
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
-  transform: translateX(100%);
-  transition: transform 0.3s ease;
-  z-index: 1000;
-`;
-
-export const panelContentStyle = css`
+export const PixelContainerWrapper = css`
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  border: 3px solid black;
-  button {
-    align-self: flex-end;
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-  }
-`;
-
-export const PixelContainerWrapper = css`
-  display: flex;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
-  width: 100%;
   position: relative;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  height: 100vh;
+  overflow-y: auto;
 `;
 
 export const Container = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  height: 65vh;
-  width: 90%;
-  padding: 1rem;
-  box-shadow: 4px 0 0 0 black, -4px 0 0 0 black, 0 4px 0 0 black,
-    0 -4px 0 0 black;
-  box-sizing: border-box;
-  margin: auto;
+  width: 100%;
+  max-width: 500px;
+  margin-top: 130px;
+  border: 3px solid black;
+  background-color: rgba(255, 255, 255, 0.3);
 `;
 
 export const IconGrid = css`
-  width: 110%;
-  height: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 29.2%);
-  gap: 1.5rem;
+  grid-template-rows: repeat(3, 1fr);
   justify-items: center;
   align-items: center;
   text-align: center;
+  width: 100%;
+  height: 100%;
   padding: 1rem;
   box-sizing: border-box;
   place-items: center;
-  min-height: 300px;
 `;
 
 export const IconItem = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 0.8rem;
   text-align: center;
-  padding: 0.5rem;
+  font-size: 0.9rem;
+  padding: 1rem 0;
+
   img {
     margin-bottom: 0.5rem;
-    max-width: 60px;
-    height: auto;
+    height: 70px;
+    width: 70px;
   }
 `;
 
@@ -115,8 +55,6 @@ export const ArrowContainer = css`
   align-items: center;
   padding: 0.5rem 0;
   width: 100%;
-  position: absolute;
-  bottom: 0;
 
   span {
     font-size: 1rem;

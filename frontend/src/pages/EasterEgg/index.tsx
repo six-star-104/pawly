@@ -1,21 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  Container,
-  tabContainer,
-  challengeWrapper,
-  challengeListContainer,
-  challengeItem,
-  challengeTitle,
-  challengeReward,
-  challengeStatus,
-  progressContainer,
-  deleteModalOverlayStyle,
-  deleteModalContentStyle,
-  warningIconStyle,
-  modalBodyStyle,
-  rewardTitleStyle,
-  congratsContainerStyle,
-} from "./styles";
+import * as style from "./styles";
 import cheer from "../../assets/icons/cheer.png";
 import Modal from "@/components/Modal";
 import { Button } from "@/components/Button";
@@ -44,7 +28,9 @@ export const EasterEgg = () => {
         if (response?.status === "success") {
           setEasterEggs(response?.data);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     if (!isInitialized) {
@@ -76,13 +62,15 @@ export const EasterEgg = () => {
     try {
       await markEasterEggComplete(selectedChallenge.easterEggId);
       closeCompleteModal();
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
-    <div css={Container}>
-      <div css={challengeWrapper}>
-        <div css={tabContainer(activeTab)}>
+    <div css={style.Container}>
+      <div css={style.challengeWrapper}>
+        <div css={style.tabContainer(activeTab)}>
           <button
             onClick={() => setActiveTab("inProgress")}
             className={activeTab === "inProgress" ? "active" : ""}
@@ -97,7 +85,7 @@ export const EasterEgg = () => {
           </button>
         </div>
 
-        <div css={challengeListContainer}>
+        <div css={style.challengeListContainer}>
           {challenges
             .filter((challenge) => {
               if (activeTab === "inProgress") {
@@ -109,12 +97,14 @@ export const EasterEgg = () => {
               return challenge.status === "완료됨";
             })
             .map((challenge) => (
-              <div key={challenge.easterEggId} css={challengeItem}>
-                <div css={challengeTitle}>{challenge.content}</div>
-                <div css={challengeReward}>
-                  보상: {challenge.reward || "???"}
+              <div key={challenge.easterEggId} css={style.challengeItem}>
+                <div css={style.chanllengeContainer}>
+                  <div className="content">{challenge.content}</div>
+                  <div className="reward">
+                    보상: {challenge.reward || "???"}
+                  </div>
                 </div>
-                <div css={challengeStatus}>
+                <div css={style.challengeStatus}>
                   {challenge.status === "완료하기" && (
                     <button
                       type="button"
@@ -140,17 +130,32 @@ export const EasterEgg = () => {
         </div>
       </div>
 
+      <div css={style.progressContainer}>
+        <div>{progress.toFixed(1)}%</div>
+        {progress && (
+          <progress
+            className="nes-progress is-success"
+            value={progress}
+            max="100"
+          ></progress>
+        )}
+      </div>
+
       {selectedChallenge && (
         <Modal
           isOpen={isCompleteModalOpen}
           onClose={closeCompleteModal}
           title="보상 수령"
         >
-          <div css={[deleteModalOverlayStyle, modalBodyStyle]}>
-            <div css={deleteModalContentStyle}>
-              <h2 css={rewardTitleStyle}>보상 수령</h2>
-              <div css={congratsContainerStyle}>
-                <img src={cheer} alt="축하 아이콘" css={warningIconStyle} />
+          <div css={[style.deleteModalOverlayStyle, style.modalBodyStyle]}>
+            <div css={style.deleteModalContentStyle}>
+              <h2 css={style.rewardTitleStyle}>보상 수령</h2>
+              <div css={style.congratsContainerStyle}>
+                <img
+                  src={cheer}
+                  alt="축하 아이콘"
+                  css={style.warningIconStyle}
+                />
                 <h4>
                   축하합니다! <br /> '{selectedChallenge.reward}'을
                   획득했습니다!
@@ -172,18 +177,6 @@ export const EasterEgg = () => {
           </div>
         </Modal>
       )}
-
-      <div css={progressContainer}>
-        {progress && (
-          <progress
-            className="nes-progress is-success"
-            value={progress}
-            max="100"
-          ></progress>
-        )}
-
-        <div>{progress.toFixed(1)}%</div>
-      </div>
     </div>
   );
 };

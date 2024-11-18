@@ -35,7 +35,7 @@ export const modalActionsStyle = css`
   padding: 1rem 0;
 
   button {
-    background-color: #4CAF50;
+    background-color: #4caf50;
     border: none;
     color: white;
     padding: 0.5rem 1rem;
@@ -99,7 +99,7 @@ export const modalHeaderStyle = css`
 
 export const birthCss = css`
   font-size: 0.8rem;
-`
+`;
 
 export const birthBtn = css`
   background: none;
@@ -107,5 +107,7 @@ export const birthBtn = css`
   margin-top: -3px;
   border: none;
   box-shadow: 2px 0 0 0 black, -2px 0 0 0 black, 0 2px 0 0 black,
-  0 -2px 0 0 black;
-`
+    0 -2px 0 0 black;
+  font-size: 0.8rem;
+  background-color: white;
+`;

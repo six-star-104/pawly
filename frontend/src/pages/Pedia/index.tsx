@@ -1,16 +1,7 @@
-/** @jsxImportSource @emotion/react */
 import { useEffect, useState } from "react";
 import { useUserInfoStore } from "@/stores/userInfoStore";
 import { useCollectionStore } from "@/stores/collectionStore";
-import {
-  PixelContainerWrapper,
-  Container,
-  IconGrid,
-  IconItem,
-  ArrowContainer,
-  ArrowButton,
-  headerStyle,
-} from "./styles";
+import * as style from "./styles";
 
 export const Pedia = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -41,15 +32,15 @@ export const Pedia = () => {
   };
 
   return (
-    <div css={PixelContainerWrapper}>
-      <div css={Container}>
-        <h2 css={headerStyle}>
+    <div css={style.PixelContainerWrapper}>
+      <div css={style.Container}>
+        <h2 css={style.headerStyle}>
           {nickname ? `${nickname}님의 도감` : "사용자의 도감"}
         </h2>
 
-        <div css={IconGrid}>
+        <div css={style.IconGrid}>
           {collections.map((collection) => (
-            <div css={IconItem} key={collection.collectionId}>
+            <div css={style.IconItem} key={collection.collectionId}>
               <img
                 src={collection.assets}
                 alt={collection.nickname}
@@ -59,26 +50,25 @@ export const Pedia = () => {
             </div>
           ))}
         </div>
-
-        <div css={ArrowContainer}>
-          <button
-            css={ArrowButton}
-            onClick={handlePreviousPage}
-            disabled={currentPage === 0}
-          >
-            ◀️ 이전
-          </button>
-          <span>
-            {currentPage + 1} / {totalPages}
-          </span>
-          <button
-            css={ArrowButton}
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages - 1}
-          >
-            다음 ▶️
-          </button>
-        </div>
+      </div>
+      <div css={style.ArrowContainer}>
+        <button
+          css={style.ArrowButton}
+          onClick={handlePreviousPage}
+          disabled={currentPage === 0}
+        >
+          ◀️ 이전
+        </button>
+        <span>
+          {currentPage + 1} / {totalPages}
+        </span>
+        <button
+          css={style.ArrowButton}
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages - 1}
+        >
+          다음 ▶️
+        </button>
       </div>
     </div>
   );
