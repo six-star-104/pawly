@@ -50,6 +50,7 @@ export interface ISendLetterListContent {
   letterId: number;
   createdAt: string;
   updatedAt: string;
+  reaction: number;
 }
 
 // 보낸 편지 detail

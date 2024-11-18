@@ -6,6 +6,9 @@ import { getSendLetterList } from "@/apis/letterService";
 import { LetterSendDetail } from "@/components/LetterSendDetail";
 import ModalLetter from "@/components/ModalLetter";
 import Pagination from "@/components/Pagination";
+import replyHeart from "@/assets/icons/replyHeart.svg";
+import replyLike from "@/assets/icons/replyLike.svg";
+import replyStar from "@/assets/icons/replyStar.svg";
 
 export const LetterSendList = () => {
   const [selectedLetterId, setSelectedLetterId] = useState<number | null>(null);
@@ -49,6 +52,13 @@ export const LetterSendList = () => {
                 <div css={style.nickname}>{letter.recipientName}</div>
               </div>
               <div css={style.date}>
+                {letter?.reaction === 1 ? (
+                  <img src={replyHeart} css={style.replyIcon} />
+                ) : letter?.reaction === 2 ? (
+                  <img src={replyLike} css={style.replyIcon} />
+                ) : letter?.reaction === 3 ? (
+                  <img src={replyStar} css={style.replyIcon} />
+                ) : null}
                 {new Date(letter.createdAt).toLocaleDateString("ko-KR")}
               </div>
             </div>

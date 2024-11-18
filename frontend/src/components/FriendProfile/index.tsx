@@ -43,6 +43,7 @@ export const FriendProfile = ({
   const confirmDelete = async (memberId: number) => {
     await deleteFriend(memberId);
     queryClient.invalidateQueries({ queryKey: ["friendList"] });
+    queryClient.invalidateQueries({ queryKey: ["searchResults"] });
     setIsConfirmOpen(false);
     onClose();
   };
@@ -57,7 +58,7 @@ export const FriendProfile = ({
 
   return (
     <>
-      <ModalLetter isOpen={isOpen} onClose={onClose} >
+      <ModalLetter isOpen={isOpen} onClose={onClose}>
         <style.modalHeader>
           <button css={style.closeButtonStyle} onClick={onClose}>
             ✖️

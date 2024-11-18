@@ -46,9 +46,9 @@ export const LetterSendDetail: React.FC<LetterSendDetailProps> = ({
               <img src={replyHeart} css={style.replyIcon} />
             ) : letterDetail?.reaction === 2 ? (
               <img src={replyLike} css={style.replyIcon} />
-            ) : (
+            ) : letterDetail?.reaction === 3 ? (
               <img src={replyStar} css={style.replyIcon} />
-            )}
+            ) : null}
           </div>
           <button css={style.deleteIcon} onClick={handleDelete}>
             <img
