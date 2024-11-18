@@ -86,6 +86,12 @@ export const UsernameStyle = css`
   align-self: flex-start; /* 유저네임을 왼쪽에 고정 */
 `;
 
+export const BirthInputCss = css`
+  font-size: 1rem;
+  padding: 0%;
+  margin: 2px 0 0 0;
+`
+
 // VerticalTextSection 스타일은 컨테이너 역할만 담당
 export const VerticalTextSection = css`
   display: flex;
