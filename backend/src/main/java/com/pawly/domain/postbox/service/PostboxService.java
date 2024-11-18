@@ -41,8 +41,9 @@ public class PostboxService {
         if (!member.isPresent()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
         List<PostboxReadResponseDto> postboxReadResponsesList = postboxRepository.findPostboxesWithinRadius(latitude, longitude, 10.0).stream()
-                .map(PostboxReadResponseDto::from)
-                .toList();
+                        .map(postbox -> PostboxReadResponseDto.from(postbox, postbox.getMember().getAssets()))
+                        .toList();
+
         return ApiResponse.createSuccess(postboxReadResponsesList,"AR 우체통 조회 성공");
     }
 
@@ -52,7 +53,7 @@ public class PostboxService {
         if (!member.isPresent()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
         List<PostboxReadResponseDto> postboxReadResponsesList = postboxRepository.findPostboxesWithinRadius(latitude, longitude, 1000.0).stream()
-                .map(PostboxReadResponseDto::from)
+                .map(postbox -> PostboxReadResponseDto.from(postbox, postbox.getMember().getAssets()))
                 .toList();
         return ApiResponse.createSuccess(postboxReadResponsesList, "우체통맵 조회 성공");
     }
