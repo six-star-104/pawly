@@ -16,6 +16,7 @@ import {
   NicknameStyle,
   UsernameStyle,
   ArrowButton,
+  BirthInputCss,
 } from "./styles";
 import Warning from "@/assets/icons/Warning.png";
 import PixelContainer from "../../components/PixelContainer";
@@ -26,6 +27,7 @@ import useEasterEggStore from "@/stores/easterEggStore";
 import { useCollectionStore } from "@/stores/collectionStore";
 import { getMyInfo, updateNickname } from "@/apis/myPageService";
 import useFetchUserRollingpaper from "@/hooks/useFetchUserRollingpaper";
+import BirthInput from '@/components/Birth';
 export const MyPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [newNickname, setNewNickname] = useState("");
@@ -126,8 +128,11 @@ export const MyPage = () => {
                 <div>
                   <img src={assets} width={50} height={50} alt="User Asset" />
                   <div css={VerticalTextSection}>
-                    <h3 css={NicknameStyle}>{nickname}</h3>
-                    <h4 css={UsernameStyle}>{name}</h4>
+                    <div>
+                      <h3 css={NicknameStyle}>{nickname}</h3>
+                      <h4 css={BirthInputCss}><BirthInput/></h4>
+                    </div>
+                      <h4 css={UsernameStyle}>{name}</h4>
                   </div>
                 </div>
 
@@ -205,6 +210,7 @@ export const MyPage = () => {
                   </button>
                 </div>
               </div>
+              
             </div>
           }
         />
