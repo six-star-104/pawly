@@ -25,7 +25,7 @@ export const PostIt: React.FC<PostItProps> = ({
     setRandomArrow(randomDir[Math.floor(Math.random() * 4)]);
   }, []);
 
-  const { userId } = useUserInfoStore();
+  const { memberId } = useUserInfoStore();
   const speechBubbleSize = ["", "mini", "medium"];
 
   // 나중에 색 정해지면 다 바꿔주기
@@ -94,7 +94,7 @@ export const PostIt: React.FC<PostItProps> = ({
         // title="세부메뉴"
       >
         <div css={menuStyle}>
-          {String(ownerId) == userId && (
+          {ownerId == memberId && (
             <>
               <p
                 onClick={() => {
