@@ -6,7 +6,7 @@ import { FriendType } from "@/types/FriendsTypes";
 import ModalConfirm from "../ModalConfirm";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { LetterWrite } from "@/components/LetterWrite";
-// import { container } from "../Ar/Ar.style";
+import ModalAlert from "../ModalAlert";
 
 interface FriendProfileProps {
   isOpen: boolean;
@@ -24,6 +24,7 @@ export const FriendProfile = ({
   const queryClient = useQueryClient();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isWriteModalOpen, setIsWriteModalOpen] = useState(false);
+  const [isDeleteFriend, setIsDeleteFriend] = useState(false);
 
   const { data: memberInfo, refetch } = useQuery<FriendType>({
     queryKey: ["memberInfo", memberId],
@@ -42,6 +43,8 @@ export const FriendProfile = ({
 
   const confirmDelete = async (memberId: number) => {
     await deleteFriend(memberId);
+    setIsDeleteFriend(true);
+    setTimeout(() => setIsDeleteFriend(false), 1500);
     queryClient.invalidateQueries({ queryKey: ["friendList"] });
     queryClient.invalidateQueries({ queryKey: ["searchResults"] });
     setIsConfirmOpen(false);
@@ -107,6 +110,7 @@ export const FriendProfile = ({
           />
         </ModalLetter>
       )}
+      <ModalAlert isOpen={isDeleteFriend} message="친구 삭제 완료" />
     </>
   );
 };
