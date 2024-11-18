@@ -131,8 +131,9 @@ const Ar = () => {
           <a-camera
             gps-camera={`simulateLatitude: ${userLat}; simulateLongitude: ${userLng};`}
             // 이 아래 두 옵션은 나중에 모바일에서 써보고 지워도 되면 지우기
-            rotation-reader
-            wasd-controls="acceleration: 100"
+            // rotation-reader
+            // wasd-controls="acceleration: 100"
+            
           ></a-camera>
         </a-scene>
         <p>

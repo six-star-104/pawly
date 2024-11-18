@@ -20,7 +20,7 @@ const ArMailBox: React.FC<MailBoxProps> = ({
         font-image="./assets/neodgm.png"
         scale="3 3 1"
         gps-entity-place={`latitude: ${lat}; longitude: ${lng};`}
-        position="-0.5 0 0"
+        position="-0.5 -3 0"
         // negate="false"
         // animation="property: rotation; to: 0 180 0; loop: true; dur: 3000"
         onClick={() => setModalOpen(true)}
@@ -30,7 +30,7 @@ const ArMailBox: React.FC<MailBoxProps> = ({
         // animation-mixer="loop: repeat"
         gltf-model="./assets/mailbox.glb"
         // obj-model={arModel}
-        position="0 -3 0"
+        position="0 -6 0"
         // animation="property: rotation; to: 90 450 90; loop: true;  dur: 6000"
         // 0.00001이 대략 1m 정도
         gps-entity-place={`latitude: ${lat}; longitude: ${lng};`}

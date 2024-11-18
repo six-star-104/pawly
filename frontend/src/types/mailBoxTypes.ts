@@ -4,4 +4,5 @@ export interface IMailBox {
   title: string;
   latitude: number;
   longtitude: number;
+  assetUrl: string;
 }
