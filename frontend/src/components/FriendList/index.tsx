@@ -4,6 +4,7 @@ import { FriendType } from "@/types/FriendsTypes";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { FriendProfile } from "@/components/FriendProfile";
+import ModalAlert from "../ModalAlert";
 
 export const FriendList = () => {
   const { data: friendList = [] } = useQuery<FriendType[]>({
@@ -13,6 +14,7 @@ export const FriendList = () => {
 
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [selectedMemberId, setSelectedMemberId] = useState<number | null>(null);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
   const openDetailModal = (memberId: number) => {
     setSelectedMemberId(memberId);
@@ -22,6 +24,13 @@ export const FriendList = () => {
   const closeDetailModal = () => {
     setSelectedMemberId(null);
     setIsDetailModalOpen(false);
+  };
+
+  const handleFriendDeleted = () => {
+    setShowDeleteAlert(true);
+    setTimeout(() => {
+      setShowDeleteAlert(false);
+    }, 1500);
   };
 
   return (
@@ -58,8 +67,10 @@ export const FriendList = () => {
           onClose={closeDetailModal}
           memberId={selectedMemberId}
           showActions="list"
+          onFriendDeleted={handleFriendDeleted}
         />
       )}
+      <ModalAlert isOpen={showDeleteAlert} message="친구 삭제 완료" />
     </>
   );
 };

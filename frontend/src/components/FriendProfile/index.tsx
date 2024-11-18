@@ -6,13 +6,13 @@ import { FriendType } from "@/types/FriendsTypes";
 import ModalConfirm from "../ModalConfirm";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { LetterWrite } from "@/components/LetterWrite";
-import ModalAlert from "../ModalAlert";
 
 interface FriendProfileProps {
   isOpen: boolean;
   onClose: () => void;
   memberId: number;
   showActions: string;
+  onFriendDeleted?: () => void;
 }
 
 export const FriendProfile = ({
@@ -20,11 +20,11 @@ export const FriendProfile = ({
   onClose,
   memberId,
   showActions,
+  onFriendDeleted,
 }: FriendProfileProps) => {
   const queryClient = useQueryClient();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isWriteModalOpen, setIsWriteModalOpen] = useState(false);
-  const [isDeleteFriend, setIsDeleteFriend] = useState(false);
 
   const { data: memberInfo, refetch } = useQuery<FriendType>({
     queryKey: ["memberInfo", memberId],
@@ -37,18 +37,22 @@ export const FriendProfile = ({
       refetch();
     }
   }, [isOpen, refetch]);
+
   const handleDeleteFriend = () => {
     setIsConfirmOpen(true);
   };
 
   const confirmDelete = async (memberId: number) => {
-    await deleteFriend(memberId);
-    setIsDeleteFriend(true);
-    setTimeout(() => setIsDeleteFriend(false), 1500);
-    queryClient.invalidateQueries({ queryKey: ["friendList"] });
-    queryClient.invalidateQueries({ queryKey: ["searchResults"] });
-    setIsConfirmOpen(false);
-    onClose();
+    try {
+      await deleteFriend(memberId);
+      setIsConfirmOpen(false);
+      onClose();
+      queryClient.invalidateQueries({ queryKey: ["friendList"] });
+      queryClient.invalidateQueries({ queryKey: ["searchResults"] });
+      onFriendDeleted?.(); // 삭제 완료 후 부모 컴포넌트에 알림
+    } catch (error) {
+      console.error("친구 삭제 중 오류 발생:", error);
+    }
   };
 
   const openWriteModal = () => {
@@ -110,7 +114,6 @@ export const FriendProfile = ({
           />
         </ModalLetter>
       )}
-      <ModalAlert isOpen={isDeleteFriend} message="친구 삭제 완료" />
     </>
   );
 };
