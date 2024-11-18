@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { useEffect, useState } from "react";
 import ArMailBox from "../ArMailBox";
-import { container, confirmBtn, singleBtn } from "./Ar.style";
+import { container, confirmBtn, singleBtn ,confirmModal} from "./Ar.style";
 import Modal from "@/components/Modal";
 import { useFetchMailBoxes } from "@/hooks/useFetchMailboxes";
 // import { useCreateRollingpaper } from "@/hooks/useCreateRollingpaper";
@@ -133,7 +133,7 @@ const Ar = () => {
         onClose={() => setIsOpen(false)}
         title="우체통 생성"
       >
-        <div>
+        <div css={confirmModal}>
           <p>현재 위치에 생성하시겠습니까?</p>
           <label htmlFor="">롤링페이퍼 제목</label> <br />
           <input

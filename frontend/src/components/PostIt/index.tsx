@@ -9,7 +9,7 @@ import { useReport } from "@/hooks/useReport";
 // import { useDeletePostit } from "@/hooks/useDeletePostit";
 // import useFetchRollingpaper from "@/hooks/useFetchRollingpaper";
 import { useUserInfoStore } from "@/stores/userInfoStore";
-import { findTheme } from "./themes";
+// import { findTheme } from "./themes";
 export const PostIt: React.FC<PostItProps> = ({
   props,
   isPreview,
@@ -20,7 +20,7 @@ export const PostIt: React.FC<PostItProps> = ({
   const randomDir = ["top", "right", "left", "bottom"];
   // 이러면 너무 랜더 될때마다 자꾸 반복돼서, 그냥 말풍선id넘버로 해줄까...?
   const [randomArrow, setRandomArrow] = useState("bottom");
-  const themeStyle = findTheme(props.themeId);
+  // const themeStyle = findTheme(props.themeId);
   useEffect(() => {
     setRandomArrow(randomDir[Math.floor(Math.random() * 4)]);
   }, []);
@@ -65,11 +65,11 @@ export const PostIt: React.FC<PostItProps> = ({
     <>
       <div
         css={bubbleStyle(
-          themeStyle!.fontColor,
-          themeStyle!.borderColor,
+          props.fontColor,
+          props.borderColor,
           // 배경이 있으면 => 남은 자투리 배경색이 테두리색 따라가게
-          props.image ? themeStyle!.borderColor : themeStyle!.background,
-          props.image!,
+          props.image? props.borderColor : props.backgroundColor,
+          props.image,
           isPreview,
           props.font
         )}

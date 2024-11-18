@@ -43,7 +43,7 @@ export const bubbleStyle = (
   bgImg: string | null
   //   사용 가능 or 불가능
 ) => css`
-  position: relative;
+  // position: relative;
   display: inline-block;
   margin: ${5 * px}px;
   text-align: start;
@@ -59,7 +59,7 @@ export const bubbleStyle = (
   padding: ${4 * px}px;
 
   box-sizing: border-box;
-  width: 120px;
+  width: 12vh;
 
   text-align: center;
   box-shadow: 0 -${px}px ${bgColor}, 0 -${2 * px}px ${borderColor},
@@ -71,7 +71,6 @@ export const bubbleStyle = (
     ${px}px ${3 * px}px ${shadow}, ${3 * px}px ${px}px ${shadow},
     ${2 * px}px ${2 * px}px ${shadow};
 
-  
   &::after {
     content: "";
     display: block;
@@ -82,27 +81,26 @@ export const bubbleStyle = (
 
 export const pixelLock = (flag: boolean, isAlert: boolean) => css`
   display: flex;
-  position:relative
+  position: relative;
   justify-content: center;
   align-items: center;
-  
+
   #lockimg {
-    display: ${flag ? "none" : ""};
-      width: 40px;
-      height: 40px;
-      position: absolute;
-      left: 64px;
-    }
+    display: ${flag ? "none" : "flex"};
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: calc(12vh-20px);
+    justify-content: center;
+    align-items: center;
+  }
 
   filter: ${flag ? "" : "grayscale(80%)"};
 
-  ${
-    isAlert
-      ? css`
-          animation: ${shake} 0.1s 3;
-          -webkit-animation: ${shake} 0.1s 3;
-        `
-      : ""
-  }
-  
+  ${isAlert
+    ? css`
+        animation: ${shake} 0.1s 3;
+        -webkit-animation: ${shake} 0.1s 3;
+      `
+    : ""}
 `;
