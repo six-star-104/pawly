@@ -6,6 +6,7 @@ import {
   tempBtn,
   confirmBtn,
   singleBtn,
+  confirmModal,
 } from "./styles";
 import { useState, useEffect } from "react";
 import Modal from "@/components/Modal";
@@ -90,7 +91,7 @@ export const RollingPaperList = () => {
         onClose={() => setIsOpen(false)}
         title="우체통 생성"
       >
-        <div>
+        <div css={confirmModal}>
           <p>현재 위치에 생성하시겠습니까?</p>
           <label htmlFor="">롤링페이퍼 제목</label> <br />
           <input

@@ -56,11 +56,18 @@ export const tempBtn = css`
   padding-right: 24px;
   z-index: 2;
 `;
+export const confirmModal = css`
+  margin: 0 12px;
+`;
 
 export const confirmBtn = css`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: end;
+  gap:2rem;
   margin-top: 16px;
+  button {
+    min-width: 72px;
+  }
 `;
 
 export const singleBtn = css`
