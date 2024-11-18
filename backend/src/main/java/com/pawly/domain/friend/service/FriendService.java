@@ -7,6 +7,7 @@ import com.pawly.domain.friend.repository.FriendRepository;
 import com.pawly.domain.friend.repository.FriendRequestRepository;
 import com.pawly.domain.member.repository.MemberRepository;
 import com.pawly.domain.member.service.MemberServiceImpl;
+import com.pawly.domain.missionStatus.service.EventMissionService;
 import com.pawly.global.exception.ErrorCode;
 import com.pawly.global.response.ApiResponse;
 import com.pawly.global.dto.FcmMessageRequestDto;
@@ -27,6 +28,7 @@ public class FriendService {
     private final MemberRepository memberRepository;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
     private final MemberServiceImpl memberService;
+    private final EventMissionService eventMissionService;
 
     @Transactional
     public ApiResponse<Object> addFriend(String email, Long memberId2) {
@@ -48,6 +50,9 @@ public class FriendService {
 
         FcmMessageRequestDto request = new FcmMessageRequestDto(receiver.getMemberId(), "새로운 친구 신청이 도착했습니다!", "새로운 친구가 당신에게 손을 내밀었어요. 친구가 되어 주세요!");
         firebaseCloudMessageService.sendMessage(request);
+
+        eventMissionService.processEventFriendAndCollection(memberId, memberId2, 1);
+        eventMissionService.checkEventFriendAndCollection(memberId, 1, 6L);
 
         return ApiResponse.createSuccessWithNoContent("친구 신청 성공");
     }
