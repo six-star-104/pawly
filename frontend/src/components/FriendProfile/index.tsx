@@ -12,7 +12,7 @@ interface FriendProfileProps {
   onClose: () => void;
   memberId: number;
   showActions: string;
-  onFriendDeleted: () => void;
+  onFriendDeleted?: () => void;
 }
 
 export const FriendProfile = ({
@@ -49,7 +49,7 @@ export const FriendProfile = ({
       onClose();
       queryClient.invalidateQueries({ queryKey: ["friendList"] });
       queryClient.invalidateQueries({ queryKey: ["searchResults"] });
-      onFriendDeleted(); // 삭제 완료 후 부모 컴포넌트에 알림
+      onFriendDeleted?.(); // 삭제 완료 후 부모 컴포넌트에 알림
     } catch (error) {
       console.error("친구 삭제 중 오류 발생:", error);
     }
