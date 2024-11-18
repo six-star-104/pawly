@@ -24,6 +24,7 @@ export const Search = () => {
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
   const [sentRequests, setSentRequests] = useState<number[]>([]);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
   const queryClient = useQueryClient();
   const navigateTo = useNavigate();
@@ -73,6 +74,14 @@ export const Search = () => {
   const backToFriend = () => {
     navigateTo("/friends");
   };
+
+  const handleFriendDeleted = () => {
+    setShowDeleteAlert(true);
+    setTimeout(() => {
+      setShowDeleteAlert(false);
+    }, 1500);
+  };
+
   return (
     <>
       <div>
@@ -157,11 +166,13 @@ export const Search = () => {
             searchResults.find((result) => result.memberId === selectedMemberId)
               ?.status ?? 0
           )}
+          onFriendDeleted={handleFriendDeleted}
         />
       )}
 
       {/* ModalAlert for friend request success */}
       <ModalAlert isOpen={isAlertOpen} message="친구 신청 완료" />
+      <ModalAlert isOpen={showDeleteAlert} message="친구 삭제 완료" />
     </>
   );
 };
