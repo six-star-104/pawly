@@ -74,8 +74,8 @@ public class CollectionService {
 
                 collectionMissionService.collectionMission(member.getMemberId());
 
-                eventMissionService.processEventFriendAndCollection(member.getMemberId(), friend.getMemberId(), 1);
-                eventMissionService.checkEventFriendAndCollection(member.getMemberId(), 1, 6L);
+                eventMissionService.processEventFriendAndCollection(member.getMemberId(), friend.getMemberId(), 2);
+                eventMissionService.checkEventFriendAndCollection(member.getMemberId(), 2, 7L);
             }
         }
     }
