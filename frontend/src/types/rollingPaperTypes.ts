@@ -1,6 +1,6 @@
 // 테마 내용
 export interface ITheme {
-  theme: number;
+  themeId: number;
   themeName: string;
   background: string;
   fontColor: string;
