@@ -40,6 +40,9 @@ export const Main = () => {
     navigateTo("/ar");
   };
 
+  const goToRollingPaper = () => {
+    navigateTo("/rollingpaper");
+  };
   return (
     <div css={style.container}>
       <div css={style.content}>
@@ -57,7 +60,16 @@ export const Main = () => {
           />
         ))}
       </div>
-      <img src={postbox} alt="" css={style.postboxStyle} />
+      <div css={style.postboxContainer}>
+        <div css={style.rollingPaperWrapper}>
+          <div css={style.rollingPaperText}>롤링페이퍼함</div>
+          <img
+            src={postbox}
+            css={style.postboxStyle}
+            onClick={goToRollingPaper}
+          />
+        </div>
+      </div>
     </div>
   );
 };

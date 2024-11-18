@@ -48,11 +48,11 @@ export const content = css`
   }
 `;
 
-export const postboxStyle = css`
-  position: absolute;
-  bottom: 20px;
-  right: 58px;
-`;
+// export const postboxStyle = css`
+//   position: absolute;
+//   bottom: 20px;
+//   right: 58px;
+// `;
 
 export const collectionContainer = css`
   position: absolute;
@@ -85,4 +85,34 @@ export const MyAssetStyle = () => css`
   height: 160px;
   animation: ${generateMoveAround()} ${5 + Math.random() * 7}s infinite linear;
   animation-delay: ${Math.random() * 2}s;
+`;
+
+export const postboxContainer = css`
+  position: absolute;
+  bottom: 20px;
+  right: 58px;
+`;
+export const rollingPaperWrapper = css`
+  position: relative;
+  display: inline-block;
+`;
+
+export const rollingPaperText = css`
+  position: absolute;
+  top: 120px;
+  left: 50%;
+  text-align: center;
+  width: 100%;
+  padding: 0.25rem;
+  color: #333;
+  background-color: white;
+  box-shadow: 4px 0 0 0 black, -4px 0 0 0 black, 0 4px 0 0 black,
+    0 -4px 0 0 black;
+  font-size: 12px;
+  transform: translateX(-50%);
+`;
+
+export const postboxStyle = css`
+  width: 100px; /* 이미지 크기 */
+  height: auto;
 `;
