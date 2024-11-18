@@ -26,6 +26,7 @@ const useFetchRollingpaper = () => {
       const res = await axiosInstance.get(
         `rollingpaper/${rollingpaperId}?pageNumber=${page}&pageSize=${pageSize}`
       );
+      console.log(page);
       setLoading(false);
       setSingleRollingpaper(res.data.data);
       setTitleContent(res.data.data.rollingPaperTitle);
@@ -47,7 +48,6 @@ const useFetchRollingpaper = () => {
         ...postitData,
         rollingPaperId: rollingPaperId,
       });
-
       const returnId = res.data.data.postItId;
       // 여기서 스토어에서 내 닉넴 받아와서 넣어주기
       setPostits([

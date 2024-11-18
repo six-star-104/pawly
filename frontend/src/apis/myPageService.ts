@@ -109,3 +109,32 @@ export const getFriendInfo = async (memberId: number) => {
     // throw error;
   }
 };
+
+export const updateBirth = async (birth: string) => {
+  try {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      throw new Error("토큰이 없습니다. 로그인 후 다시 시도해 주세요.");
+    }
+
+    const response = await axios.patch(
+      "https://k11d104.p.ssafy.io/api/member/update-birth",
+      { birth },
+      {
+        headers: {
+          Authorization: token.startsWith("Bearer") ? token : `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (response.data.status === "success") {
+      return response.data;
+    } else {
+      throw new Error(response.data.message || "생일 업데이트에 실패했습니다.");
+    }
+  } catch (error: any) {
+    console.error("생일 업데이트 요청 실패:", error.message);
+    throw error;
+  }
+};

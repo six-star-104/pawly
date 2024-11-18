@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { useEffect, useState } from "react";
 import ArMailBox from "../ArMailBox";
-import { container, confirmBtn, singleBtn } from "./Ar.style";
+import { container, confirmBtn, singleBtn, confirmModal } from "./Ar.style";
 import Modal from "@/components/Modal";
 import { useFetchMailBoxes } from "@/hooks/useFetchMailboxes";
 // import { useCreateRollingpaper } from "@/hooks/useCreateRollingpaper";
@@ -31,28 +31,47 @@ const Ar = () => {
 
   useEffect(() => {
     console.log("effect 터짐");
+
+    let watchId: number | undefined;
+
     const updatePosition = () => {
       if (navigator.geolocation) {
-        // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-        navigator.geolocation.getCurrentPosition(function (position) {
-          const lat = position.coords.latitude; // 위도
-          const lng = position.coords.longitude; // 경도
-          setUserLat(lat);
-          setUserLng(lng);
-          console.log("위치 조회 성공", lat, lng);
-          fetchMailBoxes(lat, lng);
-        });
+        // Use watchPosition for continuous tracking
+        watchId = navigator.geolocation.watchPosition(
+          (position) => {
+            const lat = position.coords.latitude; // 위도
+            const lng = position.coords.longitude; // 경도
+
+            // Fetch mailboxes with updated coordinates
+            if (lat !== userLat || lng !== userLng) {
+              fetchMailBoxes(lat, lng);
+            }
+
+            setUserLat(lat);
+            setUserLng(lng);
+            console.log("위치 업데이트", lat, lng);
+          },
+          (error) => {
+            console.error("Geolocation error:", error);
+          },
+          {
+            enableHighAccuracy: true, // Use high accuracy mode
+            maximumAge: 0, // Don't cache positions
+            timeout: 5000, // Timeout if no position is available within 5 seconds
+          }
+        );
       }
     };
+
     updatePosition();
 
-    const intervalId = setInterval(updatePosition, 5000);
-
-    // Clear the interval on component unmount
-    return () => clearInterval(intervalId);
-
-  }, []);
-
+    // Cleanup function to clear watchPosition on component unmount
+    return () => {
+      if (watchId !== undefined) {
+        navigator.geolocation.clearWatch(watchId);
+      }
+    };
+  }, [fetchMailBoxes]);
 
   const createMailBox = async () => {
     try {
@@ -112,8 +131,9 @@ const Ar = () => {
           <a-camera
             gps-camera={`simulateLatitude: ${userLat}; simulateLongitude: ${userLng};`}
             // 이 아래 두 옵션은 나중에 모바일에서 써보고 지워도 되면 지우기
-            rotation-reader
-            wasd-controls="acceleration: 100"
+            // rotation-reader
+            // wasd-controls="acceleration: 100"
+            
           ></a-camera>
         </a-scene>
         <p>
@@ -133,7 +153,7 @@ const Ar = () => {
         onClose={() => setIsOpen(false)}
         title="우체통 생성"
       >
-        <div>
+        <div css={confirmModal}>
           <p>현재 위치에 생성하시겠습니까?</p>
           <label htmlFor="">롤링페이퍼 제목</label> <br />
           <input
