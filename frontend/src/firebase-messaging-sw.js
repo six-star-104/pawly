@@ -1,7 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
-import {axiosInstance} from './apis/axiosInstance';
-// import {logo} from './assets/icons/pawly'
+import { useNotificationStore } from "@/stores/notificationStore";
+import { axiosInstance } from "./apis/axiosInstance";
+
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FB_API_KEY,
   authDomain: import.meta.env.VITE_FB_AUTH_DOMAIN,
@@ -30,51 +31,53 @@ async function requestPermission() {
     vapidKey: import.meta.env.VITE_VAPID_KEY,
   });
 
-  if (token) {console.log("토큰 성공"); 
-    // console.log(token);
-    // fcm 토큰 등록
-    try{
-      await axiosInstance.post('member/fcm', {
-        fcmToken:token
-      })
-    console.log("토큰 백 전송 성공")
-    } catch{
-        console.log("토큰 백 전송 실패")
-      }
-    
-  }
-  
-  else console.log("Can not get Token");
+  if (token) {
+    console.log("토큰 성공");
 
-  // 포그라운드 메세지 수신
+    // FCM 토큰 등록
+    try {
+      await axiosInstance.post("member/fcm", {
+        fcmToken: token,
+      });
+      console.log("토큰 백 전송 성공");
+    } catch (error) {
+      console.error("토큰 백 전송 실패", error);
+    }
+  } else {
+    console.log("Can not get Token");
+  }
+
+  // 포그라운드 메시지 수신
   onMessage(messaging, (payload) => {
+    const store = useNotificationStore.getState(); // Access Zustand store functions directly
 
     console.log("메시지가 도착했습니다.", payload);
 
     const notificationTitle = payload.notification.title;
     const notificationOptions = {
       body: payload.notification.body,
+      icon: "./assets/icons/Pawly.svg",
     };
 
     if (Notification.permission === "granted") {
+      console.log("갱신 성공", payload);
+
+      // Update Zustand store state
+      store.setIsOpen(true);
+      store.setNotificationContent(payload.notification.body);
+      if(payload.notification.title.includes("친구")){
+        store.setLinkToWhere("friends");}
+      else if(payload.notification.title.includes("롤링페이퍼")){
+        store.setLinkToWhere("rollingpaper");}
+      else if(payload.notification.title.includes("편지")){
+        store.setLinkToWhere("friends");}
+      else if(payload.notification.title.includes("도전과제")){
+        store.setLinkToWhere("easteregg");}
+      
+      // Show native browser notification
       new Notification(notificationTitle, notificationOptions);
     }
-    
   });
 }
-
-// self.addEventListener("push", function (e) {
-//   if (!e.data.json()) return;
-
-//   const resultData = e.data.json().notification;
-//   const notificationTitle = resultData.title;
-//   const notificationOptions = {
-//     body: resultData.body,
-//     // icon: logo, // 웹 푸시 이미지는 icon
-//     // tag: resultData.tag,
-//   };
-//   console.log("활성중 알람", notificationOptions.body)
-//   self.registration.showNotification(notificationTitle, notificationOptions);
-// });
 
 requestPermission();

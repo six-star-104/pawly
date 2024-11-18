@@ -54,7 +54,7 @@ export const tempBtn = css`
   align-items: center;
   justify-content: end;
   padding-right: 24px;
-  z-index: 3;
+  z-index: 2;
 `;
 
 export const confirmBtn = css`
