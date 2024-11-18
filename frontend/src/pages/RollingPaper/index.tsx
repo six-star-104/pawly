@@ -22,7 +22,7 @@ export const RollingPaper = () => {
   // 페이지네이션
   const [pageNum, setPageNum] = useState(0);
 
-  const { fetchRollingPaper, postits, createPostit, editPostit, deletePostit } =
+  const { fetchRollingPaper, postits, createPostit, editPostit, deletePostit, singleRollingpaper } =
     useFetchRollingpaper();
 
   const handleObserver = async (entries: IntersectionObserverEntry[]) => {
@@ -76,6 +76,7 @@ export const RollingPaper = () => {
             isPreview={false}
             deletePostit={deletePostit}
             editPostit={editPostit}
+            ownerId={singleRollingpaper?.ownerMemberId}
           />
         ))}
         <div id="observer" style={{ height: "10px" }}></div>
