@@ -16,8 +16,9 @@ public class PostboxReadResponseDto {
     private String title;
     private double latitude;
     private double longitude;
+    private String assetUrl;
 
-    public static PostboxReadResponseDto from(Postbox postbox) {
+    public static PostboxReadResponseDto from(Postbox postbox, String assetUrl) {
         return PostboxReadResponseDto.builder()
                 .postboxId(postbox.getPostboxId())
                 .rollingPaperId(postbox.getRollingpaper().getRollingPaperId())
@@ -26,6 +27,7 @@ public class PostboxReadResponseDto {
                 .title(postbox.getTitle())
                 .latitude(postbox.getLatitude())
                 .longitude(postbox.getLongitude())
+                .assetUrl(assetUrl)
                 .build();
     }
 }
