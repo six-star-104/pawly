@@ -19,9 +19,9 @@ export const useNotificationStore = create<NotificationState>((set) => ({
   setLinkToWhere: (link) => set({ linkToWhere: link }),
 
   isOpen: false,
-  // 알림 팝업 뜨고 난 다음 3초뒤 꺼지기
+  // 알림 팝업 뜨고 난 다음 5초뒤 꺼지기
   setIsOpen: (state) => {
     set({ isOpen: state });
-    setTimeout(() => set({ isOpen: false }), 10000);
+    setTimeout(() => set({ isOpen: false }), 5000);
   },
 }));
