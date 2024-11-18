@@ -34,7 +34,7 @@ export const bubbleStyle = (
   padding: ${4 * px}px;
 
   box-sizing: border-box;
-  width: 200px;
+  width: 24vh;
 
   // 미리보기면 텍스트 중앙 정렬
   ${isPreview ? "text-align:center" : ""};
@@ -49,17 +49,17 @@ export const bubbleStyle = (
     ${2 * px}px ${2 * px}px ${shadow};
 
   &.mini {
-    width: 120px;
+    width: 12vh;
     // font-size: 16px;
     padding: 4px;
   }
 
   &.medium {
-    width: 350px;
+    width: 40vh ;
   }
 
   &.large {
-    width: 560px;
+    width: 40vh;
     font-size: 24px;
     text-align: left;
     text-transform: uppercase;
