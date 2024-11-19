@@ -28,6 +28,6 @@
     // 타입 추가 경로
     "typeRoots": ["./node_modules/@types", "./src/types"]
   },
-  "include": ["src"],
+  "include": ["src","src/svg.d.ts",],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

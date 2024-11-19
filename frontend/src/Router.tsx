@@ -5,33 +5,35 @@ import { Main } from "@/pages/Main";
 import { MailBoxFind } from "./pages/MailBoxFind";
 import { SignUp } from "@/pages/Signup";
 import { MyPage } from "@/pages/MyPage";
-import { Friends } from "./pages/Friends";
+import { Friends } from "@/pages/Friends";
+import { Search } from "@/pages/Search";
 import { Pedia } from "@/pages/Pedia";
 import { RollingPaper } from "@/pages/RollingPaper";
 import { RollingPaperList } from "./pages/RollingPaperList";
 import { Letter } from "@/pages/Letter";
-import { Quest } from "@/pages/Quest";
-
+import { EasterEgg } from "@/pages/EasterEgg";
+import { Admin } from "@/pages/Admin";
 
 function Router() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/tmpsignup" element={<SignUp />} />
-      <Route path="/ar" element={<MailBoxFind />} />
-      <Route path="/mypage" element={<MyPage />} />
-      <Route path="/friends" element={<Friends />} />
-      <Route path="/pedia" element={<Pedia />} />
-      <Route path="/rollingpaper/:rollingpaperid" element={<RollingPaper />} />
-      <Route path="/rollingpaper" element={<RollingPaperList />} />
-
+      <Route path="/admin" element={<Admin />} />
       <Route element={<PrivateRoute />}>
         <Route path="/" element={<Main />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/friends" element={<Friends />} />
+        <Route path="/friendsearch" element={<Search />} />
         <Route path="/pedia" element={<Pedia />} />
         <Route path="/letter" element={<Letter />} />
-        <Route path="/quest" element={<Quest />} />
+        <Route path="/easteregg" element={<EasterEgg />} />
+        <Route path="/ar" element={<MailBoxFind />} />
+        <Route
+          path="/rollingpaper/:rollingpaperid"
+          element={<RollingPaper />}
+        />
+        <Route path="/rollingpaper" element={<RollingPaperList />} />
       </Route>
     </Routes>
   );

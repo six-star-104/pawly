@@ -1,116 +1,151 @@
 /** @jsxImportSource @emotion/react */
-import PixelContainer from "@/components/PixelContainer";
-// import { data } from "./mockdata";
 import useFetchUserRollingpaper from "../../hooks/useFetchUserRollingpaper";
 import {
   ListContainer,
-  ContentContainer,
-  backButton,
   container,
-  modalStyle,
   tempBtn,
+  confirmBtn,
+  singleBtn,
+  confirmModal,
 } from "./styles";
-import { useNavigate } from "react-router-dom";
-import backButtonImg from "@/assets/images/back_button.png";
-import { useRef, useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "@/components/Modal";
-import { useDeleteRollingpaper } from "@/hooks/useDeleteRollingpaper";
-import { useCreateRollingpaper } from "@/hooks/useCreateRollingpaper";
-import { useEffect } from "react";
+import { useRollingpaperStore } from "@/stores/rollingpaperStore";
+import SingleRollingpaperList from "@/components/SingleRollingpaperList";
+// import { useCreateRollingpaper } from "@/hooks/useCreateRollingpaper";
 // 내가 받은 롤링페이퍼들 모아볼 수 있는 페이지
 export const RollingPaperList = () => {
-  const navigate = useNavigate();
+  // 스토어
+  const { isRollingpaperChanged } = useRollingpaperStore();
+  // 커스텀 훅
+  const { userRollingpapers, createRollingpaper, fetchRollingPapers } =
+    useFetchUserRollingpaper();
 
-  const { createRollingpaper } = useCreateRollingpaper();
-  const { userRollingpapers } = useFetchUserRollingpaper();
-  const timerRef = useRef<number | null>(null);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { deletRollingpaper } = useDeleteRollingpaper();
+  useEffect(() => {
+    fetchRollingPapers();
+  }, [isRollingpaperChanged]);
 
-  // 각각의 롤링페이퍼 세부 메뉴 위한 롱 클릭 이벤트들
-  const handleMouseDown = () => {
-    timerRef.current = window.setTimeout(() => {
-      setIsMenuOpen(true);
-    }, 300);
-  };
-  const handleMouseUp = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
-    }
-  };
+  const [isOpen, setIsOpen] = useState(false);
+
+  const [newTitle, setNewTitle] = useState("");
+
+  const [confirmContent, setConfirmContent] = useState("");
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("에러 발생");
+
+  // 임시 랜덤 생성 위치
   const [randomX, setRandomX] = useState(0);
   const [randomY, setRandomY] = useState(0);
-
   useEffect(() => {
     setRandomX(Math.random() * 100);
     setRandomY(Math.random() * 100);
   }, []);
 
+  const createMailBox = async () => {
+    try {
+      const res = await createRollingpaper(`${newTitle}`, randomX, randomY);
+
+      // await fetchMailBoxes(userLat, userLng);
+      setNewTitle("");
+      if (res === "sucess") {
+        setConfirmContent("success");
+        setIsOpen(false);
+        return;
+      }
+      // 여기서 부터 에러단
+      if (res === "B002") {
+        setIsConfirmModalOpen(true);
+        setConfirmContent("error");
+        setErrorMessage("최대 3개까지 롤링페이퍼를 가질 수 있습니다");
+      } else if (res === "B003") {
+        setIsConfirmModalOpen(true);
+        setConfirmContent("error");
+        setErrorMessage("너무 가까이에 우체통이 존재합니다");
+      }
+    } catch (error) {
+      // 에러상황 발생
+    }
+    setIsOpen(false);
+  };
+
+  const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewTitle(e.target.value);
+  };
+
   return (
     <div css={container}>
-      <button css={backButton} onClick={() => navigate(-1)}>
-        <img src={backButtonImg} alt="" />
-      </button>
-      <div id="title">
-        <h2>나의 롤링페이퍼들</h2>
-      </div>
       <div css={ListContainer}>
         {userRollingpapers &&
-          userRollingpapers.content.map((rollingpaper) => (
-            //  여기다가 링크 걸어놓기
-
-            <PixelContainer
-              key={rollingpaper.rollingPaperId}
-              width="75%"
-              height="8vh"
-            >
-              <div
-                css={ContentContainer}
-                onClick={() => navigate(`${rollingpaper.rollingPaperId}`)}
-                // 모바일용
-                onTouchStart={handleMouseDown}
-                onTouchEnd={handleMouseUp}
-                // pc 테스트용
-                onMouseDown={handleMouseDown}
-                onMouseUp={handleMouseUp}
-                // onMouseLeave={handleMouseUp}
-              >
-                {rollingpaper.title}
-              </div>
-              <Modal isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)}>
-                <div css={modalStyle}>
-                  <p>삭제하시겠습니까?</p>
-                  <div id="yesOrNo">
-                    <button
-                      className="nes-btn is-primary"
-                      onClick={() => {
-                        deletRollingpaper(rollingpaper.rollingPaperId);
-                        setIsMenuOpen(false);
-                      }}
-                    >
-                      예
-                    </button>
-                    <button
-                      className="nes-btn"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      아니오
-                    </button>
-                  </div>
-                </div>
-              </Modal>
-            </PixelContainer>
+          userRollingpapers.map((rollingpaper) => (
+            <SingleRollingpaperList rollingpaper={rollingpaper} key={rollingpaper.rollingPaperId}/>
           ))}
       </div>
-
-      <button
-        onClick={() => createRollingpaper("임시 롤링페이퍼", randomX, randomY)}
-        className="nes-btn"
-        css={tempBtn}
+          
+      <div css={tempBtn}>
+        <button onClick={() => setIsOpen(true)} className="nes-btn">
+          롤링페이퍼 생성
+        </button>
+      </div>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title="우체통 생성"
       >
-        임시 롤링페이퍼 생성버튼
-      </button>
+        <div css={confirmModal}>
+          <p>현재 위치에 생성하시겠습니까?</p>
+          <label htmlFor="">롤링페이퍼 제목</label> <br />
+          <input
+            type="text"
+            value={newTitle}
+            onChange={handleTitle}
+            className="nes-input"
+          />
+          <div css={confirmBtn}>
+            <button
+              className={
+                (newTitle.length === 0 ? "is-disabled" : "") + " nes-btn"
+              }
+              onClick={() => createMailBox()}
+            >
+              예
+            </button>
+            <button className="nes-btn" onClick={() => setIsOpen(false)}>
+              아니오
+            </button>
+          </div>
+          {/* </div>
+        <div> */}
+        </div>
+      </Modal>
+      <Modal
+        isOpen={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        title="경고"
+      >
+        {confirmContent === "error" ? (
+          <>
+            <p>{errorMessage}</p>
+            <button
+              className="nes-btn"
+              css={singleBtn}
+              onClick={() => setIsConfirmModalOpen(false)}
+            >
+              확인
+            </button>
+          </>
+        ) : (
+          <>
+            <p>생성완료!</p>
+            <button
+              className="nes-btn"
+              css={singleBtn}
+              onClick={() => setIsConfirmModalOpen(false)}
+            >
+              확인
+            </button>
+          </>
+        )}
+      </Modal>
     </div>
   );
 };

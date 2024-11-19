@@ -1,85 +1,62 @@
-/** @jsxImportSource @emotion/react */
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {
-  Container,
-  BackBtnContainer,
-  HamBtnContainer,
-  MyInfo,
-  InfoSection,
-  StatsSection,
-  CollectionSection,
-  closeButtonStyle,
-  contents,
-  HamBtnCss,
-  BackBtnCss,
-  slidePanelStyle,
-  panelContentStyle,
-  VerticalTextSection,
-  modalOverlayStyle,
-  modalContentStyle,
-  modalHeaderStyle,
-  inputStyle, // 새로 추가된 닉네임 입력 스타일
-  modalActionsStyle, // 새로 추가된 모달 버튼 스타일
-} from './styles';
-import PixelContainer from '../../components/PixelContainer';
-// import CancelButton from '../../assets/icons/CancelButton.png';
-import PixelPuppy from '../../assets/icons/PixelPuppy.png';
-import NavButton from '../../assets/icons/NavButton.png';
-import BackButton from '../../assets/icons/BackButton.png';
-import { Button } from '@/components/Button';
-import Modal from '@/components/Modal';
-import { Hamberger } from '../Hamberger';
-import { useUserInfoStore } from '@/stores/mypageStore';
-import { getMyInfo, updateNickname } from '@/apis/myPageService';
-
+import { useEffect, useState } from "react";
+import * as style from "./styles";
+import Warning from "@/assets/icons/Warning.png";
+import { Button } from "@/components/Button";
+import Modal from "@/components/Modal";
+import { useUserInfoStore } from "@/stores/userInfoStore";
+import useEasterEggStore from "@/stores/easterEggStore";
+import { useCollectionStore } from "@/stores/collectionStore";
+import { getMyInfo, updateNickname } from "@/apis/myPageService";
+import useFetchUserRollingpaper from "@/hooks/useFetchUserRollingpaper";
+import BirthInput from "@/components/Birth";
 export const MyPage = () => {
-  const [mypageVisible, setMyPageVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [newNickname, setNewNickname] = useState('');
-  const navigate = useNavigate();
-  const { username, memberId, nickname, birth, assets, collections, isInitialized, setUserInfo } = useUserInfoStore();
-  
-  //빌드오류제거용
-  console.log(memberId, birth)
+  const [newNickname, setNewNickname] = useState("");
+  const [currentPage, setCurrentPage] = useState(0);
+  const [message, setMessage] = useState<string | null>(null); // 메시지 상태 추가
+  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false); // 메시지 모달 상태 추가
+  const { name, memberId, nickname, assets, isInitialized, setUserInfo } =
+    useUserInfoStore();
+  const { completedChallengesCount } = useEasterEggStore();
+  const { collections, fetchCollections, totalCollections } =
+    useCollectionStore();
+  const { userRollingpapers, fetchRollingPapers } = useFetchUserRollingpaper();
+  const itemsPerPage = 6;
+  const totalPages = Math.ceil(totalCollections / itemsPerPage);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
         const data = await getMyInfo();
+        if (!data) return;
         setUserInfo({
           isInitialized: true,
           memberId: data.memberId,
-          username: data.name,
+          name: data.name,
           email: data.email,
           provider: data.provider,
           providerId: data.providerId,
           nickname: data.nickname,
           assets: data.assets,
           birth: data.birth,
-          collections: data.collections || [],
         });
       } catch (error) {
-        console.error("Failed to fetch user info:", error);
+        //
       }
     };
 
     if (!isInitialized) {
       fetchUserInfo();
     }
-  }, [isInitialized, setUserInfo]);
 
-  const close = () => {
-    navigate(-1);
-  };
+    if (memberId) {
+      fetchCollections(Number(memberId), currentPage, itemsPerPage);
+    }
+  }, [isInitialized, setUserInfo, memberId, currentPage, fetchCollections]);
 
-  const openMenu = () => {
-    setMyPageVisible(true);
-  };
-
-  const closeMyPage = () => {
-    setMyPageVisible(false);
-  };
+  useEffect(() => {
+    fetchRollingPapers();
+  }, []);
 
   const handleEditNickname = () => {
     setIsEditing(true);
@@ -91,85 +68,115 @@ export const MyPage = () => {
       await updateNickname(newNickname);
       setUserInfo({ nickname: newNickname });
       setIsEditing(false);
-      console.log("닉네임 업데이트 성공:", newNickname);
     } catch (error) {
-      console.error("닉네임 업데이트 중 오류 발생:", error);
+      setMessage("이미 사용 중인 닉네임입니다.");
+      setIsMessageModalOpen(true);
     }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages - 1) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 0) setCurrentPage(currentPage - 1);
+  };
+
+  const closeMessageModal = () => {
+    setIsMessageModalOpen(false);
+    setMessage(null);
   };
 
   return (
     <div>
-      <div css={Container}>
-        <div css={BackBtnContainer}>
-          <button css={BackBtnCss} onClick={close}>
-            <img src={BackButton} alt="뒤로가기 버튼" width={35} height={35} />
-          </button>
-        </div>
-
-        <div css={HamBtnContainer}>
-          <button css={HamBtnCss} onClick={openMenu}>
-            <img src={NavButton} alt="햄버거 버튼" width={40} />
-          </button>
-        </div>
-
-        <PixelContainer
-          width="90%"
-          height="70vh"
-          children={
-            <div css={contents}>
-              <div css={MyInfo}>나의 정보</div>
-
-              <div css={InfoSection}>
-                <div>
-                  <img src={assets} width={50} height={50} alt="User Asset" />
-                  <div css={VerticalTextSection}>
-                    <h3>{nickname}</h3>
-                    <h4>{username}</h4>
-                  </div>
-                </div>
-                <div>
-                  <button onClick={handleEditNickname} css={closeButtonStyle}>
-                    <img src="https://unpkg.com/pixelarticons@1.8.1/svg/edit.svg" alt="편집 버튼" width="30" height="30" />
-                  </button>
-                  {/* <button onClick={close} css={closeButtonStyle}>
-                    <img src={CancelButton} alt="닫기 버튼" width={25} />
-                  </button> */}
-                </div>
-              </div>
-
-              <div css={StatsSection}>
-                <div><img src="https://unpkg.com/pixelarticons@1.8.1/svg/reciept.svg" alt="롤링페이퍼 아이콘" width="20" height="20" /> 작성한 롤링페이퍼: n개</div>
-                <div><img src="https://unpkg.com/pixelarticons@1.8.1/svg/trophy.svg" alt="도전과제 아이콘" width="20" height="20" /> 달성한 도전과제: n개</div>
-                <div><img src={PixelPuppy} alt="동물 도감 아이콘" width={20} height={20}/> 저장된 동물 도감: {collections.length}개</div>
-              </div>
-
-              <div css={CollectionSection}>
-                <h3>{nickname}님의 도감</h3>
-                <div>◀️ {collections} ▶️</div>
-              </div>
-
-              <div css={CollectionSection}>
-                <h3>{nickname}님의 보상목록</h3>
-                <div>◀️ 할 지 말 지 고민 ▶️</div>
+      <div css={style.Container}>
+        <div css={style.myPageContent}>
+          <div css={style.InfoSection}>
+            <div css={style.infoContainer}>
+              <img src={assets} width={80} height={80} alt="User Asset" />
+              <div css={style.nicknameContainer}>
+                <div className="nickname">{nickname} </div>
+                <button onClick={handleEditNickname}>
+                  <img
+                    src="https://unpkg.com/pixelarticons@1.8.1/svg/edit.svg"
+                    css={style.iconSize}
+                  />
+                </button>
               </div>
             </div>
-          }
-        />
-      </div>
-      <div css={[slidePanelStyle, mypageVisible && { transform: 'translateX(0)' }]}>
-        <div css={panelContentStyle}>
-          <Hamberger closeMyPage={closeMyPage}/>
+            <div css={style.nameContainer}>
+              <div className="name">{name}</div>
+              <BirthInput />
+            </div>
+          </div>
+
+          <div css={style.StatsSection}>
+            <div>
+              <img
+                src="https://unpkg.com/pixelarticons@1.8.1/svg/script-text.svg"
+                css={style.iconSize}
+              />
+              작성한 롤링페이퍼: {userRollingpapers.length}개
+            </div>
+            <div>
+              <img
+                src="https://unpkg.com/pixelarticons@1.8.1/svg/trophy.svg"
+                css={style.iconSize}
+              />
+              달성한 도전과제: {completedChallengesCount}개
+            </div>
+            <div>
+              <img
+                src="https://unpkg.com/pixelarticons@1.8.1/svg/mood-happy.svg"
+                css={style.iconSize}
+              />
+              저장된 동물 도감: {totalCollections}개
+            </div>
+          </div>
+
+          <div css={style.CollectionSection}>
+            <h3>{nickname} 님의 도감</h3>
+            <div className="items-container-wrapper">
+              <div className="items-container">
+                {collections.map((collection, index) => (
+                  <div key={index} className="item">
+                    <img src={collection.assets} alt={collection.nickname} />
+                    <p>{collection.nickname}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <button
+              className="arrow-left"
+              css={style.ArrowButton}
+              onClick={handlePreviousPage}
+              disabled={currentPage === 0}
+            >
+              ◀️
+            </button>
+            <button
+              className="arrow-right"
+              css={style.ArrowButton}
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages - 1}
+            >
+              ▶️
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* 닉네임 수정 모달 */}
-      <Modal isOpen={isEditing} onClose={closeMyPage} title="닉네임 수정">
-        <div css={modalOverlayStyle}>
-          <div css={modalContentStyle}>
-            <div css={modalHeaderStyle}>
+      <Modal
+        isOpen={isEditing}
+        onClose={() => setIsEditing(false)}
+        title="닉네임 수정"
+      >
+        <div css={style.modalOverlayStyle}>
+          <div css={style.modalContentStyle}>
+            <div css={style.modalHeaderStyle}>
               <span>닉네임 수정</span>
             </div>
-            <div css={inputStyle}>
+            <div css={style.inputStyle}>
               <input
                 type="text"
                 value={newNickname}
@@ -178,25 +185,49 @@ export const MyPage = () => {
                 placeholder="새 닉네임 입력"
               />
             </div>
-            <div css={modalActionsStyle}>
+            <div css={style.modalActionsStyle}>
               <Button
-                backgroundColor='#4CAF50' 
-                color='#000' 
-                variant="outlined" 
-                width='30%'
-                handler={handleSaveNickname}>
+                backgroundColor="#4CAF50"
+                color="#000"
+                variant="outlined"
+                width="30%"
+                handler={handleSaveNickname}
+              >
                 저장
-                </Button>
+              </Button>
               <Button
-                backgroundColor='#4CAF50' 
-                color='#000' 
-                variant="outlined" 
-                width='30%'
-                handler={() => setIsEditing(false)}>
+                backgroundColor="#4CAF50"
+                color="#000"
+                variant="outlined"
+                width="30%"
+                handler={() => setIsEditing(false)}
+              >
                 취소
-                </Button>
-              
-              
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={isMessageModalOpen}
+        onClose={closeMessageModal}
+        title="알림"
+      >
+        <div css={style.modalOverlayStyle}>
+          <div css={style.modalContentStyle}>
+            <img src={Warning} alt="경고 아이콘" width="30" height="30" />
+            <p>{message}</p>
+            <div css={style.modalActionsStyle}>
+              <Button
+                backgroundColor="#4CAF50"
+                color="#000"
+                variant="outlined"
+                width="30%"
+                handler={closeMessageModal}
+              >
+                닫기
+              </Button>
             </div>
           </div>
         </div>

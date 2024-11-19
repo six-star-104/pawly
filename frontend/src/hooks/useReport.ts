@@ -16,7 +16,7 @@ export const useReport = () => {
     } catch (err) {
       setLoading(false);
       setError("포스트잇 신고 중 오류가 발생했습니다.");
-      console.error("포스트잇 신고 오류:", err);
+      // console.error("포스트잇 신고 오류:", err);
     }
   };
 

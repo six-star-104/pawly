@@ -20,11 +20,11 @@
     "axios": "^1.7.7",
     "firebase": "^11.0.1",
     "galmuri": "^2.39.6",
-    "idb": "^8.0.0",
     "nes.css": "^2.3.0",
     "openai": "^4.69.0",
     "pixelarticons": "^1.8.1",
     "react": "^18.3.1",
+    "react-color": "^2.19.3",
     "react-dom": "^18.3.1",
     "react-icons": "^5.3.0",
     "react-router-dom": "^6.27.0",
@@ -32,8 +32,10 @@
     "zustand": "^5.0.0"
   },
   "devDependencies": {
+    "@emotion/babel-plugin": "^11.12.0",
     "@types/node": "^22.8.1",
     "@types/react": "^18.3.1",
+    "@types/react-color": "^3.0.12",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
@@ -45,6 +47,7 @@
     "typescript": "^5.2.2",
     "vite": "^5.2.10",
     "vite-plugin-pwa": "^0.20.5",
+    "vite-plugin-svgr": "^4.3.0",
     "workbox-core": "^7.1.0",
     "workbox-window": "^7.1.0"
   },
