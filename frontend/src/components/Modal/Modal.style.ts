@@ -21,6 +21,8 @@ const modalOverlayStyle = (isOpen: boolean) => css`
   bottom: 0;
   left: 0;
   z-index: 2000;
+
+
   background-color: rgba(0, 0, 0, 0.5);
   animation: ${isOpen ? fadeIn : fadeOut} 0.2s
     ${isOpen ? "ease-out" : "ease-in"} forwards;
