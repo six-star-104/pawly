@@ -1,6 +1,5 @@
-// useCollectionStore.ts
 import { create } from "zustand";
-import { getCollection } from "@/apis/collectionService";
+import { getCollection } from "@/apis/userService";
 
 interface CollectionType {
   collectionId: number;
@@ -24,18 +23,14 @@ export const useCollectionStore = create<CollectionStore>((set) => ({
 
   fetchCollections: async (memberId, pageNumber = 0, pageSize = 9) => {
     try {
-      const response = await getCollection(memberId, pageNumber, pageSize);
-      if (!response) return;
-      if (response.status === "success") {
-        set(() => ({
-          collections: response.data.content,
-          totalCollections: response.data.totalElements,
-        }));
-      } else {
-        // console.warn("도감 데이터를 불러오지 못했습니다:", response.message);
-      }
+      const content = await getCollection(memberId, pageNumber, pageSize);
+      if (!content) return;
+      set(() => ({
+        collections: content,
+        totalCollections: content.length,
+      }));
     } catch (error) {
-      // console.error("도감 데이터를 불러오는 중 오류:", error);
+      console.error("도감 데이터를 불러오는 중 오류:", error);
     }
   },
 }));

@@ -6,7 +6,7 @@ import Modal from "@/components/Modal";
 import { useUserInfoStore } from "@/stores/userInfoStore";
 import useEasterEggStore from "@/stores/easterEggStore";
 import { useCollectionStore } from "@/stores/collectionStore";
-import { getMyInfo, updateNickname } from "@/apis/myPageService";
+import { updateNickname } from "@/apis/myPageService";
 import useFetchUserRollingpaper from "@/hooks/useFetchUserRollingpaper";
 import BirthInput from "@/components/Birth";
 export const MyPage = () => {
@@ -17,6 +17,7 @@ export const MyPage = () => {
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false); // 메시지 모달 상태 추가
   const { name, memberId, nickname, assets, isInitialized, setUserInfo } =
     useUserInfoStore();
+
   const { completedChallengesCount } = useEasterEggStore();
   const { collections, fetchCollections, totalCollections } =
     useCollectionStore();
@@ -25,30 +26,6 @@ export const MyPage = () => {
   const totalPages = Math.ceil(totalCollections / itemsPerPage);
 
   useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const data = await getMyInfo();
-        if (!data) return;
-        setUserInfo({
-          isInitialized: true,
-          memberId: data.memberId,
-          name: data.name,
-          email: data.email,
-          provider: data.provider,
-          providerId: data.providerId,
-          nickname: data.nickname,
-          assets: data.assets,
-          birth: data.birth,
-        });
-      } catch (error) {
-        //
-      }
-    };
-
-    if (!isInitialized) {
-      fetchUserInfo();
-    }
-
     if (memberId) {
       fetchCollections(Number(memberId), currentPage, itemsPerPage);
     }

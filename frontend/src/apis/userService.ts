@@ -148,3 +148,20 @@ export const searchUser = async (nickname: string) => {
     throw error;
   }
 };
+
+export const getCollection = async (
+  memberId: number,
+  pageNumber: number,
+  pageSize: number
+) => {
+  try {
+    const response = await axiosInstance.get(`collection/${memberId}`, {
+      params: { pageNumber: pageNumber, pageSize: pageSize },
+    });
+
+    return response.data.data.content;
+  } catch (error) {
+    console.log("get collection failed", error);
+    throw error;
+  }
+};
