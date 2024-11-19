@@ -17,23 +17,27 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Table(name = "friend")
 public class Friend {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "friend_id")
     private Long friendId;
 
     @ManyToOne
-    @JoinColumn(name="memberId1")
+    @JoinColumn(name="member_id1")
     private Member memberId1;
 
     @ManyToOne
-    @JoinColumn(name="memberId2")
+    @JoinColumn(name="member_id2")
     private Member memberId2;
 
     @LastModifiedDate
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "delete_flag")
     private Boolean deleteFlag = false;
 
     public Friend(Member sender, Member receiver) {
@@ -41,8 +45,8 @@ public class Friend {
         this.memberId2 = receiver;
     }
 
-    public void delete() {
-        this.deleteFlag = true;
+    public void changeStatus() {
+        this.deleteFlag = !this.deleteFlag;
         this.updatedAt = LocalDateTime.now();  // 수동으로 updatedAt 업데이트
     }
 }

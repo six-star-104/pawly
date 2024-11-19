@@ -1,17 +1,15 @@
 package com.pawly.domain.friend.controller;
 
 import com.pawly.domain.friend.dto.FriendRequestDto;
-import com.pawly.domain.friend.dto.FriendResponse;
 import com.pawly.domain.friend.dto.FriendStatusDto;
 import com.pawly.domain.friend.service.FriendListService;
 import com.pawly.domain.friend.service.FriendService;
 import com.pawly.domain.friend.service.FriendStatusService;
+import com.pawly.domain.member.service.MemberService;
 import com.pawly.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,38 +21,37 @@ public class FriendController {
     private final FriendStatusService friendStatusService;
 
     @GetMapping("/request")
-    public ResponseEntity<?> requestFriend() {
-        ApiResponse<List<FriendResponse>> response = friendListService.requestFriend();
-        return ResponseEntity.ok(response);
+    public ApiResponse<?> requestFriend(Authentication authentication) {
+        return friendListService.requestFriend(authentication.getName());
     }
 
     @GetMapping("/response")
-    public ResponseEntity<?> responseFriend() {
-        ApiResponse<List<FriendResponse>> response = friendListService.responseFriend();
-        return ResponseEntity.ok(response);
+    public ApiResponse<?> responseFriend(Authentication authentication) {
+        return friendListService.responseFriend(authentication.getName());
     }
 
     @GetMapping
-    public ResponseEntity<?> getFriends() {
-        ApiResponse<List<FriendResponse>> response = friendListService.getFriendsByMemberId();
-        return ResponseEntity.ok(response);
+    public ApiResponse<?> getFriends(Authentication authentication) {
+        return friendListService.getFriends(authentication.getName());
     }
 
     @PostMapping
-    public ResponseEntity<?> addFriend(@RequestBody FriendRequestDto friendRequestDto) {
-        ApiResponse<?> response = friendService.friend(friendRequestDto.getMemberId());
-        return ResponseEntity.ok(response);
+    public ApiResponse<?> addFriend(Authentication authentication, @RequestBody FriendRequestDto friendRequestDto) {
+        return friendService.addFriend(authentication.getName(), friendRequestDto.getMemberId());
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteFriend(@RequestBody FriendRequestDto friendRequestDto) {
-        ApiResponse<?> response = friendService.friendDelete(friendRequestDto.getMemberId());
-        return ResponseEntity.ok(response);
+    public ApiResponse<?> deleteFriend(Authentication authentication, @RequestBody FriendRequestDto friendRequestDto) {
+        return friendService.friendDelete(authentication.getName(), friendRequestDto.getMemberId());
     }
 
     @PatchMapping
-    public ResponseEntity<?> updateFriend(@RequestBody FriendStatusDto friendStatusDto) {
-        ApiResponse<?> response = friendStatusService.updateFriend(friendStatusDto.getFriendId(), friendStatusDto.getStatus());
-        return ResponseEntity.ok(response);
+    public ApiResponse<?> updateFriend(Authentication authentication, @RequestBody FriendStatusDto friendStatusDto) {
+        return friendStatusService.updateFriend(authentication.getName(), friendStatusDto.getFriendId(), friendStatusDto.getStatus());
+    }
+
+    @DeleteMapping("/request")
+    public ApiResponse<?> requestFriend(Authentication authentication, @RequestBody FriendRequestDto requestDto) {
+        return friendStatusService.requestFriend(authentication.getName(), requestDto.getMemberId());
     }
 }
