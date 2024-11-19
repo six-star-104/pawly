@@ -6,6 +6,7 @@ export const Container = css`
   flex-direction: column;
   position: relative;
   box-sizing: border-box;
+  height: 70vh;
 `;
 
 export const friendListContainer = css`

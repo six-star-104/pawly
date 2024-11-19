@@ -17,7 +17,7 @@ export const LetterSendList = () => {
 
   const { data: letterList } = useQuery<ISendLetterList>({
     queryKey: ["sendLetterList", currentPage],
-    queryFn: () => getSendLetterList(currentPage - 1, 8, "desc"),
+    queryFn: () => getSendLetterList(currentPage - 1, 7, "desc"),
   });
 
   const openModal = (sendLetterId: number) => {
