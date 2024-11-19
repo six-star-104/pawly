@@ -1,5 +1,8 @@
 import { css } from "@emotion/react";
 
+export const headerContainer = css`
+  height: 80px;
+`;
 export const searchWrapper = css`
   display: flex;
   justify-content: center;
@@ -14,14 +17,12 @@ export const searchContainer = css`
   background-color: #fff;
   padding: 0.5rem;
   border: 3px solid black;
-  margin-top: 80px;
 
   input {
     flex: 1;
     border: none;
     outline: none;
     font-size: 1rem;
-    font-family: "Galmuri9";
   }
 
   button {
@@ -41,9 +42,8 @@ export const Container = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
   box-sizing: border-box;
-  height: 100vh;
+  height: auto;
   overflow-y: auto;
 `;
 
@@ -84,8 +84,5 @@ export const FriendtContainer = css`
   flex-direction: column;
   width: 100%;
   max-width: 500px;
-  max-height: 75vh;
-  overflow-y: auto;
   padding: 0 1rem;
-  overflow: unset;
 `;
