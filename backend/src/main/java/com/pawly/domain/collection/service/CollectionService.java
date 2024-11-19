@@ -6,6 +6,7 @@ import com.pawly.domain.collection.repository.CollectionRepository;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.repository.MemberRepository;
 import com.pawly.domain.missionStatus.service.CollectionMissionService;
+import com.pawly.domain.missionStatus.service.EventMissionService;
 import com.pawly.global.dto.PageResponseDTO;
 import com.pawly.global.exception.ErrorCode;
 import com.pawly.global.response.ApiResponse;
@@ -28,6 +29,7 @@ public class CollectionService {
     private final CollectionRepository collectionRepository;
     private final MemberRepository memberRepository;
     private final CollectionMissionService collectionMissionService;
+    private final EventMissionService eventMissionService;
 
     public ApiResponse<?> collectionList(Long memberId, int pageNumber, int pageSize, String sortType, String sortBy) {
 
@@ -71,6 +73,9 @@ public class CollectionService {
                 collectionRepository.save(collection);
 
                 collectionMissionService.collectionMission(member.getMemberId());
+
+                eventMissionService.processEventFriendAndCollection(member.getMemberId(), friend.getMemberId(), 2);
+                eventMissionService.checkEventFriendAndCollection(member.getMemberId(), 2, 7L);
             }
         }
     }

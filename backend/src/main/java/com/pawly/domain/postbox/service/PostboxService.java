@@ -3,8 +3,7 @@ package com.pawly.domain.postbox.service;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.repository.MemberRepository;
 import com.pawly.domain.postbox.dto.PostboxCreateDto;
-import com.pawly.domain.postbox.dto.PostboxReadDto;
-import com.pawly.domain.postbox.dto.PostboxReadResponse;
+import com.pawly.domain.postbox.dto.PostboxReadResponseDto;
 import com.pawly.domain.postbox.entity.Postbox;
 import com.pawly.domain.postbox.repository.PostboxRepository;
 import com.pawly.domain.rollingPaper.repository.RollingPaperRepository;
@@ -37,23 +36,24 @@ public class PostboxService {
     }
 
     @Transactional
-    public ApiResponse<?> postboxArRead(PostboxReadDto dto) {
-        Optional<Member> member = memberRepository.findByEmail(dto.getName());
+    public ApiResponse<?> postboxArRead(String name, Double latitude, Double longitude) {
+        Optional<Member> member = memberRepository.findByEmail(name);
         if (!member.isPresent()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
-        List<PostboxReadResponse> postboxReadResponsesList = postboxRepository.findPostboxesWithinRadius(dto.getLatitude(), dto.getLongitude(), 10.0).stream()
-                .map(PostboxReadResponse::from)
-                .toList();
+        List<PostboxReadResponseDto> postboxReadResponsesList = postboxRepository.findPostboxesWithinRadius(latitude, longitude, 10.0).stream()
+                        .map(postbox -> PostboxReadResponseDto.from(postbox, postbox.getMember().getAssets()))
+                        .toList();
+
         return ApiResponse.createSuccess(postboxReadResponsesList,"AR 우체통 조회 성공");
     }
 
     @Transactional
-    public ApiResponse<?> postboxMapRead(PostboxReadDto dto) {
-        Optional<Member> member = memberRepository.findByEmail(dto.getName());
+    public ApiResponse<?> postboxMapRead(String name, Double latitude, Double longitude) {
+        Optional<Member> member = memberRepository.findByEmail(name);
         if (!member.isPresent()) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
-        List<PostboxReadResponse> postboxReadResponsesList = postboxRepository.findPostboxesWithinRadius(dto.getLatitude(), dto.getLongitude(), 1000.0).stream()
-                .map(PostboxReadResponse::from)
+        List<PostboxReadResponseDto> postboxReadResponsesList = postboxRepository.findPostboxesWithinRadius(latitude, longitude, 1000.0).stream()
+                .map(postbox -> PostboxReadResponseDto.from(postbox, postbox.getMember().getAssets()))
                 .toList();
         return ApiResponse.createSuccess(postboxReadResponsesList, "우체통맵 조회 성공");
     }

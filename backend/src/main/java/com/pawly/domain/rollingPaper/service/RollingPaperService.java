@@ -105,19 +105,21 @@ public class RollingPaperService {
             FcmMessageRequestDto request = new FcmMessageRequestDto(member.getMemberId(), "생일 롤링페이퍼가 도착했어요!", "친구에게서 따뜻한 생일 롤링페이퍼가 도착했습니다. 확인해보세요.");
             firebaseCloudMessageService.sendMessage(request);
 
-            Optional<CompleteEasterEgg> completeEasterEgg = completeEasterEggRepository.findByMemberIdAndEasterEggId(member.getMemberId(), 6L);
+            // 도전과제 6번 잠깐 바꿈
+            
+//            Optional<CompleteEasterEgg> completeEasterEgg = completeEasterEggRepository.findByMemberIdAndEasterEggId(member.getMemberId(), 6L);
 
             // 도전과제 6번: 생일 롤링페이퍼 오픈
-            if (completeEasterEgg.isPresent()) {
-                CompleteEasterEgg completeEasterEgg1 = completeEasterEgg.get();
-
-                if(completeEasterEgg1.getStatus() == com.pawly.domain.easterEgg.entity.Status.IN_PROGRESS) {
-                    completeEasterEgg1.achievedStatus();
-
-                    FcmMessageRequestDto request2 = new FcmMessageRequestDto(member.getMemberId(), "도전과제 달성!", "달성한 도전과제를 확인해보세요!");
-                    firebaseCloudMessageService.sendMessage(request2);
-                }
-            }
+//            if (completeEasterEgg.isPresent()) {
+//                CompleteEasterEgg completeEasterEgg1 = completeEasterEgg.get();
+//
+//                if(completeEasterEgg1.getStatus() == com.pawly.domain.easterEgg.entity.Status.IN_PROGRESS) {
+//                    completeEasterEgg1.achievedStatus();
+//
+//                    FcmMessageRequestDto request2 = new FcmMessageRequestDto(member.getMemberId(), "도전과제 달성!", "달성한 도전과제를 확인해보세요!");
+//                    firebaseCloudMessageService.sendMessage(request2);
+//                }
+//            }
         }
     }
 
@@ -147,7 +149,7 @@ public class RollingPaperService {
 
         RollingPaper r = rollingPaper.get();
 
-        if (!r.getMember().equals(m)) return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
+        if (r.getStatus() == com.pawly.domain.rollingPaper.enums.Status.CLOSE && !r.getMember().equals(m)) return ApiResponse.createError(ErrorCode.ACCESS_DENIED);
 
         if (r.getCategory() == 2 && m.getBirth() != null)
             if(!r.getCreatedAt().plusDays(4).isBefore(LocalDateTime.now())) return ApiResponse.createError(ErrorCode.ACCESS_DENIED);

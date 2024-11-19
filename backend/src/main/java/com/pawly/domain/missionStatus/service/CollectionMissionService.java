@@ -24,10 +24,13 @@ public class CollectionMissionService {
         collection(memberId);
 
         boolean flag = collectionTen(memberId);
-        missionStatusService.mission(flag, 5L, memberId);
 
-        FcmMessageRequestDto request = new FcmMessageRequestDto(memberId, "도전과제 달성!", "달성한 도전과제를 확인해보세요!");
-        firebaseCloudMessageService.sendMessage(request);
+        if(flag) {
+            missionStatusService.mission(flag, 5L, memberId);
+
+            FcmMessageRequestDto request = new FcmMessageRequestDto(memberId, "도전과제 달성!", "달성한 도전과제를 확인해보세요!");
+            firebaseCloudMessageService.sendMessage(request);
+        }
     }
 
     @Transactional

@@ -1,6 +1,6 @@
 package com.pawly.domain.letter.dto.response;
 
-import com.pawly.domain.letter.entity.SendLetter;
+import com.pawly.domain.letter.entity.Letter;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,19 +13,17 @@ public class SendLetterResponseDTO {
     private Long recipientId;
     private String recipientName;
     private String content;
-    private Long letterId;
+    private Integer reaction;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
-    public static SendLetterResponseDTO toDTO(SendLetter sendLetter) {
+    public static SendLetterResponseDTO toDTO(Letter sendLetter) {
         return SendLetterResponseDTO.builder()
-            .sendLetterId(sendLetter.getSendLetterId())
-            .recipientId(sendLetter.getLetter().getRecipient().getMemberId())
-            .recipientName(sendLetter.getLetter().getRecipient().getNickname())
-            .content(sendLetter.getLetter().getContent())
-            .letterId(sendLetter.getLetter().getLetterId())
-            .createdAt(sendLetter.getLetter().getCreatedAt())
-            .updatedAt(sendLetter.getLetter().getUpdatedAt())
+            .sendLetterId(sendLetter.getLetterId())
+            .recipientId(sendLetter.getRecipient().getMemberId())
+            .recipientName(sendLetter.getRecipient().getNickname())
+            .content(sendLetter.getContent())
+            .reaction(sendLetter.getReaction())
+            .createdAt(sendLetter.getCreatedAt())
             .build();
     }
 }

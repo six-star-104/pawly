@@ -2,8 +2,6 @@ package com.pawly.domain.letter.controller;
 
 import com.pawly.domain.letter.dto.request.LetterRequestDTO;
 import com.pawly.domain.letter.service.SendLetterService;
-import com.pawly.domain.member.entity.Member;
-import com.pawly.domain.member.service.MemberService;
 import com.pawly.global.exception.ErrorCode;
 import com.pawly.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,44 +21,20 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/sendLetter")
 public class SendLetterController {
 
-    private final MemberService memberService;
     private final SendLetterService sendLetterService;
 
     @GetMapping
     public ApiResponse<?> getSendLetters(Authentication authentication,
-        @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
-        @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
-        @RequestParam(name = "sortType", defaultValue = "desc") String sortType,
-        @RequestParam(name = "sortBy", required = false, defaultValue = "createdAt") String sortBy) {
-        try {
-            Member member = memberService.findByEmail(authentication.getName());
-
-            if (member == null) {
-                return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
-            }
-
-            return ApiResponse.createSuccess(
-                sendLetterService.getSendLetters(member, pageNumber, pageSize, sortType, sortBy),
-                "편지 조회 성공");
-        } catch (Exception e) {
-            return ApiResponse.createError(ErrorCode.LETTER_NOT_FOUND);
-        }
+                                         @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
+                                         @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+                                         @RequestParam(name = "sortType", defaultValue = "desc") String sortType,
+                                         @RequestParam(name = "sortBy", required = false, defaultValue = "createdAt") String sortBy) {
+        return sendLetterService.getSendLetters(authentication.getName(), pageNumber, pageSize, sortType, sortBy);
     }
 
     @GetMapping("/{sendLetterId}")
     public ApiResponse<?> getSendLetter(Authentication authentication, @PathVariable Long sendLetterId) {
-        try {
-            Member member = memberService.findByEmail(authentication.getName());
-
-            if (member == null) {
-                return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
-            }
-
-            return ApiResponse.createSuccess(sendLetterService.getLetter(member, sendLetterId),
-                "편지 조회 성공");
-        } catch (Exception e) {
-            return ApiResponse.createError(ErrorCode.LETTER_NOT_FOUND);
-        }
+        return sendLetterService.getLetter(authentication.getName(), sendLetterId);
     }
 
     @PostMapping()
@@ -75,18 +49,6 @@ public class SendLetterController {
 
     @DeleteMapping("/{sendLetterId}")
     public ApiResponse<?> deleteSendLetter(Authentication authentication, @PathVariable Long sendLetterId) {
-        try {
-            Member member = memberService.findByEmail(authentication.getName());
-
-            if (member == null) {
-                return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
-            }
-
-            sendLetterService.deleteLetter(member, sendLetterId);
-
-            return ApiResponse.createSuccessWithNoContent("편지 삭제 성공");
-        } catch (Exception e) {
-            return ApiResponse.createError(ErrorCode.LETTER_DELETE_FAILED);
-        }
+        return sendLetterService.deleteLetter(authentication.getName(), sendLetterId);
     }
 }

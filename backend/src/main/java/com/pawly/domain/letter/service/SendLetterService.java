@@ -2,14 +2,10 @@ package com.pawly.domain.letter.service;
 
 import com.pawly.domain.collection.service.CollectionService;
 import com.pawly.domain.letter.dto.request.LetterRequestDTO;
-import com.pawly.domain.letter.dto.response.LetterResponseDTO;
+import com.pawly.domain.letter.dto.response.SendLetterDetailResponseDTO;
 import com.pawly.domain.letter.dto.response.SendLetterResponseDTO;
 import com.pawly.domain.letter.entity.Letter;
-import com.pawly.domain.letter.entity.ReceiveLetter;
-import com.pawly.domain.letter.entity.SendLetter;
 import com.pawly.domain.letter.repository.LetterRepository;
-import com.pawly.domain.letter.repository.ReceiveLetterRepository;
-import com.pawly.domain.letter.repository.SendLetterRepository;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.repository.MemberRepository;
 import com.pawly.domain.member.service.MemberServiceImpl;
@@ -41,8 +37,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class SendLetterService {
 
     private final LetterRepository letterRepository;
-    private final SendLetterRepository sendLetterRepository;
-    private final ReceiveLetterRepository receiveLetterRepository;
     private final MemberRepository memberRepository;
     private final MemberServiceImpl memberService;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
@@ -50,35 +44,40 @@ public class SendLetterService {
     private final FileService fileService;
     private final CollectionService collectionService;
 
-    public PageResponseDTO getSendLetters(Member member, int pageNumber, int pageSize, String sortType, String sortBy) {
+    public ApiResponse<?> getSendLetters(String email, int pageNumber, int pageSize, String sortType, String sortBy) {
+        Member member = memberService.findByEmail2(email);
+        if (member == null) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
         Sort sort = sortType.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending()
             : Sort.by(sortBy).ascending();
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
 
-        Page<SendLetter> sendLetters = sendLetterRepository.findByMemberAndDeleteFlagFalse(member, pageable);
+        Page<Letter> sendLetters = letterRepository.findBySenderAndSenderDeleteFlagFalse(member, pageable);
 
         List<SendLetterResponseDTO> sendLetterResponseDTOS = sendLetters.stream()
             .map(SendLetterResponseDTO::toDTO)
             .toList();
 
-        return PageResponseDTO.builder()
-            .content(sendLetterResponseDTOS)
-            .pageSize(pageSize)
-            .pageNumber(pageNumber)
-            .totalElements(sendLetters.getTotalElements())
-            .totalPage((long) Math.ceil((double) sendLetters.getTotalElements() / pageSize))
-            .build();
+        PageResponseDTO page = PageResponseDTO.builder()
+                .content(sendLetterResponseDTOS)
+                .pageSize(pageSize)
+                .pageNumber(pageNumber)
+                .totalElements(sendLetters.getTotalElements())
+                .totalPage((long) Math.ceil((double) sendLetters.getTotalElements() / pageSize))
+                .build();
+
+        return ApiResponse.createSuccess(page, "보낸 편지함 조회 성공");
     }
 
-    public LetterResponseDTO getLetter(Member member, Long sendLetterId) {
+    public ApiResponse<?> getLetter(String email, Long sendLetterId) {
+        Member member = memberService.findByEmail2(email);
+        if (member == null) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
-        SendLetter sendLetter = sendLetterRepository.findByMemberAndSendLetterIdAndDeleteFlagFalse(member, sendLetterId);
+        Optional<Letter> letter = letterRepository.findBySenderAndLetterIdAndSenderDeleteFlagFalse(member, sendLetterId);
+        if(letter.isEmpty()) return ApiResponse.createError(ErrorCode.LETTER_NOT_FOUND);
 
-        Letter letter = letterRepository.findBySenderAndLetterId(member, sendLetter.getLetter().getLetterId());
-
-        return LetterResponseDTO.toDTO(letter);
+        return ApiResponse.createSuccess(SendLetterDetailResponseDTO.toDTO(letter.get()), "보낸 편지 상세 조회 성공");
     }
 
     @Transactional
@@ -95,23 +94,11 @@ public class SendLetterService {
             .sender(member)
             .recipient(recipient)
             .content(letterRequestDTO.getContent())
+            .recipientDeleteFlag(false)
+            .senderDeleteFlag(false)
             .build();
 
         letterRepository.save(letter);
-
-        SendLetter sendLetter = SendLetter.builder()
-            .member(member)
-            .letter(letter)
-            .build();
-
-        sendLetterRepository.save(sendLetter);
-
-        ReceiveLetter receiveLetter = ReceiveLetter.builder()
-            .member(recipient)
-            .letter(letter)
-            .build();
-
-        receiveLetterRepository.save(receiveLetter);
 
         // 파일 저장
         if(picture != null && !picture.isEmpty()) {
@@ -125,8 +112,8 @@ public class SendLetterService {
 
         // 도전과제
         letterMissionService.sendLetterMission(member.getMemberId());
-        letterMissionService.receiveLetterMission(recipient.getMemberId());
-
+//        letterMissionService.receiveLetterMission(recipient.getMemberId()); // 받기 미션 잠깐 종료
+        
         // 도감 저장
         if(!Objects.equals(member.getMemberId(), recipient.getMemberId())) collectionService.collectionAdd(member, recipient);
 
@@ -134,10 +121,15 @@ public class SendLetterService {
     }
 
     @Transactional
-    public void deleteLetter(Member member, Long sendLetterId) {
+    public ApiResponse<?> deleteLetter(String email, Long sendLetterId) {
+        Member member = memberService.findByEmail2(email);
+        if (member == null) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
-        SendLetter sendLetter = sendLetterRepository.findByMemberAndSendLetterIdAndDeleteFlagFalse(member, sendLetterId);
+        Optional<Letter> letter = letterRepository.findBySenderAndLetterIdAndSenderDeleteFlagFalse(member, sendLetterId);
+        if(letter.isEmpty()) return ApiResponse.createError(ErrorCode.LETTER_NOT_FOUND);
 
-        sendLetter.deleteLetter(sendLetter);
+        letter.get().updateSenderDeleteFlag();
+
+        return ApiResponse.createSuccessWithNoContent("보낸 편지 삭제 성공");
     }
 }

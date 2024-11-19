@@ -36,5 +36,5 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
             "AND f.deleteFlag = true")
     Optional<Friend> findByFriend(@Param("memberId") Long memberId, @Param("memberId2") Long memberId2);
 
-    List<Friend> findByMemberId1OrMemberId2(Member member, Member member2);
+    List<Friend> findByMemberId1AndDeleteFlagIsFalseOrMemberId2AndDeleteFlagIsFalse(Member member, Member member2);
 }

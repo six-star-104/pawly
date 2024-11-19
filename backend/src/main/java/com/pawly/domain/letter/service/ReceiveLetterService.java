@@ -2,14 +2,13 @@ package com.pawly.domain.letter.service;
 
 import com.pawly.domain.letter.dto.request.LetterReactionRequestDTO;
 import com.pawly.domain.letter.dto.request.LetterReportRequestDto;
-import com.pawly.domain.letter.dto.response.LetterResponseDTO;
+import com.pawly.domain.letter.dto.response.ReceiveLetterDetailResponseDto;
 import com.pawly.domain.letter.dto.response.ReceiveLetterResponseDTO;
 import com.pawly.domain.letter.entity.Letter;
-import com.pawly.domain.letter.entity.ReceiveLetter;
 import com.pawly.domain.letter.repository.LetterRepository;
-import com.pawly.domain.letter.repository.ReceiveLetterRepository;
 import com.pawly.domain.member.entity.Member;
 import com.pawly.domain.member.repository.MemberRepository;
+import com.pawly.domain.member.service.MemberServiceImpl;
 import com.pawly.domain.report.entity.Report;
 import com.pawly.domain.report.enums.Category;
 import com.pawly.domain.report.enums.Status;
@@ -33,57 +32,69 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class ReceiveLetterService {
 
+    private final MemberServiceImpl memberService;
     private final LetterRepository letterRepository;
-    private final ReceiveLetterRepository receiveLetterRepository;
     private final MemberRepository memberRepository;
     private final ReportRepository reportRepository;
 
-    public PageResponseDTO getReceiveLetters(Member member, int pageNumber, int pageSize, String sortType, String sortBy) {
+    public ApiResponse<?> getReceiveLetters(String email, int pageNumber, int pageSize, String sortType, String sortBy) {
+        Member member = memberService.findByEmail2(email);
+        if (member == null) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
         Sort sort = sortType.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending()
             : Sort.by(sortBy).ascending();
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
 
-        Page<ReceiveLetter> receiveLetters = receiveLetterRepository.findByMemberAndDeleteFlagFalse(member, pageable);
+        Page<Letter> receiveLetters = letterRepository.findByRecipientAndRecipientDeleteFlagFalse(member, pageable);
 
         List<ReceiveLetterResponseDTO> receiveLetterResponseDTOS = receiveLetters.stream()
             .map(ReceiveLetterResponseDTO::toDTO)
             .toList();
 
-        return PageResponseDTO.builder()
-            .content(receiveLetterResponseDTOS)
-            .pageSize(pageSize)
-            .pageNumber(pageNumber)
-            .totalElements(receiveLetters.getTotalElements())
-            .totalPage((long) Math.ceil((double) receiveLetters.getTotalElements() / pageSize))
-            .build();
+        PageResponseDTO page = PageResponseDTO.builder()
+                .content(receiveLetterResponseDTOS)
+                .pageSize(pageSize)
+                .pageNumber(pageNumber)
+                .totalElements(receiveLetters.getTotalElements())
+                .totalPage((long) Math.ceil((double) receiveLetters.getTotalElements() / pageSize))
+                .build();
+
+        return ApiResponse.createSuccess(page, "받은 편지함 조회 성공");
     }
 
-    public LetterResponseDTO getLetter(Member member, Long receiveLetterId) {
+    public ApiResponse<?> getLetter(String email, Long receiveLetterId) {
+        Member member = memberService.findByEmail2(email);
+        if (member == null) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
-        ReceiveLetter receiveLetter = receiveLetterRepository.findByMemberAndReceiveLetterIdAndDeleteFlagFalse(member, receiveLetterId);
-
-        Letter letter = letterRepository.findByRecipientAndLetterId(member, receiveLetter.getLetter().getLetterId());
-
-        return LetterResponseDTO.toDTO(letter);
-    }
-
-    @Transactional
-    public void deleteLetter(Member member, Long receiveLetterId) {
-
-        ReceiveLetter receiveLetter = receiveLetterRepository.findByMemberAndReceiveLetterIdAndDeleteFlagFalse(member, receiveLetterId);
-
-        receiveLetter.deleteLetter(receiveLetter);
+        Optional<Letter> letter = letterRepository.findByRecipientAndLetterIdAndRecipientDeleteFlagFalse(member, receiveLetterId);
+        if(letter.isEmpty()) return ApiResponse.createError(ErrorCode.LETTER_NOT_FOUND);
+        return ApiResponse.createSuccess(ReceiveLetterDetailResponseDto.toDTO(letter.get()), "받은 편지 상세 조회 성공");
     }
 
     @Transactional
-    public void addReaction(Member member, LetterReactionRequestDTO letterReactionRequestDTO, Long receiveLetterId) {
-        ReceiveLetter receiveLetter = receiveLetterRepository.findByMemberAndReceiveLetterIdAndDeleteFlagFalse(member, receiveLetterId);
+    public ApiResponse<?> deleteLetter(String email, Long receiveLetterId) {
+        Member member = memberService.findByEmail2(email);
+        if (member == null) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
 
-        Letter letter = letterRepository.findByRecipientAndLetterId(member, receiveLetter.getLetter().getLetterId());
+        Optional<Letter> letter = letterRepository.findByRecipientAndLetterIdAndRecipientDeleteFlagFalse(member, receiveLetterId);
+        if(letter.isEmpty()) return ApiResponse.createError(ErrorCode.LETTER_NOT_FOUND);
 
-        letter.setReaction(letterReactionRequestDTO.getReaction());
+        letter.get().updateRecipientDeleteFlag();
+        return ApiResponse.createSuccessWithNoContent("받은 편지 삭제 성공");
+    }
+
+    @Transactional
+    public ApiResponse<?> addReaction(String email, LetterReactionRequestDTO letterReactionRequestDTO, Long receiveLetterId) {
+        Member member = memberService.findByEmail2(email);
+        if (member == null) return ApiResponse.createError(ErrorCode.USER_NOT_FOUND);
+
+        Optional<Letter> letter = letterRepository.findByRecipientAndLetterIdAndRecipientDeleteFlagFalse(member, receiveLetterId);
+        if(letter.isEmpty()) return ApiResponse.createError(ErrorCode.LETTER_NOT_FOUND);
+
+        letter.get().setReaction(letterReactionRequestDTO.getReaction());
+
+        return ApiResponse.createSuccessWithNoContent("받은 편지함 반응 보내기 성공");
     }
 
     @Transactional
