@@ -60,6 +60,9 @@ export const challengeStatus = css`
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  button {
+    min-width: 88px;
+  }
 `;
 
 export const tabContainer = (activeTab: "inProgress" | "completed") => css`
@@ -79,6 +82,7 @@ export const tabContainer = (activeTab: "inProgress" | "completed") => css`
     border-top: 3px solid black;
     border-bottom: none;
     border-right: 3px solid black;
+    min-width: 88px;
 
     &:nth-of-type(1) {
       border-left: 3px solid black;
