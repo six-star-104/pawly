@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Header } from "@/components/Header";
 import { FriendList } from "@/components/FriendList";
 import { FriendRequest } from "@/components/FriendRequest";
 import * as style from "./styles";
@@ -19,25 +18,24 @@ export const Friends = () => {
 
   return (
     <>
-      <Header />
-      <div css={style.searchWrapper}>
-        <form css={style.searchContainer} onSubmit={handleSearch}>
-          <input
-            type="text"
-            placeholder="닉네임 or 이름으로 검색"
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-          />
-          <button type="submit">
-            <img
-              src="https://unpkg.com/pixelarticons@1.8.1/svg/search.svg"
-              alt="search"
-            />
-          </button>
-        </form>
-      </div>
-
+      <div css={style.headerContainer}></div>
       <div css={style.Container}>
+        <div css={style.searchWrapper}>
+          <form css={style.searchContainer} onSubmit={handleSearch}>
+            <input
+              type="text"
+              placeholder="닉네임 or 이름으로 검색"
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+            />
+            <button type="submit">
+              <img
+                src="https://unpkg.com/pixelarticons@1.8.1/svg/search.svg"
+                alt="search"
+              />
+            </button>
+          </form>
+        </div>
         <div css={style.tabContainer(activeTab)}>
           <button
             onClick={() => setActiveTab("friends")}
