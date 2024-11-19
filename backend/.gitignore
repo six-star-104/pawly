@@ -20,6 +20,7 @@ bin/
 ### IntelliJ IDEA ###
 .idea
 application-secret.yml
+firebase-service-account.json
 *.iws
 *.iml
 *.ipr

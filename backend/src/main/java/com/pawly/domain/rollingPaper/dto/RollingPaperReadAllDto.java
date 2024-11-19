@@ -1,6 +1,7 @@
 package com.pawly.domain.rollingPaper.dto;
 
 import com.pawly.domain.rollingPaper.entity.RollingPaper;
+import com.pawly.domain.rollingPaper.enums.Status;
 import lombok.*;
 
 @Getter
@@ -12,6 +13,7 @@ public class RollingPaperReadAllDto {
     private Long ownerMemberId;
     private String ownerMemberNickname;
     private String rollingPaperTitle;
+    private Status status;
     private Object content;
     private int pageNumber;
     private int pageSize;
@@ -23,6 +25,7 @@ public class RollingPaperReadAllDto {
                 .ownerMemberId(rollingPaper.getMember().getMemberId())
                 .ownerMemberNickname(rollingPaper.getMember().getNickname())
                 .rollingPaperTitle(rollingPaper.getTitle())
+                .status(rollingPaper.getStatus())
                 .content(content)
                 .pageNumber(pageNumber)
                 .pageSize(pageSize)
