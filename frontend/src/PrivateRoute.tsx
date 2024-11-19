@@ -3,42 +3,11 @@ import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { getOAuthAccessToken } from "@/apis/userService";
 import { getRefreshToken } from "@/apis/axiosInstance";
 import useLoginStore from "@/stores/loginStore";
-import { getMyInfo } from "@/apis/myPageService"; // 사용자 정보 API 가져오기
+import { getUserInfo } from "@/apis/userService"; // 사용자 정보 API 가져오기
 import { useUserInfoStore } from "./stores/userInfoStore";
 import { Header } from "./components/Header";
 import Notification from "./components/Notification";
-// 사용자가 메인 페이지에 들어오면 사용자 정보를 스토어에 저장
-// useEffect(() => {
-//   const fetchUserInfo = async () => {
-//     try {
-//       const data = await getMyInfo();
-//       setUserInfo({
-//         isInitialized: true,
-//         userId: data.memberId,
-//         name: data.name,
-//         email: data.email,
-//         provider: data.provider,
-//         providerId: data.providerId,
-//         nickname: data.nickname,
-//         assets: data.assets,
-//         birth: data.birth,
-//         collections: data.collections || [],
-//       });
-//       console.log("User Info:", {
-//         memberId: data.memberId,
-//         username: data.name,
-//         email: data.email,
-//         provider: data.provider,
-//         providerId: data.providerId,
-//         nickname: data.nickname,
-//         assets: data.assets,
-//         birth: data.birth,
-//         collections: data.collections || [],
-//       });
-//     } catch (error) {
-//       console.error("Failed to fetch user info:", error);
-//     }
-//   };
+
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
 };
@@ -53,7 +22,7 @@ const PrivateRoute = () => {
 
   const fetchUserInfo = async () => {
     try {
-      const data = await getMyInfo();
+      const data = await getUserInfo();
       if (!data) return;
       setUserInfo({
         isInitialized: true,
@@ -154,9 +123,9 @@ const PrivateRoute = () => {
 
   return isLogin ? (
     <>
-    <Header />
-    <Notification />
-    <Outlet />
+      <Header />
+      <Notification />
+      <Outlet />
     </>
   ) : (
     <Navigate to="/login" state={{ from: location }} />

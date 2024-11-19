@@ -4,7 +4,7 @@ import { useUserInfoStore } from "@/stores/userInfoStore";
 import { useNavigate } from "react-router-dom";
 import postbox from "@/assets/icons/postbox.svg";
 import { useQuery } from "@tanstack/react-query";
-import { getCollectionMain } from "@/apis/collectionService";
+import { getCollection } from "@/apis/userService";
 import { useMemo } from "react";
 
 type assetType = {
@@ -20,7 +20,7 @@ export const Main = () => {
 
   const { data: collectionData } = useQuery<assetType[]>({
     queryKey: ["collectionData"],
-    queryFn: () => getCollectionMain(memberId, 0, 20),
+    queryFn: () => getCollection(memberId, 0, 20),
   });
 
   const combinedData = useMemo(() => {
