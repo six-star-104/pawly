@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { axiosInstance } from "../apis/axiosInstance";
 
 interface Mailbox {
@@ -6,31 +6,34 @@ interface Mailbox {
   memberId: number;
   title: string;
   latitude: number;
-  longtitude: number;
+  longitude: number;
+  postboxOwner: string;
+  rollingPaperId: number;
 }
 
 // method 는  ar 또는 map
-export const useFetchMailboxes = (method: string) => {
-  const [mailboxes, setMailboxes] = useState<Mailbox[]>([]);
+export const useFetchMailBoxes = (method: string) => {
+  const [mailBoxes, setMailBoxes] = useState<Mailbox[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchRollingPaper = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const res = await axiosInstance.get(`postbox/${method}`);
-        setMailboxes(res.data.data);
-      } catch (err) {
-        setError("Failed to fetch mailboxes.");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchMailBoxes = async (latitude: number, longitude: number) => {
+    setLoading(true);
+    setError(null);
+    console.log("조회 시작");
+    try {
+      const res = await axiosInstance.get(
+        `postbox/${method}/${latitude}/${longitude}`
+      );
+      console.log("위치조회성공", res);
+      setMailBoxes(res.data.data);
+    } catch (err) {
+      console.log("조회 실패", err);
+      setError("Failed to fetch mailboxes.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchRollingPaper();
-  }, [method]);
-
-  return { mailboxes, loading, error };
+  return { mailBoxes, loading, error, fetchMailBoxes,setMailBoxes };
 };

@@ -1,16 +1,27 @@
 import Router from "@/Router";
 import MobileLayout from "@/styles/MobileLayout";
-// import TransitionContent from "@/components/TransitionContent";
 import "./firebase-messaging-sw.js";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useLocation } from "react-router-dom";
+import GlobalStyles from "./styles/GlobalStyles.js";
 
 function App() {
+  const location = useLocation();
+  const queryClient = new QueryClient();
+
   return (
     <>
-      <MobileLayout>
-        {/* <TransitionContent> */}
-        <Router />
-        {/* </TransitionContent> */}
-      </MobileLayout>
+      <QueryClientProvider client={queryClient}>
+        {location.pathname !== "/admin" ? (
+          <MobileLayout>
+            <GlobalStyles />
+
+            <Router />
+          </MobileLayout>
+        ) : (
+          <Router />
+        )}
+      </QueryClientProvider>
     </>
   );
 }

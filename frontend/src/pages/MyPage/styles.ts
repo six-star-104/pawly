@@ -1,97 +1,80 @@
-import { css } from '@emotion/react';
+import { css } from "@emotion/react";
 
 export const Container = css`
   width: 100%;
-  height: 100vh;
-  /* background-color: #E6E6FA; */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-`;
-
-export const BackBtnContainer = css`
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  margin: 0.25rem;
-`;
-
-export const HamBtnContainer = css`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-`;
-
-export const contents = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  max-width: 500px;
-  margin-bottom: 30%;
+  position: relative;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  height: 100vh;
+  overflow-y: auto;
 `;
 
-export const MyInfo = css`
-  display: inline-block;
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-  padding-bottom: 0.2rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1rem;
-  border-bottom: 3px solid black;
-  width: auto;
+export const myPageContent = css`
+  width: 100%;
+  max-width: 500px;
+  margin-top: 80px;
+  border: 3px solid black;
+  background-color: rgba(255, 255, 255, 0.5);
 `;
 
 export const InfoSection = css`
+  margin: 1rem;
+  gap: 0.5rem;
+`;
+
+export const infoContainer = css`
   display: flex;
-  justify-content: space-between;
+  gap: 0.5rem;
+`;
+
+export const nicknameContainer = css`
+  display: flex;
   align-items: center;
-  padding: 0.2rem 0;
-  font-size: 1.2rem;
-  border-bottom: 2px solid black;
-  width: 90%;
-  text-align: left;
+  gap: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
-  div:first-of-type {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem; /* 이미지와 텍스트 사이의 간격 설정 */
-  }
-
-  div {
-    display: flex;
-    align-items: center;
-  }
-`;
-
-export const VerticalTextSection = css`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.2rem; /* 닉네임과 유저네임 사이의 간격 설정 */
-
-  h3 {
+  .nickname {
+    font-weight: 800;
     font-size: 1.2rem;
-    margin: 0;
   }
 
-  h4 {
-    font-size: 1rem;
-    margin: 0;
-    color: #333;
+  button {
+    background: none;
+    border: none;
+    padding: 1;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+
+    &:active {
+      transform: scale(0.95);
+    }
   }
 `;
 
+export const nameContainer = css`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0 1rem;
+
+  .name {
+    font-size: 0.9rem;
+  }
+`;
+
+// 활동 내역 부분
 export const StatsSection = css`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 1rem 0;
+  padding: 1rem 1.5rem;
   font-size: 1rem;
   line-height: 1.5;
-  width: 90%;
   gap: 0.5rem;
 
   div {
@@ -106,94 +89,64 @@ export const StatsSection = css`
   }
 `;
 
+// 도감 부분
 export const CollectionSection = css`
-  padding: 1rem 0;
-  text-align: left;
+  padding: 1rem 1.5rem;
   font-size: 1rem;
-  line-height: 1.5;
-  width: 90%;
-  gap: 0.5rem;
+  text-align: center;
 
-  h3 {
-    font-weight: bold;
-    margin-bottom: 0.5rem;
+  .items-container-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    max-width: 300px;
+    margin: 0 auto;
   }
 
   .items-container {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    justify-content: center;
     align-items: center;
-    font-size: 1.2rem;
-    margin-top: 0.5rem;
-
-    .arrow {
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-
-    .item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.25rem;
-    }
+    width: 100%;
   }
-`;
 
-export const closeButtonStyle = css`
-  width: 3rem;
-  height: 3rem;
-  /* margin-right: 1rem; */
-  background: none;
-  border: none;
-  padding: 1;
-  cursor: pointer;
-  transition: transform 0.1s ease;
-
-  &:active {
-    transform: scale(0.95);
-  }
-`;
-export const HamBtnCss = css`
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-`;
-
-export const BackBtnCss = css`
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-`;
-
-// 슬라이딩 패널 스타일
-export const slidePanelStyle = css`
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 300px;
-  height: 100vh;
-  background-color: #f9f4ff;
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
-  transform: translateX(100%);
-  transition: transform 0.3s ease;
-  z-index: 1000;
-`;
-
-// 패널 내부 콘텐츠 스타일
-export const panelContentStyle = css`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border: 3px solid black;
-  button {
-    align-self: flex-end;
-    background: none;
-    border: none;
-    font-size: 20px;
+  .arrow-left,
+  .arrow-right {
+    font-size: 1.25rem;
     cursor: pointer;
+    transition: transform 0.1s ease;
+  }
+
+  .arrow-left:active,
+  .arrow-right:active {
+    transform: scale(0.9);
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    width: 80px;
+    height: 100px;
+    overflow: hidden;
+
+    img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+    }
+
+    p {
+      font-size: 0.9rem;
+      text-align: center;
+      height: 20px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 `;
 
@@ -210,18 +163,8 @@ export const inputStyle = css`
     border: none;
     outline: none;
     box-shadow: 4px 0 0 0 black, -4px 0 0 0 black, 0 4px 0 0 black,
-      0 -4px 0 0 black; /* 테두리 효과 추가 */
+      0 -4px 0 0 black;
     transition: box-shadow 0.3s ease;
-
-    &:focus {
-      box-shadow: 4px 0 0 0 #007bff, -4px 0 0 0 #007bff, 0 4px 0 0 #007bff,
-        0 -4px 0 0 #007bff; /* 포커스 시 파란색 테두리 */
-    }
-
-    &:hover {
-      box-shadow: 4px 0 0 0 #ff8800, -4px 0 0 0 #ff8800, 0 4px 0 0 #ff8800,
-        0 -4px 0 0 #ff8800; /* 호버 시 주황색 테두리 */
-    }
   }
 `;
 
@@ -232,7 +175,7 @@ export const modalActionsStyle = css`
   padding: 1rem 0;
 
   button {
-    background-color: #4CAF50;
+    background-color: #4caf50;
     border: none;
     color: white;
     padding: 0.5rem 1rem;
@@ -292,4 +235,21 @@ export const modalHeaderStyle = css`
     font-size: 1.5rem;
     cursor: pointer;
   }
+`;
+
+export const ArrowButton = css`
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  margin: 0 2rem;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+  &:active {
+    transform: scale(0.9);
+  }
+`;
+
+export const iconSize = css`
+  width: 20px;
+  height: 20px;
 `;

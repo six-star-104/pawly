@@ -1,17 +1,16 @@
+export interface SearchUser {
+  nickname: string;
+  name: string;
+  assets: string;
+  memberId: number;
+}
+
 export interface UserSearchResponse {
   status: string;
-  data: 
-    {
-      nickname: string;
-      name:string;
-      assets: string;
-      memberId: number;
-    }[];
-  
+  data: SearchUser[];
   code: null | string;
   message: string;
 }
-
 
 export interface UserSearchResponseResult {
   status: string;

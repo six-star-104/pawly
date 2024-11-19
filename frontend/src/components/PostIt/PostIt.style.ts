@@ -5,29 +5,15 @@ import { css } from "@emotion/react";
 const px = 4;
 const shadow = `rgba(0, 0, 0, 0.2)`;
 
-// bubble 테두리 스타일 정의
-// const bubbleBorder = `
-//   0 -${px}px ${bgColor},
-//   0 -${2 * px}px ${borderColor},
-//   ${px}px 0 ${bgColor},
-//   ${px}px -${px}px ${borderColor},
-//   ${2 * px}px 0 ${borderColor},
-//   0 ${px}px ${bgColor},
-//   0 ${2 * px}px ${borderColor},
-//   -${px}px 0 ${bgColor},
-//   -${px}px ${px}px ${borderColor},
-//   -${2 * px}px 0 ${borderColor},
-//   -${px}px -${px}px ${borderColor},
-//   ${px}px ${px}px ${borderColor}
-// `;
-
+const fonts = ["Galmuri9", "PFStardust", "DGM"];
 // 최종 말풍선 스타일
 export const bubbleStyle = (
   textColor: string,
   borderColor: string,
   bgColor: string | null,
   bgImg: string | null,
-  isPreview: boolean | undefined
+  isPreview: boolean | undefined,
+  font: number
 ) => css`
   position: relative;
   display: inline-block;
@@ -36,7 +22,9 @@ export const bubbleStyle = (
   font-size: 16px;
   line-height: 1.3em;
   white-space: pre-wrap;
+  word-wrap: break-word;
 
+  font-family: ${fonts[font - 1]};
   // 이미지 있으면 배경이 이미지 되도록
   ${bgImg
     ? ` background-image: url(${bgImg}); background-position: center; background-repeat: repeat; background-size: contatin;`
@@ -46,7 +34,7 @@ export const bubbleStyle = (
   padding: ${4 * px}px;
 
   box-sizing: border-box;
-  width: 200px;
+  width: 24vh;
 
   // 미리보기면 텍스트 중앙 정렬
   ${isPreview ? "text-align:center" : ""};
@@ -61,17 +49,17 @@ export const bubbleStyle = (
     ${2 * px}px ${2 * px}px ${shadow};
 
   &.mini {
-    width: 120px;
+    width: 12vh;
     // font-size: 16px;
     padding: 4px;
   }
 
   &.medium {
-    width: 350px;
+    width: 40vh ;
   }
 
   &.large {
-    width: 560px;
+    width: 40vh;
     font-size: 24px;
     text-align: left;
     text-transform: uppercase;
@@ -148,6 +136,7 @@ export const fromWho = css`
   display: flex;
   justify-content: end;
   padding-right: 8%;
+  margin-top: 12px;
 `;
 
 export const menuStyle = css`
@@ -178,5 +167,6 @@ export const modalStyle = css`
     margin: 10px;
     left: 60%;
     width: 30%;
+    margin-top: 28px; 
   }
 `;
