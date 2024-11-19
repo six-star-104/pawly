@@ -1,22 +1,15 @@
 import { axiosInstance } from "./axiosInstance";
 
-
 export const getThemes = async () => {
   try {
     const response = await axiosInstance.get("/admin/theme");
     console.log("테마 조회 결과:", response.data);
     return response.data;
-  } catch (error: any) {
-    if (error.response && error.response.status === 401) {
-      console.error("인증에 실패했습니다. 다시 로그인해 주세요.");
-    } else {
-      console.error("Failed to get themes: ", error);
-    }
+  } catch (error) {
+    console.log(error);
     throw error;
   }
 };
-
-
 
 export const createTheme = async (
   themeName: string,
@@ -36,12 +29,8 @@ export const createTheme = async (
       base,
     });
     return response.data;
-  } catch (error: any) {
-    if (error.response && error.response.status === 401) {
-      // console.error("인증에 실패했습니다. 다시 로그인해 주세요.");
-    } else {
-      // console.error("Failed to create theme: ", error);
-    }
+  } catch (error) {
+    console.log(error);
     throw error;
   }
 };
@@ -65,12 +54,8 @@ export const updateTheme = async (
       base,
     });
     return response.data;
-  } catch (error: any) {
-    if (error.response && error.response.status === 401) {
-      console.error("인증에 실패했습니다. 다시 로그인해 주세요.");
-    } else {
-      console.error("Failed to update theme: ", error);
-    }
+  } catch (error) {
+    console.log(error);
     throw error;
   }
 };
@@ -80,12 +65,8 @@ export const deleteTheme = async (themeId: number) => {
   try {
     const response = await axiosInstance.delete(`/admin/theme/${themeId}`);
     return response.data;
-  } catch (error: any) {
-    if (error.response && error.response.status === 401) {
-      console.error("인증에 실패했습니다. 다시 로그인해 주세요.");
-    } else {
-      console.error("Failed to delete theme: ", error);
-    }
+  } catch (error) {
+    console.log(error);
     throw error;
   }
 };
