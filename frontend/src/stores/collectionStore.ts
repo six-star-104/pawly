@@ -2,10 +2,19 @@ import { create } from "zustand";
 import { getCollection } from "@/apis/userService";
 
 interface CollectionType {
+  isUser: boolean;
   collectionId: number;
   nickname: string;
   assets: string;
 }
+
+export type CollectionResponse = {
+  content: CollectionType[];
+  pageNumber: number;
+  pageSize: number;
+  totalPage: number;
+  totalElements: number;
+};
 
 type CollectionStore = {
   collections: CollectionType[];
@@ -23,11 +32,12 @@ export const useCollectionStore = create<CollectionStore>((set) => ({
 
   fetchCollections: async (memberId, pageNumber = 0, pageSize = 9) => {
     try {
-      const content = await getCollection(memberId, pageNumber, pageSize);
-      if (!content) return;
+      const response = await getCollection(memberId, pageNumber, pageSize);
+      console.log(response);
+      if (!response) return;
       set(() => ({
-        collections: content,
-        totalCollections: content.length,
+        collections: response.content,
+        totalCollections: response.totalElements,
       }));
     } catch (error) {
       console.error("도감 데이터를 불러오는 중 오류:", error);

@@ -30,7 +30,6 @@ export const Pedia = () => {
       setCurrentPage(currentPage - 1);
     }
   };
-
   return (
     <div css={style.PixelContainerWrapper}>
       <div css={style.Container}>
