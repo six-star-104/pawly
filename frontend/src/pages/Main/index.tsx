@@ -7,6 +7,11 @@ import { useQuery } from "@tanstack/react-query";
 import { getCollection } from "@/apis/userService";
 import { useMemo } from "react";
 
+type responseType = {
+  content: assetType[];
+  totalPages: number;
+};
+
 type assetType = {
   assets: string;
   collectionId: number;
@@ -18,11 +23,12 @@ export const Main = () => {
   const navigateTo = useNavigate();
   const { assets, memberId } = useUserInfoStore();
 
-  const { data: collectionData } = useQuery<assetType[]>({
+  const { data: collectionData } = useQuery<responseType>({
     queryKey: ["collectionData"],
     queryFn: () => getCollection(memberId, 0, 20),
   });
 
+  console.log("main", collectionData);
   const combinedData = useMemo(() => {
     if (!collectionData) return [];
 
@@ -33,7 +39,7 @@ export const Main = () => {
       isUser: true,
     };
 
-    return [...collectionData, userAsset];
+    return [...collectionData.content, userAsset];
   }, [collectionData, assets]);
 
   const arMove = () => {
