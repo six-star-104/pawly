@@ -3,8 +3,14 @@ import CameraIcon from "@/assets/icons/camera.png";
 import { useUserInfoStore } from "@/stores/userInfoStore";
 import { useNavigate } from "react-router-dom";
 import postbox from "@/assets/icons/postbox.svg";
-import { useEffect, useMemo } from "react";
-import useCollectionStore from "@/stores/collectionStore";
+import { useQuery } from "@tanstack/react-query";
+import { getCollection } from "@/apis/userService";
+import { useMemo } from "react";
+
+type responseType = {
+  content: assetType[];
+  totalPages: number;
+};
 
 type assetType = {
   assets: string;
@@ -17,18 +23,14 @@ export const Main = () => {
   const navigateTo = useNavigate();
   const { assets, memberId } = useUserInfoStore();
 
-  const { collections, fetchCollections } = useCollectionStore();
+  const { data: collectionData } = useQuery<responseType>({
+    queryKey: ["collectionData"],
+    queryFn: () => getCollection(memberId, 0, 20),
+  });
 
-  const itemsPerPage = 20;
-
-  useEffect(() => {
-    if (memberId) {
-      fetchCollections(Number(memberId), 0, itemsPerPage);
-    }
-  }, [memberId, fetchCollections]);
-
+  console.log("main", collectionData);
   const combinedData = useMemo(() => {
-    if (!collections) return [];
+    if (!collectionData) return [];
 
     const userAsset: assetType = {
       assets: assets,
@@ -37,8 +39,8 @@ export const Main = () => {
       isUser: true,
     };
 
-    return [...collections, userAsset];
-  }, [collections, assets]);
+    return [...collectionData.content, userAsset];
+  }, [collectionData, assets]);
 
   const arMove = () => {
     navigateTo("/ar");

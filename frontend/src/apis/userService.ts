@@ -158,7 +158,7 @@ export const getCollection = async (
     const response = await axiosInstance.get(`collection/${memberId}`, {
       params: { pageNumber: pageNumber, pageSize: pageSize },
     });
-    console.log(response.data.data);
+    console.log("api", response.data.data);
     return response.data.data;
   } catch (error) {
     console.log("get collection failed", error);
