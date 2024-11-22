@@ -7,6 +7,14 @@ interface CollectionType {
   assets: string;
 }
 
+export type CollectionResponse = {
+  content: CollectionType[];
+  pageNumber: number;
+  pageSize: number;
+  totalPage: number;
+  totalElements: number;
+};
+
 type CollectionStore = {
   collections: CollectionType[];
   totalCollections: number;
@@ -23,11 +31,12 @@ export const useCollectionStore = create<CollectionStore>((set) => ({
 
   fetchCollections: async (memberId, pageNumber = 0, pageSize = 9) => {
     try {
-      const content = await getCollection(memberId, pageNumber, pageSize);
-      if (!content) return;
+      const response = await getCollection(memberId, pageNumber, pageSize);
+      console.log(response);
+      if (!response) return;
       set(() => ({
-        collections: content,
-        totalCollections: content.length,
+        collections: response.content,
+        totalCollections: response.totalElements,
       }));
     } catch (error) {
       console.error("도감 데이터를 불러오는 중 오류:", error);
