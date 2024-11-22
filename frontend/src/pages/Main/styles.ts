@@ -48,12 +48,6 @@ export const content = css`
   }
 `;
 
-// export const postboxStyle = css`
-//   position: absolute;
-//   bottom: 20px;
-//   right: 58px;
-// `;
-
 export const collectionContainer = css`
   position: absolute;
   bottom: 0;

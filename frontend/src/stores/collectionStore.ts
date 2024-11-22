@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { getCollection } from "@/apis/userService";
 
 interface CollectionType {
+  isUser: boolean;
   collectionId: number;
   nickname: string;
   assets: string;
