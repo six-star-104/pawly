@@ -26,7 +26,7 @@ https://youtu.be/Fn-sj0r091s
 
 # ❤️  팀원 소개
 
-![image](exec\README_IMAGE\image_소개.png)
+![image](exec/README_IMAGE/image_소개.png)
 
 ---
 
@@ -35,19 +35,19 @@ https://youtu.be/Fn-sj0r091s
 ## 🎉  기획 배경
 자율 프로젝트는 3번의 프로젝트 중 마지막이면서, 2학기뿐만 아니라 싸피(SSAFY) 1년 과정의 마지막이기도 합니다. 스스로를 돌아보고, 함께 했던 동료들에게도 인사말과 함께 서로를 추억했으면 좋겠다는 생각을 했습니다. 
 
-![image](exec\README_IMAGE\기획배경.png)
+![image](exec/README_IMAGE/기획배경.png)
 
 ---
 
 ## 👊  주요 기능
 
-![image](exec\README_IMAGE\image_AR롤링페이퍼.png)
-![image](exec\README_IMAGE\image_포스티잇%20작성.png)
-![image](exec\README_IMAGE\image_캐릭터생성.png)
-![image](exec\README_IMAGE\image_캐릭터생성%20(2).png)
-![image](exec\README_IMAGE\image_푸시알림.png)
-![image](exec\README_IMAGE\image_편지.png)
-![image](exec\README_IMAGE\image_도감.png)
+![image](exec/README_IMAGE/image_AR롤링페이퍼.png)
+![image](exec/README_IMAGE/image_포스티잇%20작성.png)
+![image](exec/README_IMAGE/image_캐릭터생성.png)
+![image](exec/README_IMAGE/image_캐릭터생성%20(2).png)
+![image](exec/README_IMAGE/image_푸시알림.png)
+![image](exec/README_IMAGE/image_편지.png)
+![image](exec/README_IMAGE/image_도감.png)
 
 ---
 
@@ -55,51 +55,51 @@ https://youtu.be/Fn-sj0r091s
 
 ### 회원가입
 
-![회원가입](exec\pawly_gif\회원가입.gif)
+![회원가입](exec/pawly_gif/회원가입.gif)
 
 ### 메인화면
 
-![메인화면](exec\pawly_gif\메인페이지.gif)
+![메인화면](exec/pawly_gif/메인페이지.gif)
 
 ### 친구검색 & 신청
 
-![친구검색 & 신청](exec\pawly_gif\친구검색&신청.gif)
+![친구검색 & 신청](exec/pawly_gif/친구검색&신청.gif)
 
 ### 친구
 
-![친구](exec\pawly_gif\친구.gif)
+![친구](exec/pawly_gif/친구.gif)
 
 ### AR우체통
 
-![AR우체통](exec\pawly_gif\AR우체통.gif)
+![AR우체통](exec/pawly_gif/AR우체통.gif)
 
 ### 롤링페이퍼 작성
 
-![롤링페이퍼](exec\pawly_gif\롤링페이퍼작성.gif)
+![롤링페이퍼](exec/pawly_gif/롤링페이퍼작성.gif)
 
 ### 편지쓰기
 
-![편지쓰기](exec\pawly_gif\편지쓰기.gif)
+![편지쓰기](exec/pawly_gif/편지쓰기.gif)
 
 ### 편지함
 
-![편지함](exec\pawly_gif\편지함.gif)
+![편지함](exec/pawly_gif/편지함.gif)
 
 ### 마이페이지
 
-![마이페이지](exec\pawly_gif\마이페이지.gif)
+![마이페이지](exec/pawly_gif/마이페이지.gif)
 
 ### 도감
 
-![도감](exec\pawly_gif\도감.gif)
+![도감](exec/pawly_gif/도감.gif)
 
 ### 도전과제
 
-![도전과제](exec\pawly_gif\도전과제.gif)
+![도전과제](exec/pawly_gif/도전과제.gif)
 
 ### 관리자페이지
 
-![관리자페이지](exec\pawly_gif\관리자페이지.gif)
+![관리자페이지](exec/pawly_gif/관리자페이지.gif)
 
 ---
 
@@ -107,7 +107,7 @@ https://youtu.be/Fn-sj0r091s
 
 ## 🧭 ERD
 
-![image](exec\README_IMAGE\image_ERD.png)
+![image](exec/README_IMAGE/image_ERD.png)
 
 ---
 
@@ -145,7 +145,7 @@ https://youtu.be/Fn-sj0r091s
 
 ## 기술스택
 
-![image](exec\README_IMAGE\image_사용기술.png)
+![image](exec/README_IMAGE/image_사용기술.png)
 
 ---
 
