@@ -1,6 +1,6 @@
 # Pawly
 
-![image (4)](exec\README_IMAGE\로고.png)
+![image (4)](exec/README_IMAGE/로고.png)
 
 #### SSAFY 자율 PJT
 
