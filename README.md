@@ -96,8 +96,22 @@ AR기반 롤링페이퍼 서비스
       <img src="exec/pawly_gif/마이페이지.gif" alt="마이페이지" width="200" height="400">
     </td>
   </tr>
+  <tr>
+    <td align="center">
+      <h3>도감</h3>
+      <img src="exec/pawly_gif/도감.gif" alt="도감" width="200" height="400">
+    </td>
+    <td align="center">
+      <h3>도전과제</h3>
+      <img src="exec/pawly_gif/도전과제.gif" alt="도전과제" width="200" height="400">
+    </td>
+    <td align="center">
+      <!-- 빈 칸 -->
+    </td>
+  </tr>
 </table>
 
+---
 
 ### 관리자페이지
 
