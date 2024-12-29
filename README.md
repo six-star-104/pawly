@@ -20,7 +20,7 @@ AR기반 롤링페이퍼 서비스
 
 ## 📽️  UCC
 
-https://youtu.be/Fn-sj0r091s
+[![Watch the video](https://img.youtube.com/vi/Fn-sj0r091s/0.jpg)](https://www.youtube.com/watch?v=Fn-sj0r091s)
 
 ---
 
@@ -53,49 +53,51 @@ https://youtu.be/Fn-sj0r091s
 
 ## 🖥️  서비스 화면
 
-### 회원가입
+<table>
+  <tr>
+    <td align="center">
+      <h3>회원가입</h3>
+      <img src="exec/pawly_gif/회원가입.gif" alt="회원가입" width="200" height="400">
+    </td>
+    <td align="center">
+      <h3>메인화면</h3>
+      <img src="exec/pawly_gif/메인페이지.gif" alt="메인화면" width="200" height="400">
+    </td>
+    <td align="center">
+      <h3>친구검색 & 신청</h3>
+      <img src="exec/pawly_gif/친구검색&신청.gif" alt="친구검색 & 신청" width="200" height="400">
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <h3>친구</h3>
+      <img src="exec/pawly_gif/친구.gif" alt="친구" width="200" height="400">
+    </td>
+    <td align="center">
+      <h3>AR우체통</h3>
+      <img src="exec/pawly_gif/AR우체통.gif" alt="AR우체통" width="200" height="400">
+    </td>
+    <td align="center">
+      <h3>롤링페이퍼 작성</h3>
+      <img src="exec/pawly_gif/롤링페이퍼작성.gif" alt="롤링페이퍼 작성" width="200" height="400">
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <h3>편지쓰기</h3>
+      <img src="exec/pawly_gif/편지쓰기.gif" alt="편지쓰기" width="200" height="400">
+    </td>
+    <td align="center">
+      <h3>편지함</h3>
+      <img src="exec/pawly_gif/편지함.gif" alt="편지함" width="200" height="400">
+    </td>
+    <td align="center">
+      <h3>마이페이지</h3>
+      <img src="exec/pawly_gif/마이페이지.gif" alt="마이페이지" width="200" height="400">
+    </td>
+  </tr>
+</table>
 
-![회원가입](exec/pawly_gif/회원가입.gif)
-
-### 메인화면
-
-![메인화면](exec/pawly_gif/메인페이지.gif)
-
-### 친구검색 & 신청
-
-![친구검색 & 신청](exec/pawly_gif/친구검색&신청.gif)
-
-### 친구
-
-![친구](exec/pawly_gif/친구.gif)
-
-### AR우체통
-
-![AR우체통](exec/pawly_gif/AR우체통.gif)
-
-### 롤링페이퍼 작성
-
-![롤링페이퍼](exec/pawly_gif/롤링페이퍼작성.gif)
-
-### 편지쓰기
-
-![편지쓰기](exec/pawly_gif/편지쓰기.gif)
-
-### 편지함
-
-![편지함](exec/pawly_gif/편지함.gif)
-
-### 마이페이지
-
-![마이페이지](exec/pawly_gif/마이페이지.gif)
-
-### 도감
-
-![도감](exec/pawly_gif/도감.gif)
-
-### 도전과제
-
-![도전과제](exec/pawly_gif/도전과제.gif)
 
 ### 관리자페이지
 
